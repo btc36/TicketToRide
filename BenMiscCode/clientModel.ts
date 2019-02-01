@@ -1,86 +1,134 @@
+
+
 class Session {
     authToken: string;
-    currentPage: string;
-    loggedInUser: Player;
-    constructor(auth: string, page: string, currentUser: Player) {
-        this.authToken = auth;
-        this.currentPage = page;
-        this.loggedInUser = currentUser;
-    }
+        currentPage: string;
+            loggedInUser: Player;
+                constructor(auth: string, page: string, currentUser: Player) {
+                        this.authToken = auth;
+                                this.currentPage = page;
+                                        this.loggedInUser = currentUser;
+                                            }
 
-    getAuth() {
-        return this.authToken
-    }
+    get getAuth(): string {
+            return this.authToken
+                }
 
-    setAuth(auth:string) {
-        this.authToken = auth
-    }
+    set setAuth(auth: string) {
+            this.authToken = auth
+                }
 
-    getCurrentPage() {
-        return this.currentPage;
-    }
+    get getCurrentPage() :string {
+            return this.currentPage;
+                }
 
-    setCurrentPage(page: string) {
-        this.currentPage = page;
-    }
+    set setCurrentPage(page: string) {
+            this.currentPage = page;
+                }
 
-    getLoggedInUser() {
-        return this.loggedInUser
-    }
+    get getLoggedInUser(): Player {
+            return this.loggedInUser
+                }
 
-    setLoggedInUser(player: Player) {
-        this.loggedInUser = player;
-    }
+    set setLoggedInUser(player: Player) {
+            this.loggedInUser = player;
+                }
 
 }
 
 class Player {
     username: string;
-    constructor(username: string) {
-        this.username = username;
-    }
-    getUsername() {
-        return this.username;
-    }
+        constructor(username: string) {
+                this.username = username;
+                    }
+                        get getUsername() :string {
+                                return this.username;
+                                    }
+                                    }
+
+class GameList {
+    games: Array<LobbyGame>
+
+     addGame(game: LobbyGame) {
+             this.games.push(game);
+                 }
+
+     removeGame(gameId: string) {
+             for (var i = this.games.length - 1; i >= 0; --i) {
+                         if (this.games[i].getGameID == gameId) {
+                                         this.games.splice(i, 1);
+                                                     }
+                                                             }
+                                                                 }
+
+    get getGames(): Array<LobbyGame> {
+            return this.games;
+                }
+
 }
 
-class GameList{
-    games: Array<lobbyGame>
-    
-}
-
-class lobbyGame{
+class LobbyGame {
     gameID: string;
-    players: Array<Player>;
-    maxPlayers: number;
-    host: Player;
-//Should the constructor create and return the gameID?
-    constructor(gameID: string, host: Player, maxPlayers: number) {
-        this.gameID = gameID;
-        this.host = host;
-        this.maxPlayers = maxPlayers;
-        this.players = new Array<Player>();
-        this.players.push(host);
-    }
+        players: Array<Player>;
+            maxPlayers: number;
+                host: Player;
+                    //Should the constructor create and return the gameID?
+                        constructor(gameID: string, host: Player, maxPlayers: number) {
+                                this.gameID = gameID;
+                                        this.host = host;
+                                                this.maxPlayers = maxPlayers;
+                                                        this.players = new Array<Player>();
+                                                                this.players.push(host);
+                                                                    }
 
-    getNumPlayers() {
-        return this.players.length;
-    }
+    get getGameID(): string {
+            return this.gameID;
+                }
 
-    addPlayer(player:Player) {
-        this.players.push(player);
-    }
+    createGameId(): string {
+            //this.gameID = UUID.randomUUID().toString();
+                    return this.gameID;
+                        }
+
+
+    get getNumPlayers() : number {
+            return this.players.length;
+                }
+
+    addPlayer(player: Player) {
+            //If this would push it over the max, throw an error
+                    if (this.getNumPlayers == this.maxPlayers) {
+                                throw Error("You already have the maximum number of Players");
+                                        }
+                                                this.players.push(player);
+                                                    }
 
     removePlayer(username: string) {
-        
-    }
+            for (var i = this.players.length - 1; i >= 0; --i) {
+                        if (this.players[i].getUsername() == "username") {
+                                        this.players.splice(i, 1);
+                                                    }
+                                                            }
+                                                                }
+                                                                }
+
+class ClientRoot{
+    gameList: GameList;
+        myPlayer: Player;
+            lobby: LobbyGame;
+                session: Session;
+                    //What is this constructor, and all the other classes. Does the client start out empty?
+                        constructor() {
+                            }
+
+
 }
 let greeter = new Greeter("world");
 
 let button = document.createElement('button');
 button.textContent = "Say Hello";
-button.onclick = function() {
+button.onclick = function () {
     alert(greeter.greet());
-}
+    }
 
 document.body.appendChild(button);
