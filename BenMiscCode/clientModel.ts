@@ -1,4 +1,10 @@
+class Observer { }
 
+interface Subject {
+    attach: (o:Observer) => void
+        detach: (o:Observer)=> void
+            notify: (type: string, data: object)=>void
+            }
 
 class Session {
     authToken: string;
@@ -61,6 +67,10 @@ class GameList {
                                                              }
                                                                  }
 
+    replaceGameList(newGame: Array<LobbyGame>) {
+            this.games = newGame;
+            }
+
     get getGames(): Array<LobbyGame> {
             return this.games;
                 }
@@ -112,7 +122,7 @@ class LobbyGame {
                                                                 }
                                                                 }
 
-class ClientRoot{
+class ClientRoot implements Subject{
     gameList: GameList;
         myPlayer: Player;
             lobby: LobbyGame;
@@ -120,6 +130,10 @@ class ClientRoot{
                     //What is this constructor, and all the other classes. Does the client start out empty?
                         constructor() {
                             }
+
+    attach(o:Observer) { }
+        detach(o: Observer) { }
+            notify(type:string, data:object) { }
 
 
 }
