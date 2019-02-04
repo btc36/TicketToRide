@@ -1,4 +1,4 @@
-
+import { ClientCommandObjects } from "./clientCommandObjects";
 
 class ServerProxy {
     host: string;
