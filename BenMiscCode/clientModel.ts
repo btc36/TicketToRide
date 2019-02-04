@@ -115,7 +115,7 @@ class LobbyGame {
 
     removePlayer(username: string) {
             for (var i = this.players.length - 1; i >= 0; --i) {
-                        if (this.players[i].getUsername() == "username") {
+                        if (this.players[i].getUsername == username) {
                                         this.players.splice(i, 1);
                                                     }
                                                             }
