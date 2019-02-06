@@ -26,31 +26,44 @@ public class ServerFacade
         GenericCommand command = null;
         Boolean loginStatus = false;
         String message = "";
-        if(isValidUsername(username) && isValidPassword(password))
+        if(!isValidUsername(username))
         {
             loginStatus = false;
-            message = "username or password empty";
+            message = "username empty";
+        }
+        else if(!isValidPassword(password))
+        {
+            message = "password empty";
         }
         else
         {
-            PlayerModel player = new PlayerModel(username,password);
-            if(!findPlayer(player))
+            PlayerModel player = getPlayer(username);
+            if(player == null)
             {
                 loginStatus = false;
                 message = "Such user does not exist";
             }
-            if(password.equals(player.getPassword()))
-            {
-                loginStatus = true;
-                message = "Success";
-            }
             else
             {
-                loginStatus = false;
-                message = "Failure";
+                if(password.equals(player.getPassword()))
+                {
+                    loginStatus = true;
+                    message = "Success";
+                }
+                else if(!password.equals(player.getPassword()))
+                {
+                    loginStatus = false;
+                    message = "Wrong password";
+                }
+                else
+                {
+                    loginStatus = false;
+                    message = "Failure";
+                }
             }
         }
 
+        System.out.println(message);
         command = new GenericCommand(
           "ClientFacade", "loginStatus",
                 new String[]{_paramTypeBoolean, _paramTypeString},
@@ -65,10 +78,14 @@ public class ServerFacade
         GenericCommand command;
         Boolean registerStatus = false;
         String message = "";
-        if(isValidUsername(username) && isValidPassword(password))
+        if(!isValidUsername(username))
         {
-            registerStatus = false;
-            message = "username or password empty";
+            //loginStatus = false;
+            message = "username empty";
+        }
+        else if(!isValidPassword(password))
+        {
+            message = "password empty";
         }
         else
         {
@@ -86,6 +103,7 @@ public class ServerFacade
             }
         }
 
+        System.out.println(message);
         command = new GenericCommand(
                 "ClientFacade", "registerStatus",
                 new String[]{_paramTypeBoolean, _paramTypeString},
@@ -125,6 +143,7 @@ public class ServerFacade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         List<LobbyGameModel> games = getGameAsList();
 
+        System.out.println(message);
         GenericCommand command = new GenericCommand(
                 "ClientFacade", "createGame",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
@@ -168,6 +187,7 @@ public class ServerFacade
 
         }
 
+        System.out.println(message);
         List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
@@ -275,6 +295,12 @@ public class ServerFacade
             return true;
         else
             return false;
+    }
+    private PlayerModel getPlayer(String username)
+    {
+        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+        PlayerModel player = allPlayers.getPlayerByUsername(username);
+        return player;
     }
     private List<LobbyGameModel> getGameAsList()
     {

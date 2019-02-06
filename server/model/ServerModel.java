@@ -10,7 +10,11 @@ public class ServerModel
 
 
     private static ServerModel _instance;
-    private ServerModel(){}
+    private ServerModel()
+    {
+        allPlayers = new PlayerListModel();
+        allGames = new GameListModel();
+    }
     public static ServerModel getInstance()
     {
         if(_instance == null)
