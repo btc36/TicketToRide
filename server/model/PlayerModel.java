@@ -10,6 +10,11 @@ public class PlayerModel
     {
 
     }
+    public PlayerModel(String username)
+    {
+        this.username = username;
+        this.password = null;
+    }
     public PlayerModel(String username, String password)
     {
         this.username = username;
@@ -47,4 +52,24 @@ public class PlayerModel
     }
 
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o == null) return false;
+        if(o instanceof PlayerModel)
+        {
+            PlayerModel object  = (PlayerModel) o;
+            return (this.username.equals(object.username));
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    @Override
+    public int hashCode()
+    {
+        return this.username.hashCode();
+    }
 }

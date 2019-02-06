@@ -103,4 +103,25 @@ public class LobbyGameModel
     public void setCurrentPlayerNum(int currentPlayerNum) {
         this.currentPlayerNum = currentPlayerNum;
     }
+
+    @Override
+    public int hashCode()
+    {
+        return gameID.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o == null) return false;
+        if(o instanceof PlayerModel)
+        {
+            LobbyGameModel object  = (LobbyGameModel) o;
+            return(this.gameID.equals(object.gameID));
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
