@@ -10,6 +10,7 @@ public class LobbyGameModel
         WAITING, ONGOING, FINISHED;
     }
     private String gameID;
+    private String gamename;
     private PlayerListModel playerList;
     private int maxPlayer;
     private int currentPlayerNum;
@@ -94,6 +95,14 @@ public class LobbyGameModel
         this.state = State.ONGOING;
     }
 
+    public String getGamename() {
+        return gamename;
+    }
+
+    public void setGamename(String gamename) {
+        this.gamename = gamename;
+    }
+
     public int getCurrentPlayerNum()
     {
         currentPlayerNum = playerList.getPlayerList().size();
@@ -102,5 +111,26 @@ public class LobbyGameModel
 
     public void setCurrentPlayerNum(int currentPlayerNum) {
         this.currentPlayerNum = currentPlayerNum;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return gameID.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o == null) return false;
+        if(o instanceof PlayerModel)
+        {
+            LobbyGameModel object  = (LobbyGameModel) o;
+            return(this.gameID.equals(object.gameID));
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -1,7 +1,7 @@
 import { ClientCommandObjects } from "./clientCommandObjects";
 //import { clientCommunicator } from "./clientCommumnicator"
 
-class ServerProxy {
+export class ServerProxy {
     host: string;
     port: string;
     constructor(public hostIn: string, public portIn: string) {

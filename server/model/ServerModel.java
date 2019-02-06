@@ -48,7 +48,11 @@ public class ServerModel
 
     public void registerPlayer(PlayerModel player)
     {
-
+        allPlayers.addPlayer(player);
+    }
+    public void addGame(LobbyGameModel game)
+    {
+        allGames.addGame(game);
     }
 }
 

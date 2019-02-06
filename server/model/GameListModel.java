@@ -1,38 +1,52 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameListModel
 {
-    private List<LobbyGameModel> gameList;
-    private Map<String, LobbyGameModel> IDGameMap;
+    private List<LobbyGameModel> games;
 
     public GameListModel()
     {
-        gameList = new ArrayList<>();
+        games = new ArrayList<>();
     }
 
     public void addGame(LobbyGameModel game)
     {
         assert(game instanceof LobbyGameModel);
-        gameList.add(game);
-        IDGameMap.put(game.getGameID(), game);
+        assert(game != null);
+        games.add(game);
     }
     public void removeGame(LobbyGameModel game)
     {
         assert(game instanceof LobbyGameModel);
-        for(LobbyGameModel g : gameList)
+        assert(game != null);
+        games.remove(game);
+    }
+    public void removeGame(String gameID)
+    {
+        assert(gameID != null);
+        assert(!gameID.isEmpty());
+
+        for(int i = 0; i < games.size(); i++)
         {
-            if(g.equals(game))
-                gameList.remove(g);
+            if(games.get(i).getGameID().equals(gameID))
+                games.remove(i);
         }
-        // no game found
     }
     public LobbyGameModel getGameByID(String gameID)
     {
-        return IDGameMap.getOrDefault(gameID, null);
+        assert(gameID != null);
+        assert(!gameID.isEmpty());
+        for(int i = 0; i < games.size(); i++)
+        {
+            if(games.get(i).getGameID().equals(gameID))
+                return games.get(i);
+        }
+        return null;
     }
-
+    public List<LobbyGameModel> getGameList()
+    {
+        return games;
+    }
 }
