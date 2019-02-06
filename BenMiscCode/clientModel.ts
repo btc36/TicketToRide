@@ -17,11 +17,11 @@ class Session {
     }
 
     get getAuth(): string {
-        return this.authToken
+        return this.authToken;
     }
 
     set setAuth(auth: string) {
-        this.authToken = auth
+        this.authToken = auth;
     }
 
     get getCurrentPage(): string {
@@ -33,7 +33,7 @@ class Session {
     }
 
     get getLoggedInUser(): Player {
-        return this.loggedInUser
+        return this.loggedInUser;
     }
 
     set setLoggedInUser(player: Player) {
@@ -44,22 +44,31 @@ class Session {
 
 class Player {
     username: string;
+    currentGame: number;
     constructor(username: string) {
         this.username = username;
     }
-    get getUsername(): string {
+   get getUsername(): string {
         return this.username;
+    }
+
+    setCurrentGame(gameId: number) {
+        this.currentGame = gameId;
+    }
+
+    getCurrentGame(): number {
+        return this.currentGame;
     }
 }
 
 class GameList {
-    games: Array<LobbyGame>
+    games: Array<LobbyGame>;
 
     addGame(game: LobbyGame) {
         this.games.push(game);
     }
 
-    removeGame(gameId: string) {
+    removeGame(gameId: number) {
         for (var i = this.games.length - 1; i >= 0; --i) {
             if (this.games[i].getGameID == gameId) {
                 this.games.splice(i, 1);
@@ -71,19 +80,19 @@ class GameList {
         this.games = newGame;
     }
 
-    get getGames(): Array<LobbyGame> {
+     getGames(): Array<LobbyGame> {
         return this.games;
     }
 
 }
 
 class LobbyGame {
-    gameID: string;
+    gameID: number;
     players: Array<Player>;
     maxPlayers: number;
     host: Player;
     //Should the constructor create and return the gameID?
-    constructor(gameID: string, host: Player, maxPlayers: number) {
+    constructor(gameID: number, host: Player, maxPlayers: number) {
         this.gameID = gameID;
         this.host = host;
         this.maxPlayers = maxPlayers;
@@ -91,11 +100,11 @@ class LobbyGame {
         this.players.push(host);
     }
 
-    get getGameID(): string {
+    get getGameID(): number {
         return this.gameID;
     }
 
-    createGameId(): string {
+    createGameId(): number {
         //this.gameID = UUID.randomUUID().toString();
         return this.gameID;
     }
@@ -129,11 +138,28 @@ class ClientRoot implements Subject {
     session: Session;
     //What is this constructor, and all the other classes. Does the client start out empty?
     constructor() {
+
     }
 
-    attach(o: Observer) { }
-    detach(o: Observer) { }
+    attach(o: Observer) { }//add an observer 
+    detach(o: Observer) { }//remove an observer
     notify(type: string, data: object) { }
+    transitionPage(pageName: string) {
+        
+    }
+
+    createGame(me: Player, numPlayers: number, gameName: string) {
+
+    }
+
+    getGameList(): Array<LobbyGame> {
+        let games = this.gameList.getGames();
+        return games;
+    }
+
+    joinGame(gameId: number) {
+        this.myPlayer.setCurrentGame(gameId)
+    }
 
 
 }
@@ -142,9 +168,9 @@ let player2 = new Player('jbd34');
 let player3 = new Player('asd12');
 let player4 = new Player('ben12');
 let curSession = new Session('auth', 'page1', player1)
-let game1 = new LobbyGame('id1', player1, 3);
-let game2 = new LobbyGame('id2', player2, 3);
-let game3 = new LobbyGame('id3', player3, 3);
+let game1 = new LobbyGame(1, player1, 3);
+let game2 = new LobbyGame(2, player2, 3);
+let game3 = new LobbyGame(3, player3, 3);
 let gameList = new GameList();
 gameList.addGame(game1);
 gameList.addGame(game2);
