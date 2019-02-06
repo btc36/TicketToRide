@@ -1,4 +1,4 @@
-class ClientCommandObjects {
+export class ClientCommandObjects {
     className: string;
     methodName: string;
     paramTypes: [];

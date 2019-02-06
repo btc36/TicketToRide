@@ -4,53 +4,50 @@ import java.util.*;
 
 public class PlayerListModel
 {
-//    private HashMap<>
-    private Set<PlayerModel> players;
-    private HashMap<PlayerModel, Boolean> usernameMap;
-    //private List<PlayerModel> playerList;
+    private List<PlayerModel> players;
 
     PlayerListModel()
     {
-      //  playerList = new ArrayList<>();
-        usernameMap = new HashMap<>();
-        players = new HashSet<>();
+        players = new ArrayList<>();
     }
 
     public void addPlayer(PlayerModel player)
     {
         assert(player instanceof PlayerModel);
         players.add(player);
-        usernameMap.put(player, true);
-        //playerList.add(player);
     }
     public void removePlayer(PlayerModel player)
     {
         assert(player instanceof PlayerModel);
-        usernameMap.remove(player);
         players.remove(player);
-//        for(int i = 0; i < playerList.size(); i++)
-//        {
-//            if(playerList.get(i).equals(player))
-//            {
-//                playerList.remove(i);
-//            }
-//        }
+    }
+    public void removePlayer(String username)
+    {
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(players.get(i).getUsername().equals(username))
+            {
+                players.remove(i);
+            }
+        }
     }
 
-    public Boolean findPlayer(PlayerModel player)
+    public boolean findPlayer(PlayerModel player)
     {
         return players.contains(player);
-        //return usernameMap.getOrDefault(player, false);
-//        for(int i = 0; i < playerList.size(); i++)
-//        {
-//            if(playerList.get(i).getUsername().equals(player.getUsername()))
-//            {
-//                return true;
-//            }
-//        }
-//        return false;
     }
 
+    public boolean findPlayer(String username)
+    {
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(players.get(i).getUsername().equals(username))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public PlayerModel getPlayerByUsername(String username)
     {
         for(PlayerModel player : players)
@@ -61,12 +58,7 @@ public class PlayerListModel
     }
     public List<PlayerModel> getPlayerList()
     {
-        Set<PlayerModel> set = usernameMap.keySet();
-        List<PlayerModel> playerList = new ArrayList<>();
-        playerList.addAll(set);
-        return playerList;
+        return players;
     }
-
-
 
 }

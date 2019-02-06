@@ -50,7 +50,7 @@ public class ServerModel
     {
         allPlayers.addPlayer(player);
     }
-    public void createGame(LobbyGameModel game)
+    public void addGame(LobbyGameModel game)
     {
         allGames.addGame(game);
     }

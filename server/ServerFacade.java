@@ -97,17 +97,35 @@ public class ServerFacade
     }
     public List<GenericCommand> createGame(String username, String gamename, int maxSize)
     {
-        Boolean status = true;
+        Boolean status = false;
         String message = "";
-        LobbyGameModel game = new LobbyGameModel();
-        ServerModel.getInstance().createGame(game);
-        GenericCommand command;
+
+        if(!isValidUsername(username))
+        {
+            message = "invalid username";
+        }
+        else if(!isValidGame(gamename))
+        {
+            message = "invalid gamename";
+        }
+        else if(maxSize > 5 && maxSize < 2)
+        {
+            message = "invalid maxsize";
+        }
+        else
+        {
+            // allow multiple same gamename
+            LobbyGameModel game = new LobbyGameModel();
+            game.setGamename(gamename);
+            ServerModel.getInstance().addGame(game);
+            status = true;
+            message = "success";
+        }
+
         List<GenericCommand> commandsForClient = new ArrayList<>();
-        List<LobbyGameModel> games = new ArrayList<>();
+        List<LobbyGameModel> games = getGameAsList();
 
-
-
-        command = new GenericCommand(
+        GenericCommand command = new GenericCommand(
                 "ClientFacade", "createGame",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                 new Object[]{status, message, games}
@@ -125,27 +143,37 @@ public class ServerFacade
         {
             message = "Invalid Username";
         }
-        else if(!isValidUsername(gamename))
+        else if(!isValidGame(gamename))
         {
             message = "Invalid Gamename";
         }
         PlayerModel player = new PlayerModel(username);
         if(!findPlayer(player))
         {
-
+            message = "Invalid Player";
         }
-        else {
+        else
+        {
             LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
-            game.addPlayer(player);
-            status = true;
+
+            if(game.getCurrentPlayerNum() > 4)
+            {
+                message = "game is full";
+            }
+            else
+            {
+                game.addPlayer(player);
+                status = true;
+            }
+
         }
 
-        List<LobbyGameModel> games = ServerModel.getInstance().getAllGames().getGameList();
+        List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
                 "ClientFacade", "joinGame",
-                new String[]{_paramTypeBoolean, _paramTypeList},
-                new Object[]{status, games}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
+                new Object[]{status, message, games}
         );
         commandsForClient.add(command);
         return commandsForClient;
@@ -156,9 +184,36 @@ public class ServerFacade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         Boolean status = false;
         String message = "";
-        LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
-        game.startGame();
-        List<LobbyGameModel> games = ServerModel.getInstance().getAllGames().getGameList();
+
+        if(!isValidGame(gameID))
+        {
+            status = false;
+            message = "invalid request info";
+        }
+        else
+        {
+            LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
+            if(game != null)
+            {
+                if(game.getCurrentPlayerNum() < 2)
+                {
+                    message = "not enough players";
+                }
+                else
+                {
+                    game.startGame();
+                    status = true;
+                    message = "success";
+                }
+            }
+            else
+            {
+                status = false;
+                message = "game does not exist";
+            }
+        }
+
+        List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
                 "ClientFacade", "startGame",
@@ -171,14 +226,13 @@ public class ServerFacade
     public List<GenericCommand> getGameList()
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
-        Boolean status = false;
-        String message = "";
-        List<LobbyGameModel> games = ServerModel.getInstance().getAllGames().getGameList();
+        Boolean status = true;
+        List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
                 "ClientFacade", "registerStatus",
                 new String[]{_paramTypeBoolean, _paramTypeList},
-                new Object[]{status, games}
+                new Object[]{true, games}
         );
         commandsForClient.add(command);
         return commandsForClient;
@@ -208,6 +262,12 @@ public class ServerFacade
         }
         return true;
     }
+    private boolean isValidGame(String gameID)
+    {
+        if(gameID == null) return false;
+        if(gameID.isEmpty()) return false;
+        return true;
+    }
     private boolean findPlayer(PlayerModel player)
     {
         PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
@@ -215,5 +275,9 @@ public class ServerFacade
             return true;
         else
             return false;
+    }
+    private List<LobbyGameModel> getGameAsList()
+    {
+        return ServerModel.getInstance().getAllGames().getGameList();
     }
 }

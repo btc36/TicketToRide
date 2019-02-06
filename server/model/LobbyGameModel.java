@@ -10,6 +10,7 @@ public class LobbyGameModel
         WAITING, ONGOING, FINISHED;
     }
     private String gameID;
+    private String gamename;
     private PlayerListModel playerList;
     private int maxPlayer;
     private int currentPlayerNum;
@@ -92,6 +93,14 @@ public class LobbyGameModel
     public void startGame()
     {
         this.state = State.ONGOING;
+    }
+
+    public String getGamename() {
+        return gamename;
+    }
+
+    public void setGamename(String gamename) {
+        this.gamename = gamename;
     }
 
     public int getCurrentPlayerNum()
