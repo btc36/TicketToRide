@@ -31,9 +31,9 @@ class InternalClientFacade {
     proxy: ServerProxy;
 
 
-    constructor() {
-        this.root = new ClientRoot();
-        this.proxy = new ServerProxy("hostIn","portIn");
+    constructor(root:ClientRoot,proxy:ServerProxy) {
+        this.root = root;
+        this.proxy = proxy;
     }
 
     login(username: string, password: string) {
@@ -44,35 +44,51 @@ class InternalClientFacade {
         this.proxy.register(username, password, "YES");
     }
 
-    transitionPage(pageName: string) {
-        this.root.transitionPage(pageName);
-    }
-
     createGame(me: Player, numPlayers: number, gameName: string) {
-        this.root.createGame(me, numPlayers, gameName);
+        this.proxy.createGame(me, numPlayers, gameName);
     }
-
-    getGameList():Array<LobbyGame> {
-        let gameList = this.root.getGameList();
-        return gameList; 
+    //Move to external Facade?
+    getGameList(){
+        this.proxy.getGameList();
     }
-
-    joinGame(gameId: number) {
-        this.root.joinGame(gameId);
-    }
+    //Move to external Facade?
+    joinGame(player:Player,gameId: number) {
+        this.proxy.joinGame(player, gameId);
+   }
 
 }
 
 class ExternalClientFacade {
-    loginResults(wasSuccessful: boolean, errorMessage: string) {
+    root: ClientRoot;
 
+    constructor(root: ClientRoot) {
+        this.root = root;
+    }
+    loginResults(wasSuccessful: boolean, errorMessage: string) {
+        this.root.loginResults(wasSuccessful, errorMessage);
     }
 
     registerResults(wasSuccessful: boolean, errorMessage: string) {
-
+        this.root.registerResults(wasSuccessful, errorMessage);
     }
 
     updateGameList(games: Array<LobbyGame>) {
-        
+        this.root.updateGameList(games);
     }
+
+    //Move to external Facade?
+    transitionPage(pageName: string) {
+        this.root.transitionPage(pageName);
+    }
+
+    //Move to external Facade?
+    getGameList(): Array<LobbyGame> {
+        let gameList = this.root.getGameList();
+        return gameList;
+    }
+    //Move to external Facade?
+    joinGame(gameId: number) {
+        this.root.joinGame(gameId);
+    }
+
 }

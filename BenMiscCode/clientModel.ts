@@ -161,6 +161,18 @@ class ClientRoot implements Subject {
         this.myPlayer.setCurrentGame(gameId)
     }
 
+    updateGameList(gameList: Array<LobbyGame>) {
+
+    }
+
+    loginResults(wasSuccessful: boolean, errorMessage: string) {
+
+    }
+
+    registerResults(wasSuccessful: boolean, errorMessage: string) {
+
+    }
+
 
 }
 let player1 = new Player('btc36');
