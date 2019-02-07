@@ -2,6 +2,7 @@ public class ServiceTester
 {
     public static void main(String[] args)
     {
+        String divier = "----------------------------------------------";
         ServerFacade facade = new ServerFacade();
         /*no user*/
         facade.login("lol", "lol");
@@ -17,6 +18,29 @@ public class ServiceTester
         facade.login("lol", "brennah");
         /*valid login*/
         facade.login("lol", "lol");
+
+        facade.createGame("ss","game1",4);
+        facade.createGame("lol","game1",4);
+
+        // ---> here I am guessing that one user cannot create two games?
+        facade.createGame("lol","game2",4);
+        facade.getGameList();
+        System.out.println(divier);
+        /*Invalid startGame*/
+        facade.startGame("game1");
+
+        facade.joinGame("lol", "game1", "game1");
+
+        /*Invalid joinGame*/
+        facade.joinGame("lol", "game1", "Ross");
+        facade.joinGame("Phoebe", "game2", "game2");
+        /*Valid register*/
+        facade.register("Rachel", "Green");
+        /*Valid join*/
+        facade.joinGame("Rachel", "game1", "game1");
+        /*Valid success*/
+        facade.startGame("game1");
+
 //
     }
 }

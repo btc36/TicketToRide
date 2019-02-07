@@ -18,6 +18,7 @@ public class ServerFacade
     private final String _paramTypeCharacter = "java.lang.Character";
     private final String _paramTypeList = "java.util.List";
     private final String _paramTypeMap = "java.util.Map";
+    private final String _paramTypeGame = "";
 
 
     public List<GenericCommand> login(String username, String password)
@@ -26,23 +27,14 @@ public class ServerFacade
         GenericCommand command = null;
         Boolean loginStatus = false;
         String message = "";
-        if(!isValidUsername(username))
-        {
-            loginStatus = false;
-            message = "username empty";
-        }
-        else if(!isValidPassword(password))
-        {
-            message = "password empty";
-        }
+        if(!isInputValid(username))
+            {message = "username empty";}
+        else if(!isInputValid(password))
+            {message = "password empty";}
         else
         {
             PlayerModel player = getPlayer(username);
-            if(player == null)
-            {
-                loginStatus = false;
-                message = "Such user does not exist";
-            }
+            if(player == null) {message = "Such user does not exist";}
             else
             {
                 if(password.equals(player.getPassword()))
@@ -52,18 +44,16 @@ public class ServerFacade
                 }
                 else if(!password.equals(player.getPassword()))
                 {
-                    loginStatus = false;
                     message = "Wrong password";
                 }
                 else
                 {
-                    loginStatus = false;
                     message = "Failure";
                 }
             }
         }
-
         System.out.println(message);
+
         command = new GenericCommand(
           "ClientFacade", "loginStatus",
                 new String[]{_paramTypeBoolean, _paramTypeString},
@@ -78,15 +68,8 @@ public class ServerFacade
         GenericCommand command;
         Boolean registerStatus = false;
         String message = "";
-        if(!isValidUsername(username))
-        {
-            //loginStatus = false;
-            message = "username empty";
-        }
-        else if(!isValidPassword(password))
-        {
-            message = "password empty";
-        }
+        if(!isInputValid(username)) {message = "username empty";}
+        else if(!isInputValid(password)) {message = "password empty";}
         else
         {
             PlayerModel player = new PlayerModel(username, password);
@@ -118,31 +101,29 @@ public class ServerFacade
         Boolean status = false;
         String message = "";
 
-        if(!isValidUsername(username))
-        {
-            message = "invalid username";
-        }
-        else if(!isValidGame(gamename))
-        {
-            message = "invalid gamename";
-        }
-        else if(maxSize > 5 && maxSize < 2)
-        {
-            message = "invalid maxsize";
-        }
+        if(!isInputValid(username)) { message = "invalid username"; }
+        else if(!isInputValid(gamename)) { message = "invalid gamename"; }
+        else if(maxSize > 5 && maxSize < 2) { message = "invalid maxsize"; }
         else
         {
             // allow multiple same gamename
-            LobbyGameModel game = new LobbyGameModel();
-            game.setGamename(gamename);
-            ServerModel.getInstance().addGame(game);
-            status = true;
-            message = "success";
+            PlayerModel player = getPlayer(username);
+            if(player != null)
+            {
+                LobbyGameModel game = new LobbyGameModel(player,maxSize,gamename);
+                game.setGamename(gamename);
+                ServerModel.getInstance().addGame(game);
+                status = true;
+                message = "success";
+            }
+            else
+            {
+                message = "user does not exist";
+            }
         }
 
         List<GenericCommand> commandsForClient = new ArrayList<>();
         List<LobbyGameModel> games = getGameAsList();
-
         System.out.println(message);
         GenericCommand command = new GenericCommand(
                 "ClientFacade", "createGame",
@@ -155,36 +136,35 @@ public class ServerFacade
     public List<GenericCommand> joinGame(String username, String gamename, String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
+        LobbyGameModel game = null;
         Boolean status = false;
         String message = "";
 
-        if(!isValidUsername(username))
-        {
-            message = "Invalid Username";
-        }
-        else if(!isValidGame(gamename))
-        {
-            message = "Invalid Gamename";
-        }
-        PlayerModel player = new PlayerModel(username);
-        if(!findPlayer(player))
-        {
-            message = "Invalid Player";
-        }
+        if(!isInputValid(username)) { message = "Invalid Username"; }
+        else if(!isInputValid(gamename)) { message = "Invalid Gamename"; }
+        PlayerModel player = getPlayer(username);
+        if(player == null) { message = "Invalid Player"; }
         else
         {
-            LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
-
-            if(game.getCurrentPlayerNum() > 4)
+            game = ServerModel.getInstance().getGameByID(gameID);
+            if(game == null)
+            {
+                message = "invalid gameID";
+            }
+            else if(game.getCurrentPlayerNum() > 4)
             {
                 message = "game is full";
+            }
+            else if(game.getPlayerList().findPlayer(player))
+            {
+                message = "player already joined";
             }
             else
             {
                 game.addPlayer(player);
                 status = true;
+                message = "join successful";
             }
-
         }
 
         System.out.println(message);
@@ -193,7 +173,7 @@ public class ServerFacade
         command = new GenericCommand(
                 "ClientFacade", "joinGame",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
-                new Object[]{status, message, games}
+                new Object[]{status, message, game}
         );
         commandsForClient.add(command);
         return commandsForClient;
@@ -205,7 +185,7 @@ public class ServerFacade
         Boolean status = false;
         String message = "";
 
-        if(!isValidGame(gameID))
+        if(!isInputValid(gameID))
         {
             status = false;
             message = "invalid request info";
@@ -223,7 +203,7 @@ public class ServerFacade
                 {
                     game.startGame();
                     status = true;
-                    message = "success";
+                    message = "start success";
                 }
             }
             else
@@ -233,6 +213,7 @@ public class ServerFacade
             }
         }
 
+        System.out.println(message);
         List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
@@ -258,34 +239,11 @@ public class ServerFacade
         return commandsForClient;
     }
 
-    private boolean isValidUsername(String username)
+    private boolean isInputValid(String input)
     {
-        if(username == null)
-        {
-            return false;
-        }
-        if(username.isEmpty())
-        {
-            return false;
-        }
-        return true;
-    }
-    private boolean isValidPassword(String password)
-    {
-        if(password == null)
-        {
-            return false;
-        }
-        if(password.isEmpty())
-        {
-            return false;
-        }
-        return true;
-    }
-    private boolean isValidGame(String gameID)
-    {
-        if(gameID == null) return false;
-        if(gameID.isEmpty()) return false;
+        if(input == null) return false;
+        if(input.isEmpty()) return false;
+
         return true;
     }
     private boolean findPlayer(PlayerModel player)
@@ -301,6 +259,15 @@ public class ServerFacade
         PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
         PlayerModel player = allPlayers.getPlayerByUsername(username);
         return player;
+    }
+    private boolean playerExists(String username)
+    {
+        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+        PlayerModel player = allPlayers.getPlayerByUsername(username);
+        if(player != null)
+            return true;
+        else
+            return false;
     }
     private List<LobbyGameModel> getGameAsList()
     {

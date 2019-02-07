@@ -21,14 +21,17 @@ public class LobbyGameModel
     {
 
     }
-    public LobbyGameModel(PlayerModel host)
+    public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
-        gameID = UUID.randomUUID().toString();
         playerList = new PlayerListModel();
-        maxPlayer = 5;
-        currentPlayerNum = 0;
-        state = State.WAITING;
+        gameID = gamename;
+        //gameID = UUID.randomUUID().toString().substring(0,4);
+        currentPlayerNum = 1;
+        this.maxPlayer = maxPlayer;
         this.host = host;
+        this.gamename = gamename;
+        playerList.addPlayer(this.host);
+        state = State.WAITING;
     }
     public void addPlayer(PlayerModel player)
     {
