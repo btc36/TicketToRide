@@ -6,7 +6,7 @@ public class SerializerTester {
 
     //makes a dummy object, turns it into json, and then turns it BACK into object.
     static public void serializerTest() {
-        GenericCommand testCommandObj = new GenericCommand("classyClass", "methodyMethod", new Class<?>[]{ String.class }, new Object[] { "woooooo" });
+        GenericCommand testCommandObj = new GenericCommand("classyClass", "methodyMethod", new String[] {"java.lang.String"}, new Object[] { "woooooo" });
         ArrayList<GenericCommand> testListOfCommands = new ArrayList();
         ArrayList<GenericCommand> jsonTurnedBackIntoObject = new ArrayList<GenericCommand>();
         testListOfCommands.add(testCommandObj);

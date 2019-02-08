@@ -2,9 +2,6 @@ package Shared;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import sun.net.www.content.text.Generic;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +25,15 @@ public class GenericCommand implements Shared.CommandInterface,java.io.Serializa
         if(methodName == null)
             throw new IllegalArgumentException("Parameter methodName was not informed.");
         if(paramTypes == null)
-            throw new IllegalArgumentException("Parameter paramTypes was not informed.");
+            System.out.println("Parameter paramTypes was not informed.");
         if(paramValues == null)
-            throw new IllegalArgumentException("Parameter paramValues was not informed.");
+            System.out.println("Parameter paramValues was not informed.");
         _className = className;
         _methodName = methodName;
         try {
-            Class<?>[] classes = new Class<?>[paramTypes.length];
+            _paramTypes = new Class<?>[paramTypes.length];
             for(int i = 0; i < paramTypes.length; i++) {
-                classes[i] = Class.forName(paramTypes[i]);
+                _paramTypes[i] = Class.forName(paramTypes[i]);
             }
         }
         catch (Exception e) {
