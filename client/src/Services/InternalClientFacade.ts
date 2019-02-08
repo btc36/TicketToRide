@@ -1,7 +1,7 @@
+import { ServerProxy } from "../serverProxy";
 
-class InternalClientFacade {
+export default class InternalClientFacade {
     proxy: ServerProxy;
-
 
     constructor(proxy:ServerProxy) {
         this.proxy = proxy;
