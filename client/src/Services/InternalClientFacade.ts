@@ -27,4 +27,8 @@ export default class InternalClientFacade {
         this.proxy.joinGame(player, gameId);
    }
 
+    startGame(gameId:string){
+    	this.proxy.startGame(gameId);
+    }
+
 }
