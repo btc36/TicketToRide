@@ -42,13 +42,8 @@ public class ServerFacade
                     loginStatus = true;
                     message = "Success";
                 }
-                else if(!password.equals(player.getPassword()))
-                {
-                    message = "Wrong password";
-                }
-                else
-                {
-                    message = "Failure";
+                else if(!password.equals(player.getPassword())) { message = "Wrong password"; }
+                else { message = "Failure";
                 }
             }
         }

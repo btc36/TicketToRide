@@ -21,8 +21,11 @@ public class ServiceTester
 
         facade.createGame("ss","game1",4);
         facade.createGame("lol","game1",4);
-
+        System.out.println("Null and empty game");
+        facade.createGame("Rachel",null,4);
+        facade.createGame("Rachel","",4);
         // ---> here I am guessing that one user cannot create two games?
+        // Agreeing on not worrying about this due to user won't leave the game
         facade.createGame("lol","game2",4);
         facade.getGameList();
         System.out.println(divier);

@@ -4,7 +4,7 @@ class LobbyGame {
     maxPlayers: number;
     host: Player;
     //Should the constructor create and return the gameID?
-    constructor(gameID: number, host: Player, maxPlayers: number) {
+    constructor(gameID: number, host: Player, maxPlayers: number = 5) {
         this.gameID = gameID;
         this.host = host;
         this.maxPlayers = maxPlayers;
@@ -15,11 +15,6 @@ class LobbyGame {
     get getGameID(): number {
         return this.gameID;
     }
-
-    /*createGameId(): number {
-        //this.gameID = UUID.randomUUID().toString();
-        return this.gameID;
-    }*/
 
 
     get getNumPlayers(): number {
