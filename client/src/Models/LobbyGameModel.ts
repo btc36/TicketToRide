@@ -1,3 +1,4 @@
+import {Player} from "./PlayerModel"
 export class LobbyGame {
     gameID: number;
     players: Array<Player>;

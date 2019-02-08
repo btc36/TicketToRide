@@ -1,22 +1,30 @@
+import {GameList} from "./GameListModel"
+import {Player} from "./PlayerModel"
+import {LobbyGame} from "./LobbyGameModel"
+import {Session} from "./SessionModel"
+import {IObserver} from "../ViewModels/IObserver"
+
+
 export class ClientRoot implements Subject {
     gameList: GameList;
     myPlayer: Player;
     lobby: LobbyGame;
     session: Session;
-    observers: Array<Observer>;
+    observers: Array<IObserver>;
     //What is this constructor, and all the other classes. Does the client start out empty?
     constructor() {
         this.gameList = new GameList();
         this.myPlayer = null;
         this.lobby = null;
         this.session = new Session();
+        this.observers = new Array<IObserver>();
     }
     //add an observer 
-    attach(o: Observer) {
+    attach(o: IObserver) {
         this.observers.push(o); 
     }
     //remove an observer
-    detach(o: Observer) {
+    detach(o: IObserver) {
 
     }
 
