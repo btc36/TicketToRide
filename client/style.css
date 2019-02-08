@@ -1,0 +1,17 @@
+.view {
+  display: flex;
+  width: 100%;
+}
+.half-partition {
+  flex: 1;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+}
+tr.active {
+  background-color: lightgray;
+}
