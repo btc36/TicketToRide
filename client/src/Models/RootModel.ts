@@ -1,4 +1,4 @@
-class ClientRoot implements Subject {
+export class ClientRoot implements Subject {
     gameList: GameList;
     myPlayer: Player;
     lobby: LobbyGame;

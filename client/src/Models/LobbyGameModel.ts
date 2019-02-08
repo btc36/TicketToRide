@@ -1,4 +1,4 @@
-class LobbyGame {
+export class LobbyGame {
     gameID: number;
     players: Array<Player>;
     maxPlayers: number;

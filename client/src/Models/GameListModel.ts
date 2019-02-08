@@ -1,4 +1,5 @@
-class GameList {
+import {LobbyGame}
+export class GameList {
     games: Array<LobbyGame>;
 
     constructor() {
