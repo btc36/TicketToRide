@@ -1,0 +1,63 @@
+class ClientRoot implements Subject {
+    gameList: GameList;
+    myPlayer: Player;
+    lobby: LobbyGame;
+    session: Session;
+    observers: Array<Observer>;
+    //What is this constructor, and all the other classes. Does the client start out empty?
+    constructor() {
+        this.gameList = new GameList();
+        this.myPlayer = null;
+        this.lobby = null;
+        this.session = new Session();
+    }
+    //add an observer 
+    attach(o: Observer) {
+        this.observers.push(o);
+        //remove an observer
+    }
+    detach(o: Observer) {
+
+    }
+    notify(type: string, data: object) { }
+    transitionPage(pageName: string) {
+        this.session.setCurrentPage(pageName);
+    }
+
+    /*createGame(me: Player, numPlayers: number, gameName: string) {
+
+    }*/
+
+    getGameList(): Array<LobbyGame> {
+        let games = this.gameList.getGames();
+        return games;
+    }
+
+    joinGame(gameId: number) {
+        this.myPlayer.setCurrentGame(gameId)
+    }
+
+    updateGameList(gameList: Array<LobbyGame>) {
+        this.gameList.replaceGameList(gameList);
+    }
+
+    loginResults(wasSuccessful: boolean, errorMessage: string) {
+        if (wasSuccessful) {
+            this.session.setCurrentPage("**PAGE AFTER LOGIN/REGISTER**");
+            this.session.setLoggedInUser(this.myPlayer);
+        } else {
+            //Display Error MEssage
+        }
+    }
+
+    registerResults(wasSuccessful: boolean, errorMessage: string) {
+        if (wasSuccessful) {
+            this.session.setCurrentPage("**PAGE AFTER LOGIN/REGISTER**");
+            this.session.setLoggedInUser(this.myPlayer);
+        } else {
+            //Display Error Message
+        }
+    }
+
+
+}
