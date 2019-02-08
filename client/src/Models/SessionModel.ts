@@ -1,3 +1,5 @@
+import {Player} from "./PlayerModel"
+
 export class Session {
    // authToken: string;
     currentPage: string;

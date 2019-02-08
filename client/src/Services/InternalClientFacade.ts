@@ -15,7 +15,7 @@ export default class InternalClientFacade {
         this.proxy.register(username, password, "YES");
     }
 
-    createGame(me: Player, numPlayers: number, gameName: string) {
+    createGame(numPlayers: number, gameName: string) {
         this.proxy.createGame(me, numPlayers, gameName);
     }
 
@@ -23,7 +23,7 @@ export default class InternalClientFacade {
         this.proxy.getGameList();
     }
 
-    joinGame(player:Player,gameId: number) {
+    joinGame(gameId: number) {
         this.proxy.joinGame(player, gameId);
    }
 

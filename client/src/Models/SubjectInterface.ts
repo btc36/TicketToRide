@@ -1,5 +1,6 @@
+import {IObserver} from "../ViewModels/IObserver"
 export interface Subject {
-    attach: (o: Observer) => void
-    detach: (o: Observer) => void
+    attach: (o: IObserver) => void
+    detach: (o: IObserver) => void
     notify: (type: string, data: object) => void
 }

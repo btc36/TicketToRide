@@ -17,11 +17,13 @@ export default class GameListViewModel extends React.Component<ViewModelProps, S
   createGameButtonPressed = (e: any) => {
     e.preventDefault();
     alert(this.state.createGameName + "\n" + this.state.createGameNumPlayers);
+    this.props.main.services.createGame(this.state.createGameNumPlayers, this.state.createGameName);
   }
 
   joinGameButtonPressed = (e: any) => {
     e.preventDefault();
-    alert("join game: " + this.state.gameList[this.state.selectedGame].id);
+    const gameId = this.state.gameList[this.state.selectedGame].id;
+    this.props.main.services.joinGame(gameId);
   }
 
   tableRowPressed = (index: number) => {
