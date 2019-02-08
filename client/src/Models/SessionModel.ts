@@ -1,4 +1,6 @@
-class Session {
+import {Player} from "./PlayerModel"
+
+export class Session {
    // authToken: string;
     currentPage: string;
     loggedInUser: Player;

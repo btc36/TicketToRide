@@ -20,26 +20,43 @@ public class ServiceTester
         facade.login("lol", "lol");
 
         facade.createGame("ss","game1",4);
-        facade.createGame("lol","game1",4);
 
+        /*Game SIZE*/
+        System.out.println("*******GAME SIZE INVALID******");
+        facade.createGame("lol","game1",1);
+        facade.createGame("lol","game1",6);
+
+        facade.createGame("lol","game1",4);
+        System.out.println("*******Null and empty game******");
+        facade.createGame("Rachel",null,4);
+        facade.createGame("Rachel","",4);
         // ---> here I am guessing that one user cannot create two games?
+        // Agreeing on not worrying about this due to user won't leave the game
+        System.out.println("*******same user 2 games******");
         facade.createGame("lol","game2",4);
         facade.getGameList();
         System.out.println(divier);
         /*Invalid startGame*/
         facade.startGame("game1");
-
-        facade.joinGame("lol", "game1", "game1");
-
         /*Invalid joinGame*/
+        facade.joinGame("lol", "game1", "game1");
         facade.joinGame("lol", "game1", "Ross");
+        System.out.println("*******same user 2 games******");
+        facade.joinGame("lol", "game2", "game2");
         facade.joinGame("Phoebe", "game2", "game2");
         /*Valid register*/
         facade.register("Rachel", "Green");
-        /*Valid join*/
+        facade.createGame("Rachel","game2",4);
+        facade.joinGame("lol", "game2", "game2");
+        /*Invalid join*/
         facade.joinGame("Rachel", "game1", "game1");
-        /*Valid success*/
+        /*Invalid success*/
         facade.startGame("game1");
+        facade.register("Joey", "Trib");
+        facade.login("Joey", "Trib");
+        facade.joinGame("Joey", "game1", "game1");
+        facade.startGame("game1");
+
 
 //
     }

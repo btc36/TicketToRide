@@ -1,4 +1,5 @@
-class GameList {
+import {LobbyGame} from "./LobbyGameModel"
+export class GameList {
     games: Array<LobbyGame>;
 
     constructor() {
@@ -17,8 +18,8 @@ class GameList {
         }
     }
 
-    replaceGameList(newGame: Array<LobbyGame>) {
-        this.games = newGame;
+    replaceGameList(newGameList: Array<LobbyGame>) {
+        this.games = newGameList;
     }
 
      getGames(): Array<LobbyGame> {
