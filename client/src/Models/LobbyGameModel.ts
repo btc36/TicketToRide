@@ -4,7 +4,8 @@ export class LobbyGame {
     players: Array<Player>;
     maxPlayers: number;
     host: Player;
-    //Should the constructor create and return the gameID?
+    name: string;
+
     constructor(gameID: number, host: Player, maxPlayers: number = 5) {
         this.gameID = gameID;
         this.host = host;
@@ -13,12 +14,19 @@ export class LobbyGame {
         this.players.push(host);
     }
 
-    get getGameID(): number {
+    getGameID(): number {
         return this.gameID;
     }
 
+    getGameName(): string {
+        return this.gameName;
+    }
 
-    get getNumPlayers(): number {
+    getMaxPlayers(): number {
+        return this.maxPlayers;
+    }
+
+    getNumPlayers(): number {
         return this.players.length;
     }
 

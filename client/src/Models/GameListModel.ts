@@ -22,7 +22,7 @@ export class GameList {
         this.games = newGameList;
     }
 
-     getGames(): Array<LobbyGame> {
+    getGames(): Array<LobbyGame> {
         return this.games;
     }
 
