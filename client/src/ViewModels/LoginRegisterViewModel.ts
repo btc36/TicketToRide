@@ -16,12 +16,12 @@ export default class LoginRegisterViewModel extends React.Component<ViewModelPro
 
   onLoginButtonPressed = (e: any) => {
     e.preventDefault();
-    alert(this.state.loginUserName + "\n" + this.state.loginPassword);
+    this.props.main.services.login(this.state.loginUsername, this.state.loginPassword);
   }
 
   onRegisterButtonPressed = (e: any) => {
     e.preventDefault();
-    alert(this.state.registerUserName + "\n" + this.state.registerPassword + "\n" + this.state.registerConfirmPassword);
+    this.props.main.services.register(this.state.loginUsername, this.state.loginPassword);
   }
 
   onLoginUserNameChange = (e: any) => {
