@@ -1,4 +1,4 @@
-class ExternalClientFacade {
+export class ExternalClientFacade {
     root: ClientRoot;
 
     constructor(root: ClientRoot) {
@@ -27,6 +27,9 @@ class ExternalClientFacade {
 
     joinGame(gameId: number) {
         this.root.joinGame(gameId);
+    }
+
+    startGame(gameId:number){
     }
 
 }
