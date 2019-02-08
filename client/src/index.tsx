@@ -30,7 +30,10 @@ class MainComponent extends React.Component<any, any> {
   }
 }
 
+const serverProxy = new ServerProxy();
+const internalClientFacade = new InternalClientFacade(serverProxy);
+
 ReactDOM.render(
-    <MainComponent />,
+    <MainComponent services={internalClientFacade}/>,
     document.getElementById("example")
 );
