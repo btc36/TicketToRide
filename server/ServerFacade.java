@@ -18,7 +18,7 @@ public class ServerFacade
     private final String _paramTypeCharacter = "java.lang.Character";
     private final String _paramTypeList = "java.util.List";
     private final String _paramTypeMap = "java.util.Map";
-    private final String _paramTypeGame = "";
+    private final String _paramTypeGame = "LobbyGameModel";
 
 
     public List<GenericCommand> login(String username, String password)
@@ -43,8 +43,7 @@ public class ServerFacade
                     message = "Success";
                 }
                 else if(!password.equals(player.getPassword())) { message = "Wrong password"; }
-                else { message = "Failure";
-                }
+                else { message = "Failure"; }
             }
         }
         System.out.println(message);
@@ -111,10 +110,7 @@ public class ServerFacade
                 status = true;
                 message = "success";
             }
-            else
-            {
-                message = "user does not exist";
-            }
+            else { message = "user does not exist"; }
         }
 
         List<GenericCommand> commandsForClient = new ArrayList<>();
