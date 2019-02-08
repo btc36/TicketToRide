@@ -1,4 +1,4 @@
-class Session {
+export class Session {
    // authToken: string;
     currentPage: string;
     loggedInUser: Player;
