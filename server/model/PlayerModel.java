@@ -4,6 +4,7 @@ public class PlayerModel
 {
     private String username;
     private String password;
+    private String gameID;
 
     public PlayerModel()
     {
@@ -31,6 +32,8 @@ public class PlayerModel
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getGameID() { return gameID; }
+    public void setGameID(String gameID) { this.gameID = gameID; }
 
     @Override
     public boolean equals(Object o)

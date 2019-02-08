@@ -97,18 +97,27 @@ public class ServerFacade
 
         if(!isInputValid(username)) { message = "invalid username"; }
         else if(!isInputValid(gamename)) { message = "invalid gamename"; }
-        else if(maxSize > 5 && maxSize < 2) { message = "invalid maxsize"; }
+        else if(maxSize > 5 || maxSize < 2) { message = "invalid maxsize"; }
         else
         {
             // allow multiple same gamename
             PlayerModel player = getPlayer(username);
             if(player != null)
             {
-                LobbyGameModel game = new LobbyGameModel(player,maxSize,gamename);
-                game.setGamename(gamename);
-                ServerModel.getInstance().addGame(game);
-                status = true;
-                message = "success";
+                if(player.getGameID() == null)
+                {
+                    LobbyGameModel game = new LobbyGameModel(player,maxSize,gamename);
+                    game.setGamename(gamename);
+                    player.setGameID(game.getGameID());
+                    ServerModel.getInstance().addGame(game);
+                    status = true;
+                    message = "success";
+                }
+                else
+                {
+                    message = "already part of another game";
+                }
+
             }
             else { message = "user does not exist"; }
         }
@@ -140,9 +149,22 @@ public class ServerFacade
             game = ServerModel.getInstance().getGameByID(gameID);
             if(game == null) { message = "invalid gameID"; }
             else if(game.getCurrentPlayerNum() > 4) { message = "game is full"; }
-            else if(game.getPlayerList().findPlayer(player)) { message = "player already joined"; }
+            //else if(game.getPlayerList().findPlayer(player)) { }
+            else if(player.getGameID() != null)
+            {
+                if(game.getPlayerList().findPlayer(player))
+                {
+                    message = "player already joined this game";
+                }
+                else
+                {
+                    message = "player is already part of another game";
+                }
+
+            }
             else
             {
+                player.setGameID(gameID);
                 game.addPlayer(player);
                 status = true;
                 message = "join successful";
