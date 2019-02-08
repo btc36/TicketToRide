@@ -1,10 +1,9 @@
+
 class InternalClientFacade {
-    root: ClientRoot;
     proxy: ServerProxy;
 
 
-    constructor(root:ClientRoot,proxy:ServerProxy) {
-        this.root = root;
+    constructor(proxy:ServerProxy) {
         this.proxy = proxy;
     }
 
