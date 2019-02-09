@@ -2,9 +2,11 @@ import { ServerProxy } from "../serverProxy";
 
 export default class InternalClientFacade {
     proxy: ServerProxy;
+    root: RootModel;
 
-    constructor(proxy:ServerProxy) {
+    constructor(proxy:ServerProxy,root:RootModel) {
         this.proxy = proxy;
+        this.root = root;
     }
 
     login(username: string, password: string) {
@@ -16,6 +18,7 @@ export default class InternalClientFacade {
     }
 
     createGame(numPlayers: number, gameName: string) {
+    	me = this.root.getCurrentUser();
         this.proxy.createGame(me, numPlayers, gameName);
     }
 
