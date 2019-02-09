@@ -5,6 +5,8 @@ import LoginRegisterViewModel from './ViewModels/LoginRegisterViewModel';
 import GameListViewModel from './ViewModels/GameListViewModel';
 import GameLobbyViewModel from './ViewModels/GameLobbyViewModel';
 
+import InternalClientFacade from './Services/InternalClientFacade';
+
 export const initialState = {
   "page": "loginRegister"
 };
@@ -21,11 +23,11 @@ class MainComponent extends React.Component<any, any> {
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
-      return <LoginRegisterViewModel main={this} />;
+      return <LoginRegisterViewModel main={this} services={this.props.services} />;
     } else if (this.state.page == "gameList") {
-      return <GameListViewModel main={this} />;
+      return <GameListViewModel main={this} services={this.props.services} />;
     } else if (this.state.page == "gameLobby") {
-      return <GameLobbyViewModel main={this} />;
+      return <GameLobbyViewModel main={this} services={this.props.services} />;
     }
   }
 }

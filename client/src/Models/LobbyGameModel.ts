@@ -1,12 +1,12 @@
 import {Player} from "./PlayerModel"
 export class LobbyGame {
-    gameID: number;
+    gameID: string;
     players: Array<Player>;
     maxPlayers: number;
     host: Player;
     name: string;
 
-    constructor(gameID: number, host: Player, maxPlayers: number = 5) {
+    constructor(gameID: string, host: Player, name: string, maxPlayers: number = 5) {
         this.gameID = gameID;
         this.host = host;
         this.maxPlayers = maxPlayers;
@@ -14,12 +14,12 @@ export class LobbyGame {
         this.players.push(host);
     }
 
-    getGameID(): number {
+    getGameID(): string {
         return this.gameID;
     }
 
     getGameName(): string {
-        return this.gameName;
+        return this.name;
     }
 
     getMaxPlayers(): number {
@@ -32,7 +32,7 @@ export class LobbyGame {
 
     addPlayer(player: Player) {
         //If this would push it over the max, throw an error
-        if (this.getNumPlayers == this.maxPlayers) {
+        if (this.getNumPlayers() == this.maxPlayers) {
             throw Error("You already have the maximum number of Players");
         }
         this.players.push(player);

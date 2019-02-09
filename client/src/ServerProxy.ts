@@ -27,9 +27,9 @@ export class ServerProxy {
         var communicator = new ClientCommunicator(url, this.port);
         communicator.sendCommand(command);
     }
-    public joinGame(username: string, gameName: string, gameId: string){
+    public joinGame(username: string, gameId: string){
         var url = "http://" + this.host + ":" + this.port + "/joingame";
-        var command = new ClientCommandObjects("ServerFacade", "joinGame", ["string", "string", "string"], [username, gameName, gameId]);
+        var command = new ClientCommandObjects("ServerFacade", "joinGame", ["string", "string"], [username, gameId]);
         var communicator = new ClientCommunicator(url, this.port);
         communicator.sendCommand(command);
     }
