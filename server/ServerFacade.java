@@ -1,3 +1,4 @@
+import command.GenericCommand;
 import model.*;
 import org.ietf.jgss.GSSName;
 
@@ -90,7 +91,7 @@ public class ServerFacade
         return commandsForClient;
 
     }
-    public List<GenericCommand> createGame(String username, String gamename, int maxSize)
+    public List<GenericCommand> createGame(String username, String gamename, Integer maxSize)
     {
         Boolean status = false;
         String message = "";
