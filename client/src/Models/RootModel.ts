@@ -48,6 +48,10 @@ export class ClientRoot implements Subject {
         this.myPlayer.setCurrentGame(gameId)
         this.transitionPage("lobbyGame");
     }
+ 
+    getCurrentUser(){
+    	return this.myPlayer.getUsername();
+    }
 
     updateGameList(gameList: Array<LobbyGame>) {
         this.gameList.replaceGameList(gameList);
