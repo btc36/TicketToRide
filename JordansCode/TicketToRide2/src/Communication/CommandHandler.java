@@ -8,23 +8,23 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CommandHandler implements HttpHandler {
     Boolean verbose = true;
 
     public void handle(HttpExchange httpExchange) {
+        List<GenericCommand> response = new ArrayList<>();
+
         if(verbose) {System.out.println("\nCommand handler called.");}
         try {
             ArrayList<GenericCommand> myCommands = receiveCommand(httpExchange);
-            for(GenericCommand command : myCommands)
-            {
-                command.execute();
+            for(GenericCommand command : myCommands) {
+                response.addAll(command.execute());
             }
-            //todo: pass on commands here to wherever we want them to be executed.
-            // For right now, this just works as an echo server. It receives the object, and sends it back to client.
             try {
-                sendCommand(httpExchange, myCommands);
+                sendCommand(httpExchange, response);
             }
             catch (Exception e) {
                 System.out.println(e.toString());
@@ -47,7 +47,7 @@ public class CommandHandler implements HttpHandler {
     }
 
     //sends list of GenericCommands using http exchange object
-    protected void sendCommand(HttpExchange httpExchange, ArrayList<GenericCommand> commands) {
+    protected void sendCommand(HttpExchange httpExchange, List<GenericCommand> commands) {
         if(verbose) {System.out.println("sendCommand called for list of commands of size: " + commands.size());}
         String json = Serializer.serializeCommand(commands);
         if(verbose) {System.out.println("sending: " + json);}

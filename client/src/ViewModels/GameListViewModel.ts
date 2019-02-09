@@ -11,12 +11,13 @@ export default class GameListViewModel extends React.Component<ViewModelProps, S
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
+    } else if (updateType == "updateGameList") {
+      this.setState({"gameList": data});
     }
   }
 
   createGameButtonPressed = (e: any) => {
     e.preventDefault();
-    alert(this.state.createGameName + "\n" + this.state.createGameNumPlayers);
     this.props.main.services.createGame(this.state.createGameNumPlayers, this.state.createGameName);
   }
 

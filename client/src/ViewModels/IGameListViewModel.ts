@@ -1,8 +1,6 @@
-const initialGameList: any[] = [
-  { id: 0, name: "Name numero uno", maxPlayers: 3, activePlayers: 0 },
-  { id: 1, name: "Dos tacos amigo", maxPlayers: 4, activePlayers: 1 },
-  { id: 2, name: "Tres musketeers", maxPlayers: 2, activePlayers: 2 },
-];
+import {GameList} from "../Models/GameListModel";
+
+const initialGameList: GameList = new GameList();
 
 export const initialState = {
   gameList: initialGameList,

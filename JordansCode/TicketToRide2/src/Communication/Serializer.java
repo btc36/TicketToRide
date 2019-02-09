@@ -4,6 +4,7 @@ import Shared.GenericCommand;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.List;
 
 //Turns json into a list of GenericCommands and vise versa.
 public class Serializer {
@@ -16,7 +17,7 @@ public class Serializer {
     }
 
     //Turns list of GenericCommands into json.
-    public static String serializeCommand(ArrayList<GenericCommand> commands) {
+    public static String serializeCommand(List<GenericCommand> commands) {
         String json = "Error parsing json. Please check format.";
         ObjectMapper objectMapper = new ObjectMapper();
         try {

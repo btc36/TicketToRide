@@ -51,7 +51,11 @@ export class ClientRoot implements Subject {
 
     updateGameList(gameList: Array<LobbyGame>) {
         this.gameList.replaceGameList(gameList);
-        this.notify("updateGameList", "Something Cool");
+        this.notify("updateGameList", this.gameList);
+    }
+
+    startGame(gameId:string){
+    	this.notify("startGame",gameId);
     }
     /*
      * loginRegister

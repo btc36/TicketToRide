@@ -29,7 +29,8 @@ export class ExternalClientFacade {
         this.root.joinGame(gameId);
     }
 
-    startGame(gameId:number){
+    startGame(gameId:string){
+    	this.root.startGame(gameId);
     }
 
 }
