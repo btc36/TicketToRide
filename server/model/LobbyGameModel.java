@@ -1,14 +1,11 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class LobbyGameModel
 {
-    enum State
-    {
-        WAITING, ONGOING, FINISHED;
-    }
+    enum State {WAITING, ONGOING, FINISHED;}
     private String gameID;
     private String gamename;
     private PlayerListModel playerList;
@@ -17,15 +14,12 @@ public class LobbyGameModel
     private PlayerModel host;
     private State state;
 
-    public LobbyGameModel()
-    {
+    public LobbyGameModel() { }
 
-    }
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
         playerList = new PlayerListModel();
-        gameID = gamename;
-        //gameID = UUID.randomUUID().toString().substring(0,4);
+        gameID = UUID.randomUUID().toString().substring(0,4);
         currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;
         this.host = host;
@@ -46,7 +40,6 @@ public class LobbyGameModel
     {
         return gameID;
     }
-
     public void setGameID(String gameID)
     {
         this.gameID = gameID;
@@ -56,7 +49,6 @@ public class LobbyGameModel
     {
         return playerList;
     }
-
     public void setPlayerList(PlayerListModel playerList)
     {
         this.playerList = playerList;
@@ -66,7 +58,6 @@ public class LobbyGameModel
     {
         return maxPlayer;
     }
-
     public void setMaxPlayer(int maxPlayer)
     {
         this.maxPlayer = maxPlayer;
@@ -76,11 +67,11 @@ public class LobbyGameModel
     {
         return host;
     }
-
     public void setHost(PlayerModel host)
     {
         this.host = host;
     }
+
     public State getState()
     {
         return state;
@@ -89,6 +80,7 @@ public class LobbyGameModel
     {
         this.state = state;
     }
+
     public void endGame()
     {
         this.state = State.FINISHED;
@@ -101,7 +93,6 @@ public class LobbyGameModel
     public String getGamename() {
         return gamename;
     }
-
     public void setGamename(String gamename) {
         this.gamename = gamename;
     }
@@ -131,9 +122,6 @@ public class LobbyGameModel
             LobbyGameModel object  = (LobbyGameModel) o;
             return(this.gameID.equals(object.gameID));
         }
-        else
-        {
-            return false;
-        }
+        else { return false; }
     }
 }
