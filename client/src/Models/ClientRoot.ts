@@ -1,9 +1,9 @@
-import { GameList } from "./GameListModel"
-import { Player } from "./PlayerModel"
-import { LobbyGame } from "./LobbyGameModel"
-import { Session } from "./SessionModel"
+import { GameList } from "./GameList"
+import { Player } from "./Player"
+import { LobbyGame } from "./LobbyGame"
+import { Session } from "./Session"
 import { IObserver } from "../ViewModels/IObserver"
-import { ISubject } from "./SubjectInterface"
+import { ISubject } from "./ISubject"
 
 
 export class ClientRoot implements ISubject {
@@ -45,7 +45,7 @@ export class ClientRoot implements ISubject {
         return games;
     }
 
-    joinGame(gameId: number) {
+    joinGame(gameId: string) {
         this.myPlayer.setCurrentGame(gameId)
         this.transitionPage("lobbyGame");
     }

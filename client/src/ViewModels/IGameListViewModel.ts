@@ -1,4 +1,4 @@
-import { GameList } from "../Models/GameListModel";
+import { GameList } from "../Models/GameList";
 
 const initialGameList: GameList = new GameList();
 

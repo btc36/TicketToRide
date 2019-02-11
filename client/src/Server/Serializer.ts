@@ -1,4 +1,5 @@
 import { ClientCommandObjects } from "./ClientCommandObjects";
+import { GameList } from "../Models/GameList";
 
 export class Serializer {
     constructor() {
@@ -10,5 +11,9 @@ export class Serializer {
     public parseJSON(command: string){
         var myCommand: ClientCommandObjects = JSON.parse(command);
         return myCommand;
+    }
+    public parseJSONGames(games: string){
+        var gameList: GameList = JSON.parse(games);
+        return gameList;
     }
 }

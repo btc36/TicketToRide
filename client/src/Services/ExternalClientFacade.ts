@@ -1,5 +1,5 @@
-import { ClientRoot } from "../Models/RootModel";
-import { LobbyGame } from "../Models/LobbyGameModel";
+import { ClientRoot } from "../Models/ClientRoot";
+import { LobbyGame } from "../Models/LobbyGame";
 
 export class ExternalClientFacade {
     root: ClientRoot;
@@ -28,7 +28,7 @@ export class ExternalClientFacade {
         return gameList;
     }
 
-    joinGame(gameId: number) {
+    joinGame(gameId: string) {
         this.root.joinGame(gameId);
     }
 

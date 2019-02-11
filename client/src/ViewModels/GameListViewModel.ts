@@ -6,7 +6,13 @@ import { ViewModelProps } from "./ViewModelProps";
 
 export class GameListViewModel extends React.Component<ViewModelProps, State> implements IGameListViewModel, IObserver {
 
-  state: State = initialState;
+  state: State;
+
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+    this.props.services.getGameList();
+  }
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
@@ -23,8 +29,9 @@ export class GameListViewModel extends React.Component<ViewModelProps, State> im
 
   joinGameButtonPressed = (e: any) => {
     e.preventDefault();
+    const gameName: string = String(this.state.gameList[this.state.selectedGame].name);
     const gameId: string = String(this.state.gameList[this.state.selectedGame].id);
-    this.props.services.joinGame(gameId);
+    this.props.services.joinGame(gameName, gameId);
   }
 
   tableRowPressed = (index: number) => {

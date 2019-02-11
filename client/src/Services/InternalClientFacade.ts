@@ -1,5 +1,5 @@
 import { ServerProxy } from "../Server/ServerProxy";
-import { ClientRoot } from "../Models/RootModel";
+import { ClientRoot } from "../Models/ClientRoot";
 
 export class InternalClientFacade {
     proxy: ServerProxy;
@@ -27,9 +27,9 @@ export class InternalClientFacade {
         this.proxy.getGameList();
     }
 
-    joinGame(gameId: string) {
+    joinGame(gameName: string, gameId: string) {
     	  const me = this.root.getCurrentUser();
-        this.proxy.joinGame(me, gameId);
+        this.proxy.joinGame(me, gameName, gameId);
    }
 
     startGame(gameId:string){
