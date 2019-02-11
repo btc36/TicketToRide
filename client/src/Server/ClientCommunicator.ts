@@ -1,25 +1,31 @@
 import { ClientCommandObjects } from "./clientCommandObjects";
 import { Serializer } from "./Serializer";
+import { ExternalClientFacade } from "./Services/ExternalClientFacade";
 
 export class ClientCommunicator {
     serverUrl: string;
     serverPort: string;
     serializer: Serializer;
-    constructor(public serverUrlIn: string, public serverPortIn: string) {
+    clientFacade: ExternalClientFacade;
+
+    constructor(public serverUrlIn: string, public serverPortIn: string, public serialIn: Serializer, public facadeIn: ExternalClientFacade) {
         this.serverUrl = serverUrlIn;
         this.serverPort = serverPortIn;
-        this.serializer = new Serializer();
+        this.serializer = serialIn;
+        this.clientFacade = facadeIn;
     }
     public sendCommand(command: ClientCommandObjects){
         var data = this.serializer.toJSON(command);
         var request = new XMLHttpRequest();
-        request.open('POST', this.serverUrl, true);
+        request.open('POST', this.serverPort + this.serverUrl, true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        let that = this;
+        let serial = this.serializer;
         request.onload = function() {
-            var currentSerializer = new Serializer();
             if (request.status >= 200 && request.status < 400) {
               // Success!
-              var result = currentSerializer.parseJSON(request.responseText);
+              var result = serial.parseJSON(request.responseText);
+              that.executeCommands([result]);
             } else {
               // We reached our target server, but it returned an error
           
@@ -33,6 +39,22 @@ export class ClientCommunicator {
     }
 
     public executeCommands(commands: ClientCommandObjects[]){
-
+      for (var i = 0; i < commands.length; i++){
+        if (commands[i].methodName == "loginStatus"){
+          this.clientFacade.loginResults(commands[i].paramValues[0], commands[i].paramValues[1]);
+        }
+        else if (commands[i].methodName == "registerStatus"){
+          this.clientFacade.registerResults(commands[i].paramValues[0], commands[i].paramValues[1]);
+        }
+        else if (commands[i].methodName == "createGame"){
+          //this.clientFacade.createGame(commands[i].paramValues[0], commands[i].paramValues[1]);
+        }
+        else if (commands[i].methodName == "joinGame"){
+          this.clientFacade.joinGame(commands[i].paramValues[2]);
+        }
+        else if (commands[i].methodName == "startGame"){
+          this.clientFacade.joinGame(commands[i].paramValues[2]);
+        }
+      }
     }
 }
