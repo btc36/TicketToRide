@@ -1,6 +1,6 @@
 export class Player {
     username: string;
-    currentGame: number;
+    currentGame: string;
     constructor(username: string) {
         this.username = username;
     }
@@ -8,11 +8,11 @@ export class Player {
         return this.username;
     }
 
-    setCurrentGame(gameId: number) {
+    setCurrentGame(gameId: string) {
         this.currentGame = gameId;
     }
 
-    getCurrentGame(): number {
+    getCurrentGame(): string {
         return this.currentGame;
     }
 }
