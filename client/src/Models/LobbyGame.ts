@@ -2,17 +2,19 @@ import { Player } from "./Player"
 
 export class LobbyGame {
     gameID: string;
-    players: Array<Player>;
-    maxPlayers: number;
+    gamename: string;
+    playerList: Array<Player>;
+    maxPlayer: number;
+    currentPlayerNum: number;
     host: Player;
-    name: string;
+    
 
     constructor(gameID: string, host: Player, name: string, maxPlayers: number = 5) {
         this.gameID = gameID;
         this.host = host;
-        this.maxPlayers = maxPlayers;
-        this.players = new Array<Player>();
-        this.players.push(host);
+        this.maxPlayer = maxPlayers;
+        this.playerList = new Array<Player>();
+        this.playerList.push(host);
     }
 
     getGameID(): string {
@@ -20,29 +22,29 @@ export class LobbyGame {
     }
 
     getGameName(): string {
-        return this.name;
+        return this.gamename;
     }
 
     getMaxPlayers(): number {
-        return this.maxPlayers;
+        return this.maxPlayer;
     }
 
     getNumPlayers(): number {
-        return this.players.length;
+        return this.playerList.length;
     }
 
     addPlayer(player: Player) {
         //If this would push it over the max, throw an error
-        if (this.getNumPlayers() == this.maxPlayers) {
+        if (this.getNumPlayers() == this.maxPlayer) {
             throw Error("You already have the maximum number of Players");
         }
-        this.players.push(player);
+        this.playerList.push(player);
     }
 
     removePlayer(username: string) {
-        for (var i = this.players.length - 1; i >= 0; --i) {
-            if (this.players[i].getUsername() == username) {
-                this.players.splice(i, 1);
+        for (var i = this.playerList.length - 1; i >= 0; --i) {
+            if (this.playerList[i].getUsername() == username) {
+                this.playerList.splice(i, 1);
             }
         }
     }

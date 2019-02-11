@@ -5,8 +5,8 @@ import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
 import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
 
-import { ClientCommunicator } from './Services/ClientCommunicator';
-import { Serializer } from './Services/Serializer';
+import { ClientCommunicator } from './Server/ClientCommunicator';
+import { Serializer } from './Server/Serializer';
 import { ExternalClientFacade } from './Services/ExternalClientFacade';
 import { ClientRoot } from './Models/ClientRoot';
 import { InternalClientFacade } from './Services/InternalClientFacade';
