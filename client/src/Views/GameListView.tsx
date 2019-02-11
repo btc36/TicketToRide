@@ -10,7 +10,7 @@ export const GameListView = (component: I.IGameListViewModel) => {
         <td>{gameList[i].getGameID()}</td>
         <td>{gameList[i].getGameName()}</td>
         <td>{gameList[i].getMaxPlayers()}</td>
-        <td>{gameList[i].getNumPlayers()}/{gameList[i].maxPlayers}</td>
+        <td>{gameList[i].getNumPlayers()}/{gameList[i].maxPlayer}</td>
       </tr>
     );
   }
