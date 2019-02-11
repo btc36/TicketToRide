@@ -6,9 +6,7 @@ export class ServerProxy {
     host: string;
     port: string;
     communicator: ClientCommunicator;
-    constructor(public hostIn: string, public portIn: string, public commIn: ClientCommunicator) {
-        this.host = hostIn;
-        this.port = portIn;
+    constructor(public commIn: ClientCommunicator) {
         this.communicator = commIn;
     }
     public register(username:string, password:string, confirm:string){
