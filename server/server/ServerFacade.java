@@ -22,6 +22,8 @@ public class ServerFacade
     private final String _paramTypeList = "java.util.List";
     private final String _paramTypeMap = "java.util.Map";
     private final String _paramTypeGame = "LobbyGameModel";
+    private final String usernameError = "username empty";
+    private final String passwordError = "password empty";
 
 
     public List<GenericCommand> login(String username, String password)
@@ -31,9 +33,9 @@ public class ServerFacade
         Boolean loginStatus = false;
         String message = "";
         if(!isInputValid(username))
-            {message = "username empty";}
+            {message = usernameError;}
         else if(!isInputValid(password))
-            {message = "password empty";}
+            {message = passwordError;}
         else
         {
             PlayerModel player = getPlayer(username);
@@ -65,8 +67,8 @@ public class ServerFacade
         GenericCommand command;
         Boolean registerStatus = false;
         String message = "";
-        if(!isInputValid(username)) {message = "username empty";}
-        else if(!isInputValid(password)) {message = "password empty";}
+        if(!isInputValid(username)) {message = usernameError;}
+        else if(!isInputValid(password)) {message = passwordError;}
         else
         {
             PlayerModel player = new PlayerModel(username, password);
@@ -143,7 +145,7 @@ public class ServerFacade
         Boolean status = false;
         String message = "";
 
-        if(!isInputValid(username)) { message = "Invalid Username"; }
+        if(!isInputValid(username)) { message = usernameError; }
         else if(!isInputValid(gameID)) { message = "Invalid GameID"; }
         PlayerModel player = getPlayer(username);
         if(player == null) { message = "Invalid Player"; }
@@ -155,14 +157,8 @@ public class ServerFacade
             //else if(game.getPlayerList().findPlayer(player)) { }
             else if(player.getGameID() != null)
             {
-                if(game.getPlayerList().findPlayer(player))
-                {
-                    message = "player already joined this game";
-                }
-                else
-                {
-                    message = "player is already part of another game";
-                }
+                if(game.getPlayerList().findPlayer(player)) { message = "player already joined this game"; }
+                else { message = "player is already part of another game"; }
             }
             else
             {
@@ -192,11 +188,7 @@ public class ServerFacade
         Boolean status = false;
         String message = "";
 
-        if(!isInputValid(gameID))
-        {
-            status = false;
-            message = "invalid request info";
-        }
+        if(!isInputValid(gameID)) { message = "invalid request info"; }
         else
         {
             LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
@@ -210,11 +202,7 @@ public class ServerFacade
                     message = "start success";
                 }
             }
-            else
-            {
-                status = false;
-                message = "game does not exist";
-            }
+            else { message = "game does not exist"; }
         }
 
         System.out.println(message);
@@ -244,11 +232,10 @@ public class ServerFacade
         return commandsForClient;
     }
 
-    private boolean isInputValid(String input)
+    private boolean isInputValid(String input) // empty? or not?
     {
         if(input == null) return false;
         if(input.isEmpty()) return false;
-
         return true;
     }
     private boolean findPlayer(PlayerModel player)
