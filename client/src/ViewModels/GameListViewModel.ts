@@ -8,7 +8,7 @@ export class GameListViewModel extends React.Component<ViewModelProps, State> im
 
   state: State;
 
-  constructor(props) {
+  constructor(props: ViewModelProps) {
     super(props);
     this.state = initialState;
     this.props.services.getGameList();

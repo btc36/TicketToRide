@@ -13,11 +13,11 @@ import com.sun.net.httpserver.*;
     class WebpageHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            String filePathStr = "TicketToRide" + File.separator + "client" + File.separator + "index.html"; //location of the html file
+            String filePathStr = ".." + File.separator + "client" + File.separator + "index.html"; //location of the html file
             Path filePath;
             OutputStream respBody = null;
 
-            //System.out.println(new File("").getAbsolutePath()); print the current working directory
+            System.out.println(new File("").getAbsolutePath()); // print the current working directory
 
             try {
                 if (exchange.getRequestMethod().toLowerCase().equals("get")) {
