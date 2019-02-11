@@ -5,7 +5,7 @@ import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
 import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
 
-import { ClientRoot } from './Models/RootModel';
+import { ClientRoot } from './Models/ClientRoot';
 import { InternalClientFacade } from './Services/InternalClientFacade';
 import { ServerProxy } from './Server/ServerProxy';
 

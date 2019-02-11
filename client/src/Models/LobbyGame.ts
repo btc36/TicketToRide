@@ -1,4 +1,4 @@
-import { Player } from "./PlayerModel"
+import { Player } from "./Player"
 
 export class LobbyGame {
     gameID: string;

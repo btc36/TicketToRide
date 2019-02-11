@@ -1,5 +1,5 @@
 import { ServerProxy } from "../Server/ServerProxy";
-import { ClientRoot } from "../Models/RootModel";
+import { ClientRoot } from "../Models/ClientRoot";
 
 export class InternalClientFacade {
     proxy: ServerProxy;

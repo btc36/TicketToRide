@@ -1,4 +1,4 @@
-import { LobbyGame } from "./LobbyGameModel"
+import { LobbyGame } from "./LobbyGame"
 
 export class GameList {
     games: Array<LobbyGame>;

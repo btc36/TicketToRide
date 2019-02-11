@@ -1,5 +1,5 @@
-import { ClientRoot } from "../Models/RootModel";
-import { LobbyGame } from "../Models/LobbyGameModel";
+import { ClientRoot } from "../Models/ClientRoot";
+import { LobbyGame } from "../Models/LobbyGame";
 
 export class ExternalClientFacade {
     root: ClientRoot;
