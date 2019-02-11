@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ServerFacade
 {
-    private String _className = "InternalClientFacade";
+    private String _className = "ExternalClientFacade";
     private final String _paramTypeString = "java.lang.String";
     private final String _paramTypeBoolean = "java.lang.Boolean";
     private final String _paramTypeInteger = "java.lang.Integer";
@@ -163,7 +163,6 @@ public class ServerFacade
                 {
                     message = "player is already part of another game";
                 }
-
             }
             else
             {
@@ -179,8 +178,9 @@ public class ServerFacade
         GenericCommand command;
         command = new GenericCommand(
                 _className, "joinGame",
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
-                new Object[]{status, message, game}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
+                //new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
+                new Object[]{status, message, gameID}
         );
         commandsForClient.add(command);
         return commandsForClient;
@@ -222,8 +222,9 @@ public class ServerFacade
         GenericCommand command;
         command = new GenericCommand(
                 _className, "startGame",
-                new String[]{_paramTypeBoolean, _paramTypeList},
-                new Object[]{status, message, games}
+                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
+                //new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
+                new Object[]{status, message, gameID}
         );
         commandsForClient.add(command);
         return commandsForClient;

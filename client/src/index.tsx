@@ -5,6 +5,9 @@ import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
 import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
 
+import { ClientCommunicator } from './Server/ClientCommunicator';
+import { Serializer } from './Server/Serializer';
+import { ExternalClientFacade } from './Services/ExternalClientFacade';
 import { ClientRoot } from './Models/ClientRoot';
 import { InternalClientFacade } from './Services/InternalClientFacade';
 import { ServerProxy } from './Server/ServerProxy';
@@ -35,7 +38,10 @@ class MainComponent extends React.Component<any, any> {
 }
 
 const root = new ClientRoot();
-const serverProxy = new ServerProxy("localhost", "8080");
+const externalClientFacade = new ExternalClientFacade(root);
+const serializer = new Serializer();
+const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
+const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
 
 ReactDOM.render(
