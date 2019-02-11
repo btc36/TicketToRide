@@ -11,6 +11,8 @@ export class LoginRegisterViewModel extends React.Component<ViewModelProps, Stat
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
+    } else if (updateType == "error") {
+      this.setState({"errorMessage": data});
     }
   }
 
@@ -21,7 +23,7 @@ export class LoginRegisterViewModel extends React.Component<ViewModelProps, Stat
 
   onRegisterButtonPressed = (e: any) => {
     e.preventDefault();
-    this.props.services.register(this.state.loginUserName, this.state.loginPassword);
+    this.props.services.register(this.state.registerUserName, this.state.registerPassword);
   }
 
   onLoginUserNameChange = (e: any) => {

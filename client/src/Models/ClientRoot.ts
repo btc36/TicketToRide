@@ -12,7 +12,7 @@ export class ClientRoot implements ISubject {
     lobby: LobbyGame;
     session: Session;
     observers: Array<IObserver>;
-    //What is this constructor, and all the other classes. Does the client start out empty?
+
     constructor() {
         this.gameList = new GameList();
         this.myPlayer = null;
@@ -20,18 +20,20 @@ export class ClientRoot implements ISubject {
         this.session = new Session();
         this.observers = new Array<IObserver>();
     }
-    //add an observer 
-    attach(o: IObserver) {
+
+    public attach(o: IObserver) {
         this.observers.push(o); 
     }
-    //remove an observer
-    detach(o: IObserver) {
+
+    public detach(o: IObserver) {
 
     }
 
     notify(updateType: string, data: any) {
-        for (var o of this.observers) {
-            o.update(updateType, data);
+        for (const o of this.observers) {
+            if (o != null) {
+                o.update(updateType, data);
+            }
         }
     }
     transitionPage(pageName: string) {
@@ -54,34 +56,36 @@ export class ClientRoot implements ISubject {
     	return this.myPlayer.getUsername();
     }
 
-    updateGameList(gameList: GameList) {
-        this.gameList.replaceGameList(gameList.getGames());
-        this.notify("updateGameList", this.gameList);
-    }
-
-    startGame(gameId:string){
-    	this.notify("startGame",gameId);
-    }
-    /*
-     * loginRegister
-     * gameList
-     * gameLobby
-     */
-    loginResults(wasSuccessful: boolean, errorMessage: string) {
+    updateGameList(wasSuccessful: boolean, gameList: GameList, errorMessage: string) {
         if (wasSuccessful) {
-            this.session.setLoggedInUser(this.myPlayer);
-            this.transitionPage("gameList");
+            this.gameList.replaceGameList(gameList.getGames());
+            this.notify("updateGameList", this.gameList);
         } else {
             this.notify("error", errorMessage);
         }
     }
 
-    registerResults(wasSuccessful: boolean, errorMessage: string) {
+    startGame(gameId:string){
+    	this.notify("startGame",gameId);
+    }
+
+    loginResults(wasSuccessful: boolean, data: string) {
         if (wasSuccessful) {
+            this.myPlayer = new Player(data);
             this.session.setLoggedInUser(this.myPlayer);
             this.transitionPage("gameList");
         } else {
-            this.notify("error", errorMessage);
+            this.notify("error", data);
+        }
+    }
+
+    registerResults(wasSuccessful: boolean, data: string) {
+        if (wasSuccessful) {
+            this.myPlayer = new Player(data);
+            this.session.setLoggedInUser(this.myPlayer);
+            this.transitionPage("gameList");
+        } else {
+            this.notify("error", data);
         }
     }
 

@@ -4,6 +4,7 @@ import * as I from "../ViewModels/ILoginRegisterViewModel";
 export const LoginRegisterView = (component: I.ILoginRegisterViewModel) => {
     return (
       <div className="view">
+        <p>{component.state.errorMessage}</p>
         <div className="half-partition">
           <h1>Login</h1>
           <form onSubmit={component.onLoginButtonPressed}>

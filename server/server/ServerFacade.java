@@ -45,7 +45,7 @@ public class ServerFacade
                 if(password.equals(player.getPassword()))
                 {
                     loginStatus = true;
-                    message = "Success";
+                    message = username;
                 }
                 else if(!password.equals(player.getPassword())) { message = "Wrong password"; }
                 else { message = "Failure"; }
@@ -131,7 +131,7 @@ public class ServerFacade
         List<LobbyGameModel> games = getGameAsList();
         System.out.println(message);
         GenericCommand command = new GenericCommand(
-                _className, "createGame",
+                _className, "updateGameList",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                 new Object[]{status, message, games}
         );

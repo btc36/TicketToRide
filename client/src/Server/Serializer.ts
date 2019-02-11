@@ -5,15 +5,15 @@ export class Serializer {
     constructor() {
     }
     public toJSON(command: ClientCommandObjects){
-        var myCommand = JSON.stringify(command);
+        const myCommand = JSON.stringify([command]);
         return myCommand;
     }
     public parseJSON(command: string){
-        var myCommand: ClientCommandObjects = JSON.parse(command);
+        const myCommand: ClientCommandObjects[] = JSON.parse(command);
         return myCommand;
     }
     public parseJSONGames(games: string){
-        var gameList: GameList = JSON.parse(games);
+        const gameList: GameList = JSON.parse(games);
         return gameList;
     }
 }

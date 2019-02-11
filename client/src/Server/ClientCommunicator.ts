@@ -17,7 +17,7 @@ export class ClientCommunicator {
     public sendCommand(command: ClientCommandObjects){
         var data = this.serializer.toJSON(command);
         var request = new XMLHttpRequest();
-        request.open('POST', this.serverPort + this.serverUrl, true);
+        request.open('POST', "/command", true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         let that = this;
         let serial = this.serializer;
@@ -25,7 +25,7 @@ export class ClientCommunicator {
             if (request.status >= 200 && request.status < 400) {
               // Success!
               var result = serial.parseJSON(request.responseText);
-              that.executeCommands([result]);
+              that.executeCommands(result);
             } else {
               // We reached our target server, but it returned an error
           
@@ -40,20 +40,21 @@ export class ClientCommunicator {
 
     public executeCommands(commands: ClientCommandObjects[]){
       for (var i = 0; i < commands.length; i++){
-        if (commands[i].methodName == "loginStatus"){
-          this.clientFacade.loginResults(commands[i].paramValues[0], commands[i].paramValues[1]);
+        if (commands[i]._methodName == "loginStatus"){
+          this.clientFacade.loginResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
         }
-        else if (commands[i].methodName == "registerStatus"){
-          this.clientFacade.registerResults(commands[i].paramValues[0], commands[i].paramValues[1]);
+        else if (commands[i]._methodName == "registerStatus"){
+          this.clientFacade.registerResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
         }
-        else if (commands[i].methodName == "createGame"){
-          this.clientFacade.updateGameList(this.serializer.parseJSONGames(commands[i].paramValues[2]));
+        else if (commands[i]._methodName == "updateGameList"){
+          console.log(commands[i]._paramValues[2]);
+          this.clientFacade.updateGameList(commands[i]._paramValues[0], commands[i]._paramValues[2], commands[i]._paramValues[1]);
         }
-        else if (commands[i].methodName == "joinGame"){
-          this.clientFacade.joinGame(commands[i].paramValues[2]);
+        else if (commands[i]._methodName == "joinGame"){
+          this.clientFacade.joinGame(commands[i]._paramValues[2]);
         }
-        else if (commands[i].methodName == "startGame"){
-          this.clientFacade.startGame(commands[i].paramValues[2]);
+        else if (commands[i]._methodName == "startGame"){
+          this.clientFacade.startGame(commands[i]._paramValues[2]);
         }
       }
     }
