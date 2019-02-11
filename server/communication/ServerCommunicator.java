@@ -67,7 +67,7 @@ public class ServerCommunicator {
         server.setExecutor(null);
         System.out.println("Creating contexts");
         //server.createContext("/exec_command", new ExecCommandHandler());
-        //server.createContext("/", new WebsiteHandler());
+        server.createContext("/", new WebpageHandler());
         server.createContext("/command", new CommandHandler());
         System.out.println("Starting server");
         server.start();
