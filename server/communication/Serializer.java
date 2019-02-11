@@ -1,8 +1,10 @@
-package Communication;
+package communication;
 
-import Shared.GenericCommand;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import command.GenericCommand;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +12,9 @@ import java.util.List;
 public class Serializer {
 
     //Turns json into list of GenericCommands
-    public static ArrayList<GenericCommand> deserializeCommand(String json) throws Exception{
+    public static List<GenericCommand> deserializeCommand(String json) throws Exception{
         ObjectMapper objectMapper = new ObjectMapper();
-        ArrayList<GenericCommand> myCommands = objectMapper.readValue(json, new TypeReference<ArrayList<GenericCommand>>(){});
+        List<GenericCommand> myCommands = objectMapper.readValue(json, new TypeReference<ArrayList<GenericCommand>>(){});
         return myCommands;
     }
 

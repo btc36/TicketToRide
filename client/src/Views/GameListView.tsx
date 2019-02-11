@@ -1,16 +1,16 @@
 import * as React from "react";
 import * as I from "../ViewModels/IGameListViewModel";
 
-export default (component: I.IGameListViewModel) => {
+export const GameListView = (component: I.IGameListViewModel) => {
   const rows = [];
-  const gameList = component.state.gameList;
+  const gameList = component.state.gameList.getGames();
   for (let i = 0; i < gameList.length; i++) {
     rows.push(
       <tr onClick={() => component.tableRowPressed(i)} className={component.state.selectedGame == i ? "active" : ""} key={i}>
-        <td>{gameList[i].id}</td>
-        <td>{gameList[i].name}</td>
-        <td>{gameList[i].maxPlayers}</td>
-        <td>{gameList[i].activePlayers}/{gameList[i].maxPlayers}</td>
+        <td>{gameList[i].getGameID()}</td>
+        <td>{gameList[i].getGameName()}</td>
+        <td>{gameList[i].getMaxPlayers()}</td>
+        <td>{gameList[i].getNumPlayers()}/{gameList[i].maxPlayers}</td>
       </tr>
     );
   }

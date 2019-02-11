@@ -1,8 +1,9 @@
-package Communication;
+package communication;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import Shared.*;
+import command.GenericCommand;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -19,7 +20,7 @@ public class CommandHandler implements HttpHandler {
 
         if(verbose) {System.out.println("\nCommand handler called.");}
         try {
-            ArrayList<GenericCommand> myCommands = receiveCommand(httpExchange);
+            List<GenericCommand> myCommands = receiveCommand(httpExchange);
             for(GenericCommand command : myCommands) {
                 response.addAll(command.execute());
             }
@@ -38,11 +39,11 @@ public class CommandHandler implements HttpHandler {
     }
 
     //gets the list of GenericCommands from http exchange object
-    protected ArrayList<GenericCommand> receiveCommand(HttpExchange httpExchange) throws Exception{
+    protected List<GenericCommand> receiveCommand(HttpExchange httpExchange) throws Exception{
         if(verbose) {System.out.println("receiveCommand called");}
         String json = receiveJson(httpExchange);
         if(verbose) {System.out.println("received: " + json);}
-        ArrayList<GenericCommand> myCommands = Serializer.deserializeCommand(json);
+        List<GenericCommand> myCommands = Serializer.deserializeCommand(json);
         return myCommands;
     }
 

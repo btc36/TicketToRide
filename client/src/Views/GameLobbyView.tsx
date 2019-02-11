@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as I from "../ViewModels/IGameLobbyViewModel";
 
-export default (component: I.IGameLobbyViewModel) => {
+export const GameLobbyView  = (component: I.IGameLobbyViewModel) => {
   const players = [];
   const playerList = component.state.playerList;
   for (let i = 0; i < playerList.length; i++) {

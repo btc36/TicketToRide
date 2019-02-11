@@ -1,10 +1,10 @@
 import * as React from "react";
-import LoginRegisterView from "../Views/LoginRegisterView";
+import { LoginRegisterView } from "../Views/LoginRegisterView";
 import { initialState, State, ILoginRegisterViewModel } from "./ILoginRegisterViewModel";
-import IObserver from "./IObserver";
-import ViewModelProps from "./ViewModelProps";
+import { IObserver } from "./IObserver";
+import { ViewModelProps } from "./ViewModelProps";
 
-export default class LoginRegisterViewModel extends React.Component<ViewModelProps, State> implements ILoginRegisterViewModel, IObserver {
+export class LoginRegisterViewModel extends React.Component<ViewModelProps, State> implements ILoginRegisterViewModel, IObserver {
 
   state: State = initialState;
 
@@ -16,12 +16,12 @@ export default class LoginRegisterViewModel extends React.Component<ViewModelPro
 
   onLoginButtonPressed = (e: any) => {
     e.preventDefault();
-    this.props.main.services.login(this.state.loginUsername, this.state.loginPassword);
+    this.props.services.login(this.state.loginUserName, this.state.loginPassword);
   }
 
   onRegisterButtonPressed = (e: any) => {
     e.preventDefault();
-    this.props.main.services.register(this.state.loginUsername, this.state.loginPassword);
+    this.props.services.register(this.state.loginUserName, this.state.loginPassword);
   }
 
   onLoginUserNameChange = (e: any) => {

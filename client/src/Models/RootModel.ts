@@ -1,11 +1,12 @@
-import {GameList} from "./GameListModel"
-import {Player} from "./PlayerModel"
-import {LobbyGame} from "./LobbyGameModel"
-import {Session} from "./SessionModel"
-import {IObserver} from "../ViewModels/IObserver"
+import { GameList } from "./GameListModel"
+import { Player } from "./PlayerModel"
+import { LobbyGame } from "./LobbyGameModel"
+import { Session } from "./SessionModel"
+import { IObserver } from "../ViewModels/IObserver"
+import { ISubject } from "./SubjectInterface"
 
 
-export class ClientRoot implements Subject {
+export class ClientRoot implements ISubject {
     gameList: GameList;
     myPlayer: Player;
     lobby: LobbyGame;
@@ -48,10 +49,18 @@ export class ClientRoot implements Subject {
         this.myPlayer.setCurrentGame(gameId)
         this.transitionPage("lobbyGame");
     }
+ 
+    getCurrentUser(){
+    	return this.myPlayer.getUsername();
+    }
 
     updateGameList(gameList: Array<LobbyGame>) {
         this.gameList.replaceGameList(gameList);
-        this.notify("updateGameList", "Something Cool");
+        this.notify("updateGameList", this.gameList);
+    }
+
+    startGame(gameId:string){
+    	this.notify("startGame",gameId);
     }
     /*
      * loginRegister

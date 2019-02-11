@@ -1,7 +1,6 @@
-package server;
+package communication;
 
 import com.sun.net.httpserver.HttpServer;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.logging.ConsoleHandler;
@@ -25,6 +24,7 @@ public class ServerCommunicator {
             e.printStackTrace();
         }
     }
+
     private static void initLog() throws IOException
     {
         /*log settings*/
@@ -47,7 +47,7 @@ public class ServerCommunicator {
     /**
      *  Run the server and the back-end functionality to start
      * @pre
-     * @param portNumber Portnumber for the connectino to be established
+     * @param portNumber Portnumber for the connection to be established
      */
     public void run(String portNumber)
     {
@@ -67,6 +67,8 @@ public class ServerCommunicator {
         server.setExecutor(null);
         System.out.println("Creating contexts");
         //server.createContext("/exec_command", new ExecCommandHandler());
+        //server.createContext("/", new WebsiteHandler());
+        server.createContext("/command", new CommandHandler());
         System.out.println("Starting server");
         server.start();
         System.out.println("Server started. Listening......");
@@ -88,4 +90,3 @@ public class ServerCommunicator {
         new ServerCommunicator().run(portNumber);
     }
 }
-

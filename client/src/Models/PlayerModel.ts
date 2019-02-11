@@ -4,7 +4,7 @@ export class Player {
     constructor(username: string) {
         this.username = username;
     }
-   get getUsername(): string {
+    getUsername(): string {
         return this.username;
     }
 

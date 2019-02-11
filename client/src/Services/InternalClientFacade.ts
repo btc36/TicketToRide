@@ -1,10 +1,13 @@
-import { ServerProxy } from "../serverProxy";
+import { ServerProxy } from "../Server/ServerProxy";
+import { ClientRoot } from "../Models/RootModel";
 
-export default class InternalClientFacade {
+export class InternalClientFacade {
     proxy: ServerProxy;
+    root: ClientRoot;
 
-    constructor(proxy:ServerProxy) {
+    constructor(proxy:ServerProxy,root:ClientRoot) {
         this.proxy = proxy;
+        this.root = root;
     }
 
     login(username: string, password: string) {
@@ -16,6 +19,7 @@ export default class InternalClientFacade {
     }
 
     createGame(numPlayers: number, gameName: string) {
+    	  const me = this.root.getCurrentUser();
         this.proxy.createGame(me, numPlayers, gameName);
     }
 
@@ -23,8 +27,13 @@ export default class InternalClientFacade {
         this.proxy.getGameList();
     }
 
-    joinGame(gameId: number) {
-        this.proxy.joinGame(player, gameId);
+    joinGame(gameId: string) {
+    	  const me = this.root.getCurrentUser();
+        this.proxy.joinGame(me, gameId);
    }
+
+    startGame(gameId:string){
+    	this.proxy.startGame(gameId);
+    }
 
 }

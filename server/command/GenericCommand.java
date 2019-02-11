@@ -1,4 +1,4 @@
-package Shared;
+package command;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 //code from:https://students.cs.byu.edu/~cs340ta/winter2019/notes/woodfield/05-Command/CommandExample.java
 
-public class GenericCommand implements Shared.CommandInterface,java.io.Serializable  {
+public class GenericCommand implements CommandInterface,java.io.Serializable  {
     private String _className;
     private String _methodName;
     private Class<?>[] _paramTypes;

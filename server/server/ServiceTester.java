@@ -1,3 +1,5 @@
+package server;
+
 public class ServiceTester
 {
     public static void main(String[] args)
@@ -39,22 +41,22 @@ public class ServiceTester
         /*Invalid startGame*/
         facade.startGame("game1");
         /*Invalid joinGame*/
-        facade.joinGame("lol", "game1", "game1");
-        facade.joinGame("lol", "game1", "Ross");
+        facade.joinGame("lol", "game1");
+        facade.joinGame("lol",  "Ross");
         System.out.println("*******same user 2 games******");
-        facade.joinGame("lol", "game2", "game2");
-        facade.joinGame("Phoebe", "game2", "game2");
+        facade.joinGame("lol", "game2");
+        facade.joinGame("Phoebe", "game2");
         /*Valid register*/
         facade.register("Rachel", "Green");
         facade.createGame("Rachel","game2",4);
-        facade.joinGame("lol", "game2", "game2");
+        facade.joinGame("lol", "game2");
         /*Invalid join*/
-        facade.joinGame("Rachel", "game1", "game1");
+        facade.joinGame("Rachel", "game1");
         /*Invalid success*/
         facade.startGame("game1");
         facade.register("Joey", "Trib");
         facade.login("Joey", "Trib");
-        facade.joinGame("Joey", "game1", "game1");
+        facade.joinGame("Joey", "game1");
         facade.startGame("game1");
 
 

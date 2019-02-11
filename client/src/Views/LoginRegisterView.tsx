@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as I from "../ViewModels/ILoginRegisterViewModel";
 
-export default (component: I.ILoginRegisterViewModel) => {
+export const LoginRegisterView = (component: I.ILoginRegisterViewModel) => {
     return (
       <div className="view">
         <div className="half-partition">

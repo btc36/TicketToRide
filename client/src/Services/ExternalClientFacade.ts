@@ -1,3 +1,6 @@
+import { ClientRoot } from "../Models/RootModel";
+import { LobbyGame } from "../Models/LobbyGameModel";
+
 export class ExternalClientFacade {
     root: ClientRoot;
 
@@ -29,7 +32,8 @@ export class ExternalClientFacade {
         this.root.joinGame(gameId);
     }
 
-    startGame(gameId:number){
+    startGame(gameId:string){
+    	this.root.startGame(gameId);
     }
 
 }
