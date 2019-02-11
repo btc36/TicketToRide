@@ -14,19 +14,19 @@ export class ServerProxy {
         this.communicator.sendCommand(command);
     }
     public login(username: string, password: string){
-        var command = new ClientCommandObjects("ServerFacade", "login", ["string", "string"], [username, password]);
+        var command = new ClientCommandObjects("ServerFacade", "login", ["_paramTypeString", "_paramTypeString"], [username, password]);
         this.communicator.sendCommand(command);
     }
     public createGame(username: string, numPlayers: number, gameName: string){
-        var command = new ClientCommandObjects("ServerFacade", "createGame", ["string", "string", "number"], [username, gameName, numPlayers]);
+        var command = new ClientCommandObjects("ServerFacade", "createGame", ["_paramTypeString", "_paramTypeString", "_paramTypeInteger"], [username, gameName, numPlayers]);
         this.communicator.sendCommand(command);
     }
     public joinGame(username: string, gameName: string, gameId: string){
-        var command = new ClientCommandObjects("ServerFacade", "joinGame", ["string", "string", "string"], [username, gameName, gameId]);
+        var command = new ClientCommandObjects("ServerFacade", "joinGame", ["_paramTypeString", "_paramTypeString", "_paramTypeString"], [username, gameName, gameId]);
         this.communicator.sendCommand(command);
     }
     public startGame(gameId: string){
-        var command = new ClientCommandObjects("ServerFacade", "startGame", ["string"], [gameId]);
+        var command = new ClientCommandObjects("ServerFacade", "startGame", ["_paramTypeString"], [gameId]);
         this.communicator.sendCommand(command);
     }
     public getGameList(){
