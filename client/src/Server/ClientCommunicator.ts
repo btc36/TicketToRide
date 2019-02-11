@@ -1,6 +1,6 @@
-import { ClientCommandObjects } from "./clientCommandObjects";
+import { ClientCommandObjects } from "./ClientCommandObjects";
 import { Serializer } from "./Serializer";
-import { ExternalClientFacade } from "./Services/ExternalClientFacade";
+import { ExternalClientFacade } from "../Services/ExternalClientFacade";
 
 export class ClientCommunicator {
     serverUrl: string;
