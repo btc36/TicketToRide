@@ -12,7 +12,7 @@ export class ServerProxy {
         this.communicator = commIn;
     }
     public register(username:string, password:string, confirm:string){
-        var command = new ClientCommandObjects("ServerFacade", "register", ["string", "string"], [username, password]);
+        var command = new ClientCommandObjects("ServerFacade", "register", ["_paramTypeString", "_paramTypeString"], [username, password]);
         this.communicator.sendCommand(command);
     }
     public login(username: string, password: string){

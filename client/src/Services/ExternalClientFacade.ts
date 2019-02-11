@@ -28,7 +28,7 @@ export class ExternalClientFacade {
         return gameList;
     }
 
-    joinGame(gameId: number) {
+    joinGame(gameId: string) {
         this.root.joinGame(gameId);
     }
 

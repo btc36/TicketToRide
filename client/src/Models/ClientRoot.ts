@@ -45,7 +45,7 @@ export class ClientRoot implements ISubject {
         return games;
     }
 
-    joinGame(gameId: number) {
+    joinGame(gameId: string) {
         this.myPlayer.setCurrentGame(gameId)
         this.transitionPage("lobbyGame");
     }

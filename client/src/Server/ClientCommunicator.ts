@@ -47,7 +47,7 @@ export class ClientCommunicator {
           this.clientFacade.registerResults(commands[i].paramValues[0], commands[i].paramValues[1]);
         }
         else if (commands[i].methodName == "createGame"){
-          this.clientFacade.updateGameList(commands[i].paramValues[0], commands[i].paramValues[2]);
+          this.clientFacade.updateGameList(this.serializer.parseJSONGames(commands[i].paramValues[2]);
         }
         else if (commands[i].methodName == "joinGame"){
           this.clientFacade.joinGame(commands[i].paramValues[2]);
