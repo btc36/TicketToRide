@@ -1,5 +1,6 @@
 import { ClientRoot } from "../Models/ClientRoot";
 import { LobbyGame } from "../Models/LobbyGame";
+import { GameList } from "../Models/GameList";
 
 export class ExternalClientFacade {
     root: ClientRoot;
@@ -15,7 +16,7 @@ export class ExternalClientFacade {
         this.root.registerResults(wasSuccessful, errorMessage);
     }
 
-    updateGameList(games: Array<LobbyGame>) {
+    updateGameList(games: GameList) {
         this.root.updateGameList(games);
     }
 

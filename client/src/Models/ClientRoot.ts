@@ -54,8 +54,8 @@ export class ClientRoot implements ISubject {
     	return this.myPlayer.getUsername();
     }
 
-    updateGameList(gameList: Array<LobbyGame>) {
-        this.gameList.replaceGameList(gameList);
+    updateGameList(gameList: GameList) {
+        this.gameList.replaceGameList(gameList.getGames());
         this.notify("updateGameList", this.gameList);
     }
 
