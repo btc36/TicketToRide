@@ -1,10 +1,10 @@
 import * as React from "react";
-import GameLobbyView from "../Views/GameLobbyView";
+import { GameLobbyView } from "../Views/GameLobbyView";
 import { initialState, State, IGameLobbyViewModel } from "./IGameLobbyViewModel";
-import IObserver from "./IObserver";
-import ViewModelProps from "./ViewModelProps";
+import { IObserver } from "./IObserver";
+import { ViewModelProps } from "./ViewModelProps";
 
-export default class GameLobbyViewModel extends React.Component<ViewModelProps, State> implements IGameLobbyViewModel, IObserver {
+export class GameLobbyViewModel extends React.Component<ViewModelProps, State> implements IGameLobbyViewModel, IObserver {
 
   state: State = initialState;
 

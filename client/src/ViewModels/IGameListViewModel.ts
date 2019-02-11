@@ -1,4 +1,4 @@
-import {GameList} from "../Models/GameListModel";
+import { GameList } from "../Models/GameListModel";
 
 const initialGameList: GameList = new GameList();
 
@@ -6,7 +6,7 @@ export const initialState = {
   gameList: initialGameList,
   selectedGame: -1,
   createGameName: "",
-  createGameNumPlayers: ""
+  createGameNumPlayers: 0
 };
 
 export type State = Readonly<typeof initialState>;

@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import LoginRegisterViewModel from './ViewModels/LoginRegisterViewModel';
-import GameListViewModel from './ViewModels/GameListViewModel';
-import GameLobbyViewModel from './ViewModels/GameLobbyViewModel';
+import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
+import { GameListViewModel } from './ViewModels/GameListViewModel';
+import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
 
-import InternalClientFacade from './Services/InternalClientFacade';
+import { ClientRoot } from './Models/RootModel';
+import { InternalClientFacade } from './Services/InternalClientFacade';
+import { ServerProxy } from './Server/ServerProxy';
 
 export const initialState = {
   "page": "loginRegister"
@@ -32,8 +34,9 @@ class MainComponent extends React.Component<any, any> {
   }
 }
 
-const serverProxy = new ServerProxy();
-const internalClientFacade = new InternalClientFacade(serverProxy);
+const root = new ClientRoot();
+const serverProxy = new ServerProxy("localhost", "8080");
+const internalClientFacade = new InternalClientFacade(serverProxy, root);
 
 ReactDOM.render(
     <MainComponent services={internalClientFacade}/>,

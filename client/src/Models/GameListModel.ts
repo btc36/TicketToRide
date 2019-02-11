@@ -1,6 +1,9 @@
-import {LobbyGame} from "./LobbyGameModel"
+import { LobbyGame } from "./LobbyGameModel"
+
 export class GameList {
     games: Array<LobbyGame>;
+
+    [key: string]: any;
 
     constructor() {
         this.games = new Array<LobbyGame>();

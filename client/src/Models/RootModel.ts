@@ -1,11 +1,12 @@
-import {GameList} from "./GameListModel"
-import {Player} from "./PlayerModel"
-import {LobbyGame} from "./LobbyGameModel"
-import {Session} from "./SessionModel"
-import {IObserver} from "../ViewModels/IObserver"
+import { GameList } from "./GameListModel"
+import { Player } from "./PlayerModel"
+import { LobbyGame } from "./LobbyGameModel"
+import { Session } from "./SessionModel"
+import { IObserver } from "../ViewModels/IObserver"
+import { ISubject } from "./SubjectInterface"
 
 
-export class ClientRoot implements Subject {
+export class ClientRoot implements ISubject {
     gameList: GameList;
     myPlayer: Player;
     lobby: LobbyGame;

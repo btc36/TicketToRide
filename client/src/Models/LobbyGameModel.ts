@@ -1,4 +1,5 @@
-import {Player} from "./PlayerModel"
+import { Player } from "./PlayerModel"
+
 export class LobbyGame {
     gameID: string;
     players: Array<Player>;
@@ -40,7 +41,7 @@ export class LobbyGame {
 
     removePlayer(username: string) {
         for (var i = this.players.length - 1; i >= 0; --i) {
-            if (this.players[i].getUsername == username) {
+            if (this.players[i].getUsername() == username) {
                 this.players.splice(i, 1);
             }
         }

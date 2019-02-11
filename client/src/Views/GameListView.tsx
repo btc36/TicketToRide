@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as I from "../ViewModels/IGameListViewModel";
 
-export default (component: I.IGameListViewModel) => {
+export const GameListView = (component: I.IGameListViewModel) => {
   const rows = [];
   const gameList = component.state.gameList.getGames();
   for (let i = 0; i < gameList.length; i++) {
