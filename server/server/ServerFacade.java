@@ -93,12 +93,13 @@ public class ServerFacade
         );
         commandsForClient.add(command);
         return commandsForClient;
-    }
 
+    }
     public List<GenericCommand> createGame(String username, String gamename, String max)
     {
         Boolean status = false;
         String message = "";
+        String gameID = "";
         try
         {
             int maxSize = Integer.parseInt(max);
@@ -116,6 +117,7 @@ public class ServerFacade
                     ServerModel.getInstance().addGame(game);
                     status = true;
                     message = "success";
+                    gameID = game.getGameID();
                 }
                 else { message = "user does not exist"; }
             }
@@ -134,7 +136,13 @@ public class ServerFacade
                     new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                     new Object[]{status, message, games}
             );
+            GenericCommand command2 = new GenericCommand(
+                    _className, "joinGame",
+                    new String[]{_paramTypeString},
+                    new Object[]{true, "success", gameID}
+            );
             commandsForClient.add(command);
+            commandsForClient.add(command2);
             return commandsForClient;
         }
         //Integer.getInteger(max);

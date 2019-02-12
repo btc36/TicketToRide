@@ -7,7 +7,7 @@ export const GameLobbyView  = (component: I.IGameLobbyViewModel) => {
   const num = playerList.length;
   for (let i = 0; i < playerList.length; i++) {
     players.push(
-      <li key={i}>{playerList[i].username}</li>
+      <li>{playerList[i]}</li>
     );
   }
   return (

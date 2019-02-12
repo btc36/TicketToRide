@@ -3,15 +3,25 @@ import { GameListView } from "../Views/GameListView";
 import { initialState, State, IGameListViewModel } from "./IGameListViewModel";
 import { IObserver } from "./IObserver";
 import { ViewModelProps } from "./ViewModelProps";
+import { Poller } from "../Server/Poller";
 
 export class GameListViewModel extends React.Component<ViewModelProps, State> implements IGameListViewModel, IObserver {
 
   state: State;
+  poller: Poller;
 
   constructor(props: ViewModelProps) {
     super(props);
     this.state = initialState;
     this.props.services.getGameList();
+    console.log(this.props.services);
+    console.log(this);
+    this.poller = new Poller("getGameList", [], 2000, this.props.services);
+    this.poller.start();
+  }
+
+  componentWillUnmount(){
+    this.poller.stop();
   }
 
   update = (updateType: string, data: any) => {
