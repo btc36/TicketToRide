@@ -30,8 +30,10 @@ class MainComponent extends React.Component<any, any> {
       return this.loginRegisterViewModel;
     } else if (this.state.page == "gameList") {
       return this.gameListViewModel;
-    } else if (this.state.page == "gameLobby") {
+    } else if (this.state.page == "lobbyGame") {
       return this.gameLobbyViewModel;
+    } else {
+      return <p>Page {this.state.page} not found.</p>;
     }
   }
 }

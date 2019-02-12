@@ -81,7 +81,7 @@ public class ServerFacade
             {
                 ServerModel.getInstance().registerPlayer(player);
                 registerStatus = true;
-                message = "Congratulations, register successful";
+                message = username;
             }
         }
 
@@ -111,19 +111,11 @@ public class ServerFacade
                 PlayerModel player = getPlayer(username);
                 if(player != null)
                 {
-                    if(player.getGameID() == null)
-                    {
-                        LobbyGameModel game = new LobbyGameModel(player,maxSize,gamename);
-                        game.setGamename(gamename);
-                        player.setGameID(game.getGameID());
-                        ServerModel.getInstance().addGame(game);
-                        status = true;
-                        message = "success";
-                    }
-                    else
-                    {
-                        message = "already part of another game";
-                    }
+                    LobbyGameModel game = new LobbyGameModel(player,maxSize,gamename);
+                    game.setGamename(gamename);
+                    ServerModel.getInstance().addGame(game);
+                    status = true;
+                    message = "success";
                 }
                 else { message = "user does not exist"; }
             }
@@ -169,18 +161,9 @@ public class ServerFacade
             if(game == null) { message = "invalid gameID"; }
             else if(game.getCurrentPlayerNum() > 4) { message = "game is full"; }
             //else if(game.getPlayerList().findPlayer(player)) { }
-            else if(player.getGameID() != null)
-            {
-                if(game.getPlayerList().findPlayer(player)) { message = "player already joined this game"; }
-                else { message = "player is already part of another game"; }
-            }
-            else
-            {
-                player.setGameID(gameID);
-                game.addPlayer(player);
-                status = true;
-                message = "join successful";
-            }
+            game.addPlayer(player);
+            status = true;
+            message = "join successful";
         }
 
         System.out.println(message);
@@ -238,9 +221,9 @@ public class ServerFacade
         List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
-                _className, "getGameList",
+                _className, "updateGameList",
                 new String[]{_paramTypeBoolean, _paramTypeList},
-                new Object[]{true, games}
+                new Object[]{true, "", games}
         );
         commandsForClient.add(command);
         return commandsForClient;

@@ -47,8 +47,25 @@ export class ClientRoot implements ISubject {
         return games;
     }
 
+    getGameIdForUsername(username: string) {
+        let games = this.gameList.getGames();
+        for (let i = 0; i < games.length; i++) {
+            for (let j = 0; j < games[i].playerList.length; j++) {
+                if (games[i].playerList[j].username == username) {
+                    return games[i].gameID;
+                }
+            }
+        }
+    }
+
+    getPlayerList(gameId: string) {
+        let game = this.gameList.findGameById(gameId);
+        return game.getPlayerList();
+    }
+
     joinGame(gameId: string) {
-        this.myPlayer.setCurrentGame(gameId)
+        let game = this.gameList.findGameById(gameId);
+        game.addPlayer(this.myPlayer);
         this.transitionPage("lobbyGame");
     }
  

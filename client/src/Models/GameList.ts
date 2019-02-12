@@ -21,6 +21,14 @@ export class GameList {
         }
     }
 
+    findGameById(gameId: string): LobbyGame {
+        for (let i = 0; i < this.games.length; i++) {
+            if (this.games[i].getGameID() == gameId) {
+                return this.games[i];
+            }
+        }
+    }
+
     replaceGameList(newGameList: Array<LobbyGame>): void {
         this.games = newGameList;
     }

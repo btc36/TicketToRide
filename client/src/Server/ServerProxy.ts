@@ -18,11 +18,11 @@ export class ServerProxy {
         this.communicator.sendCommand(command);
     }
     public createGame(username: string, numPlayers: number, gameName: string){
-        const command = new ClientCommandObjects("server.ServerFacade", "createGame", ["java.lang.String", "java.lang.String", "java.lang.Integer"], [username, gameName, numPlayers]);
+        const command = new ClientCommandObjects("server.ServerFacade", "createGame", ["java.lang.String", "java.lang.String", "java.lang.String"], [username, gameName, String(numPlayers)]);
         this.communicator.sendCommand(command);
     }
     public joinGame(username: string, gameName: string, gameId: string){
-        const command = new ClientCommandObjects("server.ServerFacade", "joinGame", ["java.lang.String", "java.lang.String", "java.lang.String"], [username, gameName, gameId]);
+        const command = new ClientCommandObjects("server.ServerFacade", "joinGame", ["java.lang.String", "java.lang.String"], [username, gameId]);
         this.communicator.sendCommand(command);
     }
     public startGame(gameId: string){

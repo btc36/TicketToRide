@@ -1,6 +1,9 @@
 import { ClientCommandObjects } from "./ClientCommandObjects";
 import { Serializer } from "./Serializer";
 import { ExternalClientFacade } from "../Services/ExternalClientFacade";
+import { GameList } from "../Models/GameList";
+import { Player } from "../Models/Player";
+import { LobbyGame } from "../Models/LobbyGame";
 
 export class ClientCommunicator {
     serverUrl: string;
@@ -47,8 +50,25 @@ export class ClientCommunicator {
           this.clientFacade.registerResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
         }
         else if (commands[i]._methodName == "updateGameList"){
-          console.log(commands[i]._paramValues[2]);
-          this.clientFacade.updateGameList(commands[i]._paramValues[0], commands[i]._paramValues[2], commands[i]._paramValues[1]);
+          const games = commands[i]._paramValues[2];
+          const gameList = new GameList();
+          for (let i = 0; i < games.length; i++) {
+            const gameID = games[i].gameID;
+            const name = games[i].gamename;
+            console.log(name);
+            console.log(games[i]);
+            const host = new Player(games[i].host);
+            const maxPlayers = games[i].maxPlayers;
+            const game = new LobbyGame(gameID, host, name, maxPlayers);
+
+            const players = games[i].playerList.playerList;
+            for (let j = 0; j < players.length; j++) {
+              const player = new Player(players[j].username);
+              game.addPlayer(player);
+            }
+            gameList.addGame(game);
+          }
+          this.clientFacade.updateGameList(commands[i]._paramValues[0], gameList, commands[i]._paramValues[1]);
         }
         else if (commands[i]._methodName == "joinGame"){
           this.clientFacade.joinGame(commands[i]._paramValues[2]);
