@@ -9,12 +9,13 @@ export class LobbyGame {
     host: Player;
     
 
-    constructor(gameID: string, host: Player, name: string, maxPlayers: number) {
+    constructor(gameID: string, host: Player, name: string, maxPlayers: number = 5) {
         this.gameID = gameID;
         this.host = host;
         this.gamename = name;
         this.maxPlayer = maxPlayers;
         this.playerList = new Array<Player>();
+        this.playerList.push(host);
     }
 
     getPlayerList(): Array<Player> {

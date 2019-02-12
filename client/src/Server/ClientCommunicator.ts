@@ -55,8 +55,10 @@ export class ClientCommunicator {
           for (let i = 0; i < games.length; i++) {
             const gameID = games[i].gameID;
             const name = games[i].gamename;
+            console.log(name);
+            console.log(games[i]);
             const host = new Player(games[i].host);
-            const maxPlayers = games[i].maxPlayer;
+            const maxPlayers = games[i].maxPlayers;
             const game = new LobbyGame(gameID, host, name, maxPlayers);
 
             const players = games[i].playerList.playerList;
