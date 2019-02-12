@@ -15,7 +15,6 @@ export class LobbyGame {
         this.gamename = name;
         this.maxPlayer = maxPlayers;
         this.playerList = new Array<Player>();
-        this.playerList.push(host);
     }
 
     getPlayerList(): Array<Player> {
