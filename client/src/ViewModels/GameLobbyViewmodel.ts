@@ -12,6 +12,10 @@ export class GameLobbyViewModel extends React.Component<ViewModelProps, State> i
   constructor(props: ViewModelProps) {
     super(props);
     this.gameId = this.props.services.getCurrentGameId();
+    this.props.services.getGameList();
+    this.state = {
+      playerList: this.props.services.getPlayerList(this.gameId)
+    };
   }
 
   update = (updateType: string, data: any) => {
