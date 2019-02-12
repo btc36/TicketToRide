@@ -20,11 +20,11 @@ public class LobbyGameModel
     {
         playerList = new PlayerListModel();
         gameID = UUID.randomUUID().toString().substring(0,4);
-        currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;
         this.host = host;
         this.gamename = gamename;
         playerList.addPlayer(this.host);
+        currentPlayerNum = playerList.getPlayerList().size();
         state = State.WAITING;
     }
     public void addPlayer(PlayerModel player)
