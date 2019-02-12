@@ -137,12 +137,7 @@ public class ServerFacade
             commandsForClient.add(command);
             return commandsForClient;
         }
-        
         //Integer.getInteger(max);
-
-       
-
-      
     }
     public List<GenericCommand> joinGame(String username, String gameID)
     {
@@ -160,10 +155,13 @@ public class ServerFacade
             game = ServerModel.getInstance().getGameByID(gameID);
             if(game == null) { message = "invalid gameID"; }
             else if(game.getCurrentPlayerNum() > 4) { message = "game is full"; }
-            //else if(game.getPlayerList().findPlayer(player)) { }
-            game.addPlayer(player);
-            status = true;
-            message = "join successful";
+            else if(game.getPlayerList().findPlayer(username)) { message = "you already joined this game";}
+            else
+            {
+                game.addPlayer(player);
+                status = true;
+                message = "join successful";
+            }
         }
 
         System.out.println(message);
