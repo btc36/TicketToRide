@@ -93,8 +93,8 @@ public class ServerFacade
         );
         commandsForClient.add(command);
         return commandsForClient;
-
     }
+
     public List<GenericCommand> createGame(String username, String gamename, String max)
     {
         Boolean status = false;
