@@ -16,8 +16,11 @@ export class Poller {
     }
 
     public start() {
+        console.log("Polling")
         if (this.method == "getGameList"){
-            this.polling = setInterval(this.facade.getGameList, this.frequency);
+            let that = this;
+            //this.polling = setInterval(that.facade.getGameList, that.frequency);
+            this.polling = setInterval(() => { that.facade.getGameList() }, that.frequency);
         }
     }
 
