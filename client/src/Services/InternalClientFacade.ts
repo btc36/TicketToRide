@@ -24,8 +24,6 @@ export class InternalClientFacade {
     }
 
     getGameList(){
-        console.log("get game list");
-        console.log(this);
         this.proxy.getGameList();
     }
 
