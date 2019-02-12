@@ -9,7 +9,7 @@ export class LobbyGame {
     host: Player;
     
 
-    constructor(gameID: string, host: Player, name: string, maxPlayers: number = 5) {
+    constructor(gameID: string, host: Player, name: string, maxPlayers: number) {
         this.gameID = gameID;
         this.host = host;
         this.gamename = name;
