@@ -27,6 +27,14 @@ export class InternalClientFacade {
         this.proxy.getGameList();
     }
 
+    getPlayerList(gameId: string) {
+        return this.root.getPlayerList(gameId);
+    }
+
+    getCurrentGameId(): string {
+        return this.root.getGameIdForUsername(this.root.getCurrentUser());
+    }
+
     joinGame(gameName: string, gameId: string) {
     	  const me = this.root.getCurrentUser();
         this.proxy.joinGame(me, gameName, gameId);

@@ -16,8 +16,8 @@ export class ExternalClientFacade {
         this.root.registerResults(wasSuccessful, errorMessage);
     }
 
-    updateGameList(games: GameList) {
-        this.root.updateGameList(games);
+    updateGameList(wasSuccessful: boolean, games: GameList, errorMessage: string) {
+        this.root.updateGameList(wasSuccessful, games, errorMessage);
     }
 
     transitionPage(pageName: string) {

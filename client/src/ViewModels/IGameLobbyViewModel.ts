@@ -1,4 +1,6 @@
-const initialPlayerList: string[] = [];
+import { Player } from "../Models/Player";
+
+const initialPlayerList: Array<Player> = [];
 
 export const initialState = {
   playerList: initialPlayerList

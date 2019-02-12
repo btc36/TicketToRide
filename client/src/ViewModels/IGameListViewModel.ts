@@ -6,7 +6,8 @@ export const initialState = {
   gameList: initialGameList,
   selectedGame: -1,
   createGameName: "",
-  createGameNumPlayers: 0
+  createGameNumPlayers: 0,
+  errorMessage: ""
 };
 
 export type State = Readonly<typeof initialState>;

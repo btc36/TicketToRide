@@ -19,20 +19,21 @@ export const initialState = {
 export type State = Readonly<typeof initialState>;
 
 class MainComponent extends React.Component<any, any> {
-  state: State;
 
-  constructor(props: any) {
-    super(props);
-    this.state = initialState;
-  }
+  state: State = initialState;
+  loginRegisterViewModel: JSX.Element = <LoginRegisterViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  gameListViewModel: JSX.Element = <GameListViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
-      return <LoginRegisterViewModel main={this} services={this.props.services} />;
+      return this.loginRegisterViewModel;
     } else if (this.state.page == "gameList") {
-      return <GameListViewModel main={this} services={this.props.services} />;
-    } else if (this.state.page == "gameLobby") {
-      return <GameLobbyViewModel main={this} services={this.props.services} />;
+      return this.gameListViewModel;
+    } else if (this.state.page == "lobbyGame") {
+      return this.gameLobbyViewModel;
+    } else {
+      return <p>Page {this.state.page} not found.</p>;
     }
   }
 }
@@ -45,6 +46,6 @@ const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
 
 ReactDOM.render(
-    <MainComponent services={internalClientFacade}/>,
+    <MainComponent services={internalClientFacade} root={root}/>,
     document.getElementById("example")
 );

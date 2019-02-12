@@ -16,6 +16,7 @@ export const GameListView = (component: I.IGameListViewModel) => {
   }
   return (
     <div className="view">
+      <p>{component.state.errorMessage}</p>
       <div className="half-partition">
         <table>
           <tbody>

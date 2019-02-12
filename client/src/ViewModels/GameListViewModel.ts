@@ -19,6 +19,8 @@ export class GameListViewModel extends React.Component<ViewModelProps, State> im
       this.props.main.setState({"page": data});      
     } else if (updateType == "updateGameList") {
       this.setState({"gameList": data});
+    } else if (updateType == "error") {
+      this.setState({"errorMessage": data});
     }
   }
 
@@ -29,8 +31,9 @@ export class GameListViewModel extends React.Component<ViewModelProps, State> im
 
   joinGameButtonPressed = (e: any) => {
     e.preventDefault();
-    const gameName: string = String(this.state.gameList[this.state.selectedGame].name);
-    const gameId: string = String(this.state.gameList[this.state.selectedGame].id);
+    console.log(this.state);
+    const gameName: string = String(this.state.gameList.games[this.state.selectedGame].gamename);
+    const gameId: string = String(this.state.gameList.games[this.state.selectedGame].gameID);
     this.props.services.joinGame(gameName, gameId);
   }
 
