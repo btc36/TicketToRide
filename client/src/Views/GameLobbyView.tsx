@@ -4,6 +4,7 @@ import * as I from "../ViewModels/IGameLobbyViewModel";
 export const GameLobbyView  = (component: I.IGameLobbyViewModel) => {
   const players = [];
   const playerList = component.state.playerList;
+  const num = playerList.length;
   for (let i = 0; i < playerList.length; i++) {
     players.push(
       <li key={i}>{playerList[i].username}</li>
@@ -13,6 +14,7 @@ export const GameLobbyView  = (component: I.IGameLobbyViewModel) => {
     <div className="view">
       <div className="half-partition">
         <p><b><u>Players</u></b></p>
+        {num}
         <ul>
           {players}
         </ul>
