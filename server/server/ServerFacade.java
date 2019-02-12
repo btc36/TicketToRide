@@ -99,6 +99,7 @@ public class ServerFacade
     {
         Boolean status = false;
         String message = "";
+        String gameID = "";
         try
         {
             int maxSize = Integer.parseInt(max);
@@ -116,6 +117,7 @@ public class ServerFacade
                     ServerModel.getInstance().addGame(game);
                     status = true;
                     message = "success";
+                    gameID = game.getGameID();
                 }
                 else { message = "user does not exist"; }
             }
@@ -134,15 +136,16 @@ public class ServerFacade
                     new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                     new Object[]{status, message, games}
             );
+            GenericCommand command2 = new GenericCommand(
+                    _className, "joinGame",
+                    new String[]{_paramTypeString},
+                    new Object[]{true, "success", gameID}
+            );
             commandsForClient.add(command);
+            commandsForClient.add(command2);
             return commandsForClient;
         }
-        
         //Integer.getInteger(max);
-
-       
-
-      
     }
     public List<GenericCommand> joinGame(String username, String gameID)
     {
@@ -160,10 +163,13 @@ public class ServerFacade
             game = ServerModel.getInstance().getGameByID(gameID);
             if(game == null) { message = "invalid gameID"; }
             else if(game.getCurrentPlayerNum() > 4) { message = "game is full"; }
-            //else if(game.getPlayerList().findPlayer(player)) { }
-            game.addPlayer(player);
-            status = true;
-            message = "join successful";
+            else if(game.getPlayerList().findPlayer(username)) { message = "you already joined this game";}
+            else
+            {
+                game.addPlayer(player);
+                status = true;
+                message = "join successful";
+            }
         }
 
         System.out.println(message);
