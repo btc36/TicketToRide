@@ -1,38 +1,38 @@
 import {Player} from "./Player"
 
 export class Session {
-   // authToken: string;
-    currentPage: string;
-    loggedInUser: Player;
-    
-    constructor() {
-        //this.authToken = auth;
-       this.currentPage = "Login";
-       this.loggedInUser = null;
-    }
+  // authToken: string;
+  currentPage: string;
+  loggedInUser: Player;
 
-   /* get getAuth(): string {
+  constructor() {
+    //this.authToken = auth;
+    this.currentPage = "Login";
+    this.loggedInUser = null;
+  }
+
+  /* get getAuth(): string {
         return this.authToken;
     }
 
     set setAuth(auth: string) {
         this.authToken = auth;
     }
-    */
-    get getCurrentPage(): string {
-        return this.currentPage;
-    }
+   */
+  get getCurrentPage(): string {
+    return this.currentPage;
+  }
 
-    setCurrentPage(page: string) {
-        this.currentPage = page;
-    }
+  setCurrentPage(page: string) {
+    this.currentPage = page;
+  }
 
-    get getLoggedInUser(): Player {
-        return this.loggedInUser;
-    }
+  get getLoggedInUser(): Player {
+    return this.loggedInUser;
+  }
 
-    setLoggedInUser(player: Player) {
-        this.loggedInUser = player;
-    }
+  setLoggedInUser(player: Player) {
+    this.loggedInUser = player;
+  }
 
 }

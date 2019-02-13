@@ -3,38 +3,38 @@ import { LobbyGame } from "../Models/LobbyGame";
 import { GameList } from "../Models/GameList";
 
 export class ExternalClientFacade {
-    root: ClientRoot;
+  root: ClientRoot;
 
-    constructor(root: ClientRoot) {
-        this.root = root;
-    }
-    loginResults(wasSuccessful: boolean, errorMessage: string) {
-        this.root.loginResults(wasSuccessful, errorMessage);
-    }
+  constructor(root: ClientRoot) {
+    this.root = root;
+  }
+  loginResults(wasSuccessful: boolean, errorMessage: string) {
+    this.root.loginResults(wasSuccessful, errorMessage);
+  }
 
-    registerResults(wasSuccessful: boolean, errorMessage: string) {
-        this.root.registerResults(wasSuccessful, errorMessage);
-    }
+  registerResults(wasSuccessful: boolean, errorMessage: string) {
+    this.root.registerResults(wasSuccessful, errorMessage);
+  }
 
-    updateGameList(wasSuccessful: boolean, games: GameList, errorMessage: string) {
-        this.root.updateGameList(wasSuccessful, games, errorMessage);
-    }
+  updateGameList(wasSuccessful: boolean, games: GameList, errorMessage: string) {
+    this.root.updateGameList(wasSuccessful, games, errorMessage);
+  }
 
-    transitionPage(pageName: string) {
-        this.root.transitionPage(pageName);
-    }
+  transitionPage(pageName: string) {
+    this.root.transitionPage(pageName);
+  }
 
-    getGameList(): Array<LobbyGame> {
-        let gameList = this.root.getGameList();
-        return gameList;
-    }
+  getGameList(): Array<LobbyGame> {
+    let gameList = this.root.getGameList();
+    return gameList;
+  }
 
-    joinGame(gameId: string) {
-        this.root.joinGame(gameId);
-    }
+  joinGame(gameId: string) {
+    this.root.joinGame(gameId);
+  }
 
-    startGame(gameId:string){
-    	this.root.startGame(gameId);
-    }
+  startGame(gameId:string){
+    this.root.startGame(gameId);
+  }
 
 }

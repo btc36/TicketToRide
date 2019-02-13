@@ -2,46 +2,46 @@ import { ServerProxy } from "../Server/ServerProxy";
 import { ClientRoot } from "../Models/ClientRoot";
 
 export class InternalClientFacade {
-    proxy: ServerProxy;
-    root: ClientRoot;
+  proxy: ServerProxy;
+  root: ClientRoot;
 
-    constructor(proxy:ServerProxy,root:ClientRoot) {
-        this.proxy = proxy;
-        this.root = root;
-    }
+  constructor(proxy:ServerProxy,root:ClientRoot) {
+    this.proxy = proxy;
+    this.root = root;
+  }
 
-    login(username: string, password: string) {
-        this.proxy.login(username, password);
-    }
+  login(username: string, password: string) {
+    this.proxy.login(username, password);
+  }
 
-    register(username: string, password: string) {
-        this.proxy.register(username, password, "YES");
-    }
+  register(username: string, password: string) {
+    this.proxy.register(username, password, "YES");
+  }
 
-    createGame(numPlayers: number, gameName: string) {
-    	  const me = this.root.getCurrentUser();
-        this.proxy.createGame(me, numPlayers, gameName);
-    }
+  createGame(numPlayers: number, gameName: string) {
+    const me = this.root.getCurrentUser();
+    this.proxy.createGame(me, numPlayers, gameName);
+  }
 
-    getGameList(){
-        this.proxy.getGameList();
-    }
+  getGameList(){
+    this.proxy.getGameList();
+  }
 
-    getPlayerList(gameId: string) {
-        return this.root.getPlayerList(gameId);
-    }
+  getPlayerList(gameId: string) {
+    return this.root.getPlayerList(gameId);
+  }
 
-    getCurrentGameId(): string {
-        return this.root.getGameIdForUsername(this.root.getCurrentUser());
-    }
+  getCurrentGameId(): string {
+    return this.root.getGameIdForUsername(this.root.getCurrentUser());
+  }
 
-    joinGame(gameName: string, gameId: string) {
-    	  const me = this.root.getCurrentUser();
-        this.proxy.joinGame(me, gameName, gameId);
-   }
+  joinGame(gameName: string, gameId: string) {
+    const me = this.root.getCurrentUser();
+    this.proxy.joinGame(me, gameName, gameId);
+  }
 
-    startGame(gameId:string){
-    	this.proxy.startGame(gameId);
-    }
+  startGame(gameId:string){
+    this.proxy.startGame(gameId);
+  }
 
 }

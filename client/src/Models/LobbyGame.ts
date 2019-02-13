@@ -1,55 +1,55 @@
 import { Player } from "./Player"
 
 export class LobbyGame {
-    gameID: string;
-    gamename: string;
-    playerList: Array<Player>;
-    maxPlayer: number;
-    currentPlayerNum: number;
-    host: Player;
-    
+  gameID: string;
+  gamename: string;
+  playerList: Array<Player>;
+  maxPlayer: number;
+  currentPlayerNum: number;
+  host: Player;
 
-    constructor(gameID: string, host: Player, name: string, maxPlayers: number) {
-        this.gameID = gameID;
-        this.host = host;
-        this.gamename = name;
-        this.maxPlayer = maxPlayers;
-        this.playerList = new Array<Player>();
-    }
 
-    getPlayerList(): Array<Player> {
-        return this.playerList;
-    }
+  constructor(gameID: string, host: Player, name: string, maxPlayers: number) {
+    this.gameID = gameID;
+    this.host = host;
+    this.gamename = name;
+    this.maxPlayer = maxPlayers;
+    this.playerList = new Array<Player>();
+  }
 
-    getGameID(): string {
-        return this.gameID;
-    }
+  getPlayerList(): Array<Player> {
+    return this.playerList;
+  }
 
-    getGameName(): string {
-        return this.gamename;
-    }
+  getGameID(): string {
+    return this.gameID;
+  }
 
-    getMaxPlayers(): number {
-        return this.maxPlayer;
-    }
+  getGameName(): string {
+    return this.gamename;
+  }
 
-    getNumPlayers(): number {
-        return this.playerList.length;
-    }
+  getMaxPlayers(): number {
+    return this.maxPlayer;
+  }
 
-    addPlayer(player: Player) {
-        //If this would push it over the max, throw an error
-        if (this.getNumPlayers() == this.maxPlayer) {
-            throw Error("You already have the maximum number of Players");
-        }
-        this.playerList.push(player);
-    }
+  getNumPlayers(): number {
+    return this.playerList.length;
+  }
 
-    removePlayer(username: string) {
-        for (var i = this.playerList.length - 1; i >= 0; --i) {
-            if (this.playerList[i].getUsername() == username) {
-                this.playerList.splice(i, 1);
-            }
-        }
+  addPlayer(player: Player) {
+    //If this would push it over the max, throw an error
+    if (this.getNumPlayers() == this.maxPlayer) {
+      throw Error("You already have the maximum number of Players");
     }
+    this.playerList.push(player);
+  }
+
+  removePlayer(username: string) {
+    for (var i = this.playerList.length - 1; i >= 0; --i) {
+      if (this.playerList[i].getUsername() == username) {
+        this.playerList.splice(i, 1);
+      }
+    }
+  }
 }

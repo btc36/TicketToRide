@@ -46,6 +46,6 @@ const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
 
 ReactDOM.render(
-    <MainComponent services={internalClientFacade} root={root}/>,
-    document.getElementById("example")
+  <MainComponent services={internalClientFacade} root={root}/>,
+  document.getElementById("example")
 );
