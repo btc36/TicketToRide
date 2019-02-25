@@ -1,5 +1,4 @@
 package server;
-
 import command.GenericCommand;
 import model.*;
 import org.ietf.jgss.GSSName;
@@ -9,7 +8,6 @@ import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.List;
-//
 
 public class ServerFacade
 {
@@ -266,6 +264,7 @@ public class ServerFacade
     }
     private List<LobbyGameModel> getGameAsList()
     {
+
         return ServerModel.getInstance().getAllGames().getGameList();
     }
 }
