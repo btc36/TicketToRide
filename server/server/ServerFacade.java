@@ -267,4 +267,10 @@ public class ServerFacade
 
         return ServerModel.getInstance().getAllGames().getGameList();
     }
+    private void test()
+    {
+        Deck deck = new DestinationCardDeck();
+        deck.add(new TrainCard());
+
+    }
 }
