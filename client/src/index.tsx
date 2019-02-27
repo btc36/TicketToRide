@@ -22,8 +22,8 @@ class MainComponent extends React.Component<any, any> {
 
   state: State = initialState;
   loginRegisterViewModel: JSX.Element = <LoginRegisterViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  gameListViewModel: JSX.Element = <GameListViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
