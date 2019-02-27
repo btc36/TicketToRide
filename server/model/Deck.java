@@ -2,23 +2,23 @@ package model;
 
 import java.util.*;
 
-abstract public class Deck
+abstract public class Deck<T>
 {
-    Queue<Card> deck;
+    Queue<T> deck;
 
     public Deck()
     {
         deck = new LinkedList<>();
     }
-    public Queue<Card> getCards()
+    public Queue<T> getCards()
     {
         return deck;
     }
-    public void add(Card card)
+    public void add(T card)
     {
         deck.add(card);
     }
-    public Card poll()
+    public T poll()
     {
         return deck.isEmpty() ? null : deck.poll();
     }
