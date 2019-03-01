@@ -7,6 +7,7 @@ import org.ietf.jgss.GSSName;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ServerFacade
@@ -19,6 +20,7 @@ public class ServerFacade
     private final String _paramTypeCharacter = "java.lang.Character";
     private final String _paramTypeList = "java.util.List";
     private final String _paramTypeMap = "java.util.Map";
+    private final String _paramTypeDate = "java.util.Date";
     private final String _paramTypeGame = "LobbyGameModel";
     private final String usernameError = "username empty";
     private final String passwordError = "password empty";
@@ -230,6 +232,43 @@ public class ServerFacade
                 new Object[]{true, "", games}
         );
         commandsForClient.add(command);
+        return commandsForClient;
+    }
+
+    //TODO: DON"T WE NEED GAME ID? TO ASSOCIATE WITH WHICH CHAT?
+    //TODO: YOU WANT MESSAGE AND TIME AND USER TO BE RETURNED BACK?.... RATHER THAN THE CHAT HISTORY?..
+    public List<GenericCommand> sendChat(String message, Date time, String username)
+    {
+        String gameID = "";
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GenericCommand command;
+        ChatRoom room = ServerModel.getInstance().getChatRoombyID(gameID);
+        if(room != null)
+        {
+            ChatMessage chatMessage = new ChatMessage(message, time, username);
+            room.addChat(chatMessage);
+        }
+        command = new GenericCommand(
+                _className, "receiveChatCommand",
+                new String[]{_paramTypeString, _paramTypeString},
+                new Object[]{true, "", room}
+        );
+
+        return commandsForClient;
+    }
+
+    public List<GenericCommand> drawDestinationCardCommand()
+    {
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GenericCommand command;
+
+        return commandsForClient;
+    }
+    public List<GenericCommand> discardDestinationCardCommand()
+    {
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GenericCommand command;
+
         return commandsForClient;
     }
 
