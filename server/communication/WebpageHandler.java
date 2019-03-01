@@ -29,6 +29,10 @@ import com.sun.net.httpserver.*;
                     if(uri.toString().equals("/") || uri.toString().equals("/index.html")) {
                         desiredFile = "index.html";
                     }
+                    else {
+                        System.out.println("Requested file: " + uri.toString());
+                        desiredFile = uri.toString();
+                    }
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 
                     //check to see if file exists.
