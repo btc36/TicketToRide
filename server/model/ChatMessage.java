@@ -3,43 +3,37 @@ package model;
 import java.util.Date;
 
 public class ChatMessage {
-    String plyaerName;
+    String username;
     String message;
-    Date timeStamp;
+    Date time;
 
     public ChatMessage()
     {
 
     }
-    public ChatMessage(String playerName, String message, Date timeStamp)
+    public ChatMessage(String message, Date time, String username)
     {
-        this.plyaerName = playerName;
+        this.username = username;
         this.message = message;
-        this.timeStamp = timeStamp;
+        this.time = time;
     }
 
-
-    public String getPlyaerName() {
-        return plyaerName;
-    }
-
-    public void setPlyaerName(String plyaerName) {
-        this.plyaerName = plyaerName;
+    public String getPlyaerName() { return username; }
+    public void setPlyaerName(String username) {
+        this.username = username;
     }
 
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
         this.message = message;
     }
 
     public Date getTimeStamp() {
-        return timeStamp;
+        return time;
     }
-
     public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+        this.time = time;
     }
 }

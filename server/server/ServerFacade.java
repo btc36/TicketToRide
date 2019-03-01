@@ -1,4 +1,5 @@
 package server;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import command.GenericCommand;
 import model.*;
 import org.ietf.jgss.GSSName;
@@ -7,9 +8,10 @@ import org.ietf.jgss.GSSName;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ServerFacade
+public class ServerFacade extends Facade
 {
     private String _className = "ExternalClientFacade";
     private final String _paramTypeString = "java.lang.String";
@@ -19,6 +21,7 @@ public class ServerFacade
     private final String _paramTypeCharacter = "java.lang.Character";
     private final String _paramTypeList = "java.util.List";
     private final String _paramTypeMap = "java.util.Map";
+    private final String _paramTypeDate = "java.util.Date";
     private final String _paramTypeGame = "LobbyGameModel";
     private final String usernameError = "username empty";
     private final String passwordError = "password empty";
@@ -181,8 +184,8 @@ public class ServerFacade
         );
         commandsForClient.add(command);
         return commandsForClient;
-
     }
+
     public List<GenericCommand> startGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -233,44 +236,90 @@ public class ServerFacade
         return commandsForClient;
     }
 
-    private boolean isInputValid(String input) // empty? or not?
-    {
-        if(input == null) return false;
-        if(input.isEmpty()) return false;
-        return true;
-    }
-    private boolean findPlayer(PlayerModel player)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        if(allPlayers.findPlayer(player))
-            return true;
-        else
-            return false;
-    }
-    private PlayerModel getPlayer(String username)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        PlayerModel player = allPlayers.getPlayerByUsername(username);
-        return player;
-    }
-    private boolean playerExists(String username)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        PlayerModel player = allPlayers.getPlayerByUsername(username);
-        if(player != null)
-            return true;
-        else
-            return false;
-    }
-    private List<LobbyGameModel> getGameAsList()
-    {
 
-        return ServerModel.getInstance().getAllGames().getGameList();
-    }
-    private void test()
+    /**
+    @param chatMessage, timestamp, username, gameID
+    @return command that contains success, result message, gameID,
+    and all of the chat history associated with the gameID
+     */
+    public List<GenericCommand> sendChat(String chatMessage, Date time, String username, String gameID)
     {
-        Deck deck = new DestinationCardDeck();
-        deck.add(new TrainCard());
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GenericCommand command;
+        ChatRoom room = null;
 
+        if(!playerExists(username)) message = "invalid username";
+        else if(!gameExists(gameID)) message = "invalid gameID";
+        else
+        {
+            success = true;
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
+            if(room == null) // initialize
+            {
+                room = new ChatRoom(gameID);
+                ServerModel.getInstance().addChatRoom(room);
+            }
+            ChatMessage chat = new ChatMessage(chatMessage, time, username);
+            room.addChat(chat);
+        }
+
+        command = new GenericCommand(
+                _className, "receiveChatCommand",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, room}
+        );
+
+        commandsForClient.add(command);
+        return commandsForClient;
     }
+
+
+
+//    private boolean isInputValid(String input) // empty? or not?
+//    {
+//        if(input == null) return false;
+//        if(input.isEmpty()) return false;
+//        return true;
+//    }
+//    private boolean findPlayer(PlayerModel player)
+//    {
+//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+//        if(allPlayers.findPlayer(player))
+//            return true;
+//        else
+//            return false;
+//    }
+//    private PlayerModel getPlayer(String username)
+//    {
+//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+//        PlayerModel player = allPlayers.getPlayerByUsername(username);
+//        return player;
+//    }
+//    private boolean playerExists(String username)
+//    {
+//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+//        PlayerModel player = allPlayers.getPlayerByUsername(username);
+//        if(player != null)
+//            return true;
+//        else
+//            return false;
+//    }
+//    private boolean gameExists(String gameID)
+//    {
+//        LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
+//        return game != null;
+//    }
+//    private List<LobbyGameModel> getGameAsList()
+//    {
+//
+//        return ServerModel.getInstance().getAllGames().getGameList();
+//    }
+//    private void test()
+//    {
+//        Deck deck = new DestinationCardDeck();
+//        deck.add(new TrainCard());
+//
+//    }
 }

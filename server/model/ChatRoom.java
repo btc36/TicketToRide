@@ -20,14 +20,24 @@ public class ChatRoom
         messages = new ArrayList<>();
     }
 
-    public void getChatHistory()
-    {
-
-    }
     public void addChat(ChatMessage message)
     {
         messages.add(message);
     }
 
+    public List<ChatMessage> getMessages() {
+        return messages;
+    }
 
+    public void setMessages(List<ChatMessage> messages) {
+        this.messages = messages;
+    }
+
+    public String getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
+    }
 }
