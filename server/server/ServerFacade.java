@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ServerFacade
+public class ServerFacade extends Facade
 {
     private String _className = "ExternalClientFacade";
     private final String _paramTypeString = "java.lang.String";
@@ -184,8 +184,8 @@ public class ServerFacade
         );
         commandsForClient.add(command);
         return commandsForClient;
-
     }
+
     public List<GenericCommand> startGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -236,8 +236,12 @@ public class ServerFacade
         return commandsForClient;
     }
 
-    //TODO: DON"T WE NEED GAME ID? TO ASSOCIATE WITH WHICH CHAT?
-    //TODO: YOU WANT MESSAGE AND TIME AND USER TO BE RETURNED BACK?.... RATHER THAN THE CHAT HISTORY?..
+
+    /**
+    @param chatMessage, timestamp, username, gameID
+    @return command that contains success, result message, gameID,
+    and all of the chat history associated with the gameID
+     */
     public List<GenericCommand> sendChat(String chatMessage, Date time, String username, String gameID)
     {
         String message = "";
@@ -271,64 +275,51 @@ public class ServerFacade
         return commandsForClient;
     }
 
-    public List<GenericCommand> drawDestinationCardCommand()
-    {
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-        GenericCommand command;
 
-        return commandsForClient;
-    }
-    public List<GenericCommand> discardDestinationCardCommand()
-    {
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-        GenericCommand command;
 
-        return commandsForClient;
-    }
-
-    private boolean isInputValid(String input) // empty? or not?
-    {
-        if(input == null) return false;
-        if(input.isEmpty()) return false;
-        return true;
-    }
-    private boolean findPlayer(PlayerModel player)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        if(allPlayers.findPlayer(player))
-            return true;
-        else
-            return false;
-    }
-    private PlayerModel getPlayer(String username)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        PlayerModel player = allPlayers.getPlayerByUsername(username);
-        return player;
-    }
-    private boolean playerExists(String username)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        PlayerModel player = allPlayers.getPlayerByUsername(username);
-        if(player != null)
-            return true;
-        else
-            return false;
-    }
-    private boolean gameExists(String gameID)
-    {
-        LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
-        return game != null;
-    }
-    private List<LobbyGameModel> getGameAsList()
-    {
-
-        return ServerModel.getInstance().getAllGames().getGameList();
-    }
-    private void test()
-    {
-        Deck deck = new DestinationCardDeck();
-        deck.add(new TrainCard());
-
-    }
+//    private boolean isInputValid(String input) // empty? or not?
+//    {
+//        if(input == null) return false;
+//        if(input.isEmpty()) return false;
+//        return true;
+//    }
+//    private boolean findPlayer(PlayerModel player)
+//    {
+//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+//        if(allPlayers.findPlayer(player))
+//            return true;
+//        else
+//            return false;
+//    }
+//    private PlayerModel getPlayer(String username)
+//    {
+//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+//        PlayerModel player = allPlayers.getPlayerByUsername(username);
+//        return player;
+//    }
+//    private boolean playerExists(String username)
+//    {
+//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
+//        PlayerModel player = allPlayers.getPlayerByUsername(username);
+//        if(player != null)
+//            return true;
+//        else
+//            return false;
+//    }
+//    private boolean gameExists(String gameID)
+//    {
+//        LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
+//        return game != null;
+//    }
+//    private List<LobbyGameModel> getGameAsList()
+//    {
+//
+//        return ServerModel.getInstance().getAllGames().getGameList();
+//    }
+//    private void test()
+//    {
+//        Deck deck = new DestinationCardDeck();
+//        deck.add(new TrainCard());
+//
+//    }
 }
