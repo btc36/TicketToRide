@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,13 +9,14 @@ public class ServerModel
     private Map<String, PlayerModel> tokenToPlayerMap;
     private PlayerListModel allPlayers;
     private GameListModel allGames;
-    private List<ChatRoom> chatrooms;
+    private List<ChatRoom> allChatrooms;
 
     private static ServerModel _instance;
     private ServerModel()
     {
         allPlayers = new PlayerListModel();
         allGames = new GameListModel();
+        allChatrooms = new ArrayList<>();
     }
     public static ServerModel getInstance()
     {
@@ -59,10 +61,14 @@ public class ServerModel
     {
         allGames.addGame(game);
     }
-    public List<ChatRoom> getChatrooms() { return chatrooms;}
+    public void addChatRoom(ChatRoom chatRoom)
+    {
+        allChatrooms.add(chatRoom);
+    }
+    public List<ChatRoom> getChatrooms() { return allChatrooms;}
     public ChatRoom getChatRoombyID(String gameID)
     {
-        for(ChatRoom room : chatrooms)
+        for(ChatRoom room : allChatrooms)
         {
             if(room.getGameID().equals(gameID))
                 return room;

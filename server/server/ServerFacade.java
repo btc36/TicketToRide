@@ -1,4 +1,5 @@
 package server;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import command.GenericCommand;
 import model.*;
 import org.ietf.jgss.GSSName;
@@ -237,23 +238,36 @@ public class ServerFacade
 
     //TODO: DON"T WE NEED GAME ID? TO ASSOCIATE WITH WHICH CHAT?
     //TODO: YOU WANT MESSAGE AND TIME AND USER TO BE RETURNED BACK?.... RATHER THAN THE CHAT HISTORY?..
-    public List<GenericCommand> sendChat(String message, Date time, String username)
+    public List<GenericCommand> sendChat(String chatMessage, Date time, String username, String gameID)
     {
-        String gameID = "";
+        String message = "";
+        boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
         GenericCommand command;
-        ChatRoom room = ServerModel.getInstance().getChatRoombyID(gameID);
-        if(room != null)
+        ChatRoom room = null;
+
+        if(!playerExists(username)) message = "invalid username";
+        else if(!gameExists(gameID)) message = "invalid gameID";
+        else
         {
-            ChatMessage chatMessage = new ChatMessage(message, time, username);
-            room.addChat(chatMessage);
+            success = true;
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
+            if(room == null) // initialize
+            {
+                room = new ChatRoom(gameID);
+                ServerModel.getInstance().addChatRoom(room);
+            }
+            ChatMessage chat = new ChatMessage(chatMessage, time, username);
+            room.addChat(chat);
         }
+
         command = new GenericCommand(
                 _className, "receiveChatCommand",
-                new String[]{_paramTypeString, _paramTypeString},
-                new Object[]{true, "", room}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, room}
         );
 
+        commandsForClient.add(command);
         return commandsForClient;
     }
 
@@ -300,6 +314,11 @@ public class ServerFacade
             return true;
         else
             return false;
+    }
+    private boolean gameExists(String gameID)
+    {
+        LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
+        return game != null;
     }
     private List<LobbyGameModel> getGameAsList()
     {
