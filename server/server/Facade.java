@@ -53,14 +53,14 @@ public class Facade
         LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
         return game != null;
     }
+    public LobbyGameModel getGameByID(String gameID)
+    {
+        return ServerModel.getInstance().getAllGames().getGameByID(gameID);
+    }
     public List<LobbyGameModel> getGameAsList()
     {
 
         return ServerModel.getInstance().getAllGames().getGameList();
     }
-    private void test()
-    {
-        Deck deck = new DestinationCardDeck();
-        deck.add(new TrainCard());
-    }
+
 }
