@@ -47,7 +47,7 @@ public class GameFacade extends Facade
         DestinationCard card = new DestinationCard("", "", 4);
 
         Deck deck = getDestinationDeck("");
-        
+
 //        command = new GenericCommand(
 //                _className, "startGame",
 //                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
