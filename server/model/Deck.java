@@ -2,7 +2,7 @@ package model;
 
 import java.util.*;
 
-abstract public class Deck<T>
+public class Deck<T>
 {
     Queue<T> deck;
 
@@ -18,9 +18,32 @@ abstract public class Deck<T>
     {
         deck.add(card);
     }
+    // draw
     public T poll()
     {
         return deck.isEmpty() ? null : deck.poll();
     }
+    public void shuffle()
+    {
+        Collections.shuffle((LinkedList)deck);
+    }
 
+    public List<T> getThree()
+    {
+        List<T> cards = new ArrayList<>();
+        while(!deck.isEmpty() && cards.size() < 3)
+        {
+            cards.add(deck.poll());
+        }
+        return cards;
+    }
+    public List<T> getFive()
+    {
+        List<T> cards = new ArrayList<>();
+        while(!deck.isEmpty() && cards.size() < 5)
+        {
+            cards.add(deck.poll());
+        }
+        return cards;
+    }
 }

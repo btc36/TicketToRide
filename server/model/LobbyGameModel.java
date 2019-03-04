@@ -13,6 +13,8 @@ public class LobbyGameModel
     private int currentPlayerNum;
     private PlayerModel host;
     private State state;
+    private Deck destinationDeck;
+    private Deck trainDeck;
 
     public LobbyGameModel() { }
 
@@ -26,6 +28,7 @@ public class LobbyGameModel
         this.gamename = gamename;
         playerList.addPlayer(this.host);
         state = State.WAITING;
+
     }
     public void addPlayer(PlayerModel player)
     {
@@ -93,8 +96,11 @@ public class LobbyGameModel
     public String getGamename() {
         return gamename;
     }
-    public void setGamename(String gamename) {
+    public void setGamename(String gamename)
+    {
         this.gamename = gamename;
+        destinationDeck = new Deck();
+        trainDeck = new Deck();
     }
 
     public int getCurrentPlayerNum()
@@ -105,6 +111,23 @@ public class LobbyGameModel
 
     public void setCurrentPlayerNum(int currentPlayerNum) {
         this.currentPlayerNum = currentPlayerNum;
+    }
+
+
+    public Deck getDestinationDeck() {
+        return destinationDeck;
+    }
+
+    public void setDestinationDeck(Deck destinationDeck) {
+        this.destinationDeck = destinationDeck;
+    }
+
+    public Deck getTrainDeck() {
+        return trainDeck;
+    }
+
+    public void setTrainDeck(Deck trainDeck) {
+        this.trainDeck = trainDeck;
     }
 
     @Override
