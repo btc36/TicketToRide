@@ -11,6 +11,10 @@ export class Player {
     score: number;
     connectedCities: Array<Array<string>>;
     ownedRoutes: Array<Route>;
+    myTurn: boolean;
+    numTrainCards: number;
+    numDestinationCards: number;
+    isOtherPlayer: boolean;
 
 
   constructor(username: string) {

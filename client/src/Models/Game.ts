@@ -8,8 +8,8 @@ export class Game {
     players: Array<Player>;
     whoseTurn: number;
     map: GameMap;
-    DestinationCardsDeck: Array<DestinationCard>
-    trainCardDeck: Array<TrainCard>;
+    DestinationCardsDeckSize: number
+    trainCardDeckSize: number;
     faceUpCards: FaceUpCards;
 
     checkWinCondition(): Player {
@@ -28,12 +28,12 @@ export class Game {
         return this.map;
     }
 
-    getDestinationCardsDeck(): Array<DestinationCard>{
-        return this.DestinationCardsDeck
+    getDestinationCardsDeckSize(): number{
+        return this.DestinationCardsDeckSize;
     }
 
-    getTrainCardDeck(): Array<TrainCard> {
-        return this.trainCardDeck;
+    getTrainCardDeckSize(): number {
+        return this.trainCardDeckSize;
     }
 
     getFaceUpCards(): FaceUpCards {
