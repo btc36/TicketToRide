@@ -15,3 +15,7 @@ th, td {
 tr.active {
   background-color: lightgray;
 }
+.map-view {
+  width: 800px;
+  height: 400px;
+}
