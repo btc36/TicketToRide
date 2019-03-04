@@ -11,6 +11,10 @@ import java.util.List;
 
 public class GameFacade extends Facade
 {
+    public GameFacade()
+    {
+
+    }
     public List<GenericCommand> drawDestinationCardCommand()
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -19,9 +23,7 @@ public class GameFacade extends Facade
         GenericCommand command;
         DestinationCard card;
 
-
         List<DestinationCard> cards = new ArrayList<>();
-
 
         command = new GenericCommand(
                 _className, "startGame",

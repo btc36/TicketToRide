@@ -21,7 +21,7 @@ public class LobbyGameModel
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
         playerList = new PlayerListModel();
-        gameID = UUID.randomUUID().toString().substring(0,4);
+        gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
         currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;
         this.host = host;

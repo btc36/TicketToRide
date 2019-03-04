@@ -27,6 +27,12 @@ public class ServerFacade extends Facade
     private final String passwordError = "password empty";
 
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return a list of Generic Command that contains clientfacade class name, status, message
+     */
     public List<GenericCommand> login(String username, String password)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -62,6 +68,13 @@ public class ServerFacade extends Facade
         commandsForClient.add(command);
         return commandsForClient;
     }
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return a list of Generic Command that contains clientfacade class name, status, message
+     */
     public List<GenericCommand> register(String username, String password)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -96,6 +109,14 @@ public class ServerFacade extends Facade
         return commandsForClient;
 
     }
+
+    /**
+     *
+     * @param username
+     * @param gamename
+     * @param max
+     * @return a list of Generic Command that contains clientfacade class name, status, message, and all of the games in server
+     */
     public List<GenericCommand> createGame(String username, String gamename, String max)
     {
         Boolean status = false;
@@ -148,6 +169,13 @@ public class ServerFacade extends Facade
         }
         //Integer.getInteger(max);
     }
+
+    /**
+     *
+     * @param username
+     * @param gameID
+     * @return
+     */
     public List<GenericCommand> joinGame(String username, String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -186,6 +214,11 @@ public class ServerFacade extends Facade
         return commandsForClient;
     }
 
+    /**
+     *
+     * @param gameID
+     * @return a list of command clientfacade name, message, gameID
+     */
     public List<GenericCommand> startGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -229,7 +262,7 @@ public class ServerFacade extends Facade
         GenericCommand command;
         command = new GenericCommand(
                 _className, "updateGameList",
-                new String[]{_paramTypeBoolean, _paramTypeList},
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                 new Object[]{true, "", games}
         );
         commandsForClient.add(command);
@@ -274,52 +307,4 @@ public class ServerFacade extends Facade
         commandsForClient.add(command);
         return commandsForClient;
     }
-
-
-
-//    private boolean isInputValid(String input) // empty? or not?
-//    {
-//        if(input == null) return false;
-//        if(input.isEmpty()) return false;
-//        return true;
-//    }
-//    private boolean findPlayer(PlayerModel player)
-//    {
-//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-//        if(allPlayers.findPlayer(player))
-//            return true;
-//        else
-//            return false;
-//    }
-//    private PlayerModel getPlayer(String username)
-//    {
-//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-//        PlayerModel player = allPlayers.getPlayerByUsername(username);
-//        return player;
-//    }
-//    private boolean playerExists(String username)
-//    {
-//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-//        PlayerModel player = allPlayers.getPlayerByUsername(username);
-//        if(player != null)
-//            return true;
-//        else
-//            return false;
-//    }
-//    private boolean gameExists(String gameID)
-//    {
-//        LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
-//        return game != null;
-//    }
-//    private List<LobbyGameModel> getGameAsList()
-//    {
-//
-//        return ServerModel.getInstance().getAllGames().getGameList();
-//    }
-//    private void test()
-//    {
-//        Deck deck = new DestinationCardDeck();
-//        deck.add(new TrainCard());
-//
-//    }
 }
