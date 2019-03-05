@@ -46,4 +46,8 @@ public class Deck<T>
         }
         return cards;
     }
+    public boolean isEmpty()
+    {
+        return deck.isEmpty();
+    }
 }

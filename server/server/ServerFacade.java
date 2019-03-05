@@ -13,18 +13,11 @@ import java.util.List;
 
 public class ServerFacade extends Facade
 {
-    private String _className = "ExternalClientFacade";
-    private final String _paramTypeString = "java.lang.String";
-    private final String _paramTypeBoolean = "java.lang.Boolean";
-    private final String _paramTypeInteger = "java.lang.Integer";
-    private final String _paramTypeDouble = "java.lang.Double";
-    private final String _paramTypeCharacter = "java.lang.Character";
-    private final String _paramTypeList = "java.util.List";
-    private final String _paramTypeMap = "java.util.Map";
-    private final String _paramTypeDate = "java.util.Date";
-    private final String _paramTypeGame = "LobbyGameModel";
-    private final String usernameError = "username empty";
-    private final String passwordError = "password empty";
+
+
+    private final String loginSatus = "loginStatus";
+    private final String registerStatus = "registerStatus";
+    private final String joinGame = "joinGame";
 
 
     /**
@@ -248,7 +241,6 @@ public class ServerFacade extends Facade
         command = new GenericCommand(
                 _className, "startGame",
                 new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
-                //new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
                 new Object[]{status, message, gameID}
         );
         commandsForClient.add(command);

@@ -19,6 +19,7 @@ public class Facade
     protected final String usernameError = "username empty";
     protected final String passwordError = "password empty";
 
+
     public boolean isInputValid(String input) // empty? or not?
     {
         if(input == null) return false;
