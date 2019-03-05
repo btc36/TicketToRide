@@ -1,8 +1,6 @@
 package server;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import command.GenericCommand;
 import model.*;
-import org.ietf.jgss.GSSName;
 
 /* Standard Library Import */
 import java.lang.Boolean;
@@ -18,7 +16,6 @@ public class ServerFacade extends Facade
     private final String loginSatus = "loginStatus";
     private final String registerStatus = "registerStatus";
     private final String joinGame = "joinGame";
-
 
     /**
      *

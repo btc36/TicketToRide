@@ -13,11 +13,12 @@ public class GameFacade extends Facade
     private final String potential = "potentialDestinationCard";
     private final String draw = "drawDestinationCard";
     private final String discard = "discardDestinationCard";
-
-    public GameFacade()
-    {
-
-    }
+    
+    /**
+     *
+     * @param gameID
+     * @return List that contains three Destination Card
+     */
     public List<GenericCommand> potentialDestinationCard(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -49,6 +50,12 @@ public class GameFacade extends Facade
         commandsForClient.add(command);
         return commandsForClient;
     }
+
+    /**
+     *
+     * @param gameID
+     * @return List that contains one Destination Card
+     */
     public List<GenericCommand> drawDestinationCard(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -123,6 +130,7 @@ public class GameFacade extends Facade
         LobbyGameModel game = getGameByID(gameID);
         return game == null ? null : game.getDestDeck();
     }
+
     private Deck getTrainDeck(String gameID)
     {
         LobbyGameModel game = getGameByID(gameID);
