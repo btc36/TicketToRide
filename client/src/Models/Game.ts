@@ -3,6 +3,7 @@ import { GameMap } from "./GameMap";
 import { DestinationCard } from "./DestinationCard";
 import { TrainCard } from "./TrainCard";
 import { FaceUpCards } from "./FaceUpCards";
+import { Route } from "./Route";
 
 export class Game {
     players: Array<Player>;
@@ -13,7 +14,16 @@ export class Game {
     faceUpCards: FaceUpCards;
 
     checkWinCondition(): Player {
-        return null;
+        let maxPoints = 0;
+        let winningPlayer = null;
+        this.players.forEach((player) => {
+            let score = player.getScore();
+            if (score > maxPoints) {
+                maxPoints = score;
+                winningPlayer = player;
+            }
+        });
+        return winningPlayer;
     }
 
     getPlayerList(): Array<Player> {
@@ -38,5 +48,49 @@ export class Game {
 
     getFaceUpCards(): FaceUpCards {
         return this.faceUpCards;
+    }
+
+    claimRoute(player: Player, route: Route): void {
+
+    }
+
+    useTrainCard(trainCard: TrainCard): void {
+
+    }
+
+    addTrainCard(trainCard: TrainCard): void {
+
+    }
+
+    addDestinationCard(destinationCards: Array<DestinationCard>) {
+
+    }
+
+    setFaceUpCards(faceUpCards: FaceUpCards): void {
+
+    }
+
+    updatePlayerPoints(player: Player, points: number): void {
+
+    }
+
+    removeTrainCard(trainCard: TrainCard): void {
+
+    }
+
+    updateNumTrainCars(player: Player, numUsed: number): void {
+
+    }
+
+    updateNumberOfDestinationCards(player: Player, numCards: number): void {
+
+    }
+
+    updateNumInDeck(newNum: number): void {
+
+    }
+
+    changeTurn(player: Player): void {
+
     }
 }
