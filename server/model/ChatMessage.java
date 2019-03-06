@@ -36,4 +36,11 @@ public class ChatMessage {
     public void setTimeStamp(Date timeStamp) {
         this.time = time;
     }
+
+    public String toString()
+    {
+        return "Username: " + username
+        + "\nMessage: " + message
+        + "\nDate: " + time;
+    }
 }

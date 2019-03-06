@@ -1,8 +1,6 @@
 package server;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import command.GenericCommand;
 import model.*;
-import org.ietf.jgss.GSSName;
 
 /* Standard Library Import */
 import java.lang.Boolean;
@@ -13,20 +11,18 @@ import java.util.List;
 
 public class ServerFacade extends Facade
 {
-    private String _className = "ExternalClientFacade";
-    private final String _paramTypeString = "java.lang.String";
-    private final String _paramTypeBoolean = "java.lang.Boolean";
-    private final String _paramTypeInteger = "java.lang.Integer";
-    private final String _paramTypeDouble = "java.lang.Double";
-    private final String _paramTypeCharacter = "java.lang.Character";
-    private final String _paramTypeList = "java.util.List";
-    private final String _paramTypeMap = "java.util.Map";
-    private final String _paramTypeDate = "java.util.Date";
-    private final String _paramTypeGame = "LobbyGameModel";
-    private final String usernameError = "username empty";
-    private final String passwordError = "password empty";
 
 
+    private final String loginSatus = "loginStatus";
+    private final String registerStatus = "registerStatus";
+    private final String joinGame = "joinGame";
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return a list of Generic Command that contains clientfacade class name, status, message
+     */
     public List<GenericCommand> login(String username, String password)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -62,6 +58,13 @@ public class ServerFacade extends Facade
         commandsForClient.add(command);
         return commandsForClient;
     }
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return a list of Generic Command that contains clientfacade class name, status, message
+     */
     public List<GenericCommand> register(String username, String password)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -96,6 +99,14 @@ public class ServerFacade extends Facade
         return commandsForClient;
 
     }
+
+    /**
+     *
+     * @param username
+     * @param gamename
+     * @param max
+     * @return a list of Generic Command that contains clientfacade class name, status, message, and all of the games in server
+     */
     public List<GenericCommand> createGame(String username, String gamename, String max)
     {
         Boolean status = false;
@@ -148,6 +159,13 @@ public class ServerFacade extends Facade
         }
         //Integer.getInteger(max);
     }
+
+    /**
+     *
+     * @param username
+     * @param gameID
+     * @return
+     */
     public List<GenericCommand> joinGame(String username, String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -186,6 +204,11 @@ public class ServerFacade extends Facade
         return commandsForClient;
     }
 
+    /**
+     *
+     * @param gameID
+     * @return a list of command clientfacade name, message, gameID
+     */
     public List<GenericCommand> startGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -215,7 +238,6 @@ public class ServerFacade extends Facade
         command = new GenericCommand(
                 _className, "startGame",
                 new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
-                //new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
                 new Object[]{status, message, gameID}
         );
         commandsForClient.add(command);
@@ -229,7 +251,7 @@ public class ServerFacade extends Facade
         GenericCommand command;
         command = new GenericCommand(
                 _className, "updateGameList",
-                new String[]{_paramTypeBoolean, _paramTypeList},
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                 new Object[]{true, "", games}
         );
         commandsForClient.add(command);
@@ -274,52 +296,4 @@ public class ServerFacade extends Facade
         commandsForClient.add(command);
         return commandsForClient;
     }
-
-
-
-//    private boolean isInputValid(String input) // empty? or not?
-//    {
-//        if(input == null) return false;
-//        if(input.isEmpty()) return false;
-//        return true;
-//    }
-//    private boolean findPlayer(PlayerModel player)
-//    {
-//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-//        if(allPlayers.findPlayer(player))
-//            return true;
-//        else
-//            return false;
-//    }
-//    private PlayerModel getPlayer(String username)
-//    {
-//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-//        PlayerModel player = allPlayers.getPlayerByUsername(username);
-//        return player;
-//    }
-//    private boolean playerExists(String username)
-//    {
-//        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-//        PlayerModel player = allPlayers.getPlayerByUsername(username);
-//        if(player != null)
-//            return true;
-//        else
-//            return false;
-//    }
-//    private boolean gameExists(String gameID)
-//    {
-//        LobbyGameModel game = ServerModel.getInstance().getAllGames().getGameByID(gameID);
-//        return game != null;
-//    }
-//    private List<LobbyGameModel> getGameAsList()
-//    {
-//
-//        return ServerModel.getInstance().getAllGames().getGameList();
-//    }
-//    private void test()
-//    {
-//        Deck deck = new DestinationCardDeck();
-//        deck.add(new TrainCard());
-//
-//    }
 }

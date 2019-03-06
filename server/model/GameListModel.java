@@ -5,6 +5,8 @@ import java.util.*;
 public class GameListModel
 {
     private List<LobbyGameModel> games;
+    private Deck destDeck;
+    private Deck trainDeck;
 
     public GameListModel()
     {
@@ -49,4 +51,6 @@ public class GameListModel
     {
         return games;
     }
+
+
 }
