@@ -1,5 +1,6 @@
 package server;
 
+import command.GenericCommand;
 import model.*;
 
 import java.util.List;
@@ -62,6 +63,17 @@ public class Facade
     {
 
         return ServerModel.getInstance().getAllGames().getGameList();
+    }
+
+    public void commandCheck(GenericCommand command)
+    {
+        assert(command.getTypeSize() == command.getValueSize());
+    }
+
+    public void commandListCheck(List<GenericCommand> commands)
+    {
+        for(GenericCommand command : commands)
+            commandCheck(command);
     }
 
 }

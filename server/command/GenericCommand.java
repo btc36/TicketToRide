@@ -95,4 +95,13 @@ public class GenericCommand implements CommandInterface,java.io.Serializable  {
     public void set_paramValues(Object[] _paramValues) {
         this._paramValues = _paramValues;
     }
+
+    public int getTypeSize()
+    {
+        return _paramTypes.length;
+    }
+    public int getValueSize()
+    {
+        return _paramValues.length;
+    }
 }
