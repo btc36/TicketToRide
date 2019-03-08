@@ -128,5 +128,13 @@ export class IngameClientRoot implements ISubject {
     this.game.discardDestinationCard();
   }
 
+  removeTrainCard(trainCard){
+
+  }
+
+  addTrainCard(trainCard){
+
+  }
+
 
 }
