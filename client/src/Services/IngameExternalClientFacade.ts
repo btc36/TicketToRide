@@ -15,8 +15,8 @@ export class IngameExternalClientFacade {
         this.root.addTrainCard(trainCard);
     }
 
-    addDestinationCard(destinationCards: Array<DestinationCard>) {
-        this.root.addDestinationCard(destinationCards);
+    addDestinationCard(player: Player, destinationCard: DestinationCard) {
+        this.root.addDestinationCard(player,destinationCard);
     }
 
     updatePlayerPoints(player: Player, points:number) {

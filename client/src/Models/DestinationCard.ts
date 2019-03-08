@@ -4,6 +4,11 @@ export class DestinationCard {
     route: Route;
     pointValue: number;
 
+    constructor(route: Route, pointValue: number) {
+        this.route = route;
+        this.pointValue = pointValue;
+    }
+
     getRoute(): Route {
         return this.route;
     }

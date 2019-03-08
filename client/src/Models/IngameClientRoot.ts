@@ -45,8 +45,8 @@ export class IngameClientRoot {
         this.game.addTrainCard(trainCard);
     }
 
-    addDestinationCard(destinationCards: Array<DestinationCard>) {
-        this.game.addDestinationCard(destinationCards);
+    addDestinationCard(player: Player, destinationCard: DestinationCard) {
+        this.game.addDestinationCard(player,destinationCard);
     }
 
     checkWinCondition(): Player {

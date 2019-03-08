@@ -3,6 +3,10 @@ import { TrainCard } from "./TrainCard";
 export class FaceUpCards {
     faceUpCards: Array<TrainCard>;
 
+    constructor(faceUpCards: Array<TrainCard>) {
+        this.faceUpCards = faceUpCards;
+    }
+
     //Whenever a a card is drawn, it is replaced with a new card in it's spot
     drawCard(index: number, newCard: TrainCard): TrainCard {
         let cardDrawn = this.faceUpCards[index];

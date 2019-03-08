@@ -11,8 +11,8 @@ export class Game {
     players: Array<Player>;
     whoseTurn: number;
     map: GameMap;
-    DestinationCardsDeckSize: number
-    trainCardDeckSize: number;
+    numDestinationCardsRemaining: number;
+    numTrainCardsRemaining: number;
     faceUpCards: FaceUpCards;
     chatRoom: ChatRoom
 
@@ -49,12 +49,12 @@ export class Game {
         return this.map;
     }
 
-    getDestinationCardsDeckSize(): number {
-        return this.DestinationCardsDeckSize;
+    getnumDestinationCardsRemaining(): number {
+        return this.numDestinationCardsRemaining;
     }
 
-    getTrainCardDeckSize(): number {
-        return this.trainCardDeckSize;
+    getNumTrainCardsRemaining(): number {
+        return this.numTrainCardsRemaining;
     }
 
     getFaceUpCards(): FaceUpCards {
