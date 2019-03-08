@@ -95,11 +95,15 @@ export class IngameClientRoot implements ISubject {
   }
 
   updateNumberOfDestinationCards(player: Player, numCards: number): void {
-    this.game.updateNumberOfDestinationCards(player, numCards);
+    this.game.updateNumDestinationCards(player, numCards);
+  }
+
+  setNumTrainCards(player: Player, numCards: number) {
+    this.game.setNumTrainCards(player, numCards);
   }
 
   updateNumInDeck(newNum: number): void {
-    this.game.updateNumInDeck(newNum);
+    this.game.setNumTrainCardsRemaining(newNum);
   }
 
   changeTurn(player: Player): void {

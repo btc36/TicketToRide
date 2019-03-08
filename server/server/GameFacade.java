@@ -18,7 +18,8 @@ public class GameFacade extends Facade
 
     /**
      *
-     * @param gameID
+     * @param gameID which game is it on
+     * @param username which player is performing the action
      * @return List that contains three Destination Card
      */
     public List<GenericCommand> potentialDestinationCard(String gameID, String username)
@@ -55,8 +56,9 @@ public class GameFacade extends Facade
 
     /**
      *
-     * @param gameID
-     * @return List that contains one Destination Card
+     * @param gameID which game is it on
+     * @param username which player is performing the action
+     * @return List that contains one Destination Card and etc
      */
     public List<GenericCommand> drawDestinationCard(String gameID, String username)
     {
@@ -92,8 +94,9 @@ public class GameFacade extends Facade
     }
 
     /**
-     * @param gameID and cards
-     * discard in the perspective of player
+     * @param gameID which game is it in
+     * @param username which user is performing the action
+     * @param cards to be discarded
      * @return list of command that contains
      */
     public List<GenericCommand> discardDestinationCardCommand(String gameID, String username, List<DestinationCard> cards)
@@ -109,12 +112,14 @@ public class GameFacade extends Facade
         else
         {
             LobbyGameModel game = getGameByID(gameID);
+
             for(DestinationCard card : cards)
-            {
                 game.addDestCard(card);
-            }
+
+            cards.clear();
+
+            status  = true;
             message = "success : " + discard;
-            //TODO: what do you want it to return?
         }
 
         System.out.println(message);
