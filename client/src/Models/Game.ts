@@ -60,7 +60,7 @@ export class Game {
         return this.map;
     }
 
-    getnumDestinationCardsRemaining(): number {
+    getNumDestinationCardsRemaining(): number {
         return this.numDestinationCardsRemaining;
     }
 

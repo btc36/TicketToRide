@@ -30,4 +30,13 @@ export class IngameInternalClientFacade {
   getFaceUpCards(): FaceUpCards {
     return this.root.getFaceUpCards();
   }
+
+  getNumTrainCardsRemaining() {
+    return this.root.getNumTrainCardsRemaining();
+  }
+
+  getNumDestinationCardsRemaining() {
+    return this.root.getNumDestinationCardsRemaining();
+  }
+
 }
