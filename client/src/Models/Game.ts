@@ -8,106 +8,116 @@ import { ChatRoom } from "./ChatRoom";
 import { ChatMessage } from "./ChatMessage";
 
 export class Game {
-    players: Array<Player>;
-    whoseTurn: number;
-    map: GameMap;
-    numDestinationCardsRemaining: number;
-    numTrainCardsRemaining: number;
-    faceUpCards: FaceUpCards;
-    chatRoom: ChatRoom
+  players: Array<Player>;
+  whoseTurn: number;
+  map: GameMap;
+  numDestinationCardsRemaining: number;
+  numTrainCardsRemaining: number;
+  faceUpCards: FaceUpCards;
+  chatRoom: ChatRoom
 
-    checkWinCondition(): Player {
-        let maxPoints = 0;
-        let winningPlayer = null;
-        this.players.forEach((player) => {
-            let score = player.getScore();
-            if (score > maxPoints) {
-                maxPoints = score;
-                winningPlayer = player;
-            }
-        });
-        return winningPlayer;
-    }
+  constructor() {
+    let trainCards = Array<TrainCard>();
+    trainCards.push(new TrainCard("green"));
+    trainCards.push(new TrainCard("blue"));
+    trainCards.push(new TrainCard("black"));
+    trainCards.push(new TrainCard("rainbow"));
+    trainCards.push(new TrainCard("green"));
+    this.setFaceUpCards(new FaceUpCards(trainCards));
+  }
 
-    getChatHistory(): Array<ChatMessage> {
-        return this.chatRoom.getChatHistory();
-    }
+  checkWinCondition(): Player {
+    let maxPoints = 0;
+    let winningPlayer = null;
+    this.players.forEach((player) => {
+      let score = player.getScore();
+      if (score > maxPoints) {
+        maxPoints = score;
+        winningPlayer = player;
+      }
+    });
+    return winningPlayer;
+  }
 
-    addChatMessage(chat: ChatMessage) {
-        this.chatRoom.addChat(chat);
-    }
+  getChatHistory(): Array<ChatMessage> {
+    return this.chatRoom.getChatHistory();
+  }
 
-    getPlayerList(): Array<Player> {
-        return this.players;
-    }
+  addChatMessage(chat: ChatMessage) {
+    this.chatRoom.addChat(chat);
+  }
 
-    getCurrentTurnIndex(): number {
-        return this.whoseTurn;
-    }
+  getPlayerList(): Array<Player> {
+    return this.players;
+  }
 
-    getMap(): GameMap {
-        return this.map;
-    }
+  getCurrentTurnIndex(): number {
+    return this.whoseTurn;
+  }
 
-    getnumDestinationCardsRemaining(): number {
-        return this.numDestinationCardsRemaining;
-    }
+  getMap(): GameMap {
+    return this.map;
+  }
 
-    getNumTrainCardsRemaining(): number {
-        return this.numTrainCardsRemaining;
-    }
+  getnumDestinationCardsRemaining(): number {
+    return this.numDestinationCardsRemaining;
+  }
 
-    getFaceUpCards(): FaceUpCards {
-        return this.faceUpCards;
-    }
+  getNumTrainCardsRemaining(): number {
+    return this.numTrainCardsRemaining;
+  }
 
-    claimRoute(player: Player, route: Route): void {
+  getFaceUpCards(): FaceUpCards {
+    return this.faceUpCards;
+  }
 
-    }
+  claimRoute(player: Player, route: Route): void {
 
-    useTrainCard(trainCard: TrainCard): void {
+  }
 
-    }
+  useTrainCard(trainCard: TrainCard): void {
 
-    addTrainCard(trainCard: TrainCard): void {
+  }
 
-    }
+  addTrainCard(trainCard: TrainCard): void {
 
-    addDestinationCard(player: Player, destinationCard: DestinationCard) {
-        this.players.forEach((thisPlayer) => {
-            if (thisPlayer.getUsername == player.getUsername) {
-                thisPlayer.drawDestinationCard(destinationCard);
-                return;
-            }
-        });
+  }
 
-    }
+  addDestinationCard(player: Player, destinationCard: DestinationCard) {
+    this.players.forEach((thisPlayer) => {
+      if (thisPlayer.getUsername == player.getUsername) {
+        thisPlayer.drawDestinationCard(destinationCard);
+        return;
+      }
+    });
 
-    setFaceUpCards(faceUpCards: FaceUpCards): void {
-        this.faceUpCards = faceUpCards;
-    }
+  }
 
-    updatePlayerPoints(player: Player, points: number): void {
+  setFaceUpCards(faceUpCards: FaceUpCards): void {
+    this.faceUpCards = faceUpCards;
+  }
 
-    }
+  updatePlayerPoints(player: Player, points: number): void {
 
-    removeTrainCard(trainCard: TrainCard): void {
+  }
 
-    }
+  removeTrainCard(trainCard: TrainCard): void {
 
-    updateNumTrainCars(player: Player, numUsed: number): void {
+  }
 
-    }
+  updateNumTrainCars(player: Player, numUsed: number): void {
 
-    updateNumberOfDestinationCards(player: Player, numCards: number): void {
+  }
 
-    }
+  updateNumberOfDestinationCards(player: Player, numCards: number): void {
 
-    updateNumInDeck(newNum: number): void {
+  }
 
-    }
+  updateNumInDeck(newNum: number): void {
 
-    changeTurn(player: Player): void {
+  }
 
-    }
+  changeTurn(player: Player): void {
+
+  }
 }

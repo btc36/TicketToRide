@@ -4697,8 +4697,17 @@ exports.FaceUpCards = FaceUpCards;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var TrainCard_1 = __webpack_require__(/*! ./TrainCard */ "./src/Models/TrainCard.ts");
+var FaceUpCards_1 = __webpack_require__(/*! ./FaceUpCards */ "./src/Models/FaceUpCards.ts");
 var Game = /** @class */ (function () {
     function Game() {
+        var trainCards = Array();
+        trainCards.push(new TrainCard_1.TrainCard("green"));
+        trainCards.push(new TrainCard_1.TrainCard("blue"));
+        trainCards.push(new TrainCard_1.TrainCard("black"));
+        trainCards.push(new TrainCard_1.TrainCard("rainbow"));
+        trainCards.push(new TrainCard_1.TrainCard("green"));
+        this.setFaceUpCards(new FaceUpCards_1.FaceUpCards(trainCards));
     }
     Game.prototype.checkWinCondition = function () {
         var maxPoints = 0;
@@ -4837,19 +4846,10 @@ var __values = (this && this.__values) || function (o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Game_1 = __webpack_require__(/*! ./Game */ "./src/Models/Game.ts");
-var TrainCard_1 = __webpack_require__(/*! ./TrainCard */ "./src/Models/TrainCard.ts");
-var FaceUpCards_1 = __webpack_require__(/*! ./FaceUpCards */ "./src/Models/FaceUpCards.ts");
 var IngameClientRoot = /** @class */ (function () {
     function IngameClientRoot() {
         this.game = new Game_1.Game();
         this.observers = new Array();
-        var trainCards = Array();
-        trainCards.push(new TrainCard_1.TrainCard("green"));
-        trainCards.push(new TrainCard_1.TrainCard("blue"));
-        trainCards.push(new TrainCard_1.TrainCard("black"));
-        trainCards.push(new TrainCard_1.TrainCard("rainbow"));
-        trainCards.push(new TrainCard_1.TrainCard("green"));
-        this.setFaceUpCards(new FaceUpCards_1.FaceUpCards(trainCards));
     }
     IngameClientRoot.prototype.transitionPage = function (pageName) {
         this.session.setCurrentPage(pageName);
@@ -5695,7 +5695,7 @@ var FaceUpCardsViewModel = /** @class */ (function (_super) {
         return _this;
     }
     FaceUpCardsViewModel.prototype.componentDidMount = function () {
-        this.props.services.getFaceUpCards();
+        this.setState({ faceUpCards: this.props.services.getFaceUpCards() });
     };
     FaceUpCardsViewModel.prototype.render = function () {
         return FaceUpCardsView_1.FaceUpCardsView(this);
@@ -6364,6 +6364,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 exports.FaceUpCardsView = function (component) {
     var faceUpCardsList = [];
+    if (component.state.faceUpCards == null) {
+        return (React.createElement("p", null, "Loading..."));
+    }
     var cards = component.state.faceUpCards.getCards();
     for (var i = 0; i < cards.length; i++) {
         faceUpCardsList.push(React.createElement("p", null,
@@ -6746,7 +6749,7 @@ var MainComponent = /** @class */ (function (_super) {
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
         return _this;
@@ -6795,7 +6798,7 @@ var internalClientFacade = new InternalClientFacade_1.InternalClientFacade(serve
 var ingameServerProxy = new IngameServerProxy_1.IngameServerProxy();
 var ingameRoot = new IngameClientRoot_1.IngameClientRoot();
 var ingameInternalClientFacade = new IngameInternalClientFacade_1.IngameInternalClientFacade(ingameServerProxy, ingameRoot);
-ReactDOM.render(React.createElement(MainComponent, { services: internalClientFacade, ingameServices: ingameInternalClientFacade, root: root }), document.getElementById("example"));
+ReactDOM.render(React.createElement(MainComponent, { services: internalClientFacade, ingameServices: ingameInternalClientFacade, ingameRoot: ingameRoot, root: root }), document.getElementById("example"));
 
 
 /***/ }),
