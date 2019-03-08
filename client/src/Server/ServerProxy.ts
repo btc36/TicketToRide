@@ -33,4 +33,19 @@ export class ServerProxy {
     const command = new ClientCommandObjects("server.ServerFacade", "getGameList", [], []);
     this.communicator.sendCommand(command);
   }
+
+  public drawDestinationCard(destinationCards: any[]){
+    const command = new ClientCommandObjects("server.GameFacade", "drawDestinationCard", [[]], [destinationCards]);
+    this.communicator.sendCommand(command);
+  }
+
+  public discardDestinationCard(destinationCards: any[], gameID: String){
+    const command = new ClientCommandObjects("server.GameFacade", "discardDestinationCard", ["java.lang.String",[]], [gameID, destinationCards]);
+    this.communicator.sendCommand(command);
+  }
+
+  public sendChat(message: String, time: Date, username: String, gameID: String){
+    const command = new ClientCommandObjects("server.ServerFacade", "sendChat", ["java.lang.String", "java.lang.Date", "java.lang.String"], [message, time, username, gameID]);
+    this.communicator.sendCommand(command);
+  }
 }
