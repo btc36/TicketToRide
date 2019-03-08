@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class LobbyGameModel
 {
-    enum State {WAITING, ONGOING, FINISHED;}
+    public enum State {WAITING, ONGOING, FINISHED;}
     private String gameID;
     private String gamename;
     private PlayerListModel playerList;
@@ -13,10 +13,12 @@ public class LobbyGameModel
     private int currentPlayerNum;
     private PlayerModel host;
     private State state;
-    private Deck destinationDeck;
+    private Deck destDeck;
     private Deck trainDeck;
 
-    public LobbyGameModel() { }
+    public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
+        //this.LobbyGameModel(host, maxPlayer, gamename);
+    }
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
@@ -28,7 +30,8 @@ public class LobbyGameModel
         this.gamename = gamename;
         playerList.addPlayer(this.host);
         state = State.WAITING;
-
+        destDeck = null;
+        trainDeck = null;
     }
     public void addPlayer(PlayerModel player)
     {
@@ -91,6 +94,9 @@ public class LobbyGameModel
     public void startGame()
     {
         this.state = State.ONGOING;
+        destDeck = new Deck();
+        trainDeck = new Deck();
+        setUpDestinationCard();
     }
 
     public String getGamename() {
@@ -99,8 +105,7 @@ public class LobbyGameModel
     public void setGamename(String gamename)
     {
         this.gamename = gamename;
-        destinationDeck = new Deck();
-        trainDeck = new Deck();
+
     }
 
     public int getCurrentPlayerNum()
@@ -114,12 +119,20 @@ public class LobbyGameModel
     }
 
 
-    public Deck getDestinationDeck() {
-        return destinationDeck;
+    public void addDestCard(DestinationCard card)
+    {
+        destDeck.add(card);
+    }
+    public void addTrainCard(TrainCard card)
+    {
+        trainDeck.add(card);
+    }
+    public Deck getDestDeck() {
+        return destDeck;
     }
 
-    public void setDestinationDeck(Deck destinationDeck) {
-        this.destinationDeck = destinationDeck;
+    public void setDestDeck(Deck destDeck) {
+        this.destDeck = destDeck;
     }
 
     public Deck getTrainDeck() {
@@ -129,6 +142,26 @@ public class LobbyGameModel
     public void setTrainDeck(Deck trainDeck) {
         this.trainDeck = trainDeck;
     }
+
+    public void setUpDestinationCard()
+    {
+        destDeck.add(new DestinationCard("s1", "d1", 1));
+        destDeck.add(new DestinationCard("s2", "d2", 2));
+        destDeck.add(new DestinationCard("s3", "d3", 3));
+        destDeck.add(new DestinationCard("s4", "d4", 4));
+        destDeck.add(new DestinationCard("s5", "d5", 5));
+        destDeck.add(new DestinationCard("s6", "d6", 6));
+        destDeck.add(new DestinationCard("s7", "d7", 7));
+        destDeck.add(new DestinationCard("s8", "d8", 8));
+        destDeck.add(new DestinationCard("s9", "d9", 9));
+        destDeck.add(new DestinationCard("s10", "d10", 10));
+        destDeck.add(new DestinationCard("s11", "d11", 11));
+        destDeck.add(new DestinationCard("s12", "d12", 12));
+        destDeck.add(new DestinationCard("s13", "d13", 13));
+        destDeck.add(new DestinationCard("s14", "d14", 14));
+        destDeck.add(new DestinationCard("s15", "d15", 15));
+    }
+
 
     @Override
     public int hashCode()
