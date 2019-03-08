@@ -15,19 +15,9 @@ export class IngameExternalClientFacade {
     this.root.addTrainCard(trainCard);
   }
 
-<<<<<<< HEAD
-    updatePlayerPoints(player: Player, points:number) {
-        this.root.updatePlayerPoints(player, points);
-    }
-=======
-  addDestinationCard(player: Player, destinationCard: DestinationCard) {
-    this.root.addDestinationCard(player,destinationCard);
-  }
-
   updatePlayerPoints(player: Player, points:number) {
     this.root.updatePlayerPoints(player, points);
   }
->>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08
 
   removeTrainCard(trainCard:TrainCard) {
     this.root.removeTrainCard(trainCard);
@@ -61,7 +51,6 @@ export class IngameExternalClientFacade {
     this.root.changeTurn(player)
   }
 
-<<<<<<< HEAD
     receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
         //test if it was a success, and if there was an error message
         this.root.receiveChatCommand(gameid, chats);
@@ -83,18 +72,3 @@ export class IngameExternalClientFacade {
     }
 
 }
-=======
-  receiveChatCommand(one: any, two: any, three: any, four: any) {
-
-  }
-
-  presentDestinationCard(one: any, two: any, three: any) {
-
-  }
-
-  discardDestinationCard(one: any, two: any, three: any) {
-
-  }
-
-}
->>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08

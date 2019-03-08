@@ -164,18 +164,12 @@ export class Game {
       }
     });
   }
-
-
-<<<<<<< HEAD
-    }
-
     presentDestinationCard(destinationCards: any[]){
         this.potentialDestinationCards = destinationCards;
     }
     discardDestinationCard(){
         this.potentialDestinationCards.length = 0;
     }
-=======
 
   changeTurn(player: Player): void {
     let username = player.getUsername;
@@ -187,5 +181,4 @@ export class Game {
         }
     });
   }
->>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08
 }
