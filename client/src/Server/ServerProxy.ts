@@ -39,7 +39,7 @@ export class ServerProxy {
     this.communicator.sendCommand(command);
   }
 
-  public discardDestinationCards(destinationCards: any[], gameID: String){
+  public discardDestinationCard(destinationCards: any[], gameID: String){
     const command = new ClientCommandObjects("server.GameFacade", "discardDestinationCard", ["java.lang.String",[]], [gameID, destinationCards]);
     this.communicator.sendCommand(command);
   }
