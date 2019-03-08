@@ -8,14 +8,15 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
 
   state: State = initialState;
 
-  constructor(props: IngameViewModelProps) {
-    super(props);
-    this.setState({ faceUpCards: props.services.getFaceUpCards() });
+  componentDidMount() {
+    this.props.services.getFaceUpCards();
   }
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
+    } else if (updateType == "setFaceUpCards") {
+      this.setState({ faceUpCards: this.props.services.getFaceUpCards() });
     }
   }
 
