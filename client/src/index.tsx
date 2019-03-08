@@ -6,6 +6,9 @@ import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
 import { MapViewModel } from './ViewModels/MapViewModel';
 import { DestinationCardSelectionViewModel } from './ViewModels/DestinationCardSelectionViewModel';
+import { FaceUpCardsViewModel } from './ViewModels/FaceUpCardsViewModel';
+import { PlayerHandViewModel } from './ViewModels/PlayerHandViewModel';
+import { PlayerInfoViewModel } from './ViewModels/PlayerInfoViewModel';
 
 import { ClientCommunicator } from './Server/ClientCommunicator';
 import { Serializer } from './Server/Serializer';
@@ -28,6 +31,9 @@ class MainComponent extends React.Component<any, any> {
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
@@ -40,6 +46,12 @@ class MainComponent extends React.Component<any, any> {
       return this.mapViewModel;
     } else if (this.state.page == "destination") {
       return this.destinationCardSelectionViewModel;
+    } else if (this.state.page == "faceup") {
+      return this.faceUpCardsViewModel;
+    } else if (this.state.page == "playerhand") {
+      return this.playerHandViewModel;
+    } else if (this.state.page == "playerinfo") {
+      return this.playerInfoViewModel;
     } else {
       return <p>Page {this.state.page} not found.</p>;
     }
