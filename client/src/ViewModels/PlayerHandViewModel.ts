@@ -1,14 +1,12 @@
 import * as React from "react";
-import { MapView } from "../Views/MapView";
-import { initialState, State, IMapViewModel } from "./IMapViewModel";
+import { PlayerHandView } from "../Views/PlayerHandView";
+import { initialState, State, IPlayerHandViewModel } from "./IPlayerHandViewModel";
 import { IObserver } from "./IObserver";
 import { ViewModelProps } from "./ViewModelProps";
 
-export class MapViewModel extends React.Component<ViewModelProps, State> implements IMapViewModel, IObserver {
+export class PlayerHandViewModel extends React.Component<ViewModelProps, State> implements IPlayerHandViewModel, IObserver {
 
   state: State = initialState;
-  mapInstance: any;
-  cityToCoordinates: any;
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
@@ -17,6 +15,7 @@ export class MapViewModel extends React.Component<ViewModelProps, State> impleme
   }
 
   render(): JSX.Element {
-    return MapView(this);
+    return PlayerHandView(this);
   }
 }
+

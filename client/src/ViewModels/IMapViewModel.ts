@@ -1,19 +1,114 @@
+export const cityToCoordinates = new Map([
+  ["Boston", {lat: 42.36, lng: -71.05}],
+  ["Duluth", {lat: 46.78, lng: -92.1}], 
+  ["Helena", {lat: 46.58, lng: -112.04}], 
+  ["Seattle", {lat: 47.606, lng: -122.33}],
+  ["Portland", { lat: 45.512230, lng: -122.658}],  
+  ["San Francisco", { lat: 37.774929, lng: -122.419418}],  
+  ["Salt Lake City", {lat: 40.760780, lng: -111.891045}],   
+  ["Denver", {lat: 39.739235, lng: -104.990250}],   
+  ["Omaha", {lat: 41.256538, lng: -95.934502}],   
+  ["Chicago", {lat: 41.878113, lng: -87.629799}],   
+  ["Pittsburgh", {lat: 40.440624, lng: -79.995888}],  
+  ["New York", {lat: 40.712776, lng: -74.005974}],   
+  ["Washington DC", {lat: 38.907192, lng: -77.036873}],   
+  ["Raleigh", {lat: 35.779591, lng: -78.638176}],   
+  ["Nashville", {lat: 36.162663, lng: -86.781601}],   
+  ["Saint Louis", {lat: 38.627003, lng: -90.199402}],   
+  ["Kansas City", {lat: 39.099728, lng: -94.578568}],   
+  ["Charleston", {lat: 32.776474, lng: -79.931053}],   
+  ["Atlanta", {lat: 33.748997, lng: -84.387985}],  
+  ["Little Rock", {lat: 34.746483, lng: -92.289597}],   
+  ["Oklahoma City", {lat: 35.467560, lng: -97.516426}],  
+  ["Santa Fe", {lat: 35.686974, lng: -105.937798}],  
+  ["Las Vegas", {lat: 36.169941, lng: -115.139832}],   
+  ["Los Angeles", {lat: 34.052235, lng: -118.243683}],   
+  ["Phoenix", {lat: 33.448376, lng: -112.074036}],   
+  ["El Paso", {lat: 31.761877, lng: -106.485023}],   
+  ["Dallas", {lat: 32.776665, lng: -96.796989}],  
+  ["Houston", {lat: 29.760427, lng: -95.369804}],   
+  ["New Orleans", {lat: 29.951065, lng: -90.071533}],   
+  ["Miami", {lat: 25.761681, lng: -80.191788}]
+]);
+
+export const routes = [
+  {city1: "Seattle", city2: "Portland", cost: 1, color: "grey"},
+  {city1: "Seattle", city2: "Helena", cost: 6, color: "yellow"},
+  {city1: "Helena", city2: "Salt Lake City", cost: 3, color: "pink"},
+  {city1: "Salt Lake City", city2: "San Francisco", cost: 5, color: "white"},
+  {city1: "San Francisco", city2: "Los Angeles", cost: 3,color: "pink"},
+  {city1: "Portland", city2: "Salt Lake City", cost: 6, color: "blue"},
+  {city1: "Portland", city2: "San Francisco", cost: 6, color: "green"},
+  {city1: "Los Angeles", city2: "Las Vegas", cost: 2, color: "grey"},
+  {city1: "Las Vegas", city2: "Salt Lake City", cost: 3, color: "orange"},
+  {city1: "Helena", city2: "Denver", cost: 4, color: "green"},
+  {city1: "Salt Lake City", city2: "Denver", cost: 3, color: "red"},
+  {city1: "Los Angeles", city2: "Phoenix", cost: 3, color: "grey"},
+  {city1: "Los Angeles", city2: "El Paso", cost: 6, color: "black"},
+  {city1: "Phoenix", city2: "Denver", cost: 5, color: "white"},
+  {city1: "Phoenix", city2: "Santa Fe", cost: 3, color: "grey"},
+  {city1: "Phoenix", city2: "El Paso", cost: 3, color: "grey"},
+  {city1: "El Paso", city2: "Santa Fe", cost: 2, color: "grey"},
+  {city1: "El Paso", city2: "Oklahoma City", cost: 5, color: "yellow"},
+  {city1: "El Paso", city2: "Dallas", cost: 4, color: "red"},
+  {city1: "El Paso", city2: "Houston", cost: 6, color: "green"},
+  {city1: "Oklahoma City", city2: "Santa Fe", cost: 3, color: "blue"},
+  {city1: "Oklahoma City", city2: "Denver", cost: 4, color: "red"},
+  {city1: "Oklahoma City", city2: "Kansas City", cost: 2, color: "grey"},
+  {city1: "Oklahoma City", city2: "Little Rock", cost: 2, color: "grey"},
+  {city1: "Oklahoma City", city2: "Dallas", cost: 2, color: "grey"},
+  {city1: "Kansas City", city2: "Denver", cost: 4, color: "black"},
+  {city1: "Kansas City", city2: "Saint Louis", cost: 2, color: "blue"},
+  {city1: "Kansas City", city2: "Omaha", cost: 1, color: "grey"},
+  {city1: "Omaha", city2: "Denver", cost: 4, color: "pink"},
+  {city1: "Omaha", city2: "Helena", cost: 5, color: "red"},
+  {city1: "Omaha", city2: "Duluth", cost: 2, color: "grey"},
+  {city1: "Omaha", city2: "Chicago", cost: 4, color: "blue"},
+  {city1: "Little Rock", city2: "Dallas", cost: 2, color: "grey"},
+  {city1: "Little Rock", city2: "New Orleans", cost: 3, color: "green"},
+  {city1: "Little Rock", city2: "Saint Louis", cost: 2, color: "grey"},
+  {city1: "Little Rock", city2: "Nashville", cost: 3, color: "white"},
+  {city1: "Helena", city2: "Duluth", cost: 6, color: "orange"},
+  {city1: "Santa Fe", city2: "Denver", cost: 2, color: "grey"},
+  {city1: "Dallas", city2: "Houston", cost: 1, color: "grey"},
+  {city1: "Chicago", city2: "Duluth", cost: 3, color: "red"},
+  {city1: "Chicago", city2: "Pittsburgh", cost: 3, color: "orange"},
+  {city1: "Chicago", city2: "Saint Louis", cost: 2, color: "white"},
+  {city1: "New Orleans", city2: "Houston", cost: 2, color: "grey"},
+  {city1: "New Orleans", city2: "Atlanta", cost: 4, color: "yellow"},
+  {city1: "New Orleans", city2: "Miami", cost: 6, color: "red"},
+  {city1: "Nashville", city2: "Saint Louis", cost: 2, color: "grey"},
+  {city1: "Nashville", city2: "Pittsburgh", cost: 4, color: "yellow"},
+  {city1: "Nashville", city2: "Raleigh", cost: 3, color: "black"},
+  {city1: "Nashville", city2: "Atlanta", cost: 1, color: "grey"},
+  {city1: "Saint Louis", city2: "Pittsburgh", cost: 5, color: "green"},
+  {city1: "Pittsburgh", city2: "New York", cost: 2, color: "white"},
+  {city1: "Pittsburgh", city2: "Washington DC", cost: 2, color: "grey"},
+  {city1: "Pittsburgh", city2: "Raleigh", cost: 2, color: "grey"},
+  {city1: "New York", city2: "Boston", cost: 2, color: "red"},
+  {city1: "New York", city2: "Washington DC", cost: 2, color: "black"},
+  {city1: "Washington DC", city2: "Raleigh", cost: 2, color: "grey"},
+  {city1: "Raleigh", city2: "Charleston", cost: 2, color: "grey"},
+  {city1: "Raleigh", city2: "Atlanta", cost: 2, color: "grey"},
+  {city1: "Atlanta", city2: "Charleston", cost: 2, color: "grey"},
+  {city1: "Atlanta", city2: "Miami", cost: 5, color: "blue"},
+  {city1: "Charleston", city2: "Miami", cost: 4, color: "pink"}
+];
+
 export const initialState = {
-  routeList: [
-    {city1: "San Francisco", city2: "Salt Lake City"},
-    {city2: "New York City", city1: "Denver"}
-  ],
-  apiKey: "AIzaSyDkFUwJX3CQ5gilHwiJTJh3AYrh1jXxVFw",
+  apiKey: "AIzaSyDXINMbYADHRJARnNo5npJpP7DClPoyZaQ",
   center: {
-    lat: 59.95,
-    lng: 30.33
+    lat: 39,
+    lng: -95
   },
-  zoom: 11
+  zoom: 4,
 };
 
 export type State = Readonly<typeof initialState>;
+export type CityToCoordinates = Readonly<typeof Map>
 
 export interface IMapViewModel {
   state: State;
   props: any;
+  cityToCoordinates: Map<String, any>;
 }

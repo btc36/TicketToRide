@@ -1,14 +1,12 @@
 import * as React from "react";
-import { MapView } from "../Views/MapView";
-import { initialState, State, IMapViewModel } from "./IMapViewModel";
+import { FaceUpCardsView } from "../Views/FaceUpCardsView";
+import { initialState, State, IFaceUpCardsViewModel } from "./IFaceUpCardsViewModel";
 import { IObserver } from "./IObserver";
 import { ViewModelProps } from "./ViewModelProps";
 
-export class MapViewModel extends React.Component<ViewModelProps, State> implements IMapViewModel, IObserver {
+export class FaceUpCardsViewModel extends React.Component<ViewModelProps, State> implements IFaceUpCardsViewModel, IObserver {
 
   state: State = initialState;
-  mapInstance: any;
-  cityToCoordinates: any;
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
@@ -17,6 +15,7 @@ export class MapViewModel extends React.Component<ViewModelProps, State> impleme
   }
 
   render(): JSX.Element {
-    return MapView(this);
+    return FaceUpCardsView(this);
   }
 }
+
