@@ -2,9 +2,9 @@ import * as React from "react";
 import { PlayerHandView } from "../Views/PlayerHandView";
 import { initialState, State, IPlayerHandViewModel } from "./IPlayerHandViewModel";
 import { IObserver } from "./IObserver";
-import { ViewModelProps } from "./ViewModelProps";
+import { IngameViewModelProps } from "./ViewModelProps";
 
-export class PlayerHandViewModel extends React.Component<ViewModelProps, State> implements IPlayerHandViewModel, IObserver {
+export class PlayerHandViewModel extends React.Component<IngameViewModelProps, State> implements IPlayerHandViewModel, IObserver {
 
   state: State = initialState;
 
