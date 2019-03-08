@@ -7,10 +7,10 @@ import { DestinationCard } from "./DestinationCard";
 import { GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
+import { ISubject } from "./ISubject"
 
 
-//HOW WILL CHAT BE INVOLVED WITH THIS
-export class IngameClientRoot {
+export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
   game: Game;
   session: Session;
@@ -31,6 +31,14 @@ export class IngameClientRoot {
         o.update(updateType, data);
       }
     }
+  }
+
+  public attach(o: IObserver) {
+    this.observers.push(o);
+  }
+
+  public detach(o: IObserver) {
+
   }
 
   claimRoute(player: Player, route: Route): void {

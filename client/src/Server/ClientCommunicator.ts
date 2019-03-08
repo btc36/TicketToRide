@@ -4,20 +4,21 @@ import { ExternalClientFacade } from "../Services/ExternalClientFacade";
 import { GameList } from "../Models/GameList";
 import { Player } from "../Models/Player";
 import { LobbyGame } from "../Models/LobbyGame";
-import {IngameExternalClientFacade} from "../Services/IngameExternalClientFacade";
+import { IngameExternalClientFacade } from "../Services/IngameExternalClientFacade";
 
 export class ClientCommunicator {
   serverUrl: string;
   serverPort: string;
   serializer: Serializer;
   clientFacade: ExternalClientFacade;
-  inGameFacade: IngameExternalClientFacade;
+  inGameClientFacade: IngameExternalClientFacade;
 
-  constructor(public serverUrlIn: string, public serverPortIn: string, public serialIn: Serializer, public facadeIn: ExternalClientFacade) {
+  constructor(public serverUrlIn: string, public serverPortIn: string, public serialIn: Serializer, public facadeIn: ExternalClientFacade, public inGameECFIn: IngameExternalClientFacade) {
     this.serverUrl = serverUrlIn;
     this.serverPort = serverPortIn;
     this.serializer = serialIn;
     this.clientFacade = facadeIn;
+    this.inGameClientFacade = inGameECFIn
   }
   public sendCommand(command: ClientCommandObjects){
     var data = this.serializer.toJSON(command);
@@ -76,9 +77,14 @@ export class ClientCommunicator {
       else if (commands[i]._methodName == "startGame"){
         this.clientFacade.startGame(commands[i]._paramValues[2]);
       }
-      else if (commands[i]._methodName == "drawDestinationCard")
-      {
-        //this.inGameFacade.addDestinationCard();
+      else if (commands[i]._methodName == "receiveChatCommand"){
+        this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
+      }
+      else if (commands[i]._methodName == "potentialDestinationCard"){
+        this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2]);
+      }
+      else if (commands[i]._methodName == "discardDestinationCard"){
+        this.inGameClientFacade.discardDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2]);
       }
     }
   }
