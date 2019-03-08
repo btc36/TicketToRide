@@ -6,6 +6,11 @@ export class IngameInternalClientFacade {
   proxy: IngameServerProxy;
   root: IngameClientRoot;
 
+  constructor(_proxy: IngameServerProxy, _root: IngameClientRoot) {
+    this.proxy = _proxy;
+    this.root = _root;
+  }
+
   PresentDestinationCard() {
 
   }
@@ -25,4 +30,13 @@ export class IngameInternalClientFacade {
   getFaceUpCards(): FaceUpCards {
     return this.root.getFaceUpCards();
   }
+
+  getNumTrainCardsRemaining() {
+    return this.root.getNumTrainCardsRemaining();
+  }
+
+  getNumDestinationCardsRemaining() {
+    return this.root.getNumDestinationCardsRemaining();
+  }
+
 }

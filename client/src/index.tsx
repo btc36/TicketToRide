@@ -19,7 +19,10 @@ import { ClientRoot } from './Models/ClientRoot';
 import { InternalClientFacade } from './Services/InternalClientFacade';
 import { ServerProxy } from './Server/ServerProxy';
 
+import { IngameClientRoot } from './Models/IngameClientRoot';
 import { IngameInternalClientFacade } from './Services/IngameInternalClientFacade';
+import { IngameExternalClientFacade } from './Services/IngameExternalClientFacade';
+import { IngameServerProxy } from './Server/IngameServerProxy';
 
 
 export const initialState = {
@@ -36,7 +39,6 @@ class MainComponent extends React.Component<any, any> {
   gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameViewModel: JSX.Element = <GameViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
-
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
@@ -55,13 +57,16 @@ class MainComponent extends React.Component<any, any> {
 
 const root = new ClientRoot();
 const externalClientFacade = new ExternalClientFacade(root);
+const ingameExternalClientFacade = new IngameExternalClientFacade();
 const serializer = new Serializer();
-const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
+const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);
 const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
-const ingameInternalClientFacade = new IngameInternalClientFacade();
+const ingameServerProxy = new IngameServerProxy();
+const ingameRoot = new IngameClientRoot();
+const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 
 ReactDOM.render(
-  <MainComponent services={internalClientFacade} ingameServices={ingameInternalClientFacade} root={root}/>,
+  <MainComponent services={internalClientFacade} ingameServices={ingameInternalClientFacade} ingameRoot={ingameRoot} root={root}/>,
   document.getElementById("example")
 );

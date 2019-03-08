@@ -7,16 +7,31 @@ import { DestinationCard } from "./DestinationCard";
 import { GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
+import { ISubject } from "./ISubject"
+import { ChatMessage } from "./ChatMessage";
+import { ChatRoom } from "./ChatRoom";
 
 
-//HOW WILL CHAT BE INVOLVED WITH THIS
-export class IngameClientRoot {
+export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
   game: Game;
   session: Session;
 
   constructor() {
-    this.game = new Game();
+    let players = new Array<Player>();
+    let whoseTurn = 0;
+    let map = new GameMap();
+    let numDestinationCardsRemaining = 1;
+    let numTrainCardsRemaining = 1;
+    let trainCards = Array<TrainCard>();
+    trainCards.push(new TrainCard("green"));
+    trainCards.push(new TrainCard("blue"));
+    trainCards.push(new TrainCard("black"));
+    trainCards.push(new TrainCard("rainbow"));
+    trainCards.push(new TrainCard("blue"));
+    let faceUpCards = new FaceUpCards(trainCards);
+    let chatRoom = new ChatRoom("", new Array<ChatMessage>());
+    this.game = new Game(players, whoseTurn, map, numDestinationCardsRemaining, numTrainCardsRemaining, faceUpCards, chatRoom);
     this.observers = new Array<IObserver>();
   }
 
@@ -33,20 +48,28 @@ export class IngameClientRoot {
     }
   }
 
+  public attach(o: IObserver) {
+    this.observers.push(o);
+  }
+
+  public detach(o: IObserver) {
+
+  }
+
   claimRoute(player: Player, route: Route): void {
     this.game.claimRoute(player, route);
   }
 
-  useTrainCard(trainCard: TrainCard): void {
+ /* useTrainCard(trainCard: TrainCard): void {
     this.game.useTrainCard(trainCard);
   }
 
   addTrainCard(trainCard: TrainCard): void {
     this.game.addTrainCard(trainCard);
-  }
+  }*/
 
-  addDestinationCard(player: Player, destinationCard: DestinationCard) {
-    this.game.addDestinationCard(player,destinationCard);
+  addDestinationCard(username: string, destinationCard: DestinationCard) {
+    this.game.addDestinationCard(username,destinationCard);
   }
 
   checkWinCondition(): Player {
@@ -69,34 +92,65 @@ export class IngameClientRoot {
     return this.game.getFaceUpCards();
   }
 
+  getNumTrainCardsRemaining() {
+    return this.game.getNumTrainCardsRemaining();
+  }
+
+  getNumDestinationCardsRemaining() {
+    return this.game.getNumDestinationCardsRemaining();
+  }
+
   setFaceUpCards(faceUpCards: FaceUpCards): void {
     this.game.setFaceUpCards(faceUpCards);
+    this.notify("setFaceUpCards", faceUpCards);
   }
 
   updatePlayerPoints(player: Player, points: number): void {
     this.game.updatePlayerPoints(player, points);
   }
 
-  removeTrainCard(trainCard: TrainCard): void {
+  /*removeTrainCard(trainCard: TrainCard): void {
     this.game.removeTrainCard(trainCard);
-  }
+  }*/
 
   updateNumTrainCars(player: Player, numUsed: number): void {
     this.game.updateNumTrainCars(player, numUsed);
   }
 
   updateNumberOfDestinationCards(player: Player, numCards: number): void {
-    this.game.updateNumberOfDestinationCards(player, numCards);
+    this.game.setNumDestinationCards(player, numCards);
+  }
+
+  setNumTrainCards(player: Player, numCards: number) {
+    this.game.setNumTrainCards(player, numCards);
   }
 
   updateNumInDeck(newNum: number): void {
-    this.game.updateNumInDeck(newNum);
+    this.game.setNumTrainCardsRemaining(newNum);
   }
 
   changeTurn(player: Player): void {
     this.game.changeTurn(player);
   }
 
+  receiveChatCommand(gameid: string, chats: any[]){
+    this.game.setChatHistory(chats);
+  }
+  presentDestinationCard(destinationCards: any[]){
+    this.game.presentDestinationCard(destinationCards);
+  }
+
+  discardDestinationCard(){
+    this.game.discardDestinationCard();
+  }
+
+  removeTrainCard(trainCard){
+
+  }
+
+  addTrainCard(trainCard){
+
+  }
 
 
 }
