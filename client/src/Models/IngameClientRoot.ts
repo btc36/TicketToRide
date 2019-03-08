@@ -15,8 +15,8 @@ export class IngameClientRoot implements ISubject {
   game: Game;
   session: Session;
 
-  constructor() {
-    this.game = new Game();
+  constructor(game:Game) {
+    this.game = game;
     this.observers = new Array<IObserver>();
   }
 
@@ -45,13 +45,13 @@ export class IngameClientRoot implements ISubject {
     this.game.claimRoute(player, route);
   }
 
-  useTrainCard(trainCard: TrainCard): void {
+ /* useTrainCard(trainCard: TrainCard): void {
     this.game.useTrainCard(trainCard);
   }
 
   addTrainCard(trainCard: TrainCard): void {
     this.game.addTrainCard(trainCard);
-  }
+  }*/
 
   addDestinationCard(player: Player, destinationCard: DestinationCard) {
     this.game.addDestinationCard(player,destinationCard);
@@ -86,16 +86,16 @@ export class IngameClientRoot implements ISubject {
     this.game.updatePlayerPoints(player, points);
   }
 
-  removeTrainCard(trainCard: TrainCard): void {
+  /*removeTrainCard(trainCard: TrainCard): void {
     this.game.removeTrainCard(trainCard);
-  }
+  }*/
 
   updateNumTrainCars(player: Player, numUsed: number): void {
     this.game.updateNumTrainCars(player, numUsed);
   }
 
   updateNumberOfDestinationCards(player: Player, numCards: number): void {
-    this.game.updateNumDestinationCards(player, numCards);
+    this.game.setNumDestinationCards(player, numCards);
   }
 
   setNumTrainCards(player: Player, numCards: number) {
