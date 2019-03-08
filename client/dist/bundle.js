@@ -4616,6 +4616,77 @@ exports.ClientRoot = ClientRoot;
 
 /***/ }),
 
+/***/ "./src/Models/FaceUpCards.ts":
+/*!***********************************!*\
+  !*** ./src/Models/FaceUpCards.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var FaceUpCards = /** @class */ (function () {
+    function FaceUpCards(faceUpCards) {
+        this.faceUpCards = faceUpCards;
+    }
+    FaceUpCards.prototype.getCards = function () {
+        return this.faceUpCards;
+    };
+    //Whenever a a card is drawn, it is replaced with a new card in it's spot
+    FaceUpCards.prototype.drawCard = function (index, newCard) {
+        var cardDrawn = this.faceUpCards[index];
+        this.faceUpCards[index] = newCard;
+        return cardDrawn;
+    };
+    //This is for use when all 5 cards need to be replaced at once
+    FaceUpCards.prototype.replaceDeck = function (newSet) {
+        var oldSetofFive = this.faceUpCards;
+        this.faceUpCards = newSet;
+        return oldSetofFive;
+    };
+    FaceUpCards.prototype.isThreeOrMoreWildCard = function () {
+        var e_1, _a;
+        var numWild = 0;
+        try {
+            for (var _b = __values(this.faceUpCards), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var card = _c.value;
+                if (card.color == "wild") {
+                    numWild += 1;
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        if (numWild >= 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    return FaceUpCards;
+}());
+exports.FaceUpCards = FaceUpCards;
+
+
+/***/ }),
+
 /***/ "./src/Models/Game.ts":
 /*!****************************!*\
   !*** ./src/Models/Game.ts ***!
@@ -4766,10 +4837,19 @@ var __values = (this && this.__values) || function (o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Game_1 = __webpack_require__(/*! ./Game */ "./src/Models/Game.ts");
+var TrainCard_1 = __webpack_require__(/*! ./TrainCard */ "./src/Models/TrainCard.ts");
+var FaceUpCards_1 = __webpack_require__(/*! ./FaceUpCards */ "./src/Models/FaceUpCards.ts");
 var IngameClientRoot = /** @class */ (function () {
     function IngameClientRoot() {
         this.game = new Game_1.Game();
         this.observers = new Array();
+        var trainCards = Array();
+        trainCards.push(new TrainCard_1.TrainCard("green"));
+        trainCards.push(new TrainCard_1.TrainCard("blue"));
+        trainCards.push(new TrainCard_1.TrainCard("black"));
+        trainCards.push(new TrainCard_1.TrainCard("rainbow"));
+        trainCards.push(new TrainCard_1.TrainCard("green"));
+        this.setFaceUpCards(new FaceUpCards_1.FaceUpCards(trainCards));
     }
     IngameClientRoot.prototype.transitionPage = function (pageName) {
         this.session.setCurrentPage(pageName);
@@ -4827,6 +4907,7 @@ var IngameClientRoot = /** @class */ (function () {
     };
     IngameClientRoot.prototype.setFaceUpCards = function (faceUpCards) {
         this.game.setFaceUpCards(faceUpCards);
+        this.notify("setFaceUpCards", faceUpCards);
     };
     IngameClientRoot.prototype.updatePlayerPoints = function (player, points) {
         this.game.updatePlayerPoints(player, points);
@@ -5024,6 +5105,30 @@ exports.Session = Session;
 
 /***/ }),
 
+/***/ "./src/Models/TrainCard.ts":
+/*!*********************************!*\
+  !*** ./src/Models/TrainCard.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TrainCard = /** @class */ (function () {
+    function TrainCard(color) {
+        this.color = color;
+    }
+    TrainCard.prototype.getColor = function () {
+        return this.color;
+    };
+    return TrainCard;
+}());
+exports.TrainCard = TrainCard;
+
+
+/***/ }),
+
 /***/ "./src/Server/ClientCommandObjects.ts":
 /*!********************************************!*\
   !*** ./src/Server/ClientCommandObjects.ts ***!
@@ -5062,15 +5167,17 @@ var GameList_1 = __webpack_require__(/*! ../Models/GameList */ "./src/Models/Gam
 var Player_1 = __webpack_require__(/*! ../Models/Player */ "./src/Models/Player.ts");
 var LobbyGame_1 = __webpack_require__(/*! ../Models/LobbyGame */ "./src/Models/LobbyGame.ts");
 var ClientCommunicator = /** @class */ (function () {
-    function ClientCommunicator(serverUrlIn, serverPortIn, serialIn, facadeIn) {
+    function ClientCommunicator(serverUrlIn, serverPortIn, serialIn, facadeIn, inGameECFIn) {
         this.serverUrlIn = serverUrlIn;
         this.serverPortIn = serverPortIn;
         this.serialIn = serialIn;
         this.facadeIn = facadeIn;
+        this.inGameECFIn = inGameECFIn;
         this.serverUrl = serverUrlIn;
         this.serverPort = serverPortIn;
         this.serializer = serialIn;
         this.clientFacade = facadeIn;
+        this.inGameClientFacade = inGameECFIn;
     }
     ClientCommunicator.prototype.sendCommand = function (command) {
         var data = this.serializer.toJSON(command);
@@ -5125,6 +5232,15 @@ var ClientCommunicator = /** @class */ (function () {
             }
             else if (commands[i]._methodName == "startGame") {
                 this.clientFacade.startGame(commands[i]._paramValues[2]);
+            }
+            else if (commands[i]._methodName == "receiveChatCommand") {
+                this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
+            }
+            else if (commands[i]._methodName == "potentialDestinationCard") {
+                this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2]);
+            }
+            else if (commands[i]._methodName == "discardDestinationCard") {
+                this.inGameClientFacade.discardDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2]);
             }
         }
     };
@@ -5284,6 +5400,18 @@ var ServerProxy = /** @class */ (function () {
         var command = new ClientCommandObjects_1.ClientCommandObjects("server.ServerFacade", "getGameList", [], []);
         this.communicator.sendCommand(command);
     };
+    ServerProxy.prototype.drawDestinationCard = function (destinationCards) {
+        var command = new ClientCommandObjects_1.ClientCommandObjects("server.GameFacade", "drawDestinationCard", [[]], [destinationCards]);
+        this.communicator.sendCommand(command);
+    };
+    ServerProxy.prototype.discardDestinationCard = function (destinationCards, gameID) {
+        var command = new ClientCommandObjects_1.ClientCommandObjects("server.GameFacade", "discardDestinationCard", ["java.lang.String", []], [gameID, destinationCards]);
+        this.communicator.sendCommand(command);
+    };
+    ServerProxy.prototype.sendChat = function (message, time, username, gameID) {
+        var command = new ClientCommandObjects_1.ClientCommandObjects("server.ServerFacade", "sendChat", ["java.lang.String", "java.lang.Date", "java.lang.String"], [message, time, username, gameID]);
+        this.communicator.sendCommand(command);
+    };
     return ServerProxy;
 }());
 exports.ServerProxy = ServerProxy;
@@ -5330,6 +5458,68 @@ var ExternalClientFacade = /** @class */ (function () {
     return ExternalClientFacade;
 }());
 exports.ExternalClientFacade = ExternalClientFacade;
+
+
+/***/ }),
+
+/***/ "./src/Services/IngameExternalClientFacade.ts":
+/*!****************************************************!*\
+  !*** ./src/Services/IngameExternalClientFacade.ts ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var IngameExternalClientFacade = /** @class */ (function () {
+    function IngameExternalClientFacade() {
+    }
+    IngameExternalClientFacade.prototype.claimRoute = function (player, route) {
+        this.root.claimRoute(player, route);
+    };
+    IngameExternalClientFacade.prototype.addTrainCard = function (trainCard) {
+        this.root.addTrainCard(trainCard);
+    };
+    IngameExternalClientFacade.prototype.addDestinationCard = function (player, destinationCard) {
+        this.root.addDestinationCard(player, destinationCard);
+    };
+    IngameExternalClientFacade.prototype.updatePlayerPoints = function (player, points) {
+        this.root.updatePlayerPoints(player, points);
+    };
+    IngameExternalClientFacade.prototype.removeTrainCard = function (trainCard) {
+        this.root.removeTrainCard(trainCard);
+    };
+    IngameExternalClientFacade.prototype.updateNumTrainCards = function (player, numUsed) {
+        this.root.updateNumTrainCars(player, numUsed);
+    };
+    IngameExternalClientFacade.prototype.updateNumTrainCars = function (player, numCars) {
+        this.root.updateNumTrainCars(player, numCars);
+    };
+    IngameExternalClientFacade.prototype.updateNumberOfDestinationCards = function (player, numCards) {
+        this.root.updateNumberOfDestinationCards(player, numCards);
+    };
+    IngameExternalClientFacade.prototype.setFaceUpCards = function (faceUpCards) {
+        this.root.setFaceUpCards(faceUpCards);
+    };
+    IngameExternalClientFacade.prototype.updateNumInDeck = function (newNum) {
+        this.root.updateNumInDeck(newNum);
+    };
+    IngameExternalClientFacade.prototype.updateNumDestinationCards = function (player, numCards) {
+        this.root.updateNumberOfDestinationCards(player, numCards);
+    };
+    IngameExternalClientFacade.prototype.changeTurn = function (player) {
+        this.root.changeTurn(player);
+    };
+    IngameExternalClientFacade.prototype.receiveChatCommand = function (one, two, three, four) {
+    };
+    IngameExternalClientFacade.prototype.presentDestinationCard = function (one, two, three) {
+    };
+    IngameExternalClientFacade.prototype.discardDestinationCard = function (one, two, three) {
+    };
+    return IngameExternalClientFacade;
+}());
+exports.IngameExternalClientFacade = IngameExternalClientFacade;
 
 
 /***/ }),
@@ -5491,17 +5681,22 @@ var FaceUpCardsView_1 = __webpack_require__(/*! ../Views/FaceUpCardsView */ "./s
 var IFaceUpCardsViewModel_1 = __webpack_require__(/*! ./IFaceUpCardsViewModel */ "./src/ViewModels/IFaceUpCardsViewModel.ts");
 var FaceUpCardsViewModel = /** @class */ (function (_super) {
     __extends(FaceUpCardsViewModel, _super);
-    function FaceUpCardsViewModel(props) {
-        var _this = _super.call(this, props) || this;
+    function FaceUpCardsViewModel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.state = IFaceUpCardsViewModel_1.initialState;
         _this.update = function (updateType, data) {
             if (updateType == "transitionPage") {
                 _this.props.main.setState({ "page": data });
             }
+            else if (updateType == "setFaceUpCards") {
+                _this.setState({ faceUpCards: _this.props.services.getFaceUpCards() });
+            }
         };
-        _this.setState({ faceUpCards: props.services.getFaceUpCards() });
         return _this;
     }
+    FaceUpCardsViewModel.prototype.componentDidMount = function () {
+        this.props.services.getFaceUpCards();
+    };
     FaceUpCardsViewModel.prototype.render = function () {
         return FaceUpCardsView_1.FaceUpCardsView(this);
     };
@@ -6536,9 +6731,10 @@ var InternalClientFacade_1 = __webpack_require__(/*! ./Services/InternalClientFa
 var ServerProxy_1 = __webpack_require__(/*! ./Server/ServerProxy */ "./src/Server/ServerProxy.ts");
 var IngameClientRoot_1 = __webpack_require__(/*! ./Models/IngameClientRoot */ "./src/Models/IngameClientRoot.ts");
 var IngameInternalClientFacade_1 = __webpack_require__(/*! ./Services/IngameInternalClientFacade */ "./src/Services/IngameInternalClientFacade.ts");
+var IngameExternalClientFacade_1 = __webpack_require__(/*! ./Services/IngameExternalClientFacade */ "./src/Services/IngameExternalClientFacade.ts");
 var IngameServerProxy_1 = __webpack_require__(/*! ./Server/IngameServerProxy */ "./src/Server/IngameServerProxy.ts");
 exports.initialState = {
-    "page": "map"
+    "page": "faceup"
 };
 var MainComponent = /** @class */ (function (_super) {
     __extends(MainComponent, _super);
@@ -6591,8 +6787,9 @@ var MainComponent = /** @class */ (function (_super) {
 }(React.Component));
 var root = new ClientRoot_1.ClientRoot();
 var externalClientFacade = new ExternalClientFacade_1.ExternalClientFacade(root);
+var ingameExternalClientFacade = new IngameExternalClientFacade_1.IngameExternalClientFacade();
 var serializer = new Serializer_1.Serializer();
-var clientCommunicator = new ClientCommunicator_1.ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
+var clientCommunicator = new ClientCommunicator_1.ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);
 var serverProxy = new ServerProxy_1.ServerProxy(clientCommunicator);
 var internalClientFacade = new InternalClientFacade_1.InternalClientFacade(serverProxy, root);
 var ingameServerProxy = new IngameServerProxy_1.IngameServerProxy();

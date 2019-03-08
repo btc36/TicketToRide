@@ -20,11 +20,12 @@ import { ServerProxy } from './Server/ServerProxy';
 
 import { IngameClientRoot } from './Models/IngameClientRoot';
 import { IngameInternalClientFacade } from './Services/IngameInternalClientFacade';
+import { IngameExternalClientFacade } from './Services/IngameExternalClientFacade';
 import { IngameServerProxy } from './Server/IngameServerProxy';
 
 
 export const initialState = {
-  "page": "map"
+  "page": "faceup"
 };
 
 export type State = Readonly<typeof initialState>;
@@ -66,8 +67,9 @@ class MainComponent extends React.Component<any, any> {
 
 const root = new ClientRoot();
 const externalClientFacade = new ExternalClientFacade(root);
+const ingameExternalClientFacade = new IngameExternalClientFacade();
 const serializer = new Serializer();
-const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
+const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);
 const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
 const ingameServerProxy = new IngameServerProxy();
