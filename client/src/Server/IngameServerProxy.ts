@@ -22,12 +22,12 @@ export class IngameServerProxy {
     }
 
     SendChat(message: String, time: Date,username:String, gameId: String) {
-        const command = new ClientCommandObjects("server.ServerFacade", "sendChat", [this.paramTypeString, this.paramTypeDate, this.paramTypeString, this.paramTypeString], [message,time,username,gameId]);
+        const command = new ClientCommandObjects(this.serverClass, "sendChat", [this.paramTypeString, this.paramTypeDate, this.paramTypeString, this.paramTypeString], [message,time,username,gameId]);
         this.communicator.sendCommand(command);
     }
 
     DiscardDestinationCard(gameId:String,destinationCards: Array<DestinationCard>) {
-        const command = new ClientCommandObjects("server.GameFacade", "discardDestinationCardCommand", [this.paramTypeString, this.paramTypeList], [gameId,destinationCards]);
+        const command = new ClientCommandObjects(this.gameClass, "discardDestinationCardCommand", [this.paramTypeString, this.paramTypeList], [gameId,destinationCards]);
         this.communicator.sendCommand(command);
     }
 }
