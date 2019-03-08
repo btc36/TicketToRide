@@ -8,18 +8,18 @@ export class IngameServerProxy {
     port: string;
     communicator: ClientCommunicator
 
-    DrawDestinationCard(destinationCards: Array<DestinationCard>) {
-        const command = new ClientCommandObjects("server.ServerFacade", "DrawDestinationCard", ["java.lang.String", "java.lang.String"], []);
+    DrawDestinationCard(gameId:String) {
+        const command = new ClientCommandObjects("server.GameFacade", "drawDestinatGameFacadeionCard", ["java.lang.String"], [gameId]);
         this.communicator.sendCommand(command);
     }
 
-    SendChat(message: String, time: Date, gameId: String) {
-        const command = new ClientCommandObjects("server.ServerFacade", "SendChat", ["java.lang.String", "java.lang.String"], [username, password]);
+    SendChat(message: String, time: Date,username:String, gameId: String) {
+        const command = new ClientCommandObjects("server.ServerFacade", "sendChat", ["java.lang.String", "java.lang.Date", "java.lang.String", "java.lang.String"], [message,time,username,gameId]);
         this.communicator.sendCommand(command);
     }
 
-    DiscardDestinationCard(destinationCards: Array<DestinationCard>) {
-        const command = new ClientCommandObjects("server.ServerFacade", "DiscardDestinationCard", ["java.lang.String", "java.lang.String"], [username, password]);
+    DiscardDestinationCard(gameId:String,destinationCards: Array<DestinationCard>) {
+        const command = new ClientCommandObjects("server.GameFacade", "discardDestinationCardCommand", ["java.lang.String", "java.lang.String"], [gameId,destinationCards]);
         this.communicator.sendCommand(command);
     }
 }
