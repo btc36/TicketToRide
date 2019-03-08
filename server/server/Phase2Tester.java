@@ -1,7 +1,10 @@
 package server;
 
 import command.GenericCommand;
+import model.DestinationCard;
+import model.LobbyGameModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,8 +39,22 @@ public class Phase2Tester
         facade.sendChat("HELLO", date,"user1", "game1" );
 
 
+        DestinationCard c1 = new DestinationCard("s", "d", 4);
+        DestinationCard c2 = new DestinationCard("s2", "d2", 5);
+        DestinationCard c3 = new DestinationCard("s3", "d3", 6);
 
+        List<DestinationCard> cards = new ArrayList<>();
+        cards.add(c1);
+        cards.add(c2);
+        cards.add(c3);
 
+        List<LobbyGameModel> games = facade.getGameAsList();
+        LobbyGameModel game = games.get(0);
+        facade.startGame(game.getGameID());
+        GameFacade g = new GameFacade();
+        g.discardDestinationCardCommand(game.getGameID(), cards);
+        g.drawDestinationCard(game.getGameID());
+        List<GenericCommand> result = g.potentialDestinationCard(game.getGameID());
         GameFacade gameFacade = new GameFacade();
 
 
