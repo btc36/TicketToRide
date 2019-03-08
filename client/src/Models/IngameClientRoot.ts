@@ -18,6 +18,13 @@ export class IngameClientRoot implements ISubject {
   constructor() {
     this.game = new Game();
     this.observers = new Array<IObserver>();
+    let trainCards = Array<TrainCard>();
+    trainCards.push(new TrainCard("green"));
+    trainCards.push(new TrainCard("blue"));
+    trainCards.push(new TrainCard("black"));
+    trainCards.push(new TrainCard("rainbow"));
+    trainCards.push(new TrainCard("green"));
+    this.setFaceUpCards(new FaceUpCards(trainCards));
   }
 
   transitionPage(pageName: string): void {
@@ -79,6 +86,7 @@ export class IngameClientRoot implements ISubject {
 
   setFaceUpCards(faceUpCards: FaceUpCards): void {
     this.game.setFaceUpCards(faceUpCards);
+    this.notify("setFaceUpCards", faceUpCards);
   }
 
   updatePlayerPoints(player: Player, points: number): void {
