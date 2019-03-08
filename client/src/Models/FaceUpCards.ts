@@ -3,7 +3,7 @@ import { TrainCard } from "./TrainCard";
 export class FaceUpCards {
     faceUpCards: Array<TrainCard>;
 
-    constructor(faceUpCards: Array<TrainCard>) {
+    constructor(faceUpCards: Array<TrainCard> = new Array<TrainCard>()) {
         this.faceUpCards = faceUpCards;
     }
 

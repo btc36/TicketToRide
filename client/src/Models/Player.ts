@@ -38,8 +38,9 @@ export class Player {
         this.myTurn = false;
     }
 
-    claimRoute(route: Route, length: number): void {
+    claimRoute(route: Route): void {
         this.ownedRoutes.push(route);
+        let length = route.getLength();
         if (length == 1) {
             this.score += 1;
         }
@@ -66,6 +67,22 @@ export class Player {
 
     getScore(): number {
         return this.score;
+    }
+
+    setScore(newScore: number) {
+        this.score = newScore;
+    }
+
+    useTrainCard(trainCard: TrainCard,numUsed:number) {
+        
+    }
+
+    setNumTrainCars(numCars: number) {
+        this.trainCars -= numCars;
+    }
+
+    setTurn(isMyTurn: boolean) {
+        this.myTurn = isMyTurn;
     }
 
 }
