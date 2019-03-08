@@ -5025,6 +5025,48 @@ var Player = /** @class */ (function () {
     Player.prototype.getUsername = function () {
         return this.username;
     };
+    //Acts as a constructor for when actual gameplay starts
+    Player.prototype.initiateGame = function (myHand, trainCards, color, numTrainCards, numDestinationCards, isOtherPlayer) {
+        this.myHand = myHand;
+        this.trainCars = trainCards;
+        this.color = color;
+        this.numTrainCards = numTrainCards;
+        this.numDestinationCards = numDestinationCards;
+        this.isOtherPlayer = isOtherPlayer;
+        this.connectedCities = new Array();
+        this.ownedRoutes = new Array();
+        this.myTurn = false;
+    };
+    Player.prototype.claimRoute = function (route, length) {
+        this.ownedRoutes.push(route);
+        if (length == 1) {
+            this.score += 1;
+        }
+        else if (length == 2) {
+            this.score += 2;
+        }
+        else if (length == 3) {
+            this.score += 4;
+        }
+        else if (length == 4) {
+            this.score += 7;
+        }
+        else if (length == 5) {
+            this.score += 10;
+        }
+        else if (length == 6) {
+            this.score += 15;
+        }
+    };
+    Player.prototype.drawTrainCard = function (trainCard) {
+        this.myHand.addTrainCard(trainCard);
+    };
+    Player.prototype.drawDestinationCard = function (destinationCard) {
+        this.myHand.addDestinationCard(destinationCard);
+    };
+    Player.prototype.getScore = function () {
+        return this.score;
+    };
     return Player;
 }());
 exports.Player = Player;
