@@ -4,12 +4,14 @@ import { ExternalClientFacade } from "../Services/ExternalClientFacade";
 import { GameList } from "../Models/GameList";
 import { Player } from "../Models/Player";
 import { LobbyGame } from "../Models/LobbyGame";
+import {IngameExternalClientFacade} from "../Services/IngameExternalClientFacade";
 
 export class ClientCommunicator {
   serverUrl: string;
   serverPort: string;
   serializer: Serializer;
   clientFacade: ExternalClientFacade;
+  inGameFacade: IngameExternalClientFacade;
 
   constructor(public serverUrlIn: string, public serverPortIn: string, public serialIn: Serializer, public facadeIn: ExternalClientFacade) {
     this.serverUrl = serverUrlIn;
@@ -73,6 +75,10 @@ export class ClientCommunicator {
       }
       else if (commands[i]._methodName == "startGame"){
         this.clientFacade.startGame(commands[i]._paramValues[2]);
+      }
+      else if (commands[i]._methodName == "drawDestinationCard")
+      {
+        //this.inGameFacade.addDestinationCard();
       }
     }
   }
