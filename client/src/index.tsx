@@ -9,6 +9,7 @@ import { DestinationCardSelectionViewModel } from './ViewModels/DestinationCardS
 import { FaceUpCardsViewModel } from './ViewModels/FaceUpCardsViewModel';
 import { PlayerHandViewModel } from './ViewModels/PlayerHandViewModel';
 import { PlayerInfoViewModel } from './ViewModels/PlayerInfoViewModel';
+import { GameViewModel } from "./ViewModels/GameViewModel";
 
 import { ClientCommunicator } from './Server/ClientCommunicator';
 import { Serializer } from './Server/Serializer';
@@ -22,7 +23,7 @@ import { IngameInternalClientFacade } from './Services/IngameInternalClientFacad
 
 
 export const initialState = {
-  "page": "map"
+  "page": "game"
 };
 
 export type State = Readonly<typeof initialState>;
@@ -30,32 +31,22 @@ export type State = Readonly<typeof initialState>;
 class MainComponent extends React.Component<any, any> {
 
   state: State = initialState;
+
   loginRegisterViewModel: JSX.Element = <LoginRegisterViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
-  playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
-  playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
+  gameViewModel: JSX.Element = <GameViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
+
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
       return this.loginRegisterViewModel;
+    } else if (this.state.page == "game") {
+      return this.gameViewModel;
     } else if (this.state.page == "gameList") {
       return this.gameListViewModel;
     } else if (this.state.page == "lobbyGame") {
       return this.gameLobbyViewModel;
-    } else if (this.state.page == "map") {
-      return this.mapViewModel;
-    } else if (this.state.page == "destination") {
-      return this.destinationCardSelectionViewModel;
-    } else if (this.state.page == "faceup") {
-      return this.faceUpCardsViewModel;
-    } else if (this.state.page == "playerhand") {
-      return this.playerHandViewModel;
-    } else if (this.state.page == "playerinfo") {
-      return this.playerInfoViewModel;
     } else {
       return <p>Page {this.state.page} not found.</p>;
     }
