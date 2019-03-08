@@ -85,4 +85,12 @@ export class Player {
         this.myTurn = isMyTurn;
     }
 
+  setNumTrainCards(numCards:number){
+    this.numTrainCards = numCards;
+    }
+
+  setNumDestinationCards(numCards:number){
+    this.numDestinationCards = numCards
+    }
+
 }

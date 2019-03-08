@@ -144,14 +144,36 @@ export class Game {
         this.numTrainCardsRemaining = newNum;
     }
 
-    changeTurn(player: Player): void {
-        let username = player.getUsername;
-        this.players.forEach((player) => {
-            if (player.getUsername == username) {
-                player.setTurn(true);
-            } else {
-                player.setTurn(false);
-            }
-        });
-    }
+  setNumTrainCards(player:Player,numCards:number) {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+      if (player.getUsername == username) {
+        player.setNumTrainCars(numCards);
+        return;
+      }
+    });
+  }
+
+  setNumDestinationCards(player: Player, numCards: number) {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+      if (player.getUsername == username) {
+        player.setNumDestinationCards(numCards)
+        return;
+      }
+    });
+  }
+
+
+
+  changeTurn(player: Player): void {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+        if (player.getUsername == username) {
+            player.setTurn(true);
+        } else {
+            player.setTurn(false);
+        }
+    });
+  }
 }
