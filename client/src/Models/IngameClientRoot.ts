@@ -31,7 +31,7 @@ export class IngameClientRoot implements ISubject {
     trainCards.push(new TrainCard("green"));
     let faceUpCards = new FaceUpCards(trainCards);
     let chatRoom = new ChatRoom("", new Array<ChatMessage>());
-    this.game = new Game(players, whoseTurn, map, numDestinationCardsRemaining, numTrainCardsRemaining, faceUpCards, chatRoom);
+    this.game = new Game();
     this.observers = new Array<IObserver>();
   }
 
@@ -132,17 +132,21 @@ export class IngameClientRoot implements ISubject {
     this.game.presentDestinationCard(destinationCards);
   }
 
+  getPresentedDestinationCards(): any[] {
+    return this.game.getPresentedDestinationCards();
+  }
+
   discardDestinationCard(){
     this.game.discardDestinationCard();
   }
 
-  removeTrainCard(trainCard){
+  /*removeTrainCard(trainCard){
 
   }
 
   addTrainCard(trainCard){
 
-  }
+  }*/
 
 
 }
