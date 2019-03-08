@@ -5748,7 +5748,7 @@ var ClientRoot_1 = __webpack_require__(/*! ./Models/ClientRoot */ "./src/Models/
 var InternalClientFacade_1 = __webpack_require__(/*! ./Services/InternalClientFacade */ "./src/Services/InternalClientFacade.ts");
 var ServerProxy_1 = __webpack_require__(/*! ./Server/ServerProxy */ "./src/Server/ServerProxy.ts");
 exports.initialState = {
-    "page": "destination"
+    "page": "map"
 };
 var MainComponent = /** @class */ (function (_super) {
     __extends(MainComponent, _super);
