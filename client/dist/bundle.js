@@ -5086,6 +5086,54 @@ exports.InternalClientFacade = InternalClientFacade;
 
 /***/ }),
 
+/***/ "./src/ViewModels/DestinationCardSelectionViewModel.ts":
+/*!*************************************************************!*\
+  !*** ./src/ViewModels/DestinationCardSelectionViewModel.ts ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+var DestinationCardSelectionView_1 = __webpack_require__(/*! ../Views/DestinationCardSelectionView */ "./src/Views/DestinationCardSelectionView.tsx");
+var IDestinationCardSelectionViewModel_1 = __webpack_require__(/*! ./IDestinationCardSelectionViewModel */ "./src/ViewModels/IDestinationCardSelectionViewModel.ts");
+var DestinationCardSelectionViewModel = /** @class */ (function (_super) {
+    __extends(DestinationCardSelectionViewModel, _super);
+    function DestinationCardSelectionViewModel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = IDestinationCardSelectionViewModel_1.initialState;
+        _this.update = function (updateType, data) {
+            if (updateType == "transitionPage") {
+                _this.props.main.setState({ "page": data });
+            }
+        };
+        return _this;
+    }
+    DestinationCardSelectionViewModel.prototype.render = function () {
+        return DestinationCardSelectionView_1.DestinationCardSelectionView(this);
+    };
+    return DestinationCardSelectionViewModel;
+}(React.Component));
+exports.DestinationCardSelectionViewModel = DestinationCardSelectionViewModel;
+
+
+/***/ }),
+
 /***/ "./src/ViewModels/GameListViewModel.ts":
 /*!*********************************************!*\
   !*** ./src/ViewModels/GameListViewModel.ts ***!
@@ -5229,6 +5277,27 @@ var GameLobbyViewModel = /** @class */ (function (_super) {
     return GameLobbyViewModel;
 }(React.Component));
 exports.GameLobbyViewModel = GameLobbyViewModel;
+
+
+/***/ }),
+
+/***/ "./src/ViewModels/IDestinationCardSelectionViewModel.ts":
+/*!**************************************************************!*\
+  !*** ./src/ViewModels/IDestinationCardSelectionViewModel.ts ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initialState = {
+    destinationCards: [
+        { route: { cityOne: "Provo", cityTwo: "Orem" }, pointValue: 5 },
+        { route: { cityOne: "Salt Lake City", cityTwo: "Las Vegas" }, pointValue: 2 },
+        { route: { cityOne: "Wendover", cityTwo: "San Francisco" }, pointValue: 9 }
+    ]
+};
 
 
 /***/ }),
@@ -5444,6 +5513,35 @@ exports.MapViewModel = MapViewModel;
 
 /***/ }),
 
+/***/ "./src/Views/DestinationCardSelectionView.tsx":
+/*!****************************************************!*\
+  !*** ./src/Views/DestinationCardSelectionView.tsx ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.DestinationCardSelectionView = function (component) {
+    var cards = [];
+    var destCards = component.state.destinationCards;
+    for (var i = 0; i < destCards.length; i++) {
+        var card = destCards[i];
+        cards.push(React.createElement("p", { key: i },
+            card.route.cityOne,
+            " to ",
+            card.route.cityTwo,
+            ": ",
+            card.pointValue));
+    }
+    return (React.createElement("div", null, cards));
+};
+
+
+/***/ }),
+
 /***/ "./src/Views/GameListView.tsx":
 /*!************************************!*\
   !*** ./src/Views/GameListView.tsx ***!
@@ -5642,6 +5740,7 @@ var LoginRegisterViewModel_1 = __webpack_require__(/*! ./ViewModels/LoginRegiste
 var GameListViewModel_1 = __webpack_require__(/*! ./ViewModels/GameListViewModel */ "./src/ViewModels/GameListViewModel.ts");
 var GameLobbyViewModel_1 = __webpack_require__(/*! ./ViewModels/GameLobbyViewModel */ "./src/ViewModels/GameLobbyViewModel.ts");
 var MapViewModel_1 = __webpack_require__(/*! ./ViewModels/MapViewModel */ "./src/ViewModels/MapViewModel.ts");
+var DestinationCardSelectionViewModel_1 = __webpack_require__(/*! ./ViewModels/DestinationCardSelectionViewModel */ "./src/ViewModels/DestinationCardSelectionViewModel.ts");
 var ClientCommunicator_1 = __webpack_require__(/*! ./Server/ClientCommunicator */ "./src/Server/ClientCommunicator.ts");
 var Serializer_1 = __webpack_require__(/*! ./Server/Serializer */ "./src/Server/Serializer.ts");
 var ExternalClientFacade_1 = __webpack_require__(/*! ./Services/ExternalClientFacade */ "./src/Services/ExternalClientFacade.ts");
@@ -5649,7 +5748,7 @@ var ClientRoot_1 = __webpack_require__(/*! ./Models/ClientRoot */ "./src/Models/
 var InternalClientFacade_1 = __webpack_require__(/*! ./Services/InternalClientFacade */ "./src/Services/InternalClientFacade.ts");
 var ServerProxy_1 = __webpack_require__(/*! ./Server/ServerProxy */ "./src/Server/ServerProxy.ts");
 exports.initialState = {
-    "page": "map"
+    "page": "destination"
 };
 var MainComponent = /** @class */ (function (_super) {
     __extends(MainComponent, _super);
@@ -5660,6 +5759,7 @@ var MainComponent = /** @class */ (function (_super) {
         _this.gameListViewModel = React.createElement(GameListViewModel_1.GameListViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
+        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         return _this;
     }
     MainComponent.prototype.render = function () {
@@ -5674,6 +5774,9 @@ var MainComponent = /** @class */ (function (_super) {
         }
         else if (this.state.page == "map") {
             return this.mapViewModel;
+        }
+        else if (this.state.page == "destination") {
+            return this.destinationCardSelectionViewModel;
         }
         else {
             return React.createElement("p", null,
