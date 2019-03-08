@@ -1,24 +1,28 @@
 import { IngameServerProxy } from "../Server/IngameServerProxy";
 import { IngameClientRoot } from "../Models/IngameClientRoot";
+import { FaceUpCards } from "../Models/FaceUpCards";
 
 export class IngameInternalClientFacade {
-    proxy: IngameServerProxy;
-    root: IngameClientRoot;
+  proxy: IngameServerProxy;
+  root: IngameClientRoot;
 
-    PresentDestinationCard() {
+  PresentDestinationCard() {
 
-    }
+  }
 
-    NotifyStartGame() {
+  NotifyStartGame() {
 
-    }
+  }
 
-    RecieveChatCommand() {
+  RecieveChatCommand() {
 
-    }
+  }
 
-    DiscardDestinationCard() {
+  DiscardDestinationCard() {
 
-    }
+  }
 
+  getFaceUpCards(): FaceUpCards {
+    return this.root.getFaceUpCards();
+  }
 }

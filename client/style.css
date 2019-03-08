@@ -19,3 +19,7 @@ tr.active {
   width: 800px;
   height: 400px;
 }
+.deck {
+  background-color: lightgray;
+  border: 1px solid black;
+}

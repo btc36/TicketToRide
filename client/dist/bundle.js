@@ -3647,7 +3647,6 @@ var printWarning = function() {};
 if (true) {
   var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
   var loggedTypeFailures = {};
-  var has = Function.call.bind(Object.prototype.hasOwnProperty);
 
   printWarning = function(text) {
     var message = 'Warning: ' + text;
@@ -3677,7 +3676,7 @@ if (true) {
 function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
   if (true) {
     for (var typeSpecName in typeSpecs) {
-      if (has(typeSpecs, typeSpecName)) {
+      if (typeSpecs.hasOwnProperty(typeSpecName)) {
         var error;
         // Prop type validation may throw. In case they do, we don't want to
         // fail the render phase where it didn't fail before. So we log it.
@@ -3705,7 +3704,8 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
             'You may have forgotten to pass an argument to the type checker ' +
             'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
             'shape all require an argument).'
-          );
+          )
+
         }
         if (error instanceof Error && !(error.message in loggedTypeFailures)) {
           // Only monitor this failure once because there tends to be a lot of the
@@ -3720,17 +3720,6 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
         }
       }
     }
-  }
-}
-
-/**
- * Resets warning cache when testing.
- *
- * @private
- */
-checkPropTypes.resetWarningCache = function() {
-  if (true) {
-    loggedTypeFailures = {};
   }
 }
 
@@ -3756,13 +3745,11 @@ module.exports = checkPropTypes;
 
 
 
-var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
 var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
 
 var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
 var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
 
-var has = Function.call.bind(Object.prototype.hasOwnProperty);
 var printWarning = function() {};
 
 if (true) {
@@ -3873,7 +3860,6 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
     any: createAnyTypeChecker(),
     arrayOf: createArrayOfTypeChecker,
     element: createElementTypeChecker(),
-    elementType: createElementTypeTypeChecker(),
     instanceOf: createInstanceTypeChecker,
     node: createNodeChecker(),
     objectOf: createObjectOfTypeChecker,
@@ -4027,18 +4013,6 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
     return createChainableTypeChecker(validate);
   }
 
-  function createElementTypeTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!ReactIs.isValidElementType(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
   function createInstanceTypeChecker(expectedClass) {
     function validate(props, propName, componentName, location, propFullName) {
       if (!(props[propName] instanceof expectedClass)) {
@@ -4053,16 +4027,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createEnumTypeChecker(expectedValues) {
     if (!Array.isArray(expectedValues)) {
-      if (true) {
-        if (arguments.length > 1) {
-          printWarning(
-            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
-            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
-          );
-        } else {
-          printWarning('Invalid argument supplied to oneOf, expected an array.');
-        }
-      }
+       true ? printWarning('Invalid argument supplied to oneOf, expected an instance of array.') : undefined;
       return emptyFunctionThatReturnsNull;
     }
 
@@ -4074,14 +4039,8 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
         }
       }
 
-      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
-        var type = getPreciseType(value);
-        if (type === 'symbol') {
-          return String(value);
-        }
-        return value;
-      });
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+      var valuesString = JSON.stringify(expectedValues);
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
     }
     return createChainableTypeChecker(validate);
   }
@@ -4097,7 +4056,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
         return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
       }
       for (var key in propValue) {
-        if (has(propValue, key)) {
+        if (propValue.hasOwnProperty(key)) {
           var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
           if (error instanceof Error) {
             return error;
@@ -4254,11 +4213,6 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
       return true;
     }
 
-    // falsy value can't be a Symbol
-    if (!propValue) {
-      return false;
-    }
-
     // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
     if (propValue['@@toStringTag'] === 'Symbol') {
       return true;
@@ -4333,7 +4287,6 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
   }
 
   ReactPropTypes.checkPropTypes = checkPropTypes;
-  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
   ReactPropTypes.PropTypes = ReactPropTypes;
 
   return ReactPropTypes;
@@ -4357,12 +4310,21 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
  */
 
 if (true) {
-  var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+    Symbol.for &&
+    Symbol.for('react.element')) ||
+    0xeac7;
+
+  var isValidElement = function(object) {
+    return typeof object === 'object' &&
+      object !== null &&
+      object.$$typeof === REACT_ELEMENT_TYPE;
+  };
 
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "./node_modules/prop-types/factoryWithTypeCheckers.js")(ReactIs.isElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "./node_modules/prop-types/factoryWithTypeCheckers.js")(isValidElement, throwOnDirectAccess);
 } else {}
 
 
@@ -4388,262 +4350,6 @@ if (true) {
 var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/cjs/react-is.development.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/** @license React v16.8.4
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-
-var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
-var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
-var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
-var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-
-function isValidElementType(type) {
-  return typeof type === 'string' || typeof type === 'function' ||
-  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
-}
-
-/**
- * Forked from fbjs/warning:
- * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
- *
- * Only change is we use console.warn instead of console.error,
- * and do nothing when 'console' is not supported.
- * This really simplifies the code.
- * ---
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var lowPriorityWarning = function () {};
-
-{
-  var printWarning = function (format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.warn(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  lowPriorityWarning = function (condition, format) {
-    if (format === undefined) {
-      throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-var lowPriorityWarning$1 = lowPriorityWarning;
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_ASYNC_MODE_TYPE:
-          case REACT_CONCURRENT_MODE_TYPE:
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-            return type;
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-              default:
-                return $$typeof;
-            }
-        }
-      case REACT_LAZY_TYPE:
-      case REACT_MEMO_TYPE:
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-}
-
-// AsyncMode is deprecated along with isAsyncMode
-var AsyncMode = REACT_ASYNC_MODE_TYPE;
-var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-
-var hasWarnedAboutDeprecatedIsAsyncMode = false;
-
-// AsyncMode should be deprecated
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true;
-      lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
-    }
-  }
-  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
-}
-function isConcurrentMode(object) {
-  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.typeOf = typeOf;
-exports.AsyncMode = AsyncMode;
-exports.ConcurrentMode = ConcurrentMode;
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isValidElementType = isValidElementType;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
-}
 
 
 /***/ }),
@@ -5394,6 +5100,37 @@ exports.ExternalClientFacade = ExternalClientFacade;
 
 /***/ }),
 
+/***/ "./src/Services/IngameInternalClientFacade.ts":
+/*!****************************************************!*\
+  !*** ./src/Services/IngameInternalClientFacade.ts ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var IngameInternalClientFacade = /** @class */ (function () {
+    function IngameInternalClientFacade() {
+    }
+    IngameInternalClientFacade.prototype.PresentDestinationCard = function () {
+    };
+    IngameInternalClientFacade.prototype.NotifyStartGame = function () {
+    };
+    IngameInternalClientFacade.prototype.RecieveChatCommand = function () {
+    };
+    IngameInternalClientFacade.prototype.DiscardDestinationCard = function () {
+    };
+    IngameInternalClientFacade.prototype.getFaceUpCards = function () {
+        return this.root.getFaceUpCards();
+    };
+    return IngameInternalClientFacade;
+}());
+exports.IngameInternalClientFacade = IngameInternalClientFacade;
+
+
+/***/ }),
+
 /***/ "./src/Services/InternalClientFacade.ts":
 /*!**********************************************!*\
   !*** ./src/Services/InternalClientFacade.ts ***!
@@ -5486,6 +5223,55 @@ var DestinationCardSelectionViewModel = /** @class */ (function (_super) {
     return DestinationCardSelectionViewModel;
 }(React.Component));
 exports.DestinationCardSelectionViewModel = DestinationCardSelectionViewModel;
+
+
+/***/ }),
+
+/***/ "./src/ViewModels/FaceUpCardsViewModel.ts":
+/*!************************************************!*\
+  !*** ./src/ViewModels/FaceUpCardsViewModel.ts ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+var FaceUpCardsView_1 = __webpack_require__(/*! ../Views/FaceUpCardsView */ "./src/Views/FaceUpCardsView.tsx");
+var IFaceUpCardsViewModel_1 = __webpack_require__(/*! ./IFaceUpCardsViewModel */ "./src/ViewModels/IFaceUpCardsViewModel.ts");
+var FaceUpCardsViewModel = /** @class */ (function (_super) {
+    __extends(FaceUpCardsViewModel, _super);
+    function FaceUpCardsViewModel(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = IFaceUpCardsViewModel_1.initialState;
+        _this.update = function (updateType, data) {
+            if (updateType == "transitionPage") {
+                _this.props.main.setState({ "page": data });
+            }
+        };
+        _this.setState({ faceUpCards: props.services.getFaceUpCards() });
+        return _this;
+    }
+    FaceUpCardsViewModel.prototype.render = function () {
+        return FaceUpCardsView_1.FaceUpCardsView(this);
+    };
+    return FaceUpCardsViewModel;
+}(React.Component));
+exports.FaceUpCardsViewModel = FaceUpCardsViewModel;
 
 
 /***/ }),
@@ -5653,6 +5439,25 @@ exports.initialState = {
         { route: { cityOne: "Salt Lake City", cityTwo: "Las Vegas" }, pointValue: 2 },
         { route: { cityOne: "Wendover", cityTwo: "San Francisco" }, pointValue: 9 }
     ]
+};
+
+
+/***/ }),
+
+/***/ "./src/ViewModels/IFaceUpCardsViewModel.ts":
+/*!*************************************************!*\
+  !*** ./src/ViewModels/IFaceUpCardsViewModel.ts ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initialState = {
+    faceUpCards: null,
+    numTrainCardsRemaining: 0,
+    numDestinationCardsRemaining: 0
 };
 
 
@@ -5838,6 +5643,36 @@ exports.initialState = {
 
 /***/ }),
 
+/***/ "./src/ViewModels/IPlayerHandViewModel.ts":
+/*!************************************************!*\
+  !*** ./src/ViewModels/IPlayerHandViewModel.ts ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initialState = {};
+
+
+/***/ }),
+
+/***/ "./src/ViewModels/IPlayerInfoViewModel.ts":
+/*!************************************************!*\
+  !*** ./src/ViewModels/IPlayerInfoViewModel.ts ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initialState = {};
+
+
+/***/ }),
+
 /***/ "./src/ViewModels/LoginRegisterViewModel.ts":
 /*!**************************************************!*\
   !*** ./src/ViewModels/LoginRegisterViewModel.ts ***!
@@ -5960,6 +5795,102 @@ exports.MapViewModel = MapViewModel;
 
 /***/ }),
 
+/***/ "./src/ViewModels/PlayerHandViewModel.ts":
+/*!***********************************************!*\
+  !*** ./src/ViewModels/PlayerHandViewModel.ts ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+var PlayerHandView_1 = __webpack_require__(/*! ../Views/PlayerHandView */ "./src/Views/PlayerHandView.tsx");
+var IPlayerHandViewModel_1 = __webpack_require__(/*! ./IPlayerHandViewModel */ "./src/ViewModels/IPlayerHandViewModel.ts");
+var PlayerHandViewModel = /** @class */ (function (_super) {
+    __extends(PlayerHandViewModel, _super);
+    function PlayerHandViewModel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = IPlayerHandViewModel_1.initialState;
+        _this.update = function (updateType, data) {
+            if (updateType == "transitionPage") {
+                _this.props.main.setState({ "page": data });
+            }
+        };
+        return _this;
+    }
+    PlayerHandViewModel.prototype.render = function () {
+        return PlayerHandView_1.PlayerHandView(this);
+    };
+    return PlayerHandViewModel;
+}(React.Component));
+exports.PlayerHandViewModel = PlayerHandViewModel;
+
+
+/***/ }),
+
+/***/ "./src/ViewModels/PlayerInfoViewModel.ts":
+/*!***********************************************!*\
+  !*** ./src/ViewModels/PlayerInfoViewModel.ts ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+var PlayerInfoView_1 = __webpack_require__(/*! ../Views/PlayerInfoView */ "./src/Views/PlayerInfoView.tsx");
+var IPlayerInfoViewModel_1 = __webpack_require__(/*! ./IPlayerInfoViewModel */ "./src/ViewModels/IPlayerInfoViewModel.ts");
+var PlayerInfoViewModel = /** @class */ (function (_super) {
+    __extends(PlayerInfoViewModel, _super);
+    function PlayerInfoViewModel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = IPlayerInfoViewModel_1.initialState;
+        _this.update = function (updateType, data) {
+            if (updateType == "transitionPage") {
+                _this.props.main.setState({ "page": data });
+            }
+        };
+        return _this;
+    }
+    PlayerInfoViewModel.prototype.render = function () {
+        return PlayerInfoView_1.PlayerInfoView(this);
+    };
+    return PlayerInfoViewModel;
+}(React.Component));
+exports.PlayerInfoViewModel = PlayerInfoViewModel;
+
+
+/***/ }),
+
 /***/ "./src/Views/DestinationCardSelectionView.tsx":
 /*!****************************************************!*\
   !*** ./src/Views/DestinationCardSelectionView.tsx ***!
@@ -5984,6 +5915,42 @@ exports.DestinationCardSelectionView = function (component) {
             card.pointValue));
     }
     return (React.createElement("div", null, cards));
+};
+
+
+/***/ }),
+
+/***/ "./src/Views/FaceUpCardsView.tsx":
+/*!***************************************!*\
+  !*** ./src/Views/FaceUpCardsView.tsx ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.FaceUpCardsView = function (component) {
+    var faceUpCardsList = [];
+    var cards = component.state.faceUpCards.getCards();
+    for (var i = 0; i < cards.length; i++) {
+        faceUpCardsList.push(React.createElement("p", null,
+            "Train Card: ",
+            cards[i].getColor()));
+    }
+    return (React.createElement("div", null,
+        React.createElement("div", null, faceUpCardsList),
+        React.createElement("div", { className: "deck" },
+            React.createElement("p", null, "Train Cards Deck"),
+            React.createElement("p", null,
+                component.state.numTrainCardsRemaining,
+                " cards remaining.")),
+        React.createElement("div", { className: "deck" },
+            React.createElement("p", null, "Destination Cards Deck"),
+            React.createElement("p", null,
+                component.state.numDestinationCardsRemaining,
+                " cards remaining."))));
 };
 
 
@@ -6256,6 +6223,42 @@ exports.MapView = function (component) {
 
 /***/ }),
 
+/***/ "./src/Views/PlayerHandView.tsx":
+/*!**************************************!*\
+  !*** ./src/Views/PlayerHandView.tsx ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.PlayerHandView = function (component) {
+    return (React.createElement("div", null, "Hello"));
+};
+
+
+/***/ }),
+
+/***/ "./src/Views/PlayerInfoView.tsx":
+/*!**************************************!*\
+  !*** ./src/Views/PlayerInfoView.tsx ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.PlayerInfoView = function (component) {
+    return (React.createElement("div", null, "Hello"));
+};
+
+
+/***/ }),
+
 /***/ "./src/index.tsx":
 /*!***********************!*\
   !*** ./src/index.tsx ***!
@@ -6286,12 +6289,16 @@ var GameListViewModel_1 = __webpack_require__(/*! ./ViewModels/GameListViewModel
 var GameLobbyViewModel_1 = __webpack_require__(/*! ./ViewModels/GameLobbyViewModel */ "./src/ViewModels/GameLobbyViewModel.ts");
 var MapViewModel_1 = __webpack_require__(/*! ./ViewModels/MapViewModel */ "./src/ViewModels/MapViewModel.ts");
 var DestinationCardSelectionViewModel_1 = __webpack_require__(/*! ./ViewModels/DestinationCardSelectionViewModel */ "./src/ViewModels/DestinationCardSelectionViewModel.ts");
+var FaceUpCardsViewModel_1 = __webpack_require__(/*! ./ViewModels/FaceUpCardsViewModel */ "./src/ViewModels/FaceUpCardsViewModel.ts");
+var PlayerHandViewModel_1 = __webpack_require__(/*! ./ViewModels/PlayerHandViewModel */ "./src/ViewModels/PlayerHandViewModel.ts");
+var PlayerInfoViewModel_1 = __webpack_require__(/*! ./ViewModels/PlayerInfoViewModel */ "./src/ViewModels/PlayerInfoViewModel.ts");
 var ClientCommunicator_1 = __webpack_require__(/*! ./Server/ClientCommunicator */ "./src/Server/ClientCommunicator.ts");
 var Serializer_1 = __webpack_require__(/*! ./Server/Serializer */ "./src/Server/Serializer.ts");
 var ExternalClientFacade_1 = __webpack_require__(/*! ./Services/ExternalClientFacade */ "./src/Services/ExternalClientFacade.ts");
 var ClientRoot_1 = __webpack_require__(/*! ./Models/ClientRoot */ "./src/Models/ClientRoot.ts");
 var InternalClientFacade_1 = __webpack_require__(/*! ./Services/InternalClientFacade */ "./src/Services/InternalClientFacade.ts");
 var ServerProxy_1 = __webpack_require__(/*! ./Server/ServerProxy */ "./src/Server/ServerProxy.ts");
+var IngameInternalClientFacade_1 = __webpack_require__(/*! ./Services/IngameInternalClientFacade */ "./src/Services/IngameInternalClientFacade.ts");
 exports.initialState = {
     "page": "map"
 };
@@ -6305,6 +6312,9 @@ var MainComponent = /** @class */ (function (_super) {
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
+        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
         return _this;
     }
     MainComponent.prototype.render = function () {
@@ -6323,6 +6333,15 @@ var MainComponent = /** @class */ (function (_super) {
         else if (this.state.page == "destination") {
             return this.destinationCardSelectionViewModel;
         }
+        else if (this.state.page == "faceup") {
+            return this.faceUpCardsViewModel;
+        }
+        else if (this.state.page == "playerhand") {
+            return this.playerHandViewModel;
+        }
+        else if (this.state.page == "playerinfo") {
+            return this.playerInfoViewModel;
+        }
         else {
             return React.createElement("p", null,
                 "Page ",
@@ -6338,7 +6357,8 @@ var serializer = new Serializer_1.Serializer();
 var clientCommunicator = new ClientCommunicator_1.ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
 var serverProxy = new ServerProxy_1.ServerProxy(clientCommunicator);
 var internalClientFacade = new InternalClientFacade_1.InternalClientFacade(serverProxy, root);
-ReactDOM.render(React.createElement(MainComponent, { services: internalClientFacade, root: root }), document.getElementById("example"));
+var ingameInternalClientFacade = new IngameInternalClientFacade_1.IngameInternalClientFacade();
+ReactDOM.render(React.createElement(MainComponent, { services: internalClientFacade, ingameServices: ingameInternalClientFacade, root: root }), document.getElementById("example"));
 
 
 /***/ }),

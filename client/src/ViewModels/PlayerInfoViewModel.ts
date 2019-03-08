@@ -2,9 +2,9 @@ import * as React from "react";
 import { PlayerInfoView } from "../Views/PlayerInfoView";
 import { initialState, State, IPlayerInfoViewModel } from "./IPlayerInfoViewModel";
 import { IObserver } from "./IObserver";
-import { ViewModelProps } from "./ViewModelProps";
+import { IngameViewModelProps } from "./ViewModelProps";
 
-export class PlayerInfoViewModel extends React.Component<ViewModelProps, State> implements IPlayerInfoViewModel, IObserver {
+export class PlayerInfoViewModel extends React.Component<IngameViewModelProps, State> implements IPlayerInfoViewModel, IObserver {
 
   state: State = initialState;
 
