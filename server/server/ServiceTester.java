@@ -4,25 +4,25 @@ public class ServiceTester
 {
     public static void main(String[] args)
     {
-//        String divier = "----------------------------------------------";
-//        ServerFacade facade = new ServerFacade();
-//        /*no user*/
-//        facade.login("lol", "lol");
-//        /*no password*/
-//        facade.login("lol", "");
-//        /*no username*/
-//        facade.login("", "lol");
-//        /*valid register*/
-//        facade.register("lol", "lol");
-//        /*duplicate register*/
-//        facade.register("lol", "brennah");
-//        /*wrong password*/
-//        facade.login("lol", "brennah");
-//        /*valid login*/
-//        facade.login("lol", "lol");
-//
-//        facade.createGame("ss","game1",4);
-//
+        String divier = "----------------------------------------------";
+        ServerFacade facade = new ServerFacade();
+        /*no user*/
+        facade.login("lol", "lol");
+        /*no password*/
+        facade.login("lol", "");
+        /*no username*/
+        facade.login("", "lol");
+        /*valid register*/
+        facade.register("lol", "lol");
+        /*duplicate register*/
+        facade.register("lol", "brennah");
+        /*wrong password*/
+        facade.login("lol", "brennah");
+        /*valid login*/
+        facade.login("lol", "lol");
+
+        facade.createGame("ss","game1","4");
+
 //        /*Game SIZE*/
 //        System.out.println("*******GAME SIZE INVALID******");
 //        facade.createGame("lol","game1",1);
@@ -60,6 +60,6 @@ public class ServiceTester
 //        facade.startGame("game1");
 
 
-//
+
     }
 }

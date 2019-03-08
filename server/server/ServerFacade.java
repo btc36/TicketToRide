@@ -1,29 +1,28 @@
 package server;
 import command.GenericCommand;
 import model.*;
-import org.ietf.jgss.GSSName;
 
 /* Standard Library Import */
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ServerFacade
+public class ServerFacade extends Facade
 {
-    private String _className = "ExternalClientFacade";
-    private final String _paramTypeString = "java.lang.String";
-    private final String _paramTypeBoolean = "java.lang.Boolean";
-    private final String _paramTypeInteger = "java.lang.Integer";
-    private final String _paramTypeDouble = "java.lang.Double";
-    private final String _paramTypeCharacter = "java.lang.Character";
-    private final String _paramTypeList = "java.util.List";
-    private final String _paramTypeMap = "java.util.Map";
-    private final String _paramTypeGame = "LobbyGameModel";
-    private final String usernameError = "username empty";
-    private final String passwordError = "password empty";
 
 
+    private final String loginSatus = "loginStatus";
+    private final String registerStatus = "registerStatus";
+    private final String joinGame = "joinGame";
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return a list of Generic Command that contains clientfacade class name, status, message
+     */
     public List<GenericCommand> login(String username, String password)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -59,6 +58,13 @@ public class ServerFacade
         commandsForClient.add(command);
         return commandsForClient;
     }
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return a list of Generic Command that contains clientfacade class name, status, message
+     */
     public List<GenericCommand> register(String username, String password)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -93,6 +99,14 @@ public class ServerFacade
         return commandsForClient;
 
     }
+
+    /**
+     *
+     * @param username
+     * @param gamename
+     * @param max
+     * @return a list of Generic Command that contains clientfacade class name, status, message, and all of the games in server
+     */
     public List<GenericCommand> createGame(String username, String gamename, String max)
     {
         Boolean status = false;
@@ -145,6 +159,13 @@ public class ServerFacade
         }
         //Integer.getInteger(max);
     }
+
+    /**
+     *
+     * @param username
+     * @param gameID
+     * @return
+     */
     public List<GenericCommand> joinGame(String username, String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -181,8 +202,13 @@ public class ServerFacade
         );
         commandsForClient.add(command);
         return commandsForClient;
-
     }
+
+    /**
+     *
+     * @param gameID
+     * @return a list of command clientfacade name, message, gameID
+     */
     public List<GenericCommand> startGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -212,7 +238,6 @@ public class ServerFacade
         command = new GenericCommand(
                 _className, "startGame",
                 new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
-                //new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
                 new Object[]{status, message, gameID}
         );
         commandsForClient.add(command);
@@ -226,51 +251,49 @@ public class ServerFacade
         GenericCommand command;
         command = new GenericCommand(
                 _className, "updateGameList",
-                new String[]{_paramTypeBoolean, _paramTypeList},
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
                 new Object[]{true, "", games}
         );
         commandsForClient.add(command);
         return commandsForClient;
     }
 
-    private boolean isInputValid(String input) // empty? or not?
-    {
-        if(input == null) return false;
-        if(input.isEmpty()) return false;
-        return true;
-    }
-    private boolean findPlayer(PlayerModel player)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        if(allPlayers.findPlayer(player))
-            return true;
-        else
-            return false;
-    }
-    private PlayerModel getPlayer(String username)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        PlayerModel player = allPlayers.getPlayerByUsername(username);
-        return player;
-    }
-    private boolean playerExists(String username)
-    {
-        PlayerListModel allPlayers = ServerModel.getInstance().getAllPlayers();
-        PlayerModel player = allPlayers.getPlayerByUsername(username);
-        if(player != null)
-            return true;
-        else
-            return false;
-    }
-    private List<LobbyGameModel> getGameAsList()
-    {
 
-        return ServerModel.getInstance().getAllGames().getGameList();
-    }
-    private void test()
+    /**
+    @param chatMessage, timestamp, username, gameID
+    @return command that contains success, result message, gameID,
+    and all of the chat history associated with the gameID
+     */
+    public List<GenericCommand> sendChat(String chatMessage, Date time, String username, String gameID)
     {
-        Deck deck = new DestinationCardDeck();
-        deck.add(new TrainCard());
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GenericCommand command;
+        ChatRoom room = null;
 
+        if(!playerExists(username)) message = "invalid username";
+        else if(!gameExists(gameID)) message = "invalid gameID";
+        else
+        {
+            success = true;
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
+            if(room == null) // initialize
+            {
+                room = new ChatRoom(gameID);
+                ServerModel.getInstance().addChatRoom(room);
+            }
+            ChatMessage chat = new ChatMessage(chatMessage, time, username);
+            room.addChat(chat);
+        }
+
+        command = new GenericCommand(
+                _className, "receiveChatCommand",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, room}
+        );
+
+        commandsForClient.add(command);
+        return commandsForClient;
     }
 }

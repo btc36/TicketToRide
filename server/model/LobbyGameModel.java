@@ -13,19 +13,24 @@ public class LobbyGameModel
     private int currentPlayerNum;
     private PlayerModel host;
     private State state;
+    private Deck destDeck;
+    private Deck trainDeck;
 
-    public LobbyGameModel() { }
+    public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
+        //this.LobbyGameModel(host, maxPlayer, gamename);
+    }
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
         playerList = new PlayerListModel();
-        gameID = UUID.randomUUID().toString().substring(0,4);
+        gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
         currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;
         this.host = host;
         this.gamename = gamename;
         playerList.addPlayer(this.host);
         state = State.WAITING;
+
     }
     public void addPlayer(PlayerModel player)
     {
@@ -93,8 +98,11 @@ public class LobbyGameModel
     public String getGamename() {
         return gamename;
     }
-    public void setGamename(String gamename) {
+    public void setGamename(String gamename)
+    {
         this.gamename = gamename;
+        destDeck = new Deck();
+        trainDeck = new Deck();
     }
 
     public int getCurrentPlayerNum()
@@ -105,6 +113,31 @@ public class LobbyGameModel
 
     public void setCurrentPlayerNum(int currentPlayerNum) {
         this.currentPlayerNum = currentPlayerNum;
+    }
+
+
+    public void addDestCard(DestinationCard card)
+    {
+        destDeck.add(card);
+    }
+    public void addTrainCard(TrainCard card)
+    {
+        trainDeck.add(card);
+    }
+    public Deck getDestDeck() {
+        return destDeck;
+    }
+
+    public void setDestDeck(Deck destDeck) {
+        this.destDeck = destDeck;
+    }
+
+    public Deck getTrainDeck() {
+        return trainDeck;
+    }
+
+    public void setTrainDeck(Deck trainDeck) {
+        this.trainDeck = trainDeck;
     }
 
     @Override

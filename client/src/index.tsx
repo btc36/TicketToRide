@@ -4,6 +4,7 @@ import * as ReactDOM from "react-dom";
 import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
 import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
+import { MapViewModel } from './ViewModels/MapViewModel';
 
 import { ClientCommunicator } from './Server/ClientCommunicator';
 import { Serializer } from './Server/Serializer';
@@ -13,7 +14,7 @@ import { InternalClientFacade } from './Services/InternalClientFacade';
 import { ServerProxy } from './Server/ServerProxy';
 
 export const initialState = {
-  "page": "loginRegister"
+  "page": "map"
 };
 
 export type State = Readonly<typeof initialState>;
@@ -22,8 +23,9 @@ class MainComponent extends React.Component<any, any> {
 
   state: State = initialState;
   loginRegisterViewModel: JSX.Element = <LoginRegisterViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  gameListViewModel: JSX.Element = <GameListViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
@@ -32,6 +34,8 @@ class MainComponent extends React.Component<any, any> {
       return this.gameListViewModel;
     } else if (this.state.page == "lobbyGame") {
       return this.gameLobbyViewModel;
+    } else if (this.state.page == "map") {
+      return this.mapViewModel;
     } else {
       return <p>Page {this.state.page} not found.</p>;
     }

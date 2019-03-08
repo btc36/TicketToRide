@@ -2,25 +2,52 @@ package model;
 
 import java.util.*;
 
-abstract public class Deck
+public class Deck<T>
 {
-    Queue<Card> deck;
+    Queue<T> deck;
 
     public Deck()
     {
         deck = new LinkedList<>();
     }
-    public Queue<Card> getCards()
+    public Queue<T> getCards()
     {
         return deck;
     }
-    public void add(Card card)
+    public void add(T card)
     {
         deck.add(card);
     }
-    public Card poll()
+    // draw
+    public T poll()
     {
         return deck.isEmpty() ? null : deck.poll();
     }
+    public void shuffle()
+    {
+        Collections.shuffle((LinkedList)deck);
+    }
 
+    public List<T> getThree()
+    {
+        List<T> cards = new ArrayList<>();
+        while(!deck.isEmpty() && cards.size() < 3)
+        {
+            cards.add(deck.poll());
+        }
+        return cards;
+    }
+    public List<T> getFive()
+    {
+        List<T> cards = new ArrayList<>();
+        while(!deck.isEmpty() && cards.size() < 5)
+        {
+            cards.add(deck.poll());
+        }
+        return cards;
+    }
+    public boolean isEmpty()
+    {
+        return deck.isEmpty();
+    }
 }
