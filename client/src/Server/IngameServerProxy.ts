@@ -16,8 +16,8 @@ export class IngameServerProxy {
 
     communicator: ClientCommunicator
 
-    DrawDestinationCard(gameId:String) {
-        const command = new ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString], [gameId]);
+    DrawDestinationCard(gameId:String, username:String) {
+        const command = new ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString, this.paramTypeString], [gameId, username]);
         this.communicator.sendCommand(command);
     }
 
@@ -26,8 +26,27 @@ export class IngameServerProxy {
         this.communicator.sendCommand(command);
     }
 
-    DiscardDestinationCard(gameId:String,destinationCards: Array<DestinationCard>) {
-        const command = new ClientCommandObjects(this.gameClass, "discardDestinationCardCommand", [this.paramTypeString, this.paramTypeList], [gameId,destinationCards]);
+    /**
+     *
+     * @param gameId
+     * @param username
+     * @param destinationCards
+     * @return gameID, username,
+     */
+    DiscardDestinationCard(gameId:String, username:String, destinationCards: Array<DestinationCard>) {
+        const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeList], [gameId, username, destinationCards]);
+        this.communicator.sendCommand(command);
+    }
+
+    /**
+     *
+     * @param gameId
+     * @param username
+     * @return retrieves upto three cards from the server
+     */
+    PotentialDestinationCard(gameId:String, username:String)
+    {
+        const command = new ClientCommandObjects(this.gameClass, "potentialDestinationCard", [this.paramTypeString], [gameId, username]);
         this.communicator.sendCommand(command);
     }
 }
