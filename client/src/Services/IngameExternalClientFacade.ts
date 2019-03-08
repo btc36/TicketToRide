@@ -15,10 +15,6 @@ export class IngameExternalClientFacade {
     this.root.addTrainCard(trainCard);
   }*/
 
-  addDestinationCard(player: Player, destinationCard: DestinationCard) {
-    this.root.addDestinationCard(player,destinationCard);
-  }
-
   updatePlayerPoints(player: Player, points:number) {
     this.root.updatePlayerPoints(player, points);
   }
@@ -55,16 +51,24 @@ export class IngameExternalClientFacade {
     this.root.changeTurn(player)
   }
 
-  receiveChatCommand(one: any, two: any, three: any, four: any) {
+    receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
+        //test if it was a success, and if there was an error message
+        this.root.receiveChatCommand(gameid, chats);
+    }
 
-  }
-
-  presentDestinationCard(one: any, two: any, three: any) {
-
-  }
-
-  discardDestinationCard(one: any, two: any, three: any) {
-
-  }
+    presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
+        //test if it was a success, and if there was an error message
+        this.root.presentDestinationCard(destinationCards);
+    }
+    discardDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
+        //test if it was a success, and if there was an error message
+        this.root.discardDestinationCard();
+    }
+    addDestinationCard(success: boolean, errorMessage: string, username: string, destinationCards: any[]){
+        //test if it was a success, and if there was an error message
+        for (var i = 0; i < destinationCards.length; i++){
+            this.root.addDestinationCard(username, destinationCards[i]);
+        }
+    }
 
 }

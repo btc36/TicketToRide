@@ -38,7 +38,7 @@ class MainComponent extends React.Component<any, any> {
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
+  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
 
@@ -77,6 +77,6 @@ const ingameRoot = new IngameClientRoot();
 const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 
 ReactDOM.render(
-  <MainComponent services={internalClientFacade} ingameServices={ingameInternalClientFacade} root={root}/>,
+  <MainComponent services={internalClientFacade} ingameServices={ingameInternalClientFacade} ingameRoot={ingameRoot} root={root}/>,
   document.getElementById("example")
 );

@@ -4687,6 +4687,100 @@ exports.FaceUpCards = FaceUpCards;
 
 /***/ }),
 
+/***/ "./src/Models/Game.ts":
+/*!****************************!*\
+  !*** ./src/Models/Game.ts ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TrainCard_1 = __webpack_require__(/*! ./TrainCard */ "./src/Models/TrainCard.ts");
+var FaceUpCards_1 = __webpack_require__(/*! ./FaceUpCards */ "./src/Models/FaceUpCards.ts");
+var Game = /** @class */ (function () {
+    function Game() {
+        var trainCards = Array();
+        trainCards.push(new TrainCard_1.TrainCard("green"));
+        trainCards.push(new TrainCard_1.TrainCard("blue"));
+        trainCards.push(new TrainCard_1.TrainCard("black"));
+        trainCards.push(new TrainCard_1.TrainCard("rainbow"));
+        trainCards.push(new TrainCard_1.TrainCard("green"));
+        this.setFaceUpCards(new FaceUpCards_1.FaceUpCards(trainCards));
+    }
+    Game.prototype.checkWinCondition = function () {
+        var maxPoints = 0;
+        var winningPlayer = null;
+        this.players.forEach(function (player) {
+            var score = player.getScore();
+            if (score > maxPoints) {
+                maxPoints = score;
+                winningPlayer = player;
+            }
+        });
+        return winningPlayer;
+    };
+    Game.prototype.getChatHistory = function () {
+        return this.chatRoom.getChatHistory();
+    };
+    Game.prototype.addChatMessage = function (chat) {
+        this.chatRoom.addChat(chat);
+    };
+    Game.prototype.getPlayerList = function () {
+        return this.players;
+    };
+    Game.prototype.getCurrentTurnIndex = function () {
+        return this.whoseTurn;
+    };
+    Game.prototype.getMap = function () {
+        return this.map;
+    };
+    Game.prototype.getnumDestinationCardsRemaining = function () {
+        return this.numDestinationCardsRemaining;
+    };
+    Game.prototype.getNumTrainCardsRemaining = function () {
+        return this.numTrainCardsRemaining;
+    };
+    Game.prototype.getFaceUpCards = function () {
+        return this.faceUpCards;
+    };
+    Game.prototype.claimRoute = function (player, route) {
+    };
+    Game.prototype.useTrainCard = function (trainCard) {
+    };
+    Game.prototype.addTrainCard = function (trainCard) {
+    };
+    Game.prototype.addDestinationCard = function (player, destinationCard) {
+        this.players.forEach(function (thisPlayer) {
+            if (thisPlayer.getUsername == player.getUsername) {
+                thisPlayer.drawDestinationCard(destinationCard);
+                return;
+            }
+        });
+    };
+    Game.prototype.setFaceUpCards = function (faceUpCards) {
+        this.faceUpCards = faceUpCards;
+    };
+    Game.prototype.updatePlayerPoints = function (player, points) {
+    };
+    Game.prototype.removeTrainCard = function (trainCard) {
+    };
+    Game.prototype.updateNumTrainCars = function (player, numUsed) {
+    };
+    Game.prototype.updateNumberOfDestinationCards = function (player, numCards) {
+    };
+    Game.prototype.updateNumInDeck = function (newNum) {
+    };
+    Game.prototype.changeTurn = function (player) {
+    };
+    return Game;
+}());
+exports.Game = Game;
+
+
+/***/ }),
+
 /***/ "./src/Models/GameList.ts":
 /*!********************************!*\
   !*** ./src/Models/GameList.ts ***!
@@ -4751,19 +4845,11 @@ var __values = (this && this.__values) || function (o) {
     };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TrainCard_1 = __webpack_require__(/*! ./TrainCard */ "./src/Models/TrainCard.ts");
-var FaceUpCards_1 = __webpack_require__(/*! ./FaceUpCards */ "./src/Models/FaceUpCards.ts");
+var Game_1 = __webpack_require__(/*! ./Game */ "./src/Models/Game.ts");
 var IngameClientRoot = /** @class */ (function () {
-    function IngameClientRoot(game) {
-        this.game = game;
+    function IngameClientRoot() {
+        this.game = new Game_1.Game();
         this.observers = new Array();
-        var trainCards = Array();
-        trainCards.push(new TrainCard_1.TrainCard("green"));
-        trainCards.push(new TrainCard_1.TrainCard("blue"));
-        trainCards.push(new TrainCard_1.TrainCard("black"));
-        trainCards.push(new TrainCard_1.TrainCard("rainbow"));
-        trainCards.push(new TrainCard_1.TrainCard("green"));
-        this.setFaceUpCards(new FaceUpCards_1.FaceUpCards(trainCards));
     }
     IngameClientRoot.prototype.transitionPage = function (pageName) {
         this.session.setCurrentPage(pageName);
@@ -4795,13 +4881,12 @@ var IngameClientRoot = /** @class */ (function () {
     IngameClientRoot.prototype.claimRoute = function (player, route) {
         this.game.claimRoute(player, route);
     };
-    /* useTrainCard(trainCard: TrainCard): void {
-       this.game.useTrainCard(trainCard);
-     }
-   
-     addTrainCard(trainCard: TrainCard): void {
-       this.game.addTrainCard(trainCard);
-     }*/
+    IngameClientRoot.prototype.useTrainCard = function (trainCard) {
+        this.game.useTrainCard(trainCard);
+    };
+    IngameClientRoot.prototype.addTrainCard = function (trainCard) {
+        this.game.addTrainCard(trainCard);
+    };
     IngameClientRoot.prototype.addDestinationCard = function (player, destinationCard) {
         this.game.addDestinationCard(player, destinationCard);
     };
@@ -4827,20 +4912,17 @@ var IngameClientRoot = /** @class */ (function () {
     IngameClientRoot.prototype.updatePlayerPoints = function (player, points) {
         this.game.updatePlayerPoints(player, points);
     };
-    /*removeTrainCard(trainCard: TrainCard): void {
-      this.game.removeTrainCard(trainCard);
-    }*/
+    IngameClientRoot.prototype.removeTrainCard = function (trainCard) {
+        this.game.removeTrainCard(trainCard);
+    };
     IngameClientRoot.prototype.updateNumTrainCars = function (player, numUsed) {
         this.game.updateNumTrainCars(player, numUsed);
     };
     IngameClientRoot.prototype.updateNumberOfDestinationCards = function (player, numCards) {
-        this.game.setNumDestinationCards(player, numCards);
-    };
-    IngameClientRoot.prototype.setNumTrainCards = function (player, numCards) {
-        this.game.setNumTrainCards(player, numCards);
+        this.game.updateNumberOfDestinationCards(player, numCards);
     };
     IngameClientRoot.prototype.updateNumInDeck = function (newNum) {
-        this.game.setNumTrainCardsRemaining(newNum);
+        this.game.updateNumInDeck(newNum);
     };
     IngameClientRoot.prototype.changeTurn = function (player) {
         this.game.changeTurn(player);
@@ -4935,9 +5017,8 @@ var Player = /** @class */ (function () {
         this.ownedRoutes = new Array();
         this.myTurn = false;
     };
-    Player.prototype.claimRoute = function (route) {
+    Player.prototype.claimRoute = function (route, length) {
         this.ownedRoutes.push(route);
-        var length = route.getLength();
         if (length == 1) {
             this.score += 1;
         }
@@ -4965,23 +5046,6 @@ var Player = /** @class */ (function () {
     };
     Player.prototype.getScore = function () {
         return this.score;
-    };
-    Player.prototype.setScore = function (newScore) {
-        this.score = newScore;
-    };
-    Player.prototype.useTrainCard = function (trainCard, numUsed) {
-    };
-    Player.prototype.setNumTrainCars = function (numCars) {
-        this.trainCars -= numCars;
-    };
-    Player.prototype.setTurn = function (isMyTurn) {
-        this.myTurn = isMyTurn;
-    };
-    Player.prototype.setNumTrainCards = function (numCards) {
-        this.numTrainCards = numCards;
-    };
-    Player.prototype.setNumDestinationCards = function (numCards) {
-        this.numDestinationCards = numCards;
     };
     return Player;
 }());
@@ -5209,33 +5273,16 @@ var IngameServerProxy = /** @class */ (function () {
         this.paramTypeList = "java.util.List";
         this.paramTypeDate = "java.util.Date";
     }
-    IngameServerProxy.prototype.DrawDestinationCard = function (gameId, username) {
-        var command = new ClientCommandObjects_1.ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString, this.paramTypeString], [gameId, username]);
+    IngameServerProxy.prototype.DrawDestinationCard = function (gameId) {
+        var command = new ClientCommandObjects_1.ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString], [gameId]);
         this.communicator.sendCommand(command);
     };
     IngameServerProxy.prototype.SendChat = function (message, time, username, gameId) {
         var command = new ClientCommandObjects_1.ClientCommandObjects(this.serverClass, "sendChat", [this.paramTypeString, this.paramTypeDate, this.paramTypeString, this.paramTypeString], [message, time, username, gameId]);
         this.communicator.sendCommand(command);
     };
-    /**
-     *
-     * @param gameId
-     * @param username
-     * @param destinationCards
-     * @return gameID, username,
-     */
-    IngameServerProxy.prototype.DiscardDestinationCard = function (gameId, username, destinationCards) {
-        var command = new ClientCommandObjects_1.ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeList], [gameId, username, destinationCards]);
-        this.communicator.sendCommand(command);
-    };
-    /**
-     *
-     * @param gameId
-     * @param username
-     * @return retrieves upto three cards from the server
-     */
-    IngameServerProxy.prototype.PotentialDestinationCard = function (gameId, username) {
-        var command = new ClientCommandObjects_1.ClientCommandObjects(this.gameClass, "potentialDestinationCard", [this.paramTypeString], [gameId, username]);
+    IngameServerProxy.prototype.DiscardDestinationCard = function (gameId, destinationCards) {
+        var command = new ClientCommandObjects_1.ClientCommandObjects(this.gameClass, "discardDestinationCardCommand", [this.paramTypeString, this.paramTypeList], [gameId, destinationCards]);
         this.communicator.sendCommand(command);
     };
     return IngameServerProxy;
@@ -5431,18 +5478,18 @@ var IngameExternalClientFacade = /** @class */ (function () {
     IngameExternalClientFacade.prototype.claimRoute = function (player, route) {
         this.root.claimRoute(player, route);
     };
-    /*addTrainCard(trainCard:TrainCard) {
-      this.root.addTrainCard(trainCard);
-    }*/
+    IngameExternalClientFacade.prototype.addTrainCard = function (trainCard) {
+        this.root.addTrainCard(trainCard);
+    };
     IngameExternalClientFacade.prototype.addDestinationCard = function (player, destinationCard) {
         this.root.addDestinationCard(player, destinationCard);
     };
     IngameExternalClientFacade.prototype.updatePlayerPoints = function (player, points) {
         this.root.updatePlayerPoints(player, points);
     };
-    /*removeTrainCard(trainCard:TrainCard) {
-      this.root.removeTrainCard(trainCard);
-    }*/
+    IngameExternalClientFacade.prototype.removeTrainCard = function (trainCard) {
+        this.root.removeTrainCard(trainCard);
+    };
     IngameExternalClientFacade.prototype.updateNumTrainCards = function (player, numUsed) {
         this.root.updateNumTrainCars(player, numUsed);
     };
@@ -5648,7 +5695,7 @@ var FaceUpCardsViewModel = /** @class */ (function (_super) {
         return _this;
     }
     FaceUpCardsViewModel.prototype.componentDidMount = function () {
-        this.props.services.getFaceUpCards();
+        this.setState({ faceUpCards: this.props.services.getFaceUpCards() });
     };
     FaceUpCardsViewModel.prototype.render = function () {
         return FaceUpCardsView_1.FaceUpCardsView(this);
@@ -6317,6 +6364,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 exports.FaceUpCardsView = function (component) {
     var faceUpCardsList = [];
+    if (component.state.faceUpCards == null) {
+        return (React.createElement("p", null, "Loading..."));
+    }
     var cards = component.state.faceUpCards.getCards();
     for (var i = 0; i < cards.length; i++) {
         faceUpCardsList.push(React.createElement("p", null,
@@ -6699,7 +6749,7 @@ var MainComponent = /** @class */ (function (_super) {
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
         return _this;
@@ -6748,7 +6798,7 @@ var internalClientFacade = new InternalClientFacade_1.InternalClientFacade(serve
 var ingameServerProxy = new IngameServerProxy_1.IngameServerProxy();
 var ingameRoot = new IngameClientRoot_1.IngameClientRoot();
 var ingameInternalClientFacade = new IngameInternalClientFacade_1.IngameInternalClientFacade(ingameServerProxy, ingameRoot);
-ReactDOM.render(React.createElement(MainComponent, { services: internalClientFacade, ingameServices: ingameInternalClientFacade, root: root }), document.getElementById("example"));
+ReactDOM.render(React.createElement(MainComponent, { services: internalClientFacade, ingameServices: ingameInternalClientFacade, ingameRoot: ingameRoot, root: root }), document.getElementById("example"));
 
 
 /***/ }),

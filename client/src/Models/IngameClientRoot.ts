@@ -8,6 +8,8 @@ import { GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
 import { ISubject } from "./ISubject"
+import { ChatMessage } from "./ChatMessage";
+import { ChatRoom } from "./ChatRoom";
 
 
 export class IngameClientRoot implements ISubject {
@@ -15,16 +17,22 @@ export class IngameClientRoot implements ISubject {
   game: Game;
   session: Session;
 
-  constructor(game:Game) {
-    this.game = game;
-    this.observers = new Array<IObserver>();
+  constructor() {
+    let players = new Array<Player>();
+    let whoseTurn = 0;
+    let map = new GameMap();
+    let numDestinationCardsRemaining = 0;
+    let numTrainCardsRemaining = 0;
     let trainCards = Array<TrainCard>();
     trainCards.push(new TrainCard("green"));
     trainCards.push(new TrainCard("blue"));
     trainCards.push(new TrainCard("black"));
     trainCards.push(new TrainCard("rainbow"));
     trainCards.push(new TrainCard("green"));
-    this.setFaceUpCards(new FaceUpCards(trainCards));
+    let faceUpCards = new FaceUpCards(trainCards);
+    let chatRoom = new ChatRoom("", new Array<ChatMessage>());
+    this.game = new Game(players, whoseTurn, map, numDestinationCardsRemaining, numTrainCardsRemaining, faceUpCards, chatRoom);
+    this.observers = new Array<IObserver>();
   }
 
   transitionPage(pageName: string): void {
@@ -60,8 +68,8 @@ export class IngameClientRoot implements ISubject {
     this.game.addTrainCard(trainCard);
   }*/
 
-  addDestinationCard(player: Player, destinationCard: DestinationCard) {
-    this.game.addDestinationCard(player,destinationCard);
+  addDestinationCard(username: string, destinationCard: DestinationCard) {
+    this.game.addDestinationCard(username,destinationCard);
   }
 
   checkWinCondition(): Player {
@@ -117,6 +125,24 @@ export class IngameClientRoot implements ISubject {
     this.game.changeTurn(player);
   }
 
+  receiveChatCommand(gameid: string, chats: any[]){
+    this.game.setChatHistory(chats);
+  }
+  presentDestinationCard(destinationCards: any[]){
+    this.game.presentDestinationCard(destinationCards);
+  }
+
+  discardDestinationCard(){
+    this.game.discardDestinationCard();
+  }
+
+  removeTrainCard(trainCard){
+
+  }
+
+  addTrainCard(trainCard){
+
+  }
 
 
 }
