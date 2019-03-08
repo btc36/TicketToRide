@@ -7,95 +7,103 @@ import { DestinationCard } from "./DestinationCard";
 import { GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
+import { ISubject } from "./ISubject"
 
 
-//HOW WILL CHAT BE INVOLVED WITH THIS
-export class IngameClientRoot {
-    observers: Array<IObserver>;
-    game: Game;
-    session: Session;
+export class IngameClientRoot implements ISubject {
+  observers: Array<IObserver>;
+  game: Game;
+  session: Session;
 
-    constructor() {
-        this.game = new Game();
-        this.observers = new Array<IObserver>();
+  constructor() {
+    this.game = new Game();
+    this.observers = new Array<IObserver>();
+  }
+
+  transitionPage(pageName: string): void {
+    this.session.setCurrentPage(pageName);
+    this.notify("transitionPage", pageName);
+  }
+
+  notify(updateType: string, data: any) {
+    for (const o of this.observers) {
+      if (o != null) {
+        o.update(updateType, data);
+      }
     }
+  }
 
-    transitionPage(pageName: string): void {
-        this.session.setCurrentPage(pageName);
-        this.notify("transitionPage", pageName);
-    }
+  public attach(o: IObserver) {
+    this.observers.push(o);
+  }
 
-    notify(updateType: string, data: any) {
-        for (const o of this.observers) {
-            if (o != null) {
-                o.update(updateType, data);
-            }
-        }
-    }
+  public detach(o: IObserver) {
 
-    claimRoute(player: Player, route: Route): void {
-        this.game.claimRoute(player, route);
-    }
+  }
 
-    useTrainCard(trainCard: TrainCard): void {
-        this.game.useTrainCard(trainCard);
-    }
+  claimRoute(player: Player, route: Route): void {
+    this.game.claimRoute(player, route);
+  }
 
-    addTrainCard(trainCard: TrainCard): void {
-        this.game.addTrainCard(trainCard);
-    }
+  useTrainCard(trainCard: TrainCard): void {
+    this.game.useTrainCard(trainCard);
+  }
 
-    addDestinationCard(player: Player, destinationCard: DestinationCard) {
-        this.game.addDestinationCard(player,destinationCard);
-    }
+  addTrainCard(trainCard: TrainCard): void {
+    this.game.addTrainCard(trainCard);
+  }
 
-    checkWinCondition(): Player {
-        return this.game.checkWinCondition();
-    }
+  addDestinationCard(player: Player, destinationCard: DestinationCard) {
+    this.game.addDestinationCard(player,destinationCard);
+  }
 
-    getPlayerList(): Array<Player> {
-        return this.game.getPlayerList();
-    }
+  checkWinCondition(): Player {
+    return this.game.checkWinCondition();
+  }
 
-    getCurrentTurnIndex(): number {
-        return this.game.getCurrentTurnIndex();
-    }
+  getPlayerList(): Array<Player> {
+    return this.game.getPlayerList();
+  }
 
-    getMap(): GameMap {
-        return this.game.getMap();
-    }
+  getCurrentTurnIndex(): number {
+    return this.game.getCurrentTurnIndex();
+  }
 
-    getFaceUpCards(): FaceUpCards {
-        return this.game.getFaceUpCards();
-    }
+  getMap(): GameMap {
+    return this.game.getMap();
+  }
 
-    setFaceUpCards(faceUpCards: FaceUpCards): void {
-        this.game.setFaceUpCards(faceUpCards);
-    }
+  getFaceUpCards(): FaceUpCards {
+    return this.game.getFaceUpCards();
+  }
 
-    updatePlayerPoints(player: Player, points: number): void {
-        this.game.updatePlayerPoints(player, points);
-    }
+  setFaceUpCards(faceUpCards: FaceUpCards): void {
+    this.game.setFaceUpCards(faceUpCards);
+  }
 
-    removeTrainCard(trainCard: TrainCard): void {
-        this.game.removeTrainCard(trainCard);
-    }
+  updatePlayerPoints(player: Player, points: number): void {
+    this.game.updatePlayerPoints(player, points);
+  }
 
-    updateNumTrainCars(player: Player, numUsed: number): void {
-        this.game.updateNumTrainCars(player, numUsed);
-    }
+  removeTrainCard(trainCard: TrainCard): void {
+    this.game.removeTrainCard(trainCard);
+  }
 
-    updateNumberOfDestinationCards(player: Player, numCards: number): void {
-        this.game.updateNumberOfDestinationCards(player, numCards);
-    }
+  updateNumTrainCars(player: Player, numUsed: number): void {
+    this.game.updateNumTrainCars(player, numUsed);
+  }
 
-    updateNumInDeck(newNum: number): void {
-        this.game.updateNumInDeck(newNum);
-    }
+  updateNumberOfDestinationCards(player: Player, numCards: number): void {
+    this.game.updateNumberOfDestinationCards(player, numCards);
+  }
 
-    changeTurn(player: Player): void {
-        this.game.changeTurn(player);
-    }
+  updateNumInDeck(newNum: number): void {
+    this.game.updateNumInDeck(newNum);
+  }
+
+  changeTurn(player: Player): void {
+    this.game.changeTurn(player);
+  }
 
 
 

@@ -13,9 +13,15 @@ import { PlayerInfoViewModel } from './ViewModels/PlayerInfoViewModel';
 import { ClientCommunicator } from './Server/ClientCommunicator';
 import { Serializer } from './Server/Serializer';
 import { ExternalClientFacade } from './Services/ExternalClientFacade';
+
 import { ClientRoot } from './Models/ClientRoot';
 import { InternalClientFacade } from './Services/InternalClientFacade';
 import { ServerProxy } from './Server/ServerProxy';
+
+import { IngameClientRoot } from './Models/IngameClientRoot';
+import { IngameInternalClientFacade } from './Services/IngameInternalClientFacade';
+import { IngameServerProxy } from './Server/IngameServerProxy';
+
 
 export const initialState = {
   "page": "map"
@@ -31,9 +37,9 @@ class MainComponent extends React.Component<any, any> {
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
+  playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
+  playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
@@ -64,8 +70,11 @@ const serializer = new Serializer();
 const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
 const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
+const ingameServerProxy = new IngameServerProxy();
+const ingameRoot = new IngameClientRoot();
+const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 
 ReactDOM.render(
-  <MainComponent services={internalClientFacade} root={root}/>,
+  <MainComponent services={internalClientFacade} ingameServices={ingameInternalClientFacade} root={root}/>,
   document.getElementById("example")
 );
