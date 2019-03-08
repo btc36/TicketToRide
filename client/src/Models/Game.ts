@@ -14,7 +14,8 @@ export class Game {
     numDestinationCardsRemaining: number;
     numTrainCardsRemaining: number;
     faceUpCards: FaceUpCards;
-    chatRoom: ChatRoom
+    chatRoom: ChatRoom;
+    potentialDestinationCards: Array<DestinationCard>;
 
     checkWinCondition(): Player {
         let maxPoints = 0;
@@ -33,8 +34,8 @@ export class Game {
         return this.chatRoom.getChatHistory();
     }
 
-    addChatMessage(chat: ChatMessage) {
-        this.chatRoom.addChat(chat);
+    setChatHistory(chats: Array<ChatMessage>) {
+        this.chatRoom.setChatHistory(chats);
     }
 
     getPlayerList(): Array<Player> {
@@ -73,9 +74,9 @@ export class Game {
 
     }
 
-    addDestinationCard(player: Player, destinationCard: DestinationCard) {
+    addDestinationCard(username: string, destinationCard: DestinationCard) {
         this.players.forEach((thisPlayer) => {
-            if (thisPlayer.getUsername == player.getUsername) {
+            if (thisPlayer.getUsername() == username) {
                 thisPlayer.drawDestinationCard(destinationCard);
                 return;
             }
@@ -109,5 +110,12 @@ export class Game {
 
     changeTurn(player: Player): void {
 
+    }
+
+    presentDestinationCard(destinationCards: any[]){
+        this.potentialDestinationCards = destinationCards;
+    }
+    discardDestinationCard(){
+        this.potentialDestinationCards.length = 0;
     }
 }

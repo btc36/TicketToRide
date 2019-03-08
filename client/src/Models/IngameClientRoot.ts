@@ -53,8 +53,8 @@ export class IngameClientRoot implements ISubject {
     this.game.addTrainCard(trainCard);
   }
 
-  addDestinationCard(player: Player, destinationCard: DestinationCard) {
-    this.game.addDestinationCard(player,destinationCard);
+  addDestinationCard(username: string, destinationCard: DestinationCard) {
+    this.game.addDestinationCard(username,destinationCard);
   }
 
   checkWinCondition(): Player {
@@ -105,6 +105,16 @@ export class IngameClientRoot implements ISubject {
     this.game.changeTurn(player);
   }
 
+  receiveChatCommand(gameid: string, chats: any[]){
+    this.game.setChatHistory(chats);
+  }
+  presentDestinationCard(destinationCards: any[]){
+    this.game.presentDestinationCard(destinationCards);
+  }
+
+  discardDestinationCard(){
+    this.game.discardDestinationCard();
+  }
 
 
 }
