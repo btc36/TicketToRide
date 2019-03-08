@@ -4,18 +4,21 @@ import { ExternalClientFacade } from "../Services/ExternalClientFacade";
 import { GameList } from "../Models/GameList";
 import { Player } from "../Models/Player";
 import { LobbyGame } from "../Models/LobbyGame";
+//import { ingame } from "../Services/inGameExternalClientFacade";
 
 export class ClientCommunicator {
   serverUrl: string;
   serverPort: string;
   serializer: Serializer;
   clientFacade: ExternalClientFacade;
+  //inGameClientFacade: inGameExternalClientFacade;
 
   constructor(public serverUrlIn: string, public serverPortIn: string, public serialIn: Serializer, public facadeIn: ExternalClientFacade) {
     this.serverUrl = serverUrlIn;
     this.serverPort = serverPortIn;
     this.serializer = serialIn;
     this.clientFacade = facadeIn;
+    //this.inGameClientFacade = inGameECFIn
   }
   public sendCommand(command: ClientCommandObjects){
     var data = this.serializer.toJSON(command);
@@ -73,6 +76,15 @@ export class ClientCommunicator {
       }
       else if (commands[i]._methodName == "startGame"){
         this.clientFacade.startGame(commands[i]._paramValues[2]);
+      }
+      else if (commands[i]._methodName == "receiveChatCommand"){
+        //this.inGameClientFacade.addDestinationCard();
+      }
+      else if (commands[i]._methodName == "presentDestinationCard"){
+        
+      }
+      else if (commands[i]._methodName == "discardDestinationCard"){
+        
       }
     }
   }
