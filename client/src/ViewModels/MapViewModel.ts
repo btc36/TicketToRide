@@ -8,6 +8,7 @@ export class MapViewModel extends React.Component<ViewModelProps, State> impleme
 
   state: State = initialState;
   mapInstance: any;
+  cityToCoordinates: any;
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
