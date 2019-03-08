@@ -5,6 +5,7 @@ import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
 import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
 import { MapViewModel } from './ViewModels/MapViewModel';
+import { DestinationCardSelectionViewModel } from './ViewModels/DestinationCardSelectionViewModel';
 
 import { ClientCommunicator } from './Server/ClientCommunicator';
 import { Serializer } from './Server/Serializer';
@@ -26,6 +27,7 @@ class MainComponent extends React.Component<any, any> {
   gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
+  destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
@@ -36,6 +38,8 @@ class MainComponent extends React.Component<any, any> {
       return this.gameLobbyViewModel;
     } else if (this.state.page == "map") {
       return this.mapViewModel;
+    } else if (this.state.page == "destination") {
+      return this.destinationCardSelectionViewModel;
     } else {
       return <p>Page {this.state.page} not found.</p>;
     }
