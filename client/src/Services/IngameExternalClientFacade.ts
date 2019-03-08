@@ -11,9 +11,9 @@ export class IngameExternalClientFacade {
     this.root.claimRoute(player, route);
   }
 
-  addTrainCard(trainCard:TrainCard) {
+  /*addTrainCard(trainCard:TrainCard) {
     this.root.addTrainCard(trainCard);
-  }
+  }*/
 
   addDestinationCard(player: Player, destinationCard: DestinationCard) {
     this.root.addDestinationCard(player,destinationCard);
@@ -23,9 +23,9 @@ export class IngameExternalClientFacade {
     this.root.updatePlayerPoints(player, points);
   }
 
-  removeTrainCard(trainCard:TrainCard) {
+  /*removeTrainCard(trainCard:TrainCard) {
     this.root.removeTrainCard(trainCard);
-  }
+  }*/
 
   updateNumTrainCards(player:Player,numUsed:number) {
     this.root.updateNumTrainCars(player,numUsed)
