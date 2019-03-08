@@ -2,6 +2,7 @@ package server;
 
 import command.GenericCommand;
 import model.*;
+import model.LobbyGameModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class GameFacade extends Facade
     private final String potential = "potentialDestinationCard";
     private final String draw = "drawDestinationCard";
     private final String discard = "discardDestinationCard";
-    
+
     /**
      *
      * @param gameID
@@ -26,7 +27,8 @@ public class GameFacade extends Facade
         String message = "";
         List<DestinationCard> cards = new ArrayList<>();
         if(!isInputValid(gameID)) { message = "gameID is invalid";}
-        else if(gameExists(gameID)) { message = "game doesn't exist";}
+        else if(!gameExists(gameID)) { message = "game doesn't exist";}
+        else if(!isGameStarted(gameID)) { message = "game did not start"; }
         else
         {
             Deck destDeck = getDestinationDeck(gameID);
@@ -41,6 +43,8 @@ public class GameFacade extends Facade
                 message = "success : " + potential;
             }
         }
+
+        System.out.println(message);
         GenericCommand command = new GenericCommand(
                 _className, potential,
                 new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
@@ -65,6 +69,7 @@ public class GameFacade extends Facade
 
         List<DestinationCard> cards = new ArrayList<>();
         if(!isInputValid(gameID) || !gameExists(gameID)) { message = "invalid gameID"; }
+        else if(!isGameStarted(gameID)) { message = "game did not start"; }
         else
         {
             Deck destDeck = getDestinationDeck(gameID);
@@ -80,6 +85,7 @@ public class GameFacade extends Facade
                 message = "success : " + draw;
             }
         }
+        System.out.println(message);
         command = new GenericCommand(
                 _className, draw,
                 new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
@@ -103,7 +109,8 @@ public class GameFacade extends Facade
         GenericCommand command;
 
         if(!isInputValid(gameID)) { message = "gameID is invalid";}
-        else if(gameExists(gameID)) { message = "game doesn't exist";}
+        else if(!gameExists(gameID)) { message = "game doesn't exist";}
+        else if(!isGameStarted(gameID)) { message = "game did not start"; }
         else
         {
             LobbyGameModel game = getGameByID(gameID);
@@ -115,6 +122,7 @@ public class GameFacade extends Facade
             //TODO: what do you want it to return?
         }
 
+        System.out.println(message);
         command = new GenericCommand(
                 _className, discard,
                 new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
@@ -135,5 +143,14 @@ public class GameFacade extends Facade
     {
         LobbyGameModel game = getGameByID(gameID);
         return game == null ? null : game.getTrainDeck();
+    }
+    public List<LobbyGameModel> getGame()
+    {
+        return ServerModel.getInstance().getAllGames().getGameList();
+    }
+
+    private boolean isGameStarted(String gameID)
+    {
+        return (getGameByID(gameID).getState() == LobbyGameModel.State.ONGOING);
     }
 }

@@ -3647,6 +3647,7 @@ var printWarning = function() {};
 if (true) {
   var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
   var loggedTypeFailures = {};
+  var has = Function.call.bind(Object.prototype.hasOwnProperty);
 
   printWarning = function(text) {
     var message = 'Warning: ' + text;
@@ -3676,7 +3677,7 @@ if (true) {
 function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
   if (true) {
     for (var typeSpecName in typeSpecs) {
-      if (typeSpecs.hasOwnProperty(typeSpecName)) {
+      if (has(typeSpecs, typeSpecName)) {
         var error;
         // Prop type validation may throw. In case they do, we don't want to
         // fail the render phase where it didn't fail before. So we log it.
@@ -3704,8 +3705,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
             'You may have forgotten to pass an argument to the type checker ' +
             'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
             'shape all require an argument).'
-          )
-
+          );
         }
         if (error instanceof Error && !(error.message in loggedTypeFailures)) {
           // Only monitor this failure once because there tends to be a lot of the
@@ -3720,6 +3720,17 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
         }
       }
     }
+  }
+}
+
+/**
+ * Resets warning cache when testing.
+ *
+ * @private
+ */
+checkPropTypes.resetWarningCache = function() {
+  if (true) {
+    loggedTypeFailures = {};
   }
 }
 
@@ -3745,11 +3756,13 @@ module.exports = checkPropTypes;
 
 
 
+var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
 var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
 
 var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
 var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
 
+var has = Function.call.bind(Object.prototype.hasOwnProperty);
 var printWarning = function() {};
 
 if (true) {
@@ -3860,6 +3873,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
     any: createAnyTypeChecker(),
     arrayOf: createArrayOfTypeChecker,
     element: createElementTypeChecker(),
+    elementType: createElementTypeTypeChecker(),
     instanceOf: createInstanceTypeChecker,
     node: createNodeChecker(),
     objectOf: createObjectOfTypeChecker,
@@ -4013,6 +4027,18 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
     return createChainableTypeChecker(validate);
   }
 
+  function createElementTypeTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!ReactIs.isValidElementType(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
   function createInstanceTypeChecker(expectedClass) {
     function validate(props, propName, componentName, location, propFullName) {
       if (!(props[propName] instanceof expectedClass)) {
@@ -4027,7 +4053,16 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createEnumTypeChecker(expectedValues) {
     if (!Array.isArray(expectedValues)) {
-       true ? printWarning('Invalid argument supplied to oneOf, expected an instance of array.') : undefined;
+      if (true) {
+        if (arguments.length > 1) {
+          printWarning(
+            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+          );
+        } else {
+          printWarning('Invalid argument supplied to oneOf, expected an array.');
+        }
+      }
       return emptyFunctionThatReturnsNull;
     }
 
@@ -4039,8 +4074,14 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
         }
       }
 
-      var valuesString = JSON.stringify(expectedValues);
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+        var type = getPreciseType(value);
+        if (type === 'symbol') {
+          return String(value);
+        }
+        return value;
+      });
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
     }
     return createChainableTypeChecker(validate);
   }
@@ -4056,7 +4097,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
         return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
       }
       for (var key in propValue) {
-        if (propValue.hasOwnProperty(key)) {
+        if (has(propValue, key)) {
           var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
           if (error instanceof Error) {
             return error;
@@ -4213,6 +4254,11 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
       return true;
     }
 
+    // falsy value can't be a Symbol
+    if (!propValue) {
+      return false;
+    }
+
     // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
     if (propValue['@@toStringTag'] === 'Symbol') {
       return true;
@@ -4287,6 +4333,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
   }
 
   ReactPropTypes.checkPropTypes = checkPropTypes;
+  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
   ReactPropTypes.PropTypes = ReactPropTypes;
 
   return ReactPropTypes;
@@ -4310,21 +4357,12 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
  */
 
 if (true) {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
+  var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
 
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "./node_modules/prop-types/factoryWithTypeCheckers.js")(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "./node_modules/prop-types/factoryWithTypeCheckers.js")(ReactIs.isElement, throwOnDirectAccess);
 } else {}
 
 
@@ -4350,6 +4388,262 @@ if (true) {
 var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+
+/***/ "./node_modules/react-is/cjs/react-is.development.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/** @license React v16.8.4
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' ||
+  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+}
+
+/**
+ * Forked from fbjs/warning:
+ * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
+ *
+ * Only change is we use console.warn instead of console.error,
+ * and do nothing when 'console' is not supported.
+ * This really simplifies the code.
+ * ---
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var lowPriorityWarning = function () {};
+
+{
+  var printWarning = function (format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.warn(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  lowPriorityWarning = function (condition, format) {
+    if (format === undefined) {
+      throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+var lowPriorityWarning$1 = lowPriorityWarning;
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+              default:
+                return $$typeof;
+            }
+        }
+      case REACT_LAZY_TYPE:
+      case REACT_MEMO_TYPE:
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+}
+
+// AsyncMode is deprecated along with isAsyncMode
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+
+var hasWarnedAboutDeprecatedIsAsyncMode = false;
+
+// AsyncMode should be deprecated
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true;
+      lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.typeOf = typeOf;
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isValidElementType = isValidElementType;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-is/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/react-is/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
+}
 
 
 /***/ }),
@@ -4502,6 +4796,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 "use strict";
 
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameList_1 = __webpack_require__(/*! ./GameList */ "./src/Models/GameList.ts");
 var Player_1 = __webpack_require__(/*! ./Player */ "./src/Models/Player.ts");
@@ -4520,11 +4824,21 @@ var ClientRoot = /** @class */ (function () {
     ClientRoot.prototype.detach = function (o) {
     };
     ClientRoot.prototype.notify = function (updateType, data) {
-        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
-            var o = _a[_i];
-            if (o != null) {
-                o.update(updateType, data);
+        var e_1, _a;
+        try {
+            for (var _b = __values(this.observers), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var o = _c.value;
+                if (o != null) {
+                    o.update(updateType, data);
+                }
             }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
     };
     ClientRoot.prototype.transitionPage = function (pageName) {
@@ -4710,6 +5024,48 @@ var Player = /** @class */ (function () {
     }
     Player.prototype.getUsername = function () {
         return this.username;
+    };
+    //Acts as a constructor for when actual gameplay starts
+    Player.prototype.initiateGame = function (myHand, trainCards, color, numTrainCards, numDestinationCards, isOtherPlayer) {
+        this.myHand = myHand;
+        this.trainCars = trainCards;
+        this.color = color;
+        this.numTrainCards = numTrainCards;
+        this.numDestinationCards = numDestinationCards;
+        this.isOtherPlayer = isOtherPlayer;
+        this.connectedCities = new Array();
+        this.ownedRoutes = new Array();
+        this.myTurn = false;
+    };
+    Player.prototype.claimRoute = function (route, length) {
+        this.ownedRoutes.push(route);
+        if (length == 1) {
+            this.score += 1;
+        }
+        else if (length == 2) {
+            this.score += 2;
+        }
+        else if (length == 3) {
+            this.score += 4;
+        }
+        else if (length == 4) {
+            this.score += 7;
+        }
+        else if (length == 5) {
+            this.score += 10;
+        }
+        else if (length == 6) {
+            this.score += 15;
+        }
+    };
+    Player.prototype.drawTrainCard = function (trainCard) {
+        this.myHand.addTrainCard(trainCard);
+    };
+    Player.prototype.drawDestinationCard = function (destinationCard) {
+        this.myHand.addDestinationCard(destinationCard);
+    };
+    Player.prototype.getScore = function () {
+        return this.score;
     };
     return Player;
 }());
@@ -5375,17 +5731,108 @@ exports.initialState = {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.cityToCoordinates = new Map([
+    ["Boston", { lat: 42.36, lng: -71.05 }],
+    ["Duluth", { lat: 46.78, lng: -92.1 }],
+    ["Helena", { lat: 46.58, lng: -112.04 }],
+    ["Seattle", { lat: 47.606, lng: -122.33 }],
+    ["Portland", { lat: 45.512230, lng: -122.658 }],
+    ["San Francisco", { lat: 37.774929, lng: -122.419418 }],
+    ["Salt Lake City", { lat: 40.760780, lng: -111.891045 }],
+    ["Denver", { lat: 39.739235, lng: -104.990250 }],
+    ["Omaha", { lat: 41.256538, lng: -95.934502 }],
+    ["Chicago", { lat: 41.878113, lng: -87.629799 }],
+    ["Pittsburgh", { lat: 40.440624, lng: -79.995888 }],
+    ["New York", { lat: 40.712776, lng: -74.005974 }],
+    ["Washington DC", { lat: 38.907192, lng: -77.036873 }],
+    ["Raleigh", { lat: 35.779591, lng: -78.638176 }],
+    ["Nashville", { lat: 36.162663, lng: -86.781601 }],
+    ["Saint Louis", { lat: 38.627003, lng: -90.199402 }],
+    ["Kansas City", { lat: 39.099728, lng: -94.578568 }],
+    ["Charleston", { lat: 32.776474, lng: -79.931053 }],
+    ["Atlanta", { lat: 33.748997, lng: -84.387985 }],
+    ["Little Rock", { lat: 34.746483, lng: -92.289597 }],
+    ["Oklahoma City", { lat: 35.467560, lng: -97.516426 }],
+    ["Santa Fe", { lat: 35.686974, lng: -105.937798 }],
+    ["Las Vegas", { lat: 36.169941, lng: -115.139832 }],
+    ["Los Angeles", { lat: 34.052235, lng: -118.243683 }],
+    ["Phoenix", { lat: 33.448376, lng: -112.074036 }],
+    ["El Paso", { lat: 31.761877, lng: -106.485023 }],
+    ["Dallas", { lat: 32.776665, lng: -96.796989 }],
+    ["Houston", { lat: 29.760427, lng: -95.369804 }],
+    ["New Orleans", { lat: 29.951065, lng: -90.071533 }],
+    ["Miami", { lat: 25.761681, lng: -80.191788 }]
+]);
+exports.routes = [
+    { city1: "Seattle", city2: "Portland", cost: 1, color: "grey" },
+    { city1: "Seattle", city2: "Helena", cost: 6, color: "yellow" },
+    { city1: "Helena", city2: "Salt Lake City", cost: 3, color: "pink" },
+    { city1: "Salt Lake City", city2: "San Francisco", cost: 5, color: "white" },
+    { city1: "San Francisco", city2: "Los Angeles", cost: 3, color: "pink" },
+    { city1: "Portland", city2: "Salt Lake City", cost: 6, color: "blue" },
+    { city1: "Portland", city2: "San Francisco", cost: 6, color: "green" },
+    { city1: "Los Angeles", city2: "Las Vegas", cost: 2, color: "grey" },
+    { city1: "Las Vegas", city2: "Salt Lake City", cost: 3, color: "orange" },
+    { city1: "Helena", city2: "Denver", cost: 4, color: "green" },
+    { city1: "Salt Lake City", city2: "Denver", cost: 3, color: "red" },
+    { city1: "Los Angeles", city2: "Phoenix", cost: 3, color: "grey" },
+    { city1: "Los Angeles", city2: "El Paso", cost: 6, color: "black" },
+    { city1: "Phoenix", city2: "Denver", cost: 5, color: "white" },
+    { city1: "Phoenix", city2: "Santa Fe", cost: 3, color: "grey" },
+    { city1: "Phoenix", city2: "El Paso", cost: 3, color: "grey" },
+    { city1: "El Paso", city2: "Santa Fe", cost: 2, color: "grey" },
+    { city1: "El Paso", city2: "Oklahoma City", cost: 5, color: "yellow" },
+    { city1: "El Paso", city2: "Dallas", cost: 4, color: "red" },
+    { city1: "El Paso", city2: "Houston", cost: 6, color: "green" },
+    { city1: "Oklahoma City", city2: "Santa Fe", cost: 3, color: "blue" },
+    { city1: "Oklahoma City", city2: "Denver", cost: 4, color: "red" },
+    { city1: "Oklahoma City", city2: "Kansas City", cost: 2, color: "grey" },
+    { city1: "Oklahoma City", city2: "Little Rock", cost: 2, color: "grey" },
+    { city1: "Oklahoma City", city2: "Dallas", cost: 2, color: "grey" },
+    { city1: "Kansas City", city2: "Denver", cost: 4, color: "black" },
+    { city1: "Kansas City", city2: "Saint Louis", cost: 2, color: "blue" },
+    { city1: "Kansas City", city2: "Omaha", cost: 1, color: "grey" },
+    { city1: "Omaha", city2: "Denver", cost: 4, color: "pink" },
+    { city1: "Omaha", city2: "Helena", cost: 5, color: "red" },
+    { city1: "Omaha", city2: "Duluth", cost: 2, color: "grey" },
+    { city1: "Omaha", city2: "Chicago", cost: 4, color: "blue" },
+    { city1: "Little Rock", city2: "Dallas", cost: 2, color: "grey" },
+    { city1: "Little Rock", city2: "New Orleans", cost: 3, color: "green" },
+    { city1: "Little Rock", city2: "Saint Louis", cost: 2, color: "grey" },
+    { city1: "Little Rock", city2: "Nashville", cost: 3, color: "white" },
+    { city1: "Helena", city2: "Duluth", cost: 6, color: "orange" },
+    { city1: "Santa Fe", city2: "Denver", cost: 2, color: "grey" },
+    { city1: "Dallas", city2: "Houston", cost: 1, color: "grey" },
+    { city1: "Chicago", city2: "Duluth", cost: 3, color: "red" },
+    { city1: "Chicago", city2: "Pittsburgh", cost: 3, color: "orange" },
+    { city1: "Chicago", city2: "Saint Louis", cost: 2, color: "white" },
+    { city1: "New Orleans", city2: "Houston", cost: 2, color: "grey" },
+    { city1: "New Orleans", city2: "Atlanta", cost: 4, color: "yellow" },
+    { city1: "New Orleans", city2: "Miami", cost: 6, color: "red" },
+    { city1: "Nashville", city2: "Saint Louis", cost: 2, color: "grey" },
+    { city1: "Nashville", city2: "Pittsburgh", cost: 4, color: "yellow" },
+    { city1: "Nashville", city2: "Raleigh", cost: 3, color: "black" },
+    { city1: "Nashville", city2: "Atlanta", cost: 1, color: "grey" },
+    { city1: "Saint Louis", city2: "Pittsburgh", cost: 5, color: "green" },
+    { city1: "Pittsburgh", city2: "New York", cost: 2, color: "white" },
+    { city1: "Pittsburgh", city2: "Washington DC", cost: 2, color: "grey" },
+    { city1: "Pittsburgh", city2: "Raleigh", cost: 2, color: "grey" },
+    { city1: "New York", city2: "Boston", cost: 2, color: "red" },
+    { city1: "New York", city2: "Washington DC", cost: 2, color: "black" },
+    { city1: "Washington DC", city2: "Raleigh", cost: 2, color: "grey" },
+    { city1: "Raleigh", city2: "Charleston", cost: 2, color: "grey" },
+    { city1: "Raleigh", city2: "Atlanta", cost: 2, color: "grey" },
+    { city1: "Atlanta", city2: "Charleston", cost: 2, color: "grey" },
+    { city1: "Atlanta", city2: "Miami", cost: 5, color: "blue" },
+    { city1: "Charleston", city2: "Miami", cost: 4, color: "pink" }
+];
 exports.initialState = {
-    routeList: [
-        { city1: "San Francisco", city2: "Salt Lake City" },
-        { city2: "New York City", city1: "Denver" }
-    ],
-    apiKey: "AIzaSyDkFUwJX3CQ5gilHwiJTJh3AYrh1jXxVFw",
+    apiKey: "AIzaSyDXINMbYADHRJARnNo5npJpP7DClPoyZaQ",
     center: {
-        lat: 59.95,
-        lng: 30.33
+        lat: 39,
+        lng: -95
     },
-    zoom: 11
+    zoom: 4,
 };
 
 
@@ -5692,20 +6139,118 @@ exports.LoginRegisterView = function (component) {
 
 "use strict";
 
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
+var I = __webpack_require__(/*! ../ViewModels/IMapViewModel */ "./src/ViewModels/IMapViewModel.ts");
 var google_map_react_1 = __webpack_require__(/*! google-map-react */ "./node_modules/google-map-react/lib/index.js");
-exports.MapView = function (component) {
-    var routes = [];
-    var routeList = component.state.routeList;
-    for (var i = 0; i < routeList.length; i++) {
-        routes.push(React.createElement("li", { key: i },
-            routeList[i].city1,
-            ", ",
-            routeList[i].city2));
+exports.renderDottedPolyline = function (map, maps, currentRoute) {
+    var cost = currentRoute.cost;
+    var p1 = I.cityToCoordinates.get(currentRoute.city1);
+    var p2 = I.cityToCoordinates.get(currentRoute.city2);
+    var spaceSizeRatio = 0.5;
+    var carSizeRatio = 1.00 - spaceSizeRatio;
+    spaceSizeRatio = spaceSizeRatio / (cost + 1);
+    carSizeRatio = carSizeRatio / cost;
+    var deltaLat = p1.lat - p2.lat;
+    var deltaLng = p1.lng - p2.lng;
+    var incrementerLat = 0;
+    var incrementerLng = 0;
+    for (var j = 0; j < cost; j++) {
+        incrementerLat += (deltaLat * spaceSizeRatio);
+        incrementerLng += (deltaLng * spaceSizeRatio);
+        var beginTrainCar = { lat: p2.lat + incrementerLat, lng: p2.lng + incrementerLng };
+        incrementerLat += (deltaLat * carSizeRatio);
+        incrementerLng += (deltaLng * carSizeRatio);
+        var endTrainCar = { lat: p2.lat + incrementerLat, lng: p2.lng + incrementerLng };
+        var singleCarPath = new maps.Polyline({
+            path: [
+                beginTrainCar,
+                endTrainCar
+            ],
+            strokeColor: currentRoute.color,
+            strokeOpacity: 1,
+            strokeWeight: 4
+        });
+        singleCarPath.setMap(map);
     }
+};
+exports.renderPolylines = function (map, maps, component) {
+    for (var i = 0; i < I.routes.length; i++) {
+        var currentRoute = I.routes[i];
+        exports.renderDottedPolyline(map, maps, currentRoute);
+        var invisibleClickableLine = new maps.Polyline({
+            path: [
+                I.cityToCoordinates.get(currentRoute.city1),
+                I.cityToCoordinates.get(currentRoute.city2)
+            ],
+            strokeColor: currentRoute.color,
+            strokeOpacity: 0,
+            strokeWeight: 6
+        });
+        invisibleClickableLine.setMap(map);
+    }
+};
+exports.renderMarkers = function (map, maps, component) {
+    var e_1, _a;
+    try {
+        for (var _b = __values(I.cityToCoordinates.entries()), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var _d = __read(_c.value, 2), key = _d[0], value = _d[1];
+            var marker = new maps.Marker({
+                position: {
+                    lat: value.lat,
+                    lng: value.lng
+                },
+                icon: 'marker.png',
+                map: map,
+                title: key
+            });
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_1) throw e_1.error; }
+    }
+};
+exports.renderMapAddons = function (map, maps, component) {
+    exports.renderPolylines(map, maps, component);
+    exports.renderMarkers(map, maps, component);
+};
+exports.MapView = function (component) {
     return (React.createElement("div", { className: "view map-view" },
-        React.createElement(google_map_react_1.default, { bootstrapURLKeys: { key: component.state.apiKey }, defaultCenter: component.state.center, defaultZoom: component.state.zoom })));
+        React.createElement(google_map_react_1.default, { bootstrapURLKeys: { key: component.state.apiKey }, defaultCenter: component.state.center, defaultZoom: component.state.zoom, onGoogleApiLoaded: function (_a) {
+                var map = _a.map, maps = _a.maps;
+                return _this.renderMapAddons(map, maps, component);
+            } })));
 };
 
 
