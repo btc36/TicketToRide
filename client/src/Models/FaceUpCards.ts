@@ -4,14 +4,14 @@ export class FaceUpCards {
     faceUpCards: Array<TrainCard>;
 
     //Whenever a a card is drawn, it is replaced with a new card in it's spot
-    drawCard(index: number,newCard:TrainCard): TrainCard {
+    drawCard(index: number, newCard: TrainCard): TrainCard {
         let cardDrawn = this.faceUpCards[index];
         this.faceUpCards[index] = newCard;
         return cardDrawn;
     }
 
     //This is for use when all 5 cards need to be replaced at once
-    replaceDeck(newSet:Array<TrainCard>):Array<TrainCard> {
+    replaceDeck(newSet: Array<TrainCard>): Array<TrainCard> {
         let oldSetofFive = this.faceUpCards
         this.faceUpCards = newSet;
         return oldSetofFive;

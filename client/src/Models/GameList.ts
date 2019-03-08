@@ -1,40 +1,40 @@
 import { LobbyGame } from "./LobbyGame"
 
 export class GameList {
-  games: Array<LobbyGame>;
+    games: Array<LobbyGame>;
 
-  [key: string]: any;
+    [key: string]: any;
 
-  constructor() {
-    this.games = new Array<LobbyGame>();
-  }
-
-  addGame(game: LobbyGame): void {
-    this.games.push(game);
-  }
-
-  removeGame(gameId: string): void {
-    for (var i = this.games.length - 1; i >= 0; --i) {
-      if (this.games[i].getGameID() == gameId) {
-        this.games.splice(i, 1);
-      }
+    constructor() {
+        this.games = new Array<LobbyGame>();
     }
-  }
 
-  findGameById(gameId: string): LobbyGame {
-    for (let i = 0; i < this.games.length; i++) {
-      if (this.games[i].getGameID() == gameId) {
-        return this.games[i];
-      }
+    addGame(game: LobbyGame): void {
+        this.games.push(game);
     }
-  }
 
-  replaceGameList(newGameList: Array<LobbyGame>): void {
-    this.games = newGameList;
-  }
+    removeGame(gameId: string): void {
+        for (var i = this.games.length - 1; i >= 0; --i) {
+            if (this.games[i].getGameID() == gameId) {
+                this.games.splice(i, 1);
+            }
+        }
+    }
 
-  getGames(): Array<LobbyGame> {
-    return this.games;
-  }
+    findGameById(gameId: string): LobbyGame {
+        for (let i = 0; i < this.games.length; i++) {
+            if (this.games[i].getGameID() == gameId) {
+                return this.games[i];
+            }
+        }
+    }
+
+    replaceGameList(newGameList: Array<LobbyGame>): void {
+        this.games = newGameList;
+    }
+
+    getGames(): Array<LobbyGame> {
+        return this.games;
+    }
 
 }

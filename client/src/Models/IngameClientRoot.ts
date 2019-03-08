@@ -8,12 +8,14 @@ import { GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
 
+
+//HOW WILL CHAT BE INVOLVED WITH THIS
 export class IngameClientRoot {
     observers: Array<IObserver>;
     game: Game;
     session: Session;
 
-	constructor (){
+    constructor() {
         this.game = new Game();
         this.observers = new Array<IObserver>();
     }
@@ -31,15 +33,15 @@ export class IngameClientRoot {
         }
     }
 
-    claimRoute(player: Player, route:Route):void {
+    claimRoute(player: Player, route: Route): void {
         this.game.claimRoute(player, route);
     }
 
-    useTrainCard(trainCard: TrainCard):void{
+    useTrainCard(trainCard: TrainCard): void {
         this.game.useTrainCard(trainCard);
     }
 
-    addTrainCard(trainCard: TrainCard):void{
+    addTrainCard(trainCard: TrainCard): void {
         this.game.addTrainCard(trainCard);
     }
 
@@ -67,15 +69,15 @@ export class IngameClientRoot {
         return this.game.getFaceUpCards();
     }
 
-    setFaceUpCards(faceUpCards:FaceUpCards): void {
+    setFaceUpCards(faceUpCards: FaceUpCards): void {
         this.game.setFaceUpCards(faceUpCards);
     }
 
-    updatePlayerPoints(player: Player, points: number):void {
+    updatePlayerPoints(player: Player, points: number): void {
         this.game.updatePlayerPoints(player, points);
     }
 
-    removeTrainCard(trainCard:TrainCard): void {
+    removeTrainCard(trainCard: TrainCard): void {
         this.game.removeTrainCard(trainCard);
     }
 
@@ -87,11 +89,11 @@ export class IngameClientRoot {
         this.game.updateNumberOfDestinationCards(player, numCards);
     }
 
-    updateNumInDeck(newNum:number):void {
+    updateNumInDeck(newNum: number): void {
         this.game.updateNumInDeck(newNum);
     }
 
-    changeTurn(player: Player):void {
+    changeTurn(player: Player): void {
         this.game.changeTurn(player);
     }
 

@@ -12,7 +12,7 @@ export class DestinationCard {
         return this.pointValue;
     }
 
-    getCities():Array<String> {
+    getCities(): Array<String> {
         return this.route.getCities();
     }
 

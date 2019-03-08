@@ -4,6 +4,8 @@ import { DestinationCard } from "./DestinationCard";
 import { TrainCard } from "./TrainCard";
 import { FaceUpCards } from "./FaceUpCards";
 import { Route } from "./Route";
+import { ChatRoom } from "./ChatRoom";
+import { ChatMessage } from "./ChatMessage";
 
 export class Game {
     players: Array<Player>;
@@ -12,6 +14,7 @@ export class Game {
     DestinationCardsDeckSize: number
     trainCardDeckSize: number;
     faceUpCards: FaceUpCards;
+    chatRoom: ChatRoom
 
     checkWinCondition(): Player {
         let maxPoints = 0;
@@ -26,6 +29,14 @@ export class Game {
         return winningPlayer;
     }
 
+    getChatHistory(): Array<ChatMessage> {
+        return this.chatRoom.getChatHistory();
+    }
+
+    addChatMessage(chat: ChatMessage) {
+        this.chatRoom.addChat(chat);
+    }
+
     getPlayerList(): Array<Player> {
         return this.players;
     }
@@ -38,7 +49,7 @@ export class Game {
         return this.map;
     }
 
-    getDestinationCardsDeckSize(): number{
+    getDestinationCardsDeckSize(): number {
         return this.DestinationCardsDeckSize;
     }
 
@@ -62,12 +73,18 @@ export class Game {
 
     }
 
-    addDestinationCard(destinationCards: Array<DestinationCard>) {
+    addDestinationCard(player: Player, destinationCard: DestinationCard) {
+        this.players.forEach((thisPlayer) => {
+            if (thisPlayer.getUsername == player.getUsername) {
+                thisPlayer.drawDestinationCard(destinationCard);
+                return;
+            }
+        });
 
     }
 
     setFaceUpCards(faceUpCards: FaceUpCards): void {
-
+        this.faceUpCards = faceUpCards;
     }
 
     updatePlayerPoints(player: Player, points: number): void {
