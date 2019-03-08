@@ -18,7 +18,9 @@ import { ClientRoot } from './Models/ClientRoot';
 import { InternalClientFacade } from './Services/InternalClientFacade';
 import { ServerProxy } from './Server/ServerProxy';
 
+import { IngameClientRoot } from './Models/IngameClientRoot';
 import { IngameInternalClientFacade } from './Services/IngameInternalClientFacade';
+import { IngameServerProxy } from './Server/IngameServerProxy';
 
 
 export const initialState = {
@@ -68,7 +70,9 @@ const serializer = new Serializer();
 const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade);
 const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
-const ingameInternalClientFacade = new IngameInternalClientFacade();
+const ingameServerProxy = new IngameServerProxy();
+const ingameRoot = new IngameClientRoot();
+const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 
 ReactDOM.render(
   <MainComponent services={internalClientFacade} ingameServices={ingameInternalClientFacade} root={root}/>,

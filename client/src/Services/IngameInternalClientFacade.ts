@@ -6,6 +6,11 @@ export class IngameInternalClientFacade {
   proxy: IngameServerProxy;
   root: IngameClientRoot;
 
+  constructor(_proxy: IngameServerProxy, _root: IngameClientRoot) {
+    this.proxy = _proxy;
+    this.root = _root;
+  }
+
   PresentDestinationCard() {
 
   }
