@@ -14,7 +14,8 @@ export class Game {
     numDestinationCardsRemaining: number;
     numTrainCardsRemaining: number;
     faceUpCards: FaceUpCards;
-    chatRoom: ChatRoom
+    chatRoom: ChatRoom;
+    potentialDestinationCards: Array<DestinationCard>;
 
     constructor(players: Array<Player>, whoseTurn: number, map: GameMap, numDestinationCardsRemaining: number, numTrainCardsRemaining: number, faceUpCards: FaceUpCards, chatRoom: ChatRoom) {
         this.players = players;
@@ -43,8 +44,8 @@ export class Game {
         return this.chatRoom.getChatHistory();
     }
 
-    addChatMessage(chat: ChatMessage) {
-        this.chatRoom.addChat(chat);
+    setChatHistory(chats: Array<ChatMessage>) {
+        this.chatRoom.setChatHistory(chats);
     }
 
     getPlayerList(): Array<Player> {
@@ -101,9 +102,9 @@ export class Game {
         });
     }
 
-    addDestinationCard(player: Player, destinationCard: DestinationCard) {
+    addDestinationCard(username: string, destinationCard: DestinationCard) {
         this.players.forEach((thisPlayer) => {
-            if (thisPlayer.getUsername == player.getUsername) {
+            if (thisPlayer.getUsername() == username) {
                 thisPlayer.drawDestinationCard(destinationCard);
                 return;
             }
@@ -165,6 +166,16 @@ export class Game {
   }
 
 
+<<<<<<< HEAD
+    }
+
+    presentDestinationCard(destinationCards: any[]){
+        this.potentialDestinationCards = destinationCards;
+    }
+    discardDestinationCard(){
+        this.potentialDestinationCards.length = 0;
+    }
+=======
 
   changeTurn(player: Player): void {
     let username = player.getUsername;
@@ -176,4 +187,5 @@ export class Game {
         }
     });
   }
+>>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08
 }

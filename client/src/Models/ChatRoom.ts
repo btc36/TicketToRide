@@ -13,7 +13,7 @@ export class ChatRoom {
         return this.chatHistory;
     }
 
-    addChat(chat: ChatMessage) {
-        this.chatHistory.push(chat);
+    setChatHistory(chats: Array<ChatMessage>) {
+        this.chatHistory = chats;
     }
 }
