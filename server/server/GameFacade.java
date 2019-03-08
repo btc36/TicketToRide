@@ -11,24 +11,28 @@ import java.util.List;
 
 public class GameFacade extends Facade
 {
+
     private final String potential = "potentialDestinationCard";
     private final String draw = "drawDestinationCard";
     private final String discard = "discardDestinationCard";
 
     /**
      *
-     * @param gameID
+     * @param gameID which game is it on
+     * @param username which player is performing the action
      * @return List that contains three Destination Card
      */
-    public List<GenericCommand> potentialDestinationCard(String gameID)
+    public List<GenericCommand> potentialDestinationCard(String gameID, String username)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
         String message = "";
         List<DestinationCard> cards = new ArrayList<>();
-        if(!isInputValid(gameID)) { message = "gameID is invalid";}
-        else if(!gameExists(gameID)) { message = "game doesn't exist";}
-        else if(!isGameStarted(gameID)) { message = "game did not start"; }
+        if(!isInputValid(gameID)) { message = "gameID is invalid\n";}
+        else if(!isInputValid(username)) { message = "username is invalid\n"; }
+        else if(!playerExists(username)) { message = "user does not exist\n"; }
+        else if(!gameExists(gameID)) { message = "game doesn't exist\n";}
+        else if(!isGameStarted(gameID)) { message = "game did not start\n"; }
         else
         {
             Deck destDeck = getDestinationDeck(gameID);
@@ -45,22 +49,18 @@ public class GameFacade extends Facade
         }
 
         System.out.println(message);
-        GenericCommand command = new GenericCommand(
-                _className, potential,
-                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
-                new Object[]{status, message, cards}
-                //TODO: DO YOU NEED GAME ID?
-        );
+        GenericCommand command = commandForDestination(potential, status, message, gameID, username, cards);
         commandsForClient.add(command);
         return commandsForClient;
     }
 
     /**
      *
-     * @param gameID
-     * @return List that contains one Destination Card
+     * @param gameID which game is it on
+     * @param username which player is performing the action
+     * @return List that contains one Destination Card and etc
      */
-    public List<GenericCommand> drawDestinationCard(String gameID)
+    public List<GenericCommand> drawDestinationCard(String gameID, String username)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
@@ -69,6 +69,8 @@ public class GameFacade extends Facade
 
         List<DestinationCard> cards = new ArrayList<>();
         if(!isInputValid(gameID) || !gameExists(gameID)) { message = "invalid gameID"; }
+        else if(!isInputValid(username)) { message = "username is invalid\n"; }
+        else if(!playerExists(username)) { message = "user does not exist\n"; }
         else if(!isGameStarted(gameID)) { message = "game did not start"; }
         else
         {
@@ -86,22 +88,18 @@ public class GameFacade extends Facade
             }
         }
         System.out.println(message);
-        command = new GenericCommand(
-                _className, draw,
-                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
-                //new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
-                new Object[]{status, message, cards}
-        );
+        command = commandForDestination(draw, status, message, gameID, username, cards);
         commandsForClient.add(command);
         return commandsForClient;
     }
 
     /**
-     * @param gameID and cards
-     * discard in the perspective of player
+     * @param gameID which game is it in
+     * @param username which user is performing the action
+     * @param cards to be discarded
      * @return list of command that contains
      */
-    public List<GenericCommand> discardDestinationCardCommand(String gameID, List<DestinationCard> cards)
+    public List<GenericCommand> discardDestinationCardCommand(String gameID, String username, List<DestinationCard> cards)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
@@ -114,21 +112,18 @@ public class GameFacade extends Facade
         else
         {
             LobbyGameModel game = getGameByID(gameID);
+
             for(DestinationCard card : cards)
-            {
                 game.addDestCard(card);
-            }
+
+            cards.clear();
+
+            status  = true;
             message = "success : " + discard;
-            //TODO: what do you want it to return?
         }
 
         System.out.println(message);
-        command = new GenericCommand(
-                _className, discard,
-                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
-                //new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeList},
-                new Object[]{status, message, cards}
-        );
+        command = commandForDestination(discard, status, message, gameID, username, cards);
         commandsForClient.add(command);
         return commandsForClient;
     }
@@ -152,5 +147,16 @@ public class GameFacade extends Facade
     private boolean isGameStarted(String gameID)
     {
         return (getGameByID(gameID).getState() == LobbyGameModel.State.ONGOING);
+    }
+    private GenericCommand commandForDestination(String method, boolean status, String message, String gameID, String username, List<DestinationCard> cards)
+    {
+        GenericCommand command = new GenericCommand(
+                _className, method,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList},
+                new Object[]{ status, message, gameID, username, cards }
+        );
+
+        commandCheck(command);
+        return command;
     }
 }

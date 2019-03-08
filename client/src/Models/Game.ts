@@ -17,6 +17,16 @@ export class Game {
     chatRoom: ChatRoom;
     potentialDestinationCards: Array<DestinationCard>;
 
+    constructor(players: Array<Player>, whoseTurn: number, map: GameMap, numDestinationCardsRemaining: number, numTrainCardsRemaining: number, faceUpCards: FaceUpCards, chatRoom: ChatRoom) {
+        this.players = players;
+        this.whoseTurn = whoseTurn;
+        this.map = map;
+        this.numDestinationCardsRemaining = numDestinationCardsRemaining;
+        this.numTrainCardsRemaining = numTrainCardsRemaining;
+        this.faceUpCards = faceUpCards;
+        this.chatRoom = chatRoom;
+    }
+
     checkWinCondition(): Player {
         let maxPoints = 0;
         let winningPlayer = null;
@@ -63,15 +73,33 @@ export class Game {
     }
 
     claimRoute(player: Player, route: Route): void {
-
+        let username = player.getUsername;
+        this.players.forEach((player) => {
+            if (player.getUsername == username) {
+                player.claimRoute(route);
+                return;
+            }
+        });
     }
 
-    useTrainCard(trainCard: TrainCard): void {
-
+    useTrainCard(player: Player, trainCard: TrainCard,numUsed:number): void {
+        let username = player.getUsername;
+        this.players.forEach((player) => {
+            if (player.getUsername == username) {
+                player.useTrainCard(trainCard,numUsed);
+                return;
+            }
+        });
     }
 
-    addTrainCard(trainCard: TrainCard): void {
-
+    addTrainCard(player: Player, trainCard: TrainCard): void {
+        let username = player.getUsername;
+        this.players.forEach((player) => {
+            if (player.getUsername == username) {
+                player.drawTrainCard(trainCard);
+                return;
+            }
+        });
     }
 
     addDestinationCard(username: string, destinationCard: DestinationCard) {
@@ -89,27 +117,56 @@ export class Game {
     }
 
     updatePlayerPoints(player: Player, points: number): void {
-
+        let username = player.getUsername;
+        this.players.forEach((player) => {
+            if (player.getUsername == username) {
+                player.setScore(points);
+                return;
+            }
+        });
     }
 
-    removeTrainCard(trainCard: TrainCard): void {
-
-    }
 
     updateNumTrainCars(player: Player, numUsed: number): void {
-
+        let username = player.getUsername;
+        this.players.forEach((player) => {
+            if (player.getUsername == username) {
+                player.setNumTrainCars(numUsed)
+                return;
+            }
+        });
     }
 
-    updateNumberOfDestinationCards(player: Player, numCards: number): void {
-
+    setNumDestinationCardsRemaining( newNum: number): void {
+        this.numDestinationCardsRemaining = newNum;
     }
 
-    updateNumInDeck(newNum: number): void {
-
+    setNumTrainCardsRemaining(newNum: number): void {
+        this.numTrainCardsRemaining = newNum;
     }
 
-    changeTurn(player: Player): void {
+  setNumTrainCards(player:Player,numCards:number) {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+      if (player.getUsername == username) {
+        player.setNumTrainCars(numCards);
+        return;
+      }
+    });
+  }
 
+  setNumDestinationCards(player: Player, numCards: number) {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+      if (player.getUsername == username) {
+        player.setNumDestinationCards(numCards)
+        return;
+      }
+    });
+  }
+
+
+<<<<<<< HEAD
     }
 
     presentDestinationCard(destinationCards: any[]){
@@ -118,4 +175,17 @@ export class Game {
     discardDestinationCard(){
         this.potentialDestinationCards.length = 0;
     }
+=======
+
+  changeTurn(player: Player): void {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+        if (player.getUsername == username) {
+            player.setTurn(true);
+        } else {
+            player.setTurn(false);
+        }
+    });
+  }
+>>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08
 }

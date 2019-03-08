@@ -15,9 +15,16 @@ export class IngameClientRoot implements ISubject {
   game: Game;
   session: Session;
 
-  constructor() {
-    this.game = new Game();
+  constructor(game:Game) {
+    this.game = game;
     this.observers = new Array<IObserver>();
+    let trainCards = Array<TrainCard>();
+    trainCards.push(new TrainCard("green"));
+    trainCards.push(new TrainCard("blue"));
+    trainCards.push(new TrainCard("black"));
+    trainCards.push(new TrainCard("rainbow"));
+    trainCards.push(new TrainCard("green"));
+    this.setFaceUpCards(new FaceUpCards(trainCards));
   }
 
   transitionPage(pageName: string): void {
@@ -45,13 +52,13 @@ export class IngameClientRoot implements ISubject {
     this.game.claimRoute(player, route);
   }
 
-  useTrainCard(trainCard: TrainCard): void {
+ /* useTrainCard(trainCard: TrainCard): void {
     this.game.useTrainCard(trainCard);
   }
 
   addTrainCard(trainCard: TrainCard): void {
     this.game.addTrainCard(trainCard);
-  }
+  }*/
 
   addDestinationCard(username: string, destinationCard: DestinationCard) {
     this.game.addDestinationCard(username,destinationCard);
@@ -79,26 +86,31 @@ export class IngameClientRoot implements ISubject {
 
   setFaceUpCards(faceUpCards: FaceUpCards): void {
     this.game.setFaceUpCards(faceUpCards);
+    this.notify("setFaceUpCards", faceUpCards);
   }
 
   updatePlayerPoints(player: Player, points: number): void {
     this.game.updatePlayerPoints(player, points);
   }
 
-  removeTrainCard(trainCard: TrainCard): void {
+  /*removeTrainCard(trainCard: TrainCard): void {
     this.game.removeTrainCard(trainCard);
-  }
+  }*/
 
   updateNumTrainCars(player: Player, numUsed: number): void {
     this.game.updateNumTrainCars(player, numUsed);
   }
 
   updateNumberOfDestinationCards(player: Player, numCards: number): void {
-    this.game.updateNumberOfDestinationCards(player, numCards);
+    this.game.setNumDestinationCards(player, numCards);
+  }
+
+  setNumTrainCards(player: Player, numCards: number) {
+    this.game.setNumTrainCards(player, numCards);
   }
 
   updateNumInDeck(newNum: number): void {
-    this.game.updateNumInDeck(newNum);
+    this.game.setNumTrainCardsRemaining(newNum);
   }
 
   changeTurn(player: Player): void {

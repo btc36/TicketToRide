@@ -18,7 +18,7 @@ export class ClientCommunicator {
     this.serverPort = serverPortIn;
     this.serializer = serialIn;
     this.clientFacade = facadeIn;
-    this.inGameClientFacade = inGameECFIn
+    this.inGameClientFacade = inGameECFIn;
   }
   public sendCommand(command: ClientCommandObjects){
     var data = this.serializer.toJSON(command);

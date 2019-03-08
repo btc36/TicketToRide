@@ -6,51 +6,62 @@ import { TrainCard } from "../Models/TrainCard";
 import { FaceUpCards } from "../Models/FaceUpCards";
 
 export class IngameExternalClientFacade {
-    root: IngameClientRoot
-    claimRoute(player:Player, route:Route) {
-        this.root.claimRoute(player, route);
-    }
+  root: IngameClientRoot
+  claimRoute(player:Player, route:Route) {
+    this.root.claimRoute(player, route);
+  }
 
-    addTrainCard(trainCard:TrainCard) {
-        this.root.addTrainCard(trainCard);
-    }
+  addTrainCard(trainCard:TrainCard) {
+    this.root.addTrainCard(trainCard);
+  }
 
+<<<<<<< HEAD
     updatePlayerPoints(player: Player, points:number) {
         this.root.updatePlayerPoints(player, points);
     }
+=======
+  addDestinationCard(player: Player, destinationCard: DestinationCard) {
+    this.root.addDestinationCard(player,destinationCard);
+  }
 
-    removeTrainCard(trainCard:TrainCard) {
-        this.root.removeTrainCard(trainCard);
-    }
+  updatePlayerPoints(player: Player, points:number) {
+    this.root.updatePlayerPoints(player, points);
+  }
+>>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08
 
-    updateNumTrainCards(player:Player,numUsed:number) {
-        this.root.updateNumTrainCars(player,numUsed)
-    }
+  removeTrainCard(trainCard:TrainCard) {
+    this.root.removeTrainCard(trainCard);
+  }
 
-    updateNumTrainCars(player:Player,numCars:number) {
-        this.root.updateNumTrainCars(player,numCars)
-    }
+  updateNumTrainCards(player:Player,numUsed:number) {
+    this.root.updateNumTrainCars(player,numUsed)
+  }
 
-    updateNumberOfDestinationCards(player:Player,numCards:number) {
-        this.root.updateNumberOfDestinationCards(player,numCards)
-    }
+  updateNumTrainCars(player:Player,numCars:number) {
+    this.root.updateNumTrainCars(player,numCars)
+  }
 
-    setFaceUpCards(faceUpCards:FaceUpCards) {
-        this.root.setFaceUpCards(faceUpCards);
-    }
+  updateNumberOfDestinationCards(player:Player,numCards:number) {
+    this.root.updateNumberOfDestinationCards(player,numCards)
+  }
 
-    updateNumInDeck(newNum:number) {
-        this.root.updateNumInDeck(newNum)
-    }
+  setFaceUpCards(faceUpCards:FaceUpCards) {
+    this.root.setFaceUpCards(faceUpCards);
+  }
 
-    updateNumDestinationCards(player:Player,numCards:number) {
-        this.root.updateNumberOfDestinationCards(player, numCards);
-    }
+  updateNumInDeck(newNum:number) {
+    this.root.updateNumInDeck(newNum)
+  }
 
-    changeTurn(player:Player) {
-        this.root.changeTurn(player)
-    }
+  updateNumDestinationCards(player:Player,numCards:number) {
+    this.root.updateNumberOfDestinationCards(player, numCards);
+  }
 
+  changeTurn(player:Player) {
+    this.root.changeTurn(player)
+  }
+
+<<<<<<< HEAD
     receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
         //test if it was a success, and if there was an error message
         this.root.receiveChatCommand(gameid, chats);
@@ -72,3 +83,18 @@ export class IngameExternalClientFacade {
     }
 
 }
+=======
+  receiveChatCommand(one: any, two: any, three: any, four: any) {
+
+  }
+
+  presentDestinationCard(one: any, two: any, three: any) {
+
+  }
+
+  discardDestinationCard(one: any, two: any, three: any) {
+
+  }
+
+}
+>>>>>>> 55f2567831df6b3f59a85603319493473f1c6d08
