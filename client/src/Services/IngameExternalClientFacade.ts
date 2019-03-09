@@ -51,10 +51,10 @@ export class IngameExternalClientFacade {
     this.root.changeTurn(player)
   }
 
-    receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
-        //TODO: test if it was a success, and if there was an error message
-        this.root.receiveChatCommand(gameid, chats);
-    }
+  receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
+    //TODO: test if it was a success, and if there was an error message
+    this.root.receiveChatCommand(gameid, chats);
+  }
 
     presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
         //TODO: test if it was a success, and if there was an error message

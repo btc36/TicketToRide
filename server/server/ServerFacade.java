@@ -271,26 +271,23 @@ public class ServerFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         GenericCommand command;
         ChatRoom room = null;
+        List<ChatMessage> result = new ArrayList<>();
 
         if(!playerExists(username)) message = "invalid username";
         else if(!gameExists(gameID)) message = "invalid gameID";
         else
         {
             success = true;
-            room = ServerModel.getInstance().getChatRoombyID(gameID);
-            if(room == null) // initialize
-            {
-                room = new ChatRoom(gameID);
-                ServerModel.getInstance().addChatRoom(room);
-            }
             ChatMessage chat = new ChatMessage(chatMessage, time, username);
-            room.addChat(chat);
+            ServerModel.getInstance().addChat(gameID, chat);
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
+            result = room.getMessages();
         }
 
         command = new GenericCommand(
                 _className, "receiveChatCommand",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
-                new Object[]{success, message, gameID, room}
+                new Object[]{success, message, gameID, result}
         );
 
         commandsForClient.add(command);
