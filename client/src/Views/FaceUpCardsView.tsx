@@ -10,7 +10,7 @@ export const FaceUpCardsView  = (component: I.IFaceUpCardsViewModel) => {
   }
   const cards = component.state.faceUpCards.getCards();
   for (let i = 0; i < cards.length; i++) {
-    faceUpCardsList.push(<p>Train Card: {cards[i].getColor()}</p>);
+    faceUpCardsList.push(<p key={i}>Train Card: {cards[i].getColor()}</p>);
   }
   return (
     <div>
