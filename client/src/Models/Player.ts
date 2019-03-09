@@ -42,6 +42,10 @@ export class Player {
     this.colorCountMap = new Map<string, number>();
   }
 
+  /**
+   * claim routes and increment scores accordingly
+   * @param route
+   */
   claimRoute(route: Route): void {
     this.ownedRoutes.push(route);
     let length = route.getLength();
@@ -61,6 +65,10 @@ export class Player {
     }
   }
 
+  /**
+   * draw traincard and give it to the hand?
+   * @param trainCard
+   */
   drawTrainCard(trainCard: TrainCard):void {
     this.myHand.addTrainCard(trainCard);
     const color = trainCard.getColor();
@@ -68,6 +76,10 @@ export class Player {
     this.colorCountMap.set(color, count + 1);
   }
 
+  /**
+   * draw destination card and give it to the hand?
+   * @param destinationCard
+   */
   drawDestinationCard(destinationCard: DestinationCard):void {
     this.myHand.addDestinationCard(destinationCard);
   }
@@ -82,8 +94,10 @@ export class Player {
     this.score = newScore;
   }
 
-  useTrainCard(trainCard: TrainCard,numUsed:number) {
+  // There is no useDestinationCard because you can't get rid of them
 
+  useTrainCard(trainCard: TrainCard,numUsed:number) {
+    this.myHand.removeTrainCard(trainCard);
   }
 
   setNumTrainCars(numCars: number) {
