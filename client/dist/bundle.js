@@ -6032,6 +6032,7 @@ var FaceUpCardsViewModel = /** @class */ (function (_super) {
         return _this;
     }
     FaceUpCardsViewModel.prototype.componentDidMount = function () {
+        debugger;
         this.setState({
             faceUpCards: this.props.services.getFaceUpCards()
             //numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining(),
@@ -6232,7 +6233,7 @@ var GameViewModel = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = IGameViewModel_1.initialState;
         _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.services });
-        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.services });
+        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
@@ -6263,9 +6264,12 @@ exports.GameViewModel = GameViewModel;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DestinationCard_1 = __webpack_require__(/*! ../Models/DestinationCard */ "./src/Models/DestinationCard.ts");
 exports.initialState = {
-    destinationCards: [new DestinationCard_1.DestinationCard("Salt Lake", "Miami", 15), new DestinationCard_1.DestinationCard("Boston", "Chicago", 10), new DestinationCard_1.DestinationCard("Sacramento", "Mesa", 5)]
+    destinationCards: [
+        { cityOne: "Provo", cityTwo: "Orem", pointValue: 5 },
+        { cityOne: "Salt Lake City", cityTwo: "Las Vegas", pointValue: 2 },
+        { cityOne: "Wendover", cityTwo: "San Francisco", pointValue: 9 }
+    ]
 };
 
 
@@ -6754,34 +6758,34 @@ exports.DestinationCardSelectionView = function (component) {
     for (var i = 0; i < destCards.length; i++) {
         var card = destCards[i];
         cards.push(React.createElement("p", { key: i },
-            card.city1,
+            card.cityOne,
             " to ",
-            card.city2,
+            card.cityTwo,
             ": ",
             card.pointValue));
     }
     return (React.createElement("form", { action: "/action_page.php" },
         React.createElement("p", null,
             "Destination Card A----City1: ",
-            component.state.destinationCards[0].city1,
+            component.state.destinationCards[0].cityOne,
             " , City2: ",
-            component.state.destinationCards[0].city2,
+            component.state.destinationCards[0].cityTwo,
             ", Points: ",
             component.state.destinationCards[0].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
             "Destination Card A----City1:  ",
-            component.state.destinationCards[1].city1,
+            component.state.destinationCards[1].cityOne,
             " , City2: ",
-            component.state.destinationCards[1].city2,
+            component.state.destinationCards[1].cityTwo,
             ", Points: ",
             component.state.destinationCards[1].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
             "Destination Card A----City1:  ",
-            component.state.destinationCards[2].city1,
+            component.state.destinationCards[2].cityOne,
             " , City2: ",
-            component.state.destinationCards[2].city2,
+            component.state.destinationCards[2].cityTwo,
             ", Points: ",
             component.state.destinationCards[2].pointValue),
         React.createElement("p", null,
@@ -6950,10 +6954,10 @@ exports.GameView = function (component) {
         component.playerInfoViewModel,
         React.createElement("h3", null, "Player Hand"),
         React.createElement("hr", null),
-        React.createElement("p", null, "component.playerHandViewModel"),
+        component.playerHandViewModel,
         React.createElement("h3", null, "Face Up Cards"),
         React.createElement("hr", null),
-        React.createElement("p", null, "component.faceUpCardsViewModel"),
+        component.faceUpCardsViewModel,
         React.createElement("h3", null, "Destination Cards Selection"),
         React.createElement("hr", null),
         component.destinationCardSelectionViewModel,
@@ -7286,7 +7290,7 @@ var MainComponent = /** @class */ (function (_super) {
         _this.loginRegisterViewModel = React.createElement(LoginRegisterViewModel_1.LoginRegisterViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameListViewModel = React.createElement(GameListViewModel_1.GameListViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.gameViewModel = React.createElement(GameViewModel_1.GameViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices, ingameRoot: ingameRoot });
+        _this.gameViewModel = React.createElement(GameViewModel_1.GameViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, ingameServices: _this.props.ingameServices, ingameRoot: ingameRoot });
         return _this;
     }
     MainComponent.prototype.render = function () {
