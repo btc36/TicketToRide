@@ -8,6 +8,10 @@ export class DestinationCardSelectionViewModel extends React.Component<ViewModel
 
   state: State = initialState;
 
+  componentDidMount() {
+    this.setState({ destinationCards: this.props.services.getDestinationCards() });
+  }
+
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
