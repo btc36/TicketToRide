@@ -80,7 +80,7 @@ export class Player {
    * draw destination card and give it to the hand?
    * @param destinationCard
    */
-  drawDestinationCard(destinationCard: DestinationCard):void {
+  drawDestinationCard(destinationCard: Array<DestinationCard>):void {
     this.myHand.addDestinationCard(destinationCard);
   }
   getColorCountMap() : Map<string,number>{

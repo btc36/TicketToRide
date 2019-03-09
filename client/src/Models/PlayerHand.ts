@@ -35,8 +35,9 @@ export class PlayerHand {
       return this.colorCountMap;
     }
 
-    addDestinationCard(destinationCard: DestinationCard): void {
-      this.destinationCards.push(destinationCard);
+  addDestinationCard(destinationCard: Array<DestinationCard>): void {
+      
+      this.destinationCards = this.destinationCards.concat(destinationCard);
     }
 
 
