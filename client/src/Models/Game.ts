@@ -6,6 +6,7 @@ import { FaceUpCards } from "./FaceUpCards";
 import { Route } from "./Route";
 import { ChatRoom } from "./ChatRoom";
 import { ChatMessage } from "./ChatMessage";
+import { Map } from "google-maps-react";
 
 export class Game {
     players: Array<Player>;
@@ -17,14 +18,15 @@ export class Game {
     chatRoom: ChatRoom;
     potentialDestinationCards: Array<DestinationCard>;
 
-    constructor(players: Array<Player>, whoseTurn: number, map: GameMap, numDestinationCardsRemaining: number, numTrainCardsRemaining: number, faceUpCards: FaceUpCards, chatRoom: ChatRoom) {
-        this.players = players;
-        this.whoseTurn = whoseTurn;
-        this.map = map;
-        this.numDestinationCardsRemaining = numDestinationCardsRemaining;
-        this.numTrainCardsRemaining = numTrainCardsRemaining;
-        this.faceUpCards = faceUpCards;
-        this.chatRoom = chatRoom;
+    constructor() {
+        this.players = [new Player("ben"),new Player("lincoln"), new Player("Brennah")];
+        this.whoseTurn = 1;
+        this.map = new GameMap();
+        this.numDestinationCardsRemaining = 50;
+        this.numTrainCardsRemaining = 50;
+        this.faceUpCards = new FaceUpCards([new TrainCard("blue"),new TrainCard("blue"),new TrainCard("pink")]);
+      this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
+      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
 
     checkWinCondition(): Player {
@@ -60,7 +62,7 @@ export class Game {
         return this.map;
     }
 
-    getnumDestinationCardsRemaining(): number {
+    getNumDestinationCardsRemaining(): number {
         return this.numDestinationCardsRemaining;
     }
 
@@ -145,40 +147,46 @@ export class Game {
         this.numTrainCardsRemaining = newNum;
     }
 
-    setNumTrainCards(player:Player,numCards:number) {
-        let username = player.getUsername;
-        this.players.forEach((player) => {
-        if (player.getUsername == username) {
-            player.setNumTrainCars(numCards);
-            return;
-        }
-        });
-    }
+  setNumTrainCards(player:Player,numCards:number) {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+      if (player.getUsername == username) {
+        player.setNumTrainCars(numCards);
+        return;
+      }
+    });
+  }
 
-    setNumDestinationCards(player: Player, numCards: number) {
-        let username = player.getUsername;
-        this.players.forEach((player) => {
-        if (player.getUsername == username) {
-            player.setNumDestinationCards(numCards)
-            return;
-        }
-        });
-    }
-    presentDestinationCard(destinationCards: any[]){
-        this.potentialDestinationCards = destinationCards;
-    }
+  setNumDestinationCards(player: Player, numCards: number) {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+      if (player.getUsername == username) {
+        player.setNumDestinationCards(numCards)
+        return;
+      }
+    });
+  }
+
+  presentDestinationCard(destinationCards: any[]){
+    this.potentialDestinationCards = destinationCards;
+  }
+
+  getPresentedDestinationCards(): any[] {
+    return this.potentialDestinationCards;
+  }
+
     discardDestinationCard(){
         this.potentialDestinationCards.length = 0;
     }
 
-    changeTurn(player: Player): void {
-        let username = player.getUsername;
-        this.players.forEach((player) => {
-            if (player.getUsername == username) {
-                player.setTurn(true);
-            } else {
-                player.setTurn(false);
-            }
-        });
-    }
+  changeTurn(player: Player): void {
+    let username = player.getUsername;
+    this.players.forEach((player) => {
+        if (player.getUsername == username) {
+            player.setTurn(true);
+        } else {
+            player.setTurn(false);
+        }
+    });
+  }
 }

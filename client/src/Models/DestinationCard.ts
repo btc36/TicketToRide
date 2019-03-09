@@ -1,16 +1,14 @@
 import { Route } from "./Route";
 
 export class DestinationCard {
-    route: Route;
-    pointValue: number;
+  city1: String;
+  city2: String;
+  pointValue: number;
 
-    constructor(route: Route, pointValue: number) {
-        this.route = route;
-        this.pointValue = pointValue;
-    }
-
-    getRoute(): Route {
-        return this.route;
+    constructor(city1:String, city2:String, pointValue: number) {
+      this.city1 = city1;
+      this.city2 = city2;
+      this.pointValue = pointValue;
     }
 
     getPointValue(): number {
@@ -18,7 +16,7 @@ export class DestinationCard {
     }
 
     getCities(): Array<String> {
-        return this.route.getCities();
+        return [this.city1,this.city2]
     }
 
 }

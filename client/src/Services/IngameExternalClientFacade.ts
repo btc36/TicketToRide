@@ -11,17 +11,17 @@ export class IngameExternalClientFacade {
     this.root.claimRoute(player, route);
   }
 
-  addTrainCard(trainCard:TrainCard) {
+  /*addTrainCard(trainCard:TrainCard) {
     this.root.addTrainCard(trainCard);
-  }
+  }*/
 
   updatePlayerPoints(player: Player, points:number) {
     this.root.updatePlayerPoints(player, points);
   }
 
-  removeTrainCard(trainCard:TrainCard) {
+  /*removeTrainCard(trainCard:TrainCard) {
     this.root.removeTrainCard(trainCard);
-  }
+  }*/
 
   updateNumTrainCards(player:Player,numUsed:number) {
     this.root.updateNumTrainCars(player,numUsed)
@@ -52,20 +52,20 @@ export class IngameExternalClientFacade {
   }
 
     receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         this.root.receiveChatCommand(gameid, chats);
     }
 
     presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         this.root.presentDestinationCard(destinationCards);
     }
     discardDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         this.root.discardDestinationCard();
     }
     addDestinationCard(success: boolean, errorMessage: string, username: string, destinationCards: any[]){
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         for (var i = 0; i < destinationCards.length; i++){
             this.root.addDestinationCard(username, destinationCards[i]);
         }

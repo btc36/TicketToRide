@@ -3,6 +3,11 @@ import * as I from "../ViewModels/IFaceUpCardsViewModel";
 
 export const FaceUpCardsView  = (component: I.IFaceUpCardsViewModel) => {
   let faceUpCardsList = [];
+  if (component.state.faceUpCards == null) {
+    return (
+      <p>Loading...</p>
+    );
+  }
   const cards = component.state.faceUpCards.getCards();
   for (let i = 0; i < cards.length; i++) {
     faceUpCardsList.push(<p>Train Card: {cards[i].getColor()}</p>);

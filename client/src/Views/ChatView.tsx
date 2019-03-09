@@ -6,7 +6,7 @@ export const ChatView  = (component: I.IChatViewModel) => {
   const messageList = component.state.messageList;
   for (let i = 0; i < messageList.length; i++) {
     messages.push(
-      <li key={i}>{messages[i].username} : {messages[i].message}</li>
+      <li key={i}>{messageList[i].username} : {messageList[i].message}</li>
     );
   }
   return (

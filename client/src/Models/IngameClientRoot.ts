@@ -8,6 +8,8 @@ import { GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
 import { ISubject } from "./ISubject"
+import { ChatMessage } from "./ChatMessage";
+import { ChatRoom } from "./ChatRoom";
 
 
 export class IngameClientRoot implements ISubject {
@@ -15,16 +17,22 @@ export class IngameClientRoot implements ISubject {
   game: Game;
   session: Session;
 
-  constructor(game:Game) {
-    this.game = game;
-    this.observers = new Array<IObserver>();
+  constructor() {
+    let players = new Array<Player>();
+    let whoseTurn = 0;
+    let map = new GameMap();
+    let numDestinationCardsRemaining = 1;
+    let numTrainCardsRemaining = 1;
     let trainCards = Array<TrainCard>();
     trainCards.push(new TrainCard("green"));
     trainCards.push(new TrainCard("blue"));
     trainCards.push(new TrainCard("black"));
     trainCards.push(new TrainCard("rainbow"));
-    trainCards.push(new TrainCard("green"));
-    this.setFaceUpCards(new FaceUpCards(trainCards));
+    trainCards.push(new TrainCard("blue"));
+    let faceUpCards = new FaceUpCards(trainCards);
+    let chatRoom = new ChatRoom("", new Array<ChatMessage>());
+    this.game = new Game();
+    this.observers = new Array<IObserver>();
   }
 
   transitionPage(pageName: string): void {
@@ -84,6 +92,14 @@ export class IngameClientRoot implements ISubject {
     return this.game.getFaceUpCards();
   }
 
+  getNumTrainCardsRemaining() {
+    return this.game.getNumTrainCardsRemaining();
+  }
+
+  getNumDestinationCardsRemaining() {
+    return this.game.getNumDestinationCardsRemaining();
+  }
+
   setFaceUpCards(faceUpCards: FaceUpCards): void {
     this.game.setFaceUpCards(faceUpCards);
     this.notify("setFaceUpCards", faceUpCards);
@@ -124,17 +140,21 @@ export class IngameClientRoot implements ISubject {
     this.game.presentDestinationCard(destinationCards);
   }
 
+  getPresentedDestinationCards(): any[] {
+    return this.game.getPresentedDestinationCards();
+  }
+
   discardDestinationCard(){
     this.game.discardDestinationCard();
   }
 
-  removeTrainCard(trainCard){
+  /*removeTrainCard(trainCard){
 
   }
 
   addTrainCard(trainCard){
 
-  }
+  }*/
 
 
 }
