@@ -271,6 +271,7 @@ public class ServerFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         GenericCommand command;
         ChatRoom room = null;
+        List<ChatMessage> result = new ArrayList<>();
 
         if(!playerExists(username)) message = "invalid username";
         else if(!gameExists(gameID)) message = "invalid gameID";
@@ -285,6 +286,8 @@ public class ServerFacade extends Facade
             }
             ChatMessage chat = new ChatMessage(chatMessage, time, username);
             room.addChat(chat);
+            result = room.getMessages();
+
         }
 
         command = new GenericCommand(
