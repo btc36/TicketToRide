@@ -1,18 +1,25 @@
 export class Route {
-    color: string;
-    length: number;
-    cityOne: string;
-    cityTwo: string;
+  color: string;
+  length: number;
+  cityOne: string;
+  cityTwo: string;
 
-    getColor(): string {
-        return this.color;
-    }
+  constructor(cityOne: string, cityTwo: string, length: number, color: string) {
+    this.color = color;
+    this.length = length;
+    this.cityOne = cityOne;
+    this.cityTwo = cityTwo;
+  }
 
-    getLength(): number {
-        return this.length;
-    }
+  getColor(): string {
+    return this.color;
+  }
 
-    getCities(): Array<string> {
-        return [this.cityOne, this.cityTwo];
-    }
+  getLength(): number {
+    return this.length;
+  }
+
+  getCities(): Array<string> {
+    return [this.cityOne, this.cityTwo];
+  }
 }

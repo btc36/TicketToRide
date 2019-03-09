@@ -21,14 +21,14 @@ export class IngameClientRoot implements ISubject {
     let players = new Array<Player>();
     let whoseTurn = 0;
     let map = new GameMap();
-    let numDestinationCardsRemaining = 0;
-    let numTrainCardsRemaining = 0;
+    let numDestinationCardsRemaining = 1;
+    let numTrainCardsRemaining = 1;
     let trainCards = Array<TrainCard>();
     trainCards.push(new TrainCard("green"));
     trainCards.push(new TrainCard("blue"));
     trainCards.push(new TrainCard("black"));
     trainCards.push(new TrainCard("rainbow"));
-    trainCards.push(new TrainCard("green"));
+    trainCards.push(new TrainCard("blue"));
     let faceUpCards = new FaceUpCards(trainCards);
     let chatRoom = new ChatRoom("", new Array<ChatMessage>());
     this.game = new Game();
@@ -90,6 +90,14 @@ export class IngameClientRoot implements ISubject {
 
   getFaceUpCards(): FaceUpCards {
     return this.game.getFaceUpCards();
+  }
+
+  getNumTrainCardsRemaining() {
+    return this.game.getNumTrainCardsRemaining();
+  }
+
+  getNumDestinationCardsRemaining() {
+    return this.game.getNumDestinationCardsRemaining();
   }
 
   setFaceUpCards(faceUpCards: FaceUpCards): void {
