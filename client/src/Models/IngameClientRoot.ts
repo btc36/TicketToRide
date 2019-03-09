@@ -4,7 +4,7 @@ import { Player } from "./Player";
 import { Route } from "./Route";
 import { TrainCard } from "./TrainCard";
 import { DestinationCard } from "./DestinationCard";
-import { GameMap } from "./GameMap";
+import { AllRoutes, GameMap } from "./GameMap";
 import { FaceUpCards } from "./FaceUpCards";
 import { Session } from "./Session";
 import { ISubject } from "./ISubject"
@@ -21,6 +21,22 @@ export class IngameClientRoot implements ISubject {
   constructor() {
     this.game = new Game();
     this.observers = new Array<IObserver>();
+  }
+
+  randomize() {
+    let ben = new Player("ben");
+    let lincoln = new Player("lincoln");
+    let brennah = new Player("Brennah");
+    let jordan = new Player("Jordan");
+    let jake = new Player("Jake");
+    let rand = Math.floor(Math.random() * AllRoutes.length);
+    ben.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    brennah.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    jordan.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    jake.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    this.game.setPlayerList([ ben, lincoln, brennah, jordan, jake]);
+    this.notify("updatedPlayerList", this.game.getPlayerList());
   }
 
   setLocalPlayer(localPlayer: Player) {

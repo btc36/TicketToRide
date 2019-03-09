@@ -2,6 +2,11 @@ import * as React from "react";
 import * as I from "../ViewModels/IMapViewModel";
 import GoogleMap from 'google-map-react';
 import { Route } from "../Models/Route";
+import { AllRoutes } from "../Models/GameMap";
+
+let invisibleLines = [];
+let MAP;
+let MAPS;
 
 export const renderDottedPolyline = (map: any, maps: any, currentRoute: Route) =>  {
   let cost = currentRoute.getLength();
@@ -37,26 +42,10 @@ export const renderDottedPolyline = (map: any, maps: any, currentRoute: Route) =
 }
 
 export const renderPolylines = (map: any, maps: any, component: I.IMapViewModel) =>  {
-  for(let i = 0; i < I.routes.length; i++) {
-    let currentRoute = I.routes[i];
+  for(let i = 0; i < AllRoutes.length; i++) {
+    let currentRoute = AllRoutes[i];
     renderDottedPolyline(map, maps, currentRoute);
-
-    let invisibleClickableLine = new maps.Polyline({
-      path: [
-        I.cityToCoordinates.get(currentRoute.getCities()[0]),
-        I.cityToCoordinates.get(currentRoute.getCities()[1])
-      ],
-      strokeColor: currentRoute.color,
-      strokeOpacity: 0,
-      strokeWeight: 6
-    });
-    for (let i = 0; i < component.state.ownedRoutes.length; i++) {
-      let route = component.state.ownedRoutes[i];
-      if (currentRoute.cityOne == route.cityOne && currentRoute.cityTwo == route.cityTwo) {
-        invisibleClickableLine.strokeOpacity = 1;
-      }
-    }
-    invisibleClickableLine.setMap(map);
+    renderRoute(currentRoute, 0);
   }
 }
 
@@ -75,11 +64,32 @@ export const renderMarkers = (map: any, maps: any, component: I.IMapViewModel) =
 }
 
 export const renderMapAddons = (map: any, maps: any, component: I.IMapViewModel) => {
+  MAP = map;
+  MAPS = maps;
   renderPolylines(map, maps, component);
   renderMarkers(map, maps, component);
 }
 
+const renderRoute = (route: Route, opacity = 1)  => {
+  let invisibleClickableLine = new MAPS.Polyline({
+    path: [
+      I.cityToCoordinates.get(route.getCities()[0]),
+      I.cityToCoordinates.get(route.getCities()[1])
+    ],
+    strokeColor: route.color,
+    strokeOpacity: opacity,
+    strokeWeight: 6
+  });
+  invisibleLines.push(invisibleClickableLine);
+  invisibleClickableLine.setMap(MAP);
+}
+
 export const MapView  = (component: I.IMapViewModel) => { 
+  if (MAP && MAPS && component.state.ownedRoutes) {
+    for (let i = 0; i < component.state.ownedRoutes.length; i++) {
+      renderRoute(component.state.ownedRoutes[i]);
+    }
+  }
   return (
     <div className="view map-view">
       <GoogleMap

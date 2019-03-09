@@ -13,6 +13,10 @@ export class IngameInternalClientFacade {
     this.root = _root;
   }
 
+  randomize() {
+    this.root.randomize();
+  }
+
   PresentDestinationCard() {
 
   }

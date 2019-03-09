@@ -14,4 +14,5 @@ export interface IGameViewModel {
   playerHandViewModel: JSX.Element;
   playerInfoViewModel: JSX.Element;
   chatViewModel: JSX.Element;
+  onClickRandomize(e: any): void;
 }

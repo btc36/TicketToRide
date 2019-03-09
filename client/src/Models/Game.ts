@@ -19,11 +19,7 @@ export class Game {
     potentialDestinationCards: Array<DestinationCard>;
 
     constructor() {
-        let ben = new Player("ben");
-        ben.ownedRoutes = [new Route("El Paso", "Houston")];
-        let lincoln = new Player("lincoln");
-        let brennah = new Player("Brennah");
-        this.players = [ ben, lincoln, brennah ];
+        this.players = [];
         this.whoseTurn = 1;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 50;
@@ -52,6 +48,10 @@ export class Game {
 
     setChatHistory(chats: Array<ChatMessage>) {
         this.chatRoom.setChatHistory(chats);
+    }
+
+    setPlayerList(list: Array<Player>) {
+        this.players = list;
     }
 
     getPlayerList(): Array<Player> {
