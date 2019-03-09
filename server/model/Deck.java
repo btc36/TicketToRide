@@ -46,8 +46,18 @@ public class Deck<T>
         }
         return cards;
     }
+    public List<T> getThisMany(int count)
+    {
+        List<T> cards = new ArrayList<>();
+        while(!deck.isEmpty() && cards.size() < count)
+        {
+            cards.add(deck.poll());
+        }
+        return cards;
+    }
     public boolean isEmpty()
     {
         return deck.isEmpty();
     }
+    public int getSize() { return deck.size(); }
 }

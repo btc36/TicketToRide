@@ -14,6 +14,10 @@ export class IngameInternalClientFacade {
     this.root = _root;
   }
 
+  randomize() {
+    this.root.randomize();
+  }
+
   PresentDestinationCard() {
 
   }
@@ -22,7 +26,14 @@ export class IngameInternalClientFacade {
 
   }
 
-  SendChatCommand(message: String, time: Date,username:String, gameId: String) {
+  getChatHistory(){
+    this.proxy.getChatHistory(this.root.game.gameID);
+  }
+
+  SendChatCommand(message: String, time: string) {
+    let username = this.root.session.loggedInUser.username;
+    let gameId = this.root.game.gameID;
+
     this.proxy.SendChat(message, time, username, gameId);
   }
 

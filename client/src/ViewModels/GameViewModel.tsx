@@ -31,6 +31,10 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
     }
   }
 
+  onClickRandomize = (e) => {
+    this.props.ingameServices.randomize();
+  }
+
   render(): JSX.Element {
     return GameView(this);
   }

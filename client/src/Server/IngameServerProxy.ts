@@ -25,11 +25,15 @@ export class IngameServerProxy {
         this.communicator.sendCommand(command);
     }
 
-    SendChat(message: String, time: Date, username:String, gameId: String) {
-        console.log("PROXY");
-        const command = new ClientCommandObjects("server.ServerFacade", "sendChat", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString], [message,"time",username,gameId]);
+    SendChat(message: String, time: String, username:String, gameId: String) {
+        const command = new ClientCommandObjects(this.serverClass, "sendChat", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString], [message,time,username,gameId]);
         this.communicator.sendCommand(command);
     }
+
+  public getChatHistory(gameId: String){
+    //const command = new ClientCommandObjects(this.serverClass, "getChatHistory", [this.paramTypeString], [gameId]);
+    //this.communicator.sendCommand(command);
+  }
 
     /**
      *

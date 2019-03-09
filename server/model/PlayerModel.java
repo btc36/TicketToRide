@@ -1,9 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerModel
 {
     private String username;
     private String password;
+    private List<DestinationCard> destinationCards = null;
+    private List<TrainCard> trainCards = null;
 
     public PlayerModel() {}
     public PlayerModel(String username)
@@ -22,7 +27,12 @@ public class PlayerModel
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
+    public void addTrainCards(List<TrainCard> trainCards)
+    {
+        if(this.trainCards == null)
+            this.trainCards = new ArrayList<>();
+        this.trainCards.addAll(trainCards);
+    }
     @Override
     public boolean equals(Object o)
     {
