@@ -16,13 +16,18 @@ export class IngameServerProxy {
 
     communicator: ClientCommunicator
 
+    constructor(public commIn: ClientCommunicator) {
+        this.communicator = commIn;
+    }
+
     DrawDestinationCard(gameId:String, username:String) {
         const command = new ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString, this.paramTypeString], [gameId, username]);
         this.communicator.sendCommand(command);
     }
 
-    SendChat(message: String, time: Date,username:String, gameId: String) {
-        const command = new ClientCommandObjects(this.serverClass, "sendChat", [this.paramTypeString, this.paramTypeDate, this.paramTypeString, this.paramTypeString], [message,time,username,gameId]);
+    SendChat(message: String, time: Date, username:String, gameId: String) {
+        console.log("PROXY");
+        const command = new ClientCommandObjects("server.ServerFacade", "sendChat", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString], [message,"time",username,gameId]);
         this.communicator.sendCommand(command);
     }
 

@@ -5,13 +5,13 @@ import java.util.Date;
 public class ChatMessage {
     String username;
     String message;
-    Date time;
+    String time;
 
     public ChatMessage()
     {
 
     }
-    public ChatMessage(String message, Date time, String username)
+    public ChatMessage(String message, String time, String username)
     {
         this.username = username;
         this.message = message;
@@ -30,7 +30,7 @@ public class ChatMessage {
         this.message = message;
     }
 
-    public Date getTimeStamp() {
+    public String getTimeStamp() {
         return time;
     }
     public void setTimeStamp(Date timeStamp) {
