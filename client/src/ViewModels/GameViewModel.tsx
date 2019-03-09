@@ -9,24 +9,18 @@ import { FaceUpCardsViewModel } from './FaceUpCardsViewModel';
 import { PlayerHandViewModel } from './PlayerHandViewModel';
 import { PlayerInfoViewModel } from './PlayerInfoViewModel';
 
-export class GameViewModel extends React.Component<ViewModelProps, State> implements IGameViewModel, IObserver {
+export class GameViewModel extends React.Component<any, State> implements IGameViewModel, IObserver {
 
   state: State = initialState;
 
-  mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
-  playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
-  playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices} />;
-
+  mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.services} />;
+  destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.services} />;
+  faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
+  playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
+  playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
 
   constructor(props) {
     super(props);
-  }
-
-  setViews(mapViewModel1: JSX.Element, destinationCardSelectionViewModel: JSX.Element) {
-    this.mapViewModel = mapViewModel1;
-    this.destinationCardSelectionViewModel = destinationCardSelectionViewModel;
   }
 
   update = (updateType: string, data: any) => {
