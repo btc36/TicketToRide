@@ -39,15 +39,15 @@ export class DestinationCardSelectionViewModel extends React.Component<ViewModel
 
     } else if (this.state.toDiscard == "b") {
 
-      this.props.services.register(this.state.registerUserName, this.state.registerPassword);
+     // this.props.services.register(this.state.registerUserName, this.state.registerPassword);
 
     } else if (this.state.toDiscard == "c") {
 
-      this.props.services.register(this.state.registerUserName, this.state.registerPassword);
+      //this.props.services.register(this.state.registerUserName, this.state.registerPassword);
 
     } else if (this.state.toDiscard == "none") {
 
-      this.props.services.register(this.state.registerUserName, this.state.registerPassword);
+     //this.props.services.register(this.state.registerUserName, this.state.registerPassword);
 
     }
   }
