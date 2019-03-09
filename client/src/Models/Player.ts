@@ -26,6 +26,9 @@ export class Player {
   getUsername(): string {
     return this.username;
   }
+  getHand(): PlayerHand{
+    return this.myHand
+  }
 
   //Acts as a constructor for when actual gameplay starts
   initiateGame(myHand:PlayerHand,trainCards:number,color:string,numTrainCards:number,numDestinationCards:number,isOtherPlayer:boolean) {

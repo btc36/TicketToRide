@@ -3,6 +3,7 @@ import { IngameClientRoot } from "../Models/IngameClientRoot";
 import { FaceUpCards } from "../Models/FaceUpCards";
 import { DestinationCard } from "../Models/DestinationCard";
 import { Route } from "../Models/Route";
+import { PlayerHand } from "../Models/PlayerHand";
 
 export class IngameInternalClientFacade {
   proxy: IngameServerProxy;
@@ -53,6 +54,10 @@ export class IngameInternalClientFacade {
   getNumTrainCardsRemaining(): number {
     return this.root.getNumTrainCardsRemaining();
   }
+
+  getPlayerHand(): PlayerHand{
+    return this.root.getPlayerHand();
+  } 
 
   getAllOwnedRoutes(): Array<Route> {
     let routes = new Array<Route>();
