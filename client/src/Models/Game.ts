@@ -16,8 +16,8 @@ export class Game {
     numTrainCardsRemaining: number;
     faceUpCards: FaceUpCards;
     chatRoom: ChatRoom;
-  potentialDestinationCards: Array<DestinationCard>;
-  gameId: string;
+    potentialDestinationCards: Array<DestinationCard>;
+    gameId: string;
 
   constructor() {
     this.gameId = "EPICGAME";

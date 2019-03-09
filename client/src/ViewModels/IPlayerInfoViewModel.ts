@@ -1,6 +1,6 @@
 export const initialState = {
   playerList : new Array<any>(),
-  username : String
+  username : "ben"
 };
 
 export type State = Readonly<typeof initialState>;

@@ -3,11 +3,12 @@ import { DestinationCardSelectionView } from "../Views/DestinationCardSelectionV
 import { initialState, State, IDestinationCardSelectionViewModel } from "./IDestinationCardSelectionViewModel";
 import { IObserver } from "./IObserver";
 import { ViewModelProps } from "./ViewModelProps";
+import { DestinationCard } from "../Models/DestinationCard";
 
 export class DestinationCardSelectionViewModel extends React.Component<ViewModelProps, State> implements IDestinationCardSelectionViewModel, IObserver {
-
   state: State = initialState;
-
+  noCards = [new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0)];
+  isActive = true;
 
   componentDidMount() {
     this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none"});
@@ -15,7 +16,14 @@ export class DestinationCardSelectionViewModel extends React.Component<ViewModel
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
-      this.props.main.setState({"page": data});      
+      this.props.main.setState({ "page": data });
+    }
+    else if (updateType == "discardDestination") {
+      this.setState({ destinationCards: this.noCards, toDiscard: "none" });
+      this.setState({ isActive: false });
+    } else if (updateType == "drawDestination") {
+      this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none" });
+      this.setState({ isActive: true });
     }
   }
 

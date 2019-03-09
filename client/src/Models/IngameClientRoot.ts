@@ -143,6 +143,7 @@ export class IngameClientRoot implements ISubject {
   }
   presentDestinationCard(destinationCards: any[]){
     this.game.presentDestinationCard(destinationCards);
+    this.notify("drawDestination", null);
   }
 
   getPresentedDestinationCards(): any[] {
@@ -151,6 +152,7 @@ export class IngameClientRoot implements ISubject {
 
   discardDestinationCard(){
     this.game.discardDestinationCard();
+    this.notify("discardDestination", null);
   }
 
   /*removeTrainCard(trainCard){
