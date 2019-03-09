@@ -2,6 +2,7 @@ import { PlayerHand } from "./PlayerHand";
 import { Route } from "./Route";
 import { TrainCard } from "./TrainCard";
 import { DestinationCard } from "./DestinationCard";
+import {string} from "prop-types";
 
 export class Player {
   username: string;
@@ -15,6 +16,7 @@ export class Player {
   numTrainCards: number;
   numDestinationCards: number;
   isOtherPlayer: boolean;
+  colorCountMap : Map<string, number>;
 
 
   constructor(username: string) {
@@ -37,6 +39,7 @@ export class Player {
     this.ownedRoutes = new Array<Route>();
     this.ownedRoutes.push(new Route("Seattle", "Portland", 1, "grey"));
     this.myTurn = false;
+    this.colorCountMap = new Map<string, number>();
   }
 
   claimRoute(route: Route): void {
@@ -60,12 +63,17 @@ export class Player {
 
   drawTrainCard(trainCard: TrainCard):void {
     this.myHand.addTrainCard(trainCard);
+    const color = trainCard.getColor();
+    let count = this.colorCountMap.get(color);
+    this.colorCountMap.set(color, count + 1);
   }
 
   drawDestinationCard(destinationCard: DestinationCard):void {
     this.myHand.addDestinationCard(destinationCard);
   }
-
+  getColorCountMap() : Map<string,number>{
+    return this.colorCountMap;
+  }
   getScore(): number {
     return this.score;
   }
@@ -93,5 +101,6 @@ export class Player {
   setNumDestinationCards(numCards:number){
     this.numDestinationCards = numCards
   }
+
 
 }
