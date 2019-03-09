@@ -3,6 +3,7 @@ import { IngameClientRoot } from "../Models/IngameClientRoot";
 import { FaceUpCards } from "../Models/FaceUpCards";
 import { DestinationCard } from "../Models/DestinationCard";
 import { Route } from "../Models/Route";
+import { PlayerHand } from "../Models/PlayerHand";
 
 export class IngameInternalClientFacade {
   proxy: IngameServerProxy;
@@ -31,13 +32,14 @@ export class IngameInternalClientFacade {
     this.proxy.DiscardDestinationCard(gameId, username, destinationCards);
   }
 
-  storeDestinationCard(destinationCard: Array<DestinationCard>) {
-    //string username = this.root.getUsername();
-    //this.root.addDestinationCard('YAYA', destinationCard);
+  storeDestinationCard(destinationCards: Array<DestinationCard>) {
+    let username = this.root.getUsername();
+      this.root.addDestinationCard(username, destinationCards);
   }
 
-
-
+  printRoot() {
+    console.log(this.root);
+  }
   getFaceUpCards(): FaceUpCards {
     return this.root.getFaceUpCards();
   }
@@ -53,6 +55,10 @@ export class IngameInternalClientFacade {
   getNumTrainCardsRemaining(): number {
     return this.root.getNumTrainCardsRemaining();
   }
+
+  getPlayerHand(): PlayerHand{
+    return this.root.getPlayerHand();
+  } 
 
   getAllOwnedRoutes(): Array<Route> {
     let routes = new Array<Route>();
