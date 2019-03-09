@@ -21,6 +21,7 @@ export class Player {
 
   constructor(username: string) {
     this.username = username;
+    this.myHand = new PlayerHand();
   }
 
   getUsername(): string {

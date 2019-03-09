@@ -21,6 +21,7 @@ export class IngameClientRoot implements ISubject {
   constructor() {
     this.game = new Game();
     this.observers = new Array<IObserver>();
+    this.localPlayer = new Player("ben");
   }
 
   setLocalPlayer(localPlayer: Player) {
