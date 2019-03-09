@@ -7,7 +7,7 @@ import { FaceUpCards } from "../Models/FaceUpCards";
 
 export class IngameExternalClientFacade {
   root: IngameClientRoot
-  claimRoute(player:Player, route:Route) {
+  claimRoute(player:string, route:Route) {
     this.root.claimRoute(player, route);
   }
 
@@ -15,7 +15,7 @@ export class IngameExternalClientFacade {
     this.root.addTrainCard(trainCard);
   }*/
 
-  updatePlayerPoints(player: Player, points:number) {
+  updatePlayerPoints(player: string, points:number) {
     this.root.updatePlayerPoints(player, points);
   }
 
@@ -23,15 +23,15 @@ export class IngameExternalClientFacade {
     this.root.removeTrainCard(trainCard);
   }*/
 
-  updateNumTrainCards(player:Player,numUsed:number) {
+  updateNumTrainCards(player:string,numUsed:number) {
     this.root.updateNumTrainCars(player,numUsed)
   }
 
-  updateNumTrainCars(player:Player,numCars:number) {
+  updateNumTrainCars(player: string,numCars:number) {
     this.root.updateNumTrainCars(player,numCars)
   }
 
-  updateNumberOfDestinationCards(player:Player,numCards:number) {
+  updateNumberOfDestinationCards(player: string,numCards:number) {
     this.root.updateNumberOfDestinationCards(player,numCards)
   }
 
@@ -43,18 +43,18 @@ export class IngameExternalClientFacade {
     this.root.updateNumInDeck(newNum)
   }
 
-  updateNumDestinationCards(player:Player,numCards:number) {
+  updateNumDestinationCards(player: string,numCards:number) {
     this.root.updateNumberOfDestinationCards(player, numCards);
   }
 
-  changeTurn(player:Player) {
+  changeTurn(player: string) {
     this.root.changeTurn(player)
   }
 
-  receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
-    //TODO: test if it was a success, and if there was an error message
-    this.root.receiveChatCommand(gameid, chats);
-  }
+    receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
+        //TODO: test if it was a success, and if there was an error message
+        this.root.receiveChatCommand(gameid, chats);
+    }
 
     presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
         //TODO: test if it was a success, and if there was an error message
