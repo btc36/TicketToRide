@@ -30,7 +30,7 @@ export class Game {
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 50;
         this.numTrainCardsRemaining = 50;
-        this.faceUpCards = new FaceUpCards([new TrainCard("blue"),new TrainCard("blue"),new TrainCard("pink")]);
+    this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
