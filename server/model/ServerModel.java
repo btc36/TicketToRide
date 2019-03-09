@@ -66,6 +66,21 @@ public class ServerModel
         allChatrooms.add(chatRoom);
     }
     public List<ChatRoom> getChatrooms() { return allChatrooms;}
+    public void addChat(String gameID, ChatMessage message)
+    {
+        ChatRoom room = getChatRoombyID(gameID);
+        if(room == null)
+        {
+            room = new ChatRoom(gameID);
+            room.addChat(message);
+            addChatRoom(room);
+        }
+        else
+        {
+            room.addChat(message);
+        }
+
+    }
     public ChatRoom getChatRoombyID(String gameID)
     {
         for(ChatRoom room : allChatrooms)

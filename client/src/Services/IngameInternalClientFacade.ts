@@ -20,8 +20,8 @@ export class IngameInternalClientFacade {
 
   }
 
-  RecieveChatCommand() {
-
+  SendChatCommand(message: String, time: Date,username:String, gameId: String) {
+    this.proxy.SendChat(message, time, username, gameId);
   }
 
   DiscardDestinationCard(destinationCards: Array<DestinationCard>) {
