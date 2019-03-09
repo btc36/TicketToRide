@@ -16,23 +16,19 @@ export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
   game: Game;
   session: Session;
+  localPlayer: Player;
 
   constructor() {
-    let players = new Array<Player>();
-    let whoseTurn = 0;
-    let map = new GameMap();
-    let numDestinationCardsRemaining = 1;
-    let numTrainCardsRemaining = 1;
-    let trainCards = Array<TrainCard>();
-    trainCards.push(new TrainCard("green"));
-    trainCards.push(new TrainCard("blue"));
-    trainCards.push(new TrainCard("black"));
-    trainCards.push(new TrainCard("rainbow"));
-    trainCards.push(new TrainCard("blue"));
-    let faceUpCards = new FaceUpCards(trainCards);
-    let chatRoom = new ChatRoom("", new Array<ChatMessage>());
     this.game = new Game();
     this.observers = new Array<IObserver>();
+  }
+
+  setLocalPlayer(localPlayer: Player) {
+    this.localPlayer = localPlayer;
+  }
+
+  getUsername():String{
+    return this.localPlayer.getUsername();
   }
 
   transitionPage(pageName: string): void {
@@ -54,6 +50,10 @@ export class IngameClientRoot implements ISubject {
 
   public detach(o: IObserver) {
 
+  }
+
+  getGameId():string {
+    return "DAT ID";
   }
 
   claimRoute(player: Player, route: Route): void {

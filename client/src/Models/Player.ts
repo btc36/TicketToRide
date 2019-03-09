@@ -90,6 +90,10 @@ export class Player {
     return this.score;
   }
 
+  getOwnedRoutes(): Array<Route> {
+    return this.ownedRoutes;
+  }
+
   setScore(newScore: number) {
     this.score = newScore;
   }

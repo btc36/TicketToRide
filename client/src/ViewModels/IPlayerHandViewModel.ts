@@ -1,7 +1,12 @@
+import { PlayerHand } from "../Models/PlayerHand";
+
 export const initialState = {
+  playerHand: null
 };
 
-export type State = Readonly<typeof initialState>;
+export type State = {
+  readonly playerHand: PlayerHand,
+}
 
 export interface IPlayerHandViewModel {
   state: State;
