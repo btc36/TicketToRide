@@ -15,7 +15,7 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
   state: State = initialState;
 
   mapViewModel: JSX.Element = <MapViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.services} />;
-  destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.services} />;
+  destinationCardSelectionViewModel: JSX.Element = <DestinationCardSelectionViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
