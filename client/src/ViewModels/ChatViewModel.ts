@@ -18,8 +18,14 @@ export class ChatViewModel extends React.Component<ViewModelProps, State> implem
   sendChat = (e: any) => {
     e.preventDefault();
     //call facade.sendchat
-    
     alert("sending chat");
+    const msg: string = this.state.currentMessage;
+    var today = new Date();
+    //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const username: string = "testUsername";
+    const gameId: string = "testGameID";
+
+    this.props.services.SendChatCommand(msg, today, username, gameId);
   }
 
   updateMessage = (e: any) => {
