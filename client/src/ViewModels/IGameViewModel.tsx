@@ -13,4 +13,5 @@ export interface IGameViewModel {
   faceUpCardsViewModel: JSX.Element;
   playerHandViewModel: JSX.Element;
   playerInfoViewModel: JSX.Element;
+  chatViewModel: JSX.Element;
 }

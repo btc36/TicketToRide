@@ -22,7 +22,8 @@ import com.sun.net.httpserver.*;
                 if (exchange.getRequestMethod().toLowerCase().equals("get")) {
                     URI uri = exchange.getRequestURI();
                     String pathToClientFolder = System.getProperty("user.dir") + File.separator
-                            + "TicketToRide" + File.separator + "client" + File.separator;
+                            //+ "TicketToRide"
+                            + File.separator + "client" + File.separator;
                     String desiredFile = "404.html";
                     System.out.println("Recieved a GET request for the homepage");
 
