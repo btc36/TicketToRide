@@ -9,6 +9,7 @@ import { ChatMessage } from "./ChatMessage";
 import { Map } from "google-maps-react";
 
 export class Game {
+    gameID: string;
     players: Array<Player>;
     whoseTurn: number;
     map: GameMap;
@@ -19,6 +20,7 @@ export class Game {
     potentialDestinationCards: Array<DestinationCard>;
 
     constructor() {
+        this.gameID = "testGameID";
         this.players = [new Player("ben"),new Player("lincoln"), new Player("Brennah")];
         this.whoseTurn = 1;
         this.map = new GameMap();
