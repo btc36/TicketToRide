@@ -31,3 +31,4 @@ node_modules
 .sw*
 .*.sw*
 production/
+dist/
