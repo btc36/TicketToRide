@@ -22,8 +22,8 @@ export class ChatViewModel extends React.Component<ViewModelProps, State> implem
     const msg: string = this.state.currentMessage;
     var today = new Date();
     //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const username: string = "testUsername";
-    const gameId: string = "testGameID";
+    const username: string = "user1";
+    const gameId: string = "game1";
 
     this.props.services.SendChatCommand(msg, today, username, gameId);
   }
