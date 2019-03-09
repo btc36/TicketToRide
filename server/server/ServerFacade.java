@@ -296,10 +296,35 @@ public class ServerFacade extends Facade
         return commandsForClient;
     }
 
+    public List<GenericCommand> getChatHistory(String gameID)
+    {
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        ChatRoom room = null;
+        List<ChatMessage> result = new ArrayList<>();
+
+        if(!gameExists(gameID)) message = "invalid gameID";
+        else
+        {
+            success = true;
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
+            result = room.getMessages();
+        }
+        GenericCommand command = new GenericCommand(
+                _className, "getChatCommand",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, result}
+        );
+
+        commandCheck(command);
+        commandsForClient.add(command);
+        return commandsForClient;
+    }
+
     private void test()
     {
         String divider = "----------------------------------------------";
-//        ServerFacade facade = new ServerFacade();
 
         register("user1", "user1");
         register("user2", "user2");

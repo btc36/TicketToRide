@@ -45,7 +45,7 @@ export class ServerProxy {
   }
 
   public sendChat(message: String, time: Date, username: String, gameID: String){
-    const command = new ClientCommandObjects("server.ServerFacade", "sendChat", ["java.lang.String", "java.lang.Date", "java.lang.String"], [message, time, username, gameID]);
+    const command = new ClientCommandObjects("server.ServerFacade", "sendChat", ["java.lang.String", "java.lang.Date", "java.lang.String", "java.lang.String"], [message, time, username, gameID]);
     this.communicator.sendCommand(command);
   }
 }

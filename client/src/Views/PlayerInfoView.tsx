@@ -39,14 +39,6 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
   return (
       <div>
           <div>
-              <p><b><u>My Info</u></b></p>
-              <ul>
-                  Train Card Status
-                  {trainInfos}
-              </ul>
-
-          </div>
-          <div>
               <p><b><u>Player Info</u></b></p>
               {turn}
               <ul>

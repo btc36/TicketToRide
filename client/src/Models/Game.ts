@@ -9,6 +9,7 @@ import { ChatMessage } from "./ChatMessage";
 import { Map } from "google-maps-react";
 
 export class Game {
+    gameID: string;
     players: Array<Player>;
     whoseTurn: number;
     map: GameMap;
@@ -16,19 +17,24 @@ export class Game {
     numTrainCardsRemaining: number;
     faceUpCards: FaceUpCards;
     chatRoom: ChatRoom;
-    potentialDestinationCards: Array<DestinationCard>;
+  potentialDestinationCards: Array<DestinationCard>;
+  gameId: string;
 
-    constructor() {
+  constructor() {
+    this.gameId = "EPICGAME";
         this.players = [];
         this.whoseTurn = 1;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 50;
         this.numTrainCardsRemaining = 50;
-        this.faceUpCards = new FaceUpCards([new TrainCard("blue"),new TrainCard("blue"),new TrainCard("pink")]);
+    this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
 
+    getGameId() {
+      return this.gameId;
+    }
     checkWinCondition(): Player {
         let maxPoints = 0;
         let winningPlayer = null;
@@ -78,40 +84,37 @@ export class Game {
         return this.faceUpCards;
     }
 
-    claimRoute(player: Player, route: Route): void {
-        let username = player.getUsername;
+  claimRoute(username: string, route: Route): void {
         this.players.forEach((player) => {
-            if (player.getUsername == username) {
+            if (player.getUsername() == username) {
                 player.claimRoute(route);
                 return;
             }
         });
     }
 
-    useTrainCard(player: Player, trainCard: TrainCard,numUsed:number): void {
-        let username = player.getUsername;
+  useTrainCard(username: string, trainCard: TrainCard,numUsed:number): void {
         this.players.forEach((player) => {
-            if (player.getUsername == username) {
+            if (player.getUsername() == username) {
                 player.useTrainCard(trainCard,numUsed);
                 return;
             }
         });
     }
 
-    addTrainCard(player: Player, trainCard: TrainCard): void {
-        let username = player.getUsername;
+  addTrainCard(username: string, trainCard: TrainCard): void {
         this.players.forEach((player) => {
-            if (player.getUsername == username) {
+            if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
                 return;
             }
         });
     }
 
-    addDestinationCard(username: string, destinationCard: DestinationCard) {
+    addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
         this.players.forEach((thisPlayer) => {
             if (thisPlayer.getUsername() == username) {
-                thisPlayer.drawDestinationCard(destinationCard);
+                thisPlayer.drawDestinationCard(destinationCards);
                 return;
             }
         });
@@ -122,10 +125,9 @@ export class Game {
         this.faceUpCards = faceUpCards;
     }
 
-    updatePlayerPoints(player: Player, points: number): void {
-        let username = player.getUsername;
+  updatePlayerPoints(username: string, points: number): void {
         this.players.forEach((player) => {
-            if (player.getUsername == username) {
+            if (player.getUsername() == username) {
                 player.setScore(points);
                 return;
             }
@@ -133,10 +135,9 @@ export class Game {
     }
 
 
-    updateNumTrainCars(player: Player, numUsed: number): void {
-        let username = player.getUsername;
+  updateNumTrainCars(username: string, numUsed: number): void {
         this.players.forEach((player) => {
-            if (player.getUsername == username) {
+            if (player.getUsername() == username) {
                 player.setNumTrainCars(numUsed)
                 return;
             }
@@ -151,20 +152,18 @@ export class Game {
         this.numTrainCardsRemaining = newNum;
     }
 
-  setNumTrainCards(player:Player,numCards:number) {
-    let username = player.getUsername;
+  setNumTrainCards(username: string,numCards:number) {
     this.players.forEach((player) => {
-      if (player.getUsername == username) {
+      if (player.getUsername() == username) {
         player.setNumTrainCars(numCards);
         return;
       }
     });
   }
 
-  setNumDestinationCards(player: Player, numCards: number) {
-    let username = player.getUsername;
+  setNumDestinationCards(username: string, numCards: number) {
     this.players.forEach((player) => {
-      if (player.getUsername == username) {
+      if (player.getUsername() == username) {
         player.setNumDestinationCards(numCards)
         return;
       }
@@ -183,10 +182,9 @@ export class Game {
         this.potentialDestinationCards.length = 0;
     }
 
-  changeTurn(player: Player): void {
-    let username = player.getUsername;
+  changeTurn(username: string): void {
     this.players.forEach((player) => {
-        if (player.getUsername == username) {
+        if (player.getUsername() == username) {
             player.setTurn(true);
         } else {
             player.setTurn(false);
