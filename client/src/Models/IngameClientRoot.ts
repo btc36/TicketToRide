@@ -29,15 +29,10 @@ export class IngameClientRoot implements ISubject {
     this.localPlayer = localPlayer;
   }
 
-<<<<<<< HEAD
   getPlayerHand(): PlayerHand{
     return this.localPlayer.getHand();
   }
-
-  getUsername():String{
-=======
   getUsername():string{
->>>>>>> 8940dad7afbeaffa797438cd77ffb734d9e5261e
     return this.localPlayer.getUsername();
   }
 
