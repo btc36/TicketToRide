@@ -5,6 +5,9 @@ import GoogleMap from 'google-map-react';
 export const GameView  = (component: I.IGameViewModel) => { 
   return (
     <div className="GameView">
+        <h3>Chat</h3><hr/>
+        {component.chatViewModel}
+
     	<h3>Player Info</h3><hr/>
     	{component.playerInfoViewModel}
 

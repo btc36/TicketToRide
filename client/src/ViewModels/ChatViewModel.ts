@@ -17,6 +17,8 @@ export class ChatViewModel extends React.Component<ViewModelProps, State> implem
 
   sendChat = (e: any) => {
     e.preventDefault();
+    //call facade.sendchat
+    
     alert("sending chat");
   }
 

@@ -8,6 +8,7 @@ import { DestinationCardSelectionViewModel } from './DestinationCardSelectionVie
 import { FaceUpCardsViewModel } from './FaceUpCardsViewModel';
 import { PlayerHandViewModel } from './PlayerHandViewModel';
 import { PlayerInfoViewModel } from './PlayerInfoViewModel';
+import { ChatViewModel } from './ChatViewModel';
 
 export class GameViewModel extends React.Component<any, State> implements IGameViewModel, IObserver {
 
@@ -18,6 +19,7 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
   faceUpCardsViewModel: JSX.Element = <FaceUpCardsViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
+  chatViewModel: JSX.Element = <ChatViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
 
   constructor(props) {
     super(props);
