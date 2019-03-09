@@ -5,6 +5,12 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
   let destCardsList = new Array<any>();
   let trainCardsList = new Array<any>();
 
+  if (component.state.playerHand == null){
+    return (
+      <div> Loading...</div>
+    )
+  }
+
   const destCards = component.state.playerHand.getDestinationCards();
   const trainCards = component.state.playerHand.getColorMap();
   trainCards.forEach((value: number, key: string) => {

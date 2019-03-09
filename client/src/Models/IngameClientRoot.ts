@@ -10,6 +10,7 @@ import { Session } from "./Session";
 import { ISubject } from "./ISubject"
 import { ChatMessage } from "./ChatMessage";
 import { ChatRoom } from "./ChatRoom";
+import {PlayerHand} from "./PlayerHand";
 
 
 export class IngameClientRoot implements ISubject {
@@ -28,6 +29,9 @@ export class IngameClientRoot implements ISubject {
     this.localPlayer = localPlayer;
   }
 
+  getPlayerHand(): PlayerHand{
+    return this.localPlayer.getHand();
+  }
   getUsername():string{
     return this.localPlayer.getUsername();
   }
