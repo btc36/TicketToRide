@@ -52,8 +52,8 @@ export class IngameClientRoot implements ISubject {
 
   }
 
-  getGameId():String {
-
+  getGameId():string {
+    return "DAT ID";
   }
 
   claimRoute(player: Player, route: Route): void {
