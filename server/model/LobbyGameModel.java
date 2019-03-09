@@ -98,7 +98,7 @@ public class LobbyGameModel
         trainDeck = new Deck();
         setUpDestinationCard();
         setUpTrainCard();
-
+        giveTrainCards();
     }
 
     public String getGamename() {
@@ -184,6 +184,14 @@ public class LobbyGameModel
         trainDeck.shuffle();
     }
 
+    private void giveTrainCards()
+    {
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            assert(trainDeck.getSize() >= 4);
+            p.addTrainCards(trainDeck.getThisMany(4));
+        }
+    }
 
     @Override
     public int hashCode()

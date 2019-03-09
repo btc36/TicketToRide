@@ -59,4 +59,5 @@ public class Deck<T>
     {
         return deck.isEmpty();
     }
+    public int getSize() { return deck.size(); }
 }
