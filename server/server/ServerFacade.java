@@ -296,7 +296,7 @@ public class ServerFacade extends Facade
         return commandsForClient;
     }
 
-    public List<GenericCommand> getChat(String gameID)
+    public List<GenericCommand> getChatHistory(String gameID)
     {
         String message = "";
         boolean success = false;
@@ -325,7 +325,6 @@ public class ServerFacade extends Facade
     private void test()
     {
         String divider = "----------------------------------------------";
-//        ServerFacade facade = new ServerFacade();
 
         register("user1", "user1");
         register("user2", "user2");

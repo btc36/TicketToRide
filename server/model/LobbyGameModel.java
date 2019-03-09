@@ -97,6 +97,8 @@ public class LobbyGameModel
         destDeck = new Deck();
         trainDeck = new Deck();
         setUpDestinationCard();
+        setUpTrainCard();
+
     }
 
     public String getGamename() {
@@ -160,6 +162,26 @@ public class LobbyGameModel
         destDeck.add(new DestinationCard("s13", "d13", 13));
         destDeck.add(new DestinationCard("s14", "d14", 14));
         destDeck.add(new DestinationCard("s15", "d15", 15));
+        destDeck.shuffle();
+    }
+
+    public void setUpTrainCard()
+    {
+        for(int i = 0; i < 12; i++)
+        {
+            trainDeck.add(new TrainCard("pink"));
+            trainDeck.add(new TrainCard("white"));
+            trainDeck.add(new TrainCard("blue"));
+            trainDeck.add(new TrainCard("yellow"));
+            trainDeck.add(new TrainCard("orange"));
+            trainDeck.add(new TrainCard("black"));
+            trainDeck.add(new TrainCard("red"));
+            trainDeck.add(new TrainCard("green"));
+            trainDeck.add(new TrainCard("rainbow"));
+        }
+        trainDeck.add(new TrainCard("rainbow"));
+        trainDeck.add(new TrainCard("rainbow"));
+        trainDeck.shuffle();
     }
 
 
