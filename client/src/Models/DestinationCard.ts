@@ -1,4 +1,3 @@
-import { Route } from "./Route";
 
 export class DestinationCard {
   city1: String;
