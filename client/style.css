@@ -2,8 +2,17 @@
   display: flex;
   width: 100%;
 }
+.row-view {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
 .half-partition {
   flex: 1;
+}
+.chunk {
+  flex: 1;
+  margin: 10px;
 }
 table, th, td {
   border: 1px solid black;

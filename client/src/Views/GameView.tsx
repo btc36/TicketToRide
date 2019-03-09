@@ -4,24 +4,39 @@ import GoogleMap from 'google-map-react';
 
 export const GameView  = (component: I.IGameViewModel) => { 
   return (
-    <div className="GameView">
-        <h3>Chat</h3><hr/>
-        {component.chatViewModel}
+    <div className="GameView row-view">
+      <div className="view">
+        <div className="chunk">
+          <h3>Map</h3><hr/>
+          {component.mapViewModel}
+        </div>
 
-    	<h3>Player Info</h3><hr/>
-    	{component.playerInfoViewModel}
+        <div className="chunk">
+          <h3>Chat</h3><hr/>
+          {component.chatViewModel}
+        </div>
+      </div>
+      <div className="view">
+        <div className="chunk">
+          <h3>Player Info</h3><hr/>
+          {component.playerInfoViewModel}
+        </div>
 
-    	<h3>Player Hand</h3><hr/>
-      {component.playerHandViewModel}
+        <div className="chunk">
+          <h3>Player Hand</h3><hr/>
+          {component.playerHandViewModel}
+        </div>
 
-    	<h3>Face Up Cards</h3><hr/>
-      {component.faceUpCardsViewModel}
+        <div className="chunk">
+          <h3>Face Up Cards</h3><hr/>
+          {component.faceUpCardsViewModel}
+        </div>
 
-    	<h3>Destination Cards Selection</h3><hr/>
-    	{component.destinationCardSelectionViewModel}
-
-    	<h3>Map</h3><hr/>
-    	{component.mapViewModel}
+        <div className="chunk">
+          <h3>Destination Cards Selection</h3><hr/>
+          {component.destinationCardSelectionViewModel}
+        </div>
+      </div>
     </div>
   );
 }

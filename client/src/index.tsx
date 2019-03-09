@@ -62,7 +62,7 @@ const serializer = new Serializer();
 const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);
 const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
-const ingameServerProxy = new IngameServerProxy();
+const ingameServerProxy = new IngameServerProxy(clientCommunicator);
 const ingameRoot = new IngameClientRoot();
 const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 

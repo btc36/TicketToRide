@@ -264,8 +264,9 @@ public class ServerFacade extends Facade
     @return command that contains success, result message, gameID,
     and all of the chat history associated with the gameID
      */
-    public List<GenericCommand> sendChat(String chatMessage, Date time, String username, String gameID)
+    public List<GenericCommand> sendChat(String chatMessage, String time, String username, String gameID)
     {
+        test();
         String message = "";
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -278,7 +279,8 @@ public class ServerFacade extends Facade
         else
         {
             success = true;
-            ChatMessage chat = new ChatMessage(chatMessage, time, username);
+            Date date = new Date();
+            ChatMessage chat = new ChatMessage(chatMessage, date.toString(), username);
             ServerModel.getInstance().addChat(gameID, chat);
             room = ServerModel.getInstance().getChatRoombyID(gameID);
             result = room.getMessages();
@@ -292,5 +294,53 @@ public class ServerFacade extends Facade
 
         commandsForClient.add(command);
         return commandsForClient;
+    }
+
+    public List<GenericCommand> getChat(String gameID)
+    {
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        ChatRoom room = null;
+        List<ChatMessage> result = new ArrayList<>();
+
+        if(!gameExists(gameID)) message = "invalid gameID";
+        else
+        {
+            success = true;
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
+            result = room.getMessages();
+        }
+        GenericCommand command = new GenericCommand(
+                _className, "getChatCommand",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, result}
+        );
+
+        commandCheck(command);
+        commandsForClient.add(command);
+        return commandsForClient;
+    }
+
+    private void test()
+    {
+        String divider = "----------------------------------------------";
+//        ServerFacade facade = new ServerFacade();
+
+        register("user1", "user1");
+        register("user2", "user2");
+        register("user3", "user3");
+        register("user4", "user4");
+        System.out.println(divider);
+        login("user1", "user1");
+        login("user2", "user2");
+        login("user3", "user3");
+        login("user4", "user4");
+        System.out.println(divider);
+        createGame("user1","game1","4");
+        joinGame("user2", "game1");
+        joinGame("user3", "game1");
+        joinGame("user4", "game1");
+        System.out.println(divider);
     }
 }
