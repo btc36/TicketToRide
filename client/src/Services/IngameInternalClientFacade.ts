@@ -1,6 +1,7 @@
 import { IngameServerProxy } from "../Server/IngameServerProxy";
 import { IngameClientRoot } from "../Models/IngameClientRoot";
 import { FaceUpCards } from "../Models/FaceUpCards";
+import { DestinationCard } from "../Models/DestinationCard";
 
 export class IngameInternalClientFacade {
   proxy: IngameServerProxy;
@@ -31,12 +32,7 @@ export class IngameInternalClientFacade {
     return this.root.getFaceUpCards();
   }
 
-  getNumTrainCardsRemaining() {
-    return this.root.getNumTrainCardsRemaining();
+  getDestinationCards(): Array<DestinationCard> {
+    return this.root.getPresentedDestinationCards();
   }
-
-  getNumDestinationCardsRemaining() {
-    return this.root.getNumDestinationCardsRemaining();
-  }
-
 }

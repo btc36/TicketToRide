@@ -1,11 +1,12 @@
 import * as React from "react";
 import * as I from "../ViewModels/IMapViewModel";
 import GoogleMap from 'google-map-react';
+import { Route } from "../Models/Route";
 
-export const renderDottedPolyline = (map: any, maps: any, currentRoute: any) =>  {
-  let cost = currentRoute.cost;
-  let p1 = I.cityToCoordinates.get(currentRoute.city1);
-  let p2 = I.cityToCoordinates.get(currentRoute.city2);
+export const renderDottedPolyline = (map: any, maps: any, currentRoute: Route) =>  {
+  let cost = currentRoute.getLength();
+  let p1 = I.cityToCoordinates.get(currentRoute.getCities()[0]);
+  let p2 = I.cityToCoordinates.get(currentRoute.getCities()[1]);
   let spaceSizeRatio = 0.5;
   let carSizeRatio = 1.00 - spaceSizeRatio;
   spaceSizeRatio = spaceSizeRatio / (cost + 1);
@@ -27,7 +28,7 @@ export const renderDottedPolyline = (map: any, maps: any, currentRoute: any) => 
         beginTrainCar,
         endTrainCar
       ],
-      strokeColor: currentRoute.color,
+      strokeColor: currentRoute.getColor(),
       strokeOpacity: 1,
       strokeWeight: 4
     });
@@ -42,8 +43,8 @@ export const renderPolylines = (map: any, maps: any, component: I.IMapViewModel)
 
     let invisibleClickableLine = new maps.Polyline({
       path: [
-        I.cityToCoordinates.get(currentRoute.city1),
-        I.cityToCoordinates.get(currentRoute.city2)
+        I.cityToCoordinates.get(currentRoute.getCities()[0]),
+        I.cityToCoordinates.get(currentRoute.getCities()[1])
       ],
       strokeColor: currentRoute.color,
       strokeOpacity: 0,
