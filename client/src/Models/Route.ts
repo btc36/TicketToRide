@@ -4,7 +4,7 @@ export class Route {
   cityOne: string;
   cityTwo: string;
 
-  constructor(cityOne: string, cityTwo: string, length: number, color: string) {
+  constructor(cityOne: string, cityTwo: string, length?: number, color?: string) {
     this.color = color;
     this.length = length;
     this.cityOne = cityOne;

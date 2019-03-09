@@ -16,6 +16,10 @@ export class IngameServerProxy {
 
     communicator: ClientCommunicator
 
+    constructor(public commIn: ClientCommunicator) {
+        this.communicator = commIn;
+    }
+
     DrawDestinationCard(gameId:String, username:String) {
         const command = new ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString, this.paramTypeString], [gameId, username]);
         this.communicator.sendCommand(command);
@@ -38,7 +42,9 @@ export class IngameServerProxy {
      * @param destinationCards
      * @return gameID, username,
      */
-    DiscardDestinationCard(gameId:String, username:String, destinationCards: Array<DestinationCard>) {
+  DiscardDestinationCard(gameId: String, username: String, destinationCards: Array<DestinationCard>) {
+    console.log(destinationCards);
+    return;
         const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeList], [gameId, username, destinationCards]);
         this.communicator.sendCommand(command);
     }

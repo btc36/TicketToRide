@@ -21,10 +21,14 @@ export class Player {
 
   constructor(username: string) {
     this.username = username;
+    this.myHand = new PlayerHand();
   }
 
   getUsername(): string {
     return this.username;
+  }
+  getHand(): PlayerHand{
+    return this.myHand
   }
 
   //Acts as a constructor for when actual gameplay starts
@@ -80,7 +84,7 @@ export class Player {
    * draw destination card and give it to the hand?
    * @param destinationCard
    */
-  drawDestinationCard(destinationCard: DestinationCard):void {
+  drawDestinationCard(destinationCard: Array<DestinationCard>):void {
     this.myHand.addDestinationCard(destinationCard);
   }
   getColorCountMap() : Map<string,number>{
@@ -88,6 +92,10 @@ export class Player {
   }
   getScore(): number {
     return this.score;
+  }
+
+  getOwnedRoutes(): Array<Route> {
+    return this.ownedRoutes;
   }
 
   setScore(newScore: number) {

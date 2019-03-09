@@ -10,29 +10,30 @@ import { Session } from "./Session";
 import { ISubject } from "./ISubject"
 import { ChatMessage } from "./ChatMessage";
 import { ChatRoom } from "./ChatRoom";
+import {PlayerHand} from "./PlayerHand";
 
 
 export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
   game: Game;
   session: Session;
+  localPlayer: Player;
 
   constructor() {
-    let players = new Array<Player>();
-    let whoseTurn = 0;
-    let map = new GameMap();
-    let numDestinationCardsRemaining = 1;
-    let numTrainCardsRemaining = 1;
-    let trainCards = Array<TrainCard>();
-    trainCards.push(new TrainCard("green"));
-    trainCards.push(new TrainCard("blue"));
-    trainCards.push(new TrainCard("black"));
-    trainCards.push(new TrainCard("rainbow"));
-    trainCards.push(new TrainCard("blue"));
-    let faceUpCards = new FaceUpCards(trainCards);
-    let chatRoom = new ChatRoom("", new Array<ChatMessage>());
     this.game = new Game();
     this.observers = new Array<IObserver>();
+    this.localPlayer = new Player("ben");
+  }
+
+  setLocalPlayer(localPlayer: Player) {
+    this.localPlayer = localPlayer;
+  }
+
+  getPlayerHand(): PlayerHand{
+    return this.localPlayer.getHand();
+  }
+  getUsername():string{
+    return this.localPlayer.getUsername();
   }
 
   transitionPage(pageName: string): void {
@@ -56,7 +57,11 @@ export class IngameClientRoot implements ISubject {
 
   }
 
-  claimRoute(player: Player, route: Route): void {
+  getGameId():string {
+    return this.game.getGameId();
+  }
+
+  claimRoute(player: string, route: Route): void {
     this.game.claimRoute(player, route);
   }
 
@@ -68,8 +73,8 @@ export class IngameClientRoot implements ISubject {
     this.game.addTrainCard(trainCard);
   }*/
 
-  addDestinationCard(username: string, destinationCard: DestinationCard) {
-    this.game.addDestinationCard(username,destinationCard);
+  addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    this.game.addDestinationCard(username,destinationCards);
   }
 
   checkWinCondition(): Player {
@@ -105,7 +110,7 @@ export class IngameClientRoot implements ISubject {
     this.notify("setFaceUpCards", faceUpCards);
   }
 
-  updatePlayerPoints(player: Player, points: number): void {
+  updatePlayerPoints(player: string, points: number): void {
     this.game.updatePlayerPoints(player, points);
   }
 
@@ -113,15 +118,15 @@ export class IngameClientRoot implements ISubject {
     this.game.removeTrainCard(trainCard);
   }*/
 
-  updateNumTrainCars(player: Player, numUsed: number): void {
+  updateNumTrainCars(player: string, numUsed: number): void {
     this.game.updateNumTrainCars(player, numUsed);
   }
 
-  updateNumberOfDestinationCards(player: Player, numCards: number): void {
+  updateNumberOfDestinationCards(player: string, numCards: number): void {
     this.game.setNumDestinationCards(player, numCards);
   }
 
-  setNumTrainCards(player: Player, numCards: number) {
+  setNumTrainCards(player: string, numCards: number) {
     this.game.setNumTrainCards(player, numCards);
   }
 
@@ -129,7 +134,7 @@ export class IngameClientRoot implements ISubject {
     this.game.setNumTrainCardsRemaining(newNum);
   }
 
-  changeTurn(player: Player): void {
+  changeTurn(player: string): void {
     this.game.changeTurn(player);
   }
 
