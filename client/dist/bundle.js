@@ -5975,10 +5975,20 @@ var DestinationCardSelectionViewModel = /** @class */ (function (_super) {
                 _this.props.main.setState({ "page": data });
             }
         };
+        _this.onSelectCard = function (e) {
+            _this.setState({ "toDiscard": e.target.value });
+            console.log("MY SELECTION IS NOW.....");
+            console.log(_this.state.toDiscard);
+        };
+        _this.onSubmitButtonPressed = function (e) {
+            e.preventDefault();
+            console.log("I DECIDED TO DISCARD CARD: ");
+            console.log(_this.state.toDiscard);
+        };
         return _this;
     }
     DestinationCardSelectionViewModel.prototype.componentDidMount = function () {
-        this.setState({ destinationCards: this.props.services.getDestinationCards() });
+        this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none" });
     };
     DestinationCardSelectionViewModel.prototype.render = function () {
         return DestinationCardSelectionView_1.DestinationCardSelectionView(this);
@@ -6264,12 +6274,10 @@ exports.GameViewModel = GameViewModel;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var DestinationCard_1 = __webpack_require__(/*! ../Models/DestinationCard */ "./src/Models/DestinationCard.ts");
 exports.initialState = {
-    destinationCards: [
-        { cityOne: "Provo", cityTwo: "Orem", pointValue: 5 },
-        { cityOne: "Salt Lake City", cityTwo: "Las Vegas", pointValue: 2 },
-        { cityOne: "Wendover", cityTwo: "San Francisco", pointValue: 9 }
-    ]
+    destinationCards: [new DestinationCard_1.DestinationCard("Salt Lake", "Miami", 15), new DestinationCard_1.DestinationCard("Boston", "Chicago", 10), new DestinationCard_1.DestinationCard("Sacramento", "Mesa", 5)],
+    toDiscard: "none"
 };
 
 
@@ -6758,47 +6766,47 @@ exports.DestinationCardSelectionView = function (component) {
     for (var i = 0; i < destCards.length; i++) {
         var card = destCards[i];
         cards.push(React.createElement("p", { key: i },
-            card.cityOne,
+            card.city1,
             " to ",
-            card.cityTwo,
+            card.city2,
             ": ",
             card.pointValue));
     }
-    return (React.createElement("form", { action: "/action_page.php" },
+    return (React.createElement("form", { action: "/action_page.php", onSubmit: component.onSubmitButtonPressed },
         React.createElement("p", null,
             "Destination Card A----City1: ",
-            component.state.destinationCards[0].cityOne,
+            component.state.destinationCards[0].city1,
             " , City2: ",
-            component.state.destinationCards[0].cityTwo,
+            component.state.destinationCards[0].city2,
             ", Points: ",
             component.state.destinationCards[0].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
-            "Destination Card A----City1:  ",
-            component.state.destinationCards[1].cityOne,
+            "Destination Card B----City1:  ",
+            component.state.destinationCards[1].city1,
             " , City2: ",
-            component.state.destinationCards[1].cityTwo,
+            component.state.destinationCards[1].city2,
             ", Points: ",
             component.state.destinationCards[1].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
-            "Destination Card A----City1:  ",
-            component.state.destinationCards[2].cityOne,
+            "Destination Card C----City1:  ",
+            component.state.destinationCards[2].city1,
             " , City2: ",
-            component.state.destinationCards[2].cityTwo,
+            component.state.destinationCards[2].city2,
             ", Points: ",
             component.state.destinationCards[2].pointValue),
         React.createElement("p", null,
-            React.createElement("input", { type: "radio", name: "discard", defaultValue: "a" }),
+            React.createElement("input", { type: "radio", name: "discard", defaultValue: "a", onChange: component.onSelectCard, checked: component.state.toDiscard === "a" }),
             " Discard A",
             React.createElement("br", null),
-            React.createElement("input", { type: "radio", name: "discard", defaultValue: "b" }),
+            React.createElement("input", { type: "radio", name: "discard", defaultValue: "b", onChange: component.onSelectCard, checked: component.state.toDiscard === "b" }),
             " Discard B",
             React.createElement("br", null),
-            React.createElement("input", { type: "radio", name: "discard", defaultValue: "c" }),
+            React.createElement("input", { type: "radio", name: "discard", defaultValue: "c", onChange: component.onSelectCard, checked: component.state.toDiscard === "c" }),
             " Discard C",
             React.createElement("br", null),
-            React.createElement("input", { type: "radio", name: "discard", defaultValue: "d" }),
+            React.createElement("input", { type: "radio", name: "discard", defaultValue: "none", onChange: component.onSelectCard, checked: component.state.toDiscard === "none" }),
             " Keep all 3",
             React.createElement("br", null),
             " ",

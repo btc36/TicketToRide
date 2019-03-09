@@ -24,8 +24,10 @@ export class IngameInternalClientFacade {
 
   }
 
-  DiscardDestinationCard() {
-
+  DiscardDestinationCard(destinationCards: Array<DestinationCard>) {
+    let gameId = "GAMEID";
+    let username = "BENC";
+    this.proxy.DiscardDestinationCard(gameId, username, destinationCards);
   }
 
   getFaceUpCards(): FaceUpCards {
