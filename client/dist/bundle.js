@@ -4493,6 +4493,38 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
+/***/ "./src/Models/ChatMessage.ts":
+/*!***********************************!*\
+  !*** ./src/Models/ChatMessage.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ChatMessage = /** @class */ (function () {
+    function ChatMessage(playerName, message, timeStamp) {
+        this.playerName = playerName;
+        this.message = message;
+        this.timeStamp = timeStamp;
+    }
+    ChatMessage.prototype.getPlayerName = function () {
+        return this.playerName;
+    };
+    ChatMessage.prototype.getMessage = function () {
+        return this.message;
+    };
+    ChatMessage.prototype.getTimeStamp = function () {
+        return this.timeStamp;
+    };
+    return ChatMessage;
+}());
+exports.ChatMessage = ChatMessage;
+
+
+/***/ }),
+
 /***/ "./src/Models/ChatRoom.ts":
 /*!********************************!*\
   !*** ./src/Models/ChatRoom.ts ***!
@@ -4644,6 +4676,35 @@ exports.ClientRoot = ClientRoot;
 
 /***/ }),
 
+/***/ "./src/Models/DestinationCard.ts":
+/*!***************************************!*\
+  !*** ./src/Models/DestinationCard.ts ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var DestinationCard = /** @class */ (function () {
+    function DestinationCard(city1, city2, pointValue) {
+        this.city1 = city1;
+        this.city2 = city2;
+        this.pointValue = pointValue;
+    }
+    DestinationCard.prototype.getPointValue = function () {
+        return this.pointValue;
+    };
+    DestinationCard.prototype.getCities = function () {
+        return [this.city1, this.city2];
+    };
+    return DestinationCard;
+}());
+exports.DestinationCard = DestinationCard;
+
+
+/***/ }),
+
 /***/ "./src/Models/FaceUpCards.ts":
 /*!***********************************!*\
   !*** ./src/Models/FaceUpCards.ts ***!
@@ -4725,15 +4786,23 @@ exports.FaceUpCards = FaceUpCards;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Player_1 = __webpack_require__(/*! ./Player */ "./src/Models/Player.ts");
+var GameMap_1 = __webpack_require__(/*! ./GameMap */ "./src/Models/GameMap.ts");
+var DestinationCard_1 = __webpack_require__(/*! ./DestinationCard */ "./src/Models/DestinationCard.ts");
+var TrainCard_1 = __webpack_require__(/*! ./TrainCard */ "./src/Models/TrainCard.ts");
+var FaceUpCards_1 = __webpack_require__(/*! ./FaceUpCards */ "./src/Models/FaceUpCards.ts");
+var ChatRoom_1 = __webpack_require__(/*! ./ChatRoom */ "./src/Models/ChatRoom.ts");
+var ChatMessage_1 = __webpack_require__(/*! ./ChatMessage */ "./src/Models/ChatMessage.ts");
 var Game = /** @class */ (function () {
-    function Game(players, whoseTurn, map, numDestinationCardsRemaining, numTrainCardsRemaining, faceUpCards, chatRoom) {
-        this.players = players;
-        this.whoseTurn = whoseTurn;
-        this.map = map;
-        this.numDestinationCardsRemaining = numDestinationCardsRemaining;
-        this.numTrainCardsRemaining = numTrainCardsRemaining;
-        this.faceUpCards = faceUpCards;
-        this.chatRoom = chatRoom;
+    function Game() {
+        this.players = [new Player_1.Player("ben"), new Player_1.Player("lincoln"), new Player_1.Player("Brennah")];
+        this.whoseTurn = 1;
+        this.map = new GameMap_1.GameMap();
+        this.numDestinationCardsRemaining = 50;
+        this.numTrainCardsRemaining = 50;
+        this.faceUpCards = new FaceUpCards_1.FaceUpCards([new TrainCard_1.TrainCard("blue"), new TrainCard_1.TrainCard("blue"), new TrainCard_1.TrainCard("pink")]);
+        this.chatRoom = new ChatRoom_1.ChatRoom("thisGame", [new ChatMessage_1.ChatMessage("BEN", "Hello, World!", new Date())]);
+        this.potentialDestinationCards = [new DestinationCard_1.DestinationCard("Salt Lake", "Miami", 15), new DestinationCard_1.DestinationCard("Boston", "Chicago", 10), new DestinationCard_1.DestinationCard("Sacramento", "Mesa", 5)];
     }
     Game.prototype.checkWinCondition = function () {
         var maxPoints = 0;
@@ -4762,7 +4831,7 @@ var Game = /** @class */ (function () {
     Game.prototype.getMap = function () {
         return this.map;
     };
-    Game.prototype.getnumDestinationCardsRemaining = function () {
+    Game.prototype.getNumDestinationCardsRemaining = function () {
         return this.numDestinationCardsRemaining;
     };
     Game.prototype.getNumTrainCardsRemaining = function () {
@@ -4975,17 +5044,17 @@ var IngameClientRoot = /** @class */ (function () {
         var players = new Array();
         var whoseTurn = 0;
         var map = new GameMap_1.GameMap();
-        var numDestinationCardsRemaining = 0;
-        var numTrainCardsRemaining = 0;
+        var numDestinationCardsRemaining = 1;
+        var numTrainCardsRemaining = 1;
         var trainCards = Array();
         trainCards.push(new TrainCard_1.TrainCard("green"));
         trainCards.push(new TrainCard_1.TrainCard("blue"));
         trainCards.push(new TrainCard_1.TrainCard("black"));
         trainCards.push(new TrainCard_1.TrainCard("rainbow"));
-        trainCards.push(new TrainCard_1.TrainCard("green"));
+        trainCards.push(new TrainCard_1.TrainCard("blue"));
         var faceUpCards = new FaceUpCards_1.FaceUpCards(trainCards);
         var chatRoom = new ChatRoom_1.ChatRoom("", new Array());
-        this.game = new Game_1.Game(players, whoseTurn, map, numDestinationCardsRemaining, numTrainCardsRemaining, faceUpCards, chatRoom);
+        this.game = new Game_1.Game();
         this.observers = new Array();
     }
     IngameClientRoot.prototype.transitionPage = function (pageName) {
@@ -5042,6 +5111,12 @@ var IngameClientRoot = /** @class */ (function () {
     };
     IngameClientRoot.prototype.getFaceUpCards = function () {
         return this.game.getFaceUpCards();
+    };
+    IngameClientRoot.prototype.getNumTrainCardsRemaining = function () {
+        return this.game.getNumTrainCardsRemaining();
+    };
+    IngameClientRoot.prototype.getNumDestinationCardsRemaining = function () {
+        return this.game.getNumDestinationCardsRemaining();
     };
     IngameClientRoot.prototype.setFaceUpCards = function (faceUpCards) {
         this.game.setFaceUpCards(faceUpCards);
@@ -5151,6 +5226,7 @@ exports.LobbyGame = LobbyGame;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Route_1 = __webpack_require__(/*! ./Route */ "./src/Models/Route.ts");
 var Player = /** @class */ (function () {
     function Player(username) {
         this.username = username;
@@ -5168,6 +5244,7 @@ var Player = /** @class */ (function () {
         this.isOtherPlayer = isOtherPlayer;
         this.connectedCities = new Array();
         this.ownedRoutes = new Array();
+        this.ownedRoutes.push(new Route_1.Route("Seattle", "Portland", 1, "grey"));
         this.myTurn = false;
     };
     Player.prototype.claimRoute = function (route) {
@@ -5221,6 +5298,39 @@ var Player = /** @class */ (function () {
     return Player;
 }());
 exports.Player = Player;
+
+
+/***/ }),
+
+/***/ "./src/Models/Route.ts":
+/*!*****************************!*\
+  !*** ./src/Models/Route.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Route = /** @class */ (function () {
+    function Route(cityOne, cityTwo, length, color) {
+        this.color = color;
+        this.length = length;
+        this.cityOne = cityOne;
+        this.cityTwo = cityTwo;
+    }
+    Route.prototype.getColor = function () {
+        return this.color;
+    };
+    Route.prototype.getLength = function () {
+        return this.length;
+    };
+    Route.prototype.getCities = function () {
+        return [this.cityOne, this.cityTwo];
+    };
+    return Route;
+}());
+exports.Route = Route;
 
 
 /***/ }),
@@ -5901,7 +6011,11 @@ var FaceUpCardsViewModel = /** @class */ (function (_super) {
         return _this;
     }
     FaceUpCardsViewModel.prototype.componentDidMount = function () {
-        this.setState({ faceUpCards: this.props.services.getFaceUpCards() });
+        this.setState({
+            faceUpCards: this.props.services.getFaceUpCards(),
+            numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining(),
+            numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining()
+        });
     };
     FaceUpCardsViewModel.prototype.render = function () {
         return FaceUpCardsView_1.FaceUpCardsView(this);
@@ -6060,6 +6174,68 @@ exports.GameLobbyViewModel = GameLobbyViewModel;
 
 /***/ }),
 
+/***/ "./src/ViewModels/GameViewModel.tsx":
+/*!******************************************!*\
+  !*** ./src/ViewModels/GameViewModel.tsx ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+var IGameViewModel_1 = __webpack_require__(/*! ./IGameViewModel */ "./src/ViewModels/IGameViewModel.tsx");
+var GameView_1 = __webpack_require__(/*! ../Views/GameView */ "./src/Views/GameView.tsx");
+var MapViewModel_1 = __webpack_require__(/*! ./MapViewModel */ "./src/ViewModels/MapViewModel.ts");
+var DestinationCardSelectionViewModel_1 = __webpack_require__(/*! ./DestinationCardSelectionViewModel */ "./src/ViewModels/DestinationCardSelectionViewModel.ts");
+var FaceUpCardsViewModel_1 = __webpack_require__(/*! ./FaceUpCardsViewModel */ "./src/ViewModels/FaceUpCardsViewModel.ts");
+var PlayerHandViewModel_1 = __webpack_require__(/*! ./PlayerHandViewModel */ "./src/ViewModels/PlayerHandViewModel.ts");
+var PlayerInfoViewModel_1 = __webpack_require__(/*! ./PlayerInfoViewModel */ "./src/ViewModels/PlayerInfoViewModel.ts");
+var GameViewModel = /** @class */ (function (_super) {
+    __extends(GameViewModel, _super);
+    function GameViewModel(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = IGameViewModel_1.initialState;
+        _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
+        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
+        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.update = function (updateType, data) {
+            if (updateType == "transitionPage") {
+                _this.props.main.setState({ "page": data });
+            }
+        };
+        return _this;
+    }
+    GameViewModel.prototype.setViews = function (mapViewModel1, destinationCardSelectionViewModel) {
+        this.mapViewModel = mapViewModel1;
+        this.destinationCardSelectionViewModel = destinationCardSelectionViewModel;
+    };
+    GameViewModel.prototype.render = function () {
+        return GameView_1.GameView(this);
+    };
+    return GameViewModel;
+}(React.Component));
+exports.GameViewModel = GameViewModel;
+
+
+/***/ }),
+
 /***/ "./src/ViewModels/IDestinationCardSelectionViewModel.ts":
 /*!**************************************************************!*\
   !*** ./src/ViewModels/IDestinationCardSelectionViewModel.ts ***!
@@ -6072,9 +6248,9 @@ exports.GameLobbyViewModel = GameLobbyViewModel;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initialState = {
     destinationCards: [
-        { route: { cityOne: "Provo", cityTwo: "Orem" }, pointValue: 5 },
-        { route: { cityOne: "Salt Lake City", cityTwo: "Las Vegas" }, pointValue: 2 },
-        { route: { cityOne: "Wendover", cityTwo: "San Francisco" }, pointValue: 9 }
+        { cityOne: "Provo", cityTwo: "Orem", pointValue: 5 },
+        { cityOne: "Salt Lake City", cityTwo: "Las Vegas", pointValue: 2 },
+        { cityOne: "Wendover", cityTwo: "San Francisco", pointValue: 9 }
     ]
 };
 
@@ -6141,6 +6317,21 @@ exports.initialState = {
 
 /***/ }),
 
+/***/ "./src/ViewModels/IGameViewModel.tsx":
+/*!*******************************************!*\
+  !*** ./src/ViewModels/IGameViewModel.tsx ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initialState = {};
+
+
+/***/ }),
+
 /***/ "./src/ViewModels/ILoginRegisterViewModel.ts":
 /*!***************************************************!*\
   !*** ./src/ViewModels/ILoginRegisterViewModel.ts ***!
@@ -6173,6 +6364,7 @@ exports.initialState = {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Route_1 = __webpack_require__(/*! ../Models/Route */ "./src/Models/Route.ts");
 exports.cityToCoordinates = new Map([
     ["Boston", { lat: 42.36, lng: -71.05 }],
     ["Duluth", { lat: 46.78, lng: -92.1 }],
@@ -6206,67 +6398,67 @@ exports.cityToCoordinates = new Map([
     ["Miami", { lat: 25.761681, lng: -80.191788 }]
 ]);
 exports.routes = [
-    { city1: "Seattle", city2: "Portland", cost: 1, color: "grey" },
-    { city1: "Seattle", city2: "Helena", cost: 6, color: "yellow" },
-    { city1: "Helena", city2: "Salt Lake City", cost: 3, color: "pink" },
-    { city1: "Salt Lake City", city2: "San Francisco", cost: 5, color: "white" },
-    { city1: "San Francisco", city2: "Los Angeles", cost: 3, color: "pink" },
-    { city1: "Portland", city2: "Salt Lake City", cost: 6, color: "blue" },
-    { city1: "Portland", city2: "San Francisco", cost: 6, color: "green" },
-    { city1: "Los Angeles", city2: "Las Vegas", cost: 2, color: "grey" },
-    { city1: "Las Vegas", city2: "Salt Lake City", cost: 3, color: "orange" },
-    { city1: "Helena", city2: "Denver", cost: 4, color: "green" },
-    { city1: "Salt Lake City", city2: "Denver", cost: 3, color: "red" },
-    { city1: "Los Angeles", city2: "Phoenix", cost: 3, color: "grey" },
-    { city1: "Los Angeles", city2: "El Paso", cost: 6, color: "black" },
-    { city1: "Phoenix", city2: "Denver", cost: 5, color: "white" },
-    { city1: "Phoenix", city2: "Santa Fe", cost: 3, color: "grey" },
-    { city1: "Phoenix", city2: "El Paso", cost: 3, color: "grey" },
-    { city1: "El Paso", city2: "Santa Fe", cost: 2, color: "grey" },
-    { city1: "El Paso", city2: "Oklahoma City", cost: 5, color: "yellow" },
-    { city1: "El Paso", city2: "Dallas", cost: 4, color: "red" },
-    { city1: "El Paso", city2: "Houston", cost: 6, color: "green" },
-    { city1: "Oklahoma City", city2: "Santa Fe", cost: 3, color: "blue" },
-    { city1: "Oklahoma City", city2: "Denver", cost: 4, color: "red" },
-    { city1: "Oklahoma City", city2: "Kansas City", cost: 2, color: "grey" },
-    { city1: "Oklahoma City", city2: "Little Rock", cost: 2, color: "grey" },
-    { city1: "Oklahoma City", city2: "Dallas", cost: 2, color: "grey" },
-    { city1: "Kansas City", city2: "Denver", cost: 4, color: "black" },
-    { city1: "Kansas City", city2: "Saint Louis", cost: 2, color: "blue" },
-    { city1: "Kansas City", city2: "Omaha", cost: 1, color: "grey" },
-    { city1: "Omaha", city2: "Denver", cost: 4, color: "pink" },
-    { city1: "Omaha", city2: "Helena", cost: 5, color: "red" },
-    { city1: "Omaha", city2: "Duluth", cost: 2, color: "grey" },
-    { city1: "Omaha", city2: "Chicago", cost: 4, color: "blue" },
-    { city1: "Little Rock", city2: "Dallas", cost: 2, color: "grey" },
-    { city1: "Little Rock", city2: "New Orleans", cost: 3, color: "green" },
-    { city1: "Little Rock", city2: "Saint Louis", cost: 2, color: "grey" },
-    { city1: "Little Rock", city2: "Nashville", cost: 3, color: "white" },
-    { city1: "Helena", city2: "Duluth", cost: 6, color: "orange" },
-    { city1: "Santa Fe", city2: "Denver", cost: 2, color: "grey" },
-    { city1: "Dallas", city2: "Houston", cost: 1, color: "grey" },
-    { city1: "Chicago", city2: "Duluth", cost: 3, color: "red" },
-    { city1: "Chicago", city2: "Pittsburgh", cost: 3, color: "orange" },
-    { city1: "Chicago", city2: "Saint Louis", cost: 2, color: "white" },
-    { city1: "New Orleans", city2: "Houston", cost: 2, color: "grey" },
-    { city1: "New Orleans", city2: "Atlanta", cost: 4, color: "yellow" },
-    { city1: "New Orleans", city2: "Miami", cost: 6, color: "red" },
-    { city1: "Nashville", city2: "Saint Louis", cost: 2, color: "grey" },
-    { city1: "Nashville", city2: "Pittsburgh", cost: 4, color: "yellow" },
-    { city1: "Nashville", city2: "Raleigh", cost: 3, color: "black" },
-    { city1: "Nashville", city2: "Atlanta", cost: 1, color: "grey" },
-    { city1: "Saint Louis", city2: "Pittsburgh", cost: 5, color: "green" },
-    { city1: "Pittsburgh", city2: "New York", cost: 2, color: "white" },
-    { city1: "Pittsburgh", city2: "Washington DC", cost: 2, color: "grey" },
-    { city1: "Pittsburgh", city2: "Raleigh", cost: 2, color: "grey" },
-    { city1: "New York", city2: "Boston", cost: 2, color: "red" },
-    { city1: "New York", city2: "Washington DC", cost: 2, color: "black" },
-    { city1: "Washington DC", city2: "Raleigh", cost: 2, color: "grey" },
-    { city1: "Raleigh", city2: "Charleston", cost: 2, color: "grey" },
-    { city1: "Raleigh", city2: "Atlanta", cost: 2, color: "grey" },
-    { city1: "Atlanta", city2: "Charleston", cost: 2, color: "grey" },
-    { city1: "Atlanta", city2: "Miami", cost: 5, color: "blue" },
-    { city1: "Charleston", city2: "Miami", cost: 4, color: "pink" }
+    new Route_1.Route("Seattle", "Portland", 1, "grey"),
+    new Route_1.Route("Seattle", "Helena", 6, "yellow"),
+    new Route_1.Route("Helena", "Salt Lake City", 3, "pink"),
+    new Route_1.Route("Salt Lake City", "San Francisco", 5, "white"),
+    new Route_1.Route("San Francisco", "Los Angeles", 3, "pink"),
+    new Route_1.Route("Portland", "Salt Lake City", 6, "blue"),
+    new Route_1.Route("Portland", "San Francisco", 6, "green"),
+    new Route_1.Route("Los Angeles", "Las Vegas", 2, "grey"),
+    new Route_1.Route("Las Vegas", "Salt Lake City", 3, "orange"),
+    new Route_1.Route("Helena", "Denver", 4, "green"),
+    new Route_1.Route("Salt Lake City", "Denver", 3, "red"),
+    new Route_1.Route("Los Angeles", "Phoenix", 3, "grey"),
+    new Route_1.Route("Los Angeles", "El Paso", 6, "black"),
+    new Route_1.Route("Phoenix", "Denver", 5, "white"),
+    new Route_1.Route("Phoenix", "Santa Fe", 3, "grey"),
+    new Route_1.Route("Phoenix", "El Paso", 3, "grey"),
+    new Route_1.Route("El Paso", "Santa Fe", 2, "grey"),
+    new Route_1.Route("El Paso", "Oklahoma City", 5, "yellow"),
+    new Route_1.Route("El Paso", "Dallas", 4, "red"),
+    new Route_1.Route("El Paso", "Houston", 6, "green"),
+    new Route_1.Route("Oklahoma City", "Santa Fe", 3, "blue"),
+    new Route_1.Route("Oklahoma City", "Denver", 4, "red"),
+    new Route_1.Route("Oklahoma City", "Kansas City", 2, "grey"),
+    new Route_1.Route("Oklahoma City", "Little Rock", 2, "grey"),
+    new Route_1.Route("Oklahoma City", "Dallas", 2, "grey"),
+    new Route_1.Route("Kansas City", "Denver", 4, "black"),
+    new Route_1.Route("Kansas City", "Saint Louis", 2, "blue"),
+    new Route_1.Route("Kansas City", "Omaha", 1, "grey"),
+    new Route_1.Route("Omaha", "Denver", 4, "pink"),
+    new Route_1.Route("Omaha", "Helena", 5, "red"),
+    new Route_1.Route("Omaha", "Duluth", 2, "grey"),
+    new Route_1.Route("Omaha", "Chicago", 4, "blue"),
+    new Route_1.Route("Little Rock", "Dallas", 2, "grey"),
+    new Route_1.Route("Little Rock", "New Orleans", 3, "green"),
+    new Route_1.Route("Little Rock", "Saint Louis", 2, "grey"),
+    new Route_1.Route("Little Rock", "Nashville", 3, "white"),
+    new Route_1.Route("Helena", "Duluth", 6, "orange"),
+    new Route_1.Route("Santa Fe", "Denver", 2, "grey"),
+    new Route_1.Route("Dallas", "Houston", 1, "grey"),
+    new Route_1.Route("Chicago", "Duluth", 3, "red"),
+    new Route_1.Route("Chicago", "Pittsburgh", 3, "orange"),
+    new Route_1.Route("Chicago", "Saint Louis", 2, "white"),
+    new Route_1.Route("New Orleans", "Houston", 2, "grey"),
+    new Route_1.Route("New Orleans", "Atlanta", 4, "yellow"),
+    new Route_1.Route("New Orleans", "Miami", 6, "red"),
+    new Route_1.Route("Nashville", "Saint Louis", 2, "grey"),
+    new Route_1.Route("Nashville", "Pittsburgh", 4, "yellow"),
+    new Route_1.Route("Nashville", "Raleigh", 3, "black"),
+    new Route_1.Route("Nashville", "Atlanta", 1, "grey"),
+    new Route_1.Route("Saint Louis", "Pittsburgh", 5, "green"),
+    new Route_1.Route("Pittsburgh", "New York", 2, "white"),
+    new Route_1.Route("Pittsburgh", "Washington DC", 2, "grey"),
+    new Route_1.Route("Pittsburgh", "Raleigh", 2, "grey"),
+    new Route_1.Route("New York", "Boston", 2, "red"),
+    new Route_1.Route("New York", "Washington DC", 2, "black"),
+    new Route_1.Route("Washington DC", "Raleigh", 2, "grey"),
+    new Route_1.Route("Raleigh", "Charleston", 2, "grey"),
+    new Route_1.Route("Raleigh", "Atlanta", 2, "grey"),
+    new Route_1.Route("Atlanta", "Charleston", 2, "grey"),
+    new Route_1.Route("Atlanta", "Miami", 5, "blue"),
+    new Route_1.Route("Charleston", "Miami", 4, "pink")
 ];
 exports.initialState = {
     apiKey: "AIzaSyDXINMbYADHRJARnNo5npJpP7DClPoyZaQ",
@@ -6545,34 +6737,34 @@ exports.DestinationCardSelectionView = function (component) {
     for (var i = 0; i < destCards.length; i++) {
         var card = destCards[i];
         cards.push(React.createElement("p", { key: i },
-            card.route.cityOne,
+            card.cityOne,
             " to ",
-            card.route.cityTwo,
+            card.cityTwo,
             ": ",
             card.pointValue));
     }
     return (React.createElement("form", { action: "/action_page.php" },
         React.createElement("p", null,
             "Destination Card A----City1: ",
-            component.state.destinationCards[0].route.cityOne,
+            component.state.destinationCards[0].cityOne,
             " , City2: ",
-            component.state.destinationCards[0].route.cityTwo,
+            component.state.destinationCards[0].cityTwo,
             ", Points: ",
             component.state.destinationCards[0].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
             "Destination Card A----City1:  ",
-            component.state.destinationCards[1].route.cityOne,
+            component.state.destinationCards[1].cityOne,
             " , City2: ",
-            component.state.destinationCards[1].route.cityTwo,
+            component.state.destinationCards[1].cityTwo,
             ", Points: ",
             component.state.destinationCards[1].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
             "Destination Card A----City1:  ",
-            component.state.destinationCards[2].route.cityOne,
+            component.state.destinationCards[2].cityOne,
             " , City2: ",
-            component.state.destinationCards[2].route.cityTwo,
+            component.state.destinationCards[2].cityTwo,
             ", Points: ",
             component.state.destinationCards[2].pointValue),
         React.createElement("p", null,
@@ -6723,6 +6915,24 @@ exports.GameLobbyView = function (component) {
 
 /***/ }),
 
+/***/ "./src/Views/GameView.tsx":
+/*!********************************!*\
+  !*** ./src/Views/GameView.tsx ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.GameView = function (component) {
+    return (React.createElement("div", null, "hello"));
+};
+
+
+/***/ }),
+
 /***/ "./src/Views/LoginRegisterView.tsx":
 /*!*****************************************!*\
   !*** ./src/Views/LoginRegisterView.tsx ***!
@@ -6817,9 +7027,9 @@ var React = __webpack_require__(/*! react */ "react");
 var I = __webpack_require__(/*! ../ViewModels/IMapViewModel */ "./src/ViewModels/IMapViewModel.ts");
 var google_map_react_1 = __webpack_require__(/*! google-map-react */ "./node_modules/google-map-react/lib/index.js");
 exports.renderDottedPolyline = function (map, maps, currentRoute) {
-    var cost = currentRoute.cost;
-    var p1 = I.cityToCoordinates.get(currentRoute.city1);
-    var p2 = I.cityToCoordinates.get(currentRoute.city2);
+    var cost = currentRoute.getLength();
+    var p1 = I.cityToCoordinates.get(currentRoute.getCities()[0]);
+    var p2 = I.cityToCoordinates.get(currentRoute.getCities()[1]);
     var spaceSizeRatio = 0.5;
     var carSizeRatio = 1.00 - spaceSizeRatio;
     spaceSizeRatio = spaceSizeRatio / (cost + 1);
@@ -6840,7 +7050,7 @@ exports.renderDottedPolyline = function (map, maps, currentRoute) {
                 beginTrainCar,
                 endTrainCar
             ],
-            strokeColor: currentRoute.color,
+            strokeColor: currentRoute.getColor(),
             strokeOpacity: 1,
             strokeWeight: 4
         });
@@ -6853,8 +7063,8 @@ exports.renderPolylines = function (map, maps, component) {
         exports.renderDottedPolyline(map, maps, currentRoute);
         var invisibleClickableLine = new maps.Polyline({
             path: [
-                I.cityToCoordinates.get(currentRoute.city1),
-                I.cityToCoordinates.get(currentRoute.city2)
+                I.cityToCoordinates.get(currentRoute.getCities()[0]),
+                I.cityToCoordinates.get(currentRoute.getCities()[1])
             ],
             strokeColor: currentRoute.color,
             strokeOpacity: 0,
@@ -6966,11 +7176,7 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
 var LoginRegisterViewModel_1 = __webpack_require__(/*! ./ViewModels/LoginRegisterViewModel */ "./src/ViewModels/LoginRegisterViewModel.ts");
 var GameListViewModel_1 = __webpack_require__(/*! ./ViewModels/GameListViewModel */ "./src/ViewModels/GameListViewModel.ts");
 var GameLobbyViewModel_1 = __webpack_require__(/*! ./ViewModels/GameLobbyViewModel */ "./src/ViewModels/GameLobbyViewModel.ts");
-var MapViewModel_1 = __webpack_require__(/*! ./ViewModels/MapViewModel */ "./src/ViewModels/MapViewModel.ts");
-var DestinationCardSelectionViewModel_1 = __webpack_require__(/*! ./ViewModels/DestinationCardSelectionViewModel */ "./src/ViewModels/DestinationCardSelectionViewModel.ts");
-var FaceUpCardsViewModel_1 = __webpack_require__(/*! ./ViewModels/FaceUpCardsViewModel */ "./src/ViewModels/FaceUpCardsViewModel.ts");
-var PlayerHandViewModel_1 = __webpack_require__(/*! ./ViewModels/PlayerHandViewModel */ "./src/ViewModels/PlayerHandViewModel.ts");
-var PlayerInfoViewModel_1 = __webpack_require__(/*! ./ViewModels/PlayerInfoViewModel */ "./src/ViewModels/PlayerInfoViewModel.ts");
+var GameViewModel_1 = __webpack_require__(/*! ./ViewModels/GameViewModel */ "./src/ViewModels/GameViewModel.tsx");
 var ClientCommunicator_1 = __webpack_require__(/*! ./Server/ClientCommunicator */ "./src/Server/ClientCommunicator.ts");
 var Serializer_1 = __webpack_require__(/*! ./Server/Serializer */ "./src/Server/Serializer.ts");
 var ExternalClientFacade_1 = __webpack_require__(/*! ./Services/ExternalClientFacade */ "./src/Services/ExternalClientFacade.ts");
@@ -6982,7 +7188,7 @@ var IngameInternalClientFacade_1 = __webpack_require__(/*! ./Services/IngameInte
 var IngameExternalClientFacade_1 = __webpack_require__(/*! ./Services/IngameExternalClientFacade */ "./src/Services/IngameExternalClientFacade.ts");
 var IngameServerProxy_1 = __webpack_require__(/*! ./Server/IngameServerProxy */ "./src/Server/IngameServerProxy.ts");
 exports.initialState = {
-    "page": "faceup"
+    "page": "game"
 };
 var MainComponent = /** @class */ (function (_super) {
     __extends(MainComponent, _super);
@@ -6992,37 +7198,21 @@ var MainComponent = /** @class */ (function (_super) {
         _this.loginRegisterViewModel = React.createElement(LoginRegisterViewModel_1.LoginRegisterViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameListViewModel = React.createElement(GameListViewModel_1.GameListViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
-        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
-        _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
-        _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.gameViewModel = React.createElement(GameViewModel_1.GameViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
         return _this;
     }
     MainComponent.prototype.render = function () {
         if (this.state.page == "loginRegister") {
             return this.loginRegisterViewModel;
         }
+        else if (this.state.page == "game") {
+            return this.gameViewModel;
+        }
         else if (this.state.page == "gameList") {
             return this.gameListViewModel;
         }
         else if (this.state.page == "lobbyGame") {
             return this.gameLobbyViewModel;
-        }
-        else if (this.state.page == "map") {
-            return this.mapViewModel;
-        }
-        else if (this.state.page == "destination") {
-            return this.destinationCardSelectionViewModel;
-        }
-        else if (this.state.page == "faceup") {
-            return this.faceUpCardsViewModel;
-        }
-        else if (this.state.page == "playerhand") {
-            return this.playerHandViewModel;
-        }
-        else if (this.state.page == "playerinfo") {
-            return this.playerInfoViewModel;
         }
         else {
             return React.createElement("p", null,
