@@ -19,11 +19,13 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
             <li>{playerList[i].username} : {playerList[i].score} {playerList[i].numTrainCards} {playerList[i].numDestinationCards}</li>
         );
     }
-    colorCountMap.forEach((value: number, key: string) => {
-        trainInfos.push(
-            <li>{key} : {value}</li>
-        )
-    });
+    if (colorCountMap) {
+      colorCountMap.forEach((value: number, key: string) => {
+          trainInfos.push(
+              <li>{key} : {value}</li>
+          )
+      });
+    }
   return (
       <div>
           <div>
