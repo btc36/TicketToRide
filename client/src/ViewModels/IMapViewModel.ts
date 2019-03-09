@@ -104,9 +104,16 @@ export const initialState = {
     lng: -95
   },
   zoom: 4,
+  ownedRoutes: null
 };
 
-export type State = Readonly<typeof initialState>;
+export type State = {
+  readonly apiKey: string,
+  readonly center: any,
+  readonly zoom: number,
+  readonly ownedRoutes: Array<Route>
+}
+
 export type CityToCoordinates = Readonly<typeof Map>
 
 export interface IMapViewModel {

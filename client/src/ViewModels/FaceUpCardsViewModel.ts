@@ -9,11 +9,10 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
   state: State = initialState;
 
   componentDidMount() {
-    debugger;
     this.setState({ 
-      faceUpCards: this.props.services.getFaceUpCards()
-      //numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining(),
-      //numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining()
+      faceUpCards: this.props.services.getFaceUpCards(),
+      numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining(),
+      numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining()
     });
   }
 

@@ -19,7 +19,11 @@ export class Game {
     potentialDestinationCards: Array<DestinationCard>;
 
     constructor() {
-        this.players = [new Player("ben"),new Player("lincoln"), new Player("Brennah")];
+        let ben = new Player("ben");
+        ben.ownedRoutes = [new Route("El Paso", "Houston")];
+        let lincoln = new Player("lincoln");
+        let brennah = new Player("Brennah");
+        this.players = [ ben, lincoln, brennah ];
         this.whoseTurn = 1;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 50;

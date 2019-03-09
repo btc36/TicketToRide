@@ -50,6 +50,12 @@ export const renderPolylines = (map: any, maps: any, component: I.IMapViewModel)
       strokeOpacity: 0,
       strokeWeight: 6
     });
+    for (let i = 0; i < component.state.ownedRoutes.length; i++) {
+      let route = component.state.ownedRoutes[i];
+      if (currentRoute.cityOne == route.cityOne && currentRoute.cityTwo == route.cityTwo) {
+        invisibleClickableLine.strokeOpacity = 1;
+      }
+    }
     invisibleClickableLine.setMap(map);
   }
 }

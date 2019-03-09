@@ -2,9 +2,9 @@ import * as React from "react";
 import { MapView } from "../Views/MapView";
 import { initialState, State, IMapViewModel } from "./IMapViewModel";
 import { IObserver } from "./IObserver";
-import { ViewModelProps } from "./ViewModelProps";
+import { IngameViewModelProps } from "./ViewModelProps";
 
-export class MapViewModel extends React.Component<ViewModelProps, State> implements IMapViewModel, IObserver {
+export class MapViewModel extends React.Component<IngameViewModelProps, State> implements IMapViewModel, IObserver {
 
   state: State = initialState;
   mapInstance: any;
@@ -14,6 +14,10 @@ export class MapViewModel extends React.Component<ViewModelProps, State> impleme
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
     }
+  }
+
+  componentDidMount() {
+    this.setState({ ownedRoutes: this.props.services.getAllOwnedRoutes() });
   }
 
   render(): JSX.Element {
