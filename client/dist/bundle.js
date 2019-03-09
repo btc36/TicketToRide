@@ -5246,7 +5246,12 @@ var Player = /** @class */ (function () {
         this.ownedRoutes = new Array();
         this.ownedRoutes.push(new Route_1.Route("Seattle", "Portland", 1, "grey"));
         this.myTurn = false;
+        this.colorCountMap = new Map();
     };
+    /**
+     * claim routes and increment scores accordingly
+     * @param route
+     */
     Player.prototype.claimRoute = function (route) {
         this.ownedRoutes.push(route);
         var length = route.getLength();
@@ -5269,11 +5274,25 @@ var Player = /** @class */ (function () {
             this.score += 15;
         }
     };
+    /**
+     * draw traincard and give it to the hand?
+     * @param trainCard
+     */
     Player.prototype.drawTrainCard = function (trainCard) {
         this.myHand.addTrainCard(trainCard);
+        var color = trainCard.getColor();
+        var count = this.colorCountMap.get(color);
+        this.colorCountMap.set(color, count + 1);
     };
+    /**
+     * draw destination card and give it to the hand?
+     * @param destinationCard
+     */
     Player.prototype.drawDestinationCard = function (destinationCard) {
         this.myHand.addDestinationCard(destinationCard);
+    };
+    Player.prototype.getColorCountMap = function () {
+        return this.colorCountMap;
     };
     Player.prototype.getScore = function () {
         return this.score;
@@ -5281,7 +5300,9 @@ var Player = /** @class */ (function () {
     Player.prototype.setScore = function (newScore) {
         this.score = newScore;
     };
+    // There is no useDestinationCard because you can't get rid of them
     Player.prototype.useTrainCard = function (trainCard, numUsed) {
+        this.myHand.removeTrainCard(trainCard);
     };
     Player.prototype.setNumTrainCars = function (numCars) {
         this.trainCars -= numCars;
@@ -5810,19 +5831,19 @@ var IngameExternalClientFacade = /** @class */ (function () {
         this.root.changeTurn(player);
     };
     IngameExternalClientFacade.prototype.receiveChatCommand = function (success, errorMessage, gameid, chats) {
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         this.root.receiveChatCommand(gameid, chats);
     };
     IngameExternalClientFacade.prototype.presentDestinationCard = function (success, errorMessage, destinationCards) {
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         this.root.presentDestinationCard(destinationCards);
     };
     IngameExternalClientFacade.prototype.discardDestinationCard = function (success, errorMessage, destinationCards) {
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         this.root.discardDestinationCard();
     };
     IngameExternalClientFacade.prototype.addDestinationCard = function (success, errorMessage, username, destinationCards) {
-        //test if it was a success, and if there was an error message
+        //TODO: test if it was a success, and if there was an error message
         for (var i = 0; i < destinationCards.length; i++) {
             this.root.addDestinationCard(username, destinationCards[i]);
         }
@@ -6012,9 +6033,9 @@ var FaceUpCardsViewModel = /** @class */ (function (_super) {
     }
     FaceUpCardsViewModel.prototype.componentDidMount = function () {
         this.setState({
-            faceUpCards: this.props.services.getFaceUpCards(),
-            numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining(),
-            numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining()
+            faceUpCards: this.props.services.getFaceUpCards()
+            //numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining(),
+            //numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining()
         });
     };
     FaceUpCardsViewModel.prototype.render = function () {
@@ -6210,11 +6231,11 @@ var GameViewModel = /** @class */ (function (_super) {
     function GameViewModel(props) {
         var _this = _super.call(this, props) || this;
         _this.state = IGameViewModel_1.initialState;
-        _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
-        _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
-        _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.mapViewModel = React.createElement(MapViewModel_1.MapViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.services });
+        _this.destinationCardSelectionViewModel = React.createElement(DestinationCardSelectionViewModel_1.DestinationCardSelectionViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.services });
+        _this.faceUpCardsViewModel = React.createElement(FaceUpCardsViewModel_1.FaceUpCardsViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.playerHandViewModel = React.createElement(PlayerHandViewModel_1.PlayerHandViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.playerInfoViewModel = React.createElement(PlayerInfoViewModel_1.PlayerInfoViewModel, { ref: function (instance) { return _this.props.ingameRoot.attach(instance); }, main: _this, services: _this.props.ingameServices });
         _this.update = function (updateType, data) {
             if (updateType == "transitionPage") {
                 _this.props.main.setState({ "page": data });
@@ -6222,10 +6243,6 @@ var GameViewModel = /** @class */ (function (_super) {
         };
         return _this;
     }
-    GameViewModel.prototype.setViews = function (mapViewModel1, destinationCardSelectionViewModel) {
-        this.mapViewModel = mapViewModel1;
-        this.destinationCardSelectionViewModel = destinationCardSelectionViewModel;
-    };
     GameViewModel.prototype.render = function () {
         return GameView_1.GameView(this);
     };
@@ -6246,12 +6263,9 @@ exports.GameViewModel = GameViewModel;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var DestinationCard_1 = __webpack_require__(/*! ../Models/DestinationCard */ "./src/Models/DestinationCard.ts");
 exports.initialState = {
-    destinationCards: [
-        { cityOne: "Provo", cityTwo: "Orem", pointValue: 5 },
-        { cityOne: "Salt Lake City", cityTwo: "Las Vegas", pointValue: 2 },
-        { cityOne: "Wendover", cityTwo: "San Francisco", pointValue: 9 }
-    ]
+    destinationCards: [new DestinationCard_1.DestinationCard("Salt Lake", "Miami", 15), new DestinationCard_1.DestinationCard("Boston", "Chicago", 10), new DestinationCard_1.DestinationCard("Sacramento", "Mesa", 5)]
 };
 
 
@@ -6497,7 +6511,10 @@ exports.initialState = {};
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initialState = {};
+exports.initialState = {
+    playerList: new Array(),
+    username: String
+};
 
 
 /***/ }),
@@ -6737,34 +6754,34 @@ exports.DestinationCardSelectionView = function (component) {
     for (var i = 0; i < destCards.length; i++) {
         var card = destCards[i];
         cards.push(React.createElement("p", { key: i },
-            card.cityOne,
+            card.city1,
             " to ",
-            card.cityTwo,
+            card.city2,
             ": ",
             card.pointValue));
     }
     return (React.createElement("form", { action: "/action_page.php" },
         React.createElement("p", null,
             "Destination Card A----City1: ",
-            component.state.destinationCards[0].cityOne,
+            component.state.destinationCards[0].city1,
             " , City2: ",
-            component.state.destinationCards[0].cityTwo,
+            component.state.destinationCards[0].city2,
             ", Points: ",
             component.state.destinationCards[0].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
             "Destination Card A----City1:  ",
-            component.state.destinationCards[1].cityOne,
+            component.state.destinationCards[1].city1,
             " , City2: ",
-            component.state.destinationCards[1].cityTwo,
+            component.state.destinationCards[1].city2,
             ", Points: ",
             component.state.destinationCards[1].pointValue),
         React.createElement("p", null),
         React.createElement("p", null,
             "Destination Card A----City1:  ",
-            component.state.destinationCards[2].cityOne,
+            component.state.destinationCards[2].city1,
             " , City2: ",
-            component.state.destinationCards[2].cityTwo,
+            component.state.destinationCards[2].city2,
             ", Points: ",
             component.state.destinationCards[2].pointValue),
         React.createElement("p", null,
@@ -6927,7 +6944,22 @@ exports.GameLobbyView = function (component) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 exports.GameView = function (component) {
-    return (React.createElement("div", null, "hello"));
+    return (React.createElement("div", { className: "GameView" },
+        React.createElement("h3", null, "Player Info"),
+        React.createElement("hr", null),
+        component.playerInfoViewModel,
+        React.createElement("h3", null, "Player Hand"),
+        React.createElement("hr", null),
+        React.createElement("p", null, "component.playerHandViewModel"),
+        React.createElement("h3", null, "Face Up Cards"),
+        React.createElement("hr", null),
+        React.createElement("p", null, "component.faceUpCardsViewModel"),
+        React.createElement("h3", null, "Destination Cards Selection"),
+        React.createElement("hr", null),
+        component.destinationCardSelectionViewModel,
+        React.createElement("h3", null, "Map"),
+        React.createElement("hr", null),
+        component.mapViewModel));
 };
 
 
@@ -7124,7 +7156,7 @@ exports.MapView = function (component) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 exports.PlayerHandView = function (component) {
-    return (React.createElement("div", null, "Hello"));
+    return (React.createElement("div", null, "Hello ?? what is this?"));
 };
 
 
@@ -7142,7 +7174,63 @@ exports.PlayerHandView = function (component) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 exports.PlayerInfoView = function (component) {
-    return (React.createElement("div", null, "Hello"));
+    var players = new Array();
+    var playerList = component.state.playerList;
+    var trainInfos = new Array();
+    var turn = new Array();
+    var colorCountMap;
+    for (var i = 0; i < playerList.length; i++) {
+        if (component.state.username == playerList[i].username)
+            colorCountMap = playerList[i].colorCountMap; // get the card counts of this user
+        if (playerList[i].myTurn == true) {
+            turn.push(React.createElement("li", null,
+                " Turn: ",
+                playerList[i].username,
+                " "));
+        }
+        players.push(React.createElement("li", null,
+            " ",
+            playerList[i].username,
+            " ")
+        //{playerList[i].numTrainCards} {playerList[i].numDestinationCards}</li>
+        );
+        players.push(React.createElement("li", null,
+            " score : ",
+            playerList[i].score,
+            " "));
+        players.push(React.createElement("li", null,
+            " TrainCards : ",
+            playerList[i].numTrainCards,
+            " "));
+        players.push(React.createElement("li", null,
+            " DestinationCards : ",
+            playerList[i].numDestinationCards,
+            " "));
+    }
+    if (colorCountMap) {
+        colorCountMap.forEach(function (value, key) {
+            trainInfos.push(React.createElement("li", null,
+                key,
+                " : ",
+                value));
+        });
+    }
+    return (React.createElement("div", null,
+        React.createElement("div", null,
+            React.createElement("p", null,
+                React.createElement("b", null,
+                    React.createElement("u", null, "My Info"))),
+            React.createElement("ul", null,
+                "Train Card Status",
+                trainInfos)),
+        React.createElement("div", null,
+            React.createElement("p", null,
+                React.createElement("b", null,
+                    React.createElement("u", null, "Player Info"))),
+            turn,
+            React.createElement("ul", null, players),
+            React.createElement("p", null,
+                React.createElement("b", null, "Message")))));
 };
 
 
@@ -7198,7 +7286,7 @@ var MainComponent = /** @class */ (function (_super) {
         _this.loginRegisterViewModel = React.createElement(LoginRegisterViewModel_1.LoginRegisterViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameListViewModel = React.createElement(GameListViewModel_1.GameListViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
         _this.gameLobbyViewModel = React.createElement(GameLobbyViewModel_1.GameLobbyViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.services });
-        _this.gameViewModel = React.createElement(GameViewModel_1.GameViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices });
+        _this.gameViewModel = React.createElement(GameViewModel_1.GameViewModel, { ref: function (instance) { return _this.props.root.attach(instance); }, main: _this, services: _this.props.ingameServices, ingameRoot: ingameRoot });
         return _this;
     }
     MainComponent.prototype.render = function () {
