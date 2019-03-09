@@ -22,17 +22,22 @@ export class IngameClientRoot implements ISubject {
   constructor() {
     this.game = new Game();
     this.observers = new Array<IObserver>();
+    this.localPlayer = new Player("ben");
   }
 
   setLocalPlayer(localPlayer: Player) {
     this.localPlayer = localPlayer;
   }
 
+<<<<<<< HEAD
   getPlayerHand(): PlayerHand{
     return this.localPlayer.getHand();
   }
 
   getUsername():String{
+=======
+  getUsername():string{
+>>>>>>> 8940dad7afbeaffa797438cd77ffb734d9e5261e
     return this.localPlayer.getUsername();
   }
 
@@ -58,7 +63,7 @@ export class IngameClientRoot implements ISubject {
   }
 
   getGameId():string {
-    return "DAT ID";
+    return this.game.getGameId();
   }
 
   claimRoute(player: Player, route: Route): void {
@@ -73,8 +78,8 @@ export class IngameClientRoot implements ISubject {
     this.game.addTrainCard(trainCard);
   }*/
 
-  addDestinationCard(username: string, destinationCard: DestinationCard) {
-    this.game.addDestinationCard(username,destinationCard);
+  addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    this.game.addDestinationCard(username,destinationCards);
   }
 
   checkWinCondition(): Player {

@@ -16,9 +16,11 @@ export class Game {
     numTrainCardsRemaining: number;
     faceUpCards: FaceUpCards;
     chatRoom: ChatRoom;
-    potentialDestinationCards: Array<DestinationCard>;
+  potentialDestinationCards: Array<DestinationCard>;
+  gameId: string;
 
-    constructor() {
+  constructor() {
+    this.gameId = "EPICGAME";
         let ben = new Player("ben");
         ben.ownedRoutes = [new Route("El Paso", "Houston")];
         let lincoln = new Player("lincoln");
@@ -33,6 +35,9 @@ export class Game {
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
 
+    getGameId() {
+      return this.gameId;
+    }
     checkWinCondition(): Player {
         let maxPoints = 0;
         let winningPlayer = null;
@@ -108,10 +113,10 @@ export class Game {
         });
     }
 
-    addDestinationCard(username: string, destinationCard: DestinationCard) {
+    addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
         this.players.forEach((thisPlayer) => {
             if (thisPlayer.getUsername() == username) {
-                thisPlayer.drawDestinationCard(destinationCard);
+                thisPlayer.drawDestinationCard(destinationCards);
                 return;
             }
         });

@@ -32,13 +32,14 @@ export class IngameInternalClientFacade {
     this.proxy.DiscardDestinationCard(gameId, username, destinationCards);
   }
 
-  storeDestinationCard(destinationCard: Array<DestinationCard>) {
-    //string username = this.root.getUsername();
-    //this.root.addDestinationCard('YAYA', destinationCard);
+  storeDestinationCard(destinationCards: Array<DestinationCard>) {
+    let username = this.root.getUsername();
+      this.root.addDestinationCard(username, destinationCards);
   }
 
-
-
+  printRoot() {
+    console.log(this.root);
+  }
   getFaceUpCards(): FaceUpCards {
     return this.root.getFaceUpCards();
   }

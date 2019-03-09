@@ -38,7 +38,9 @@ export class IngameServerProxy {
      * @param destinationCards
      * @return gameID, username,
      */
-    DiscardDestinationCard(gameId:String, username:String, destinationCards: Array<DestinationCard>) {
+  DiscardDestinationCard(gameId: String, username: String, destinationCards: Array<DestinationCard>) {
+    console.log(destinationCards);
+    return;
         const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeList], [gameId, username, destinationCards]);
         this.communicator.sendCommand(command);
     }
