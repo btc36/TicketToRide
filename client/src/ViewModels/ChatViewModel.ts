@@ -2,12 +2,20 @@ import * as React from "react";
 import { ChatView } from "../Views/ChatView";
 import { initialState, State, IChatViewModel } from "./IChatViewModel";
 import { IObserver } from "./IObserver";
-import { ViewModelProps } from "./ViewModelProps";
-import { Poller } from "../Server/Poller";
+import { IngameViewModelProps } from "./ViewModelProps";
+import { PollerChat } from "../Server/PollerChat";
 
-export class ChatViewModel extends React.Component<ViewModelProps, State> implements IChatViewModel, IObserver {
+export class ChatViewModel extends React.Component<IngameViewModelProps, State> implements IChatViewModel, IObserver {
 
   state: State = initialState;
+  poller: PollerChat;
+
+  constructor(props: IngameViewModelProps) {
+    super(props);
+    this.props.services.getChatHistory();
+    this.poller = new PollerChat(this.props.services);
+    this.poller.start();
+  }
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
@@ -20,12 +28,9 @@ export class ChatViewModel extends React.Component<ViewModelProps, State> implem
     //call facade.sendchat
     alert("sending chat");
     const msg: string = this.state.currentMessage;
-    var today = new Date();
-    //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const username: string = "user1";
-    const gameId: string = "game1";
-
-    this.props.services.SendChatCommand(msg, today, username, gameId);
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+    this.props.services.SendChatCommand(msg, time);
   }
 
   updateMessage = (e: any) => {

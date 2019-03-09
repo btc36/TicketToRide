@@ -9,6 +9,7 @@ import { ChatMessage } from "./ChatMessage";
 import { Map } from "google-maps-react";
 
 export class Game {
+    gameID: string;
     players: Array<Player>;
     whoseTurn: number;
     map: GameMap;
@@ -22,7 +23,7 @@ export class Game {
   constructor() {
     this.gameId = "EPICGAME";
         let ben = new Player("ben");
-        ben.ownedRoutes = [new Route("El Paso", "Houston")];
+        ben.ownedRoutes = [new Route("El Paso", "Houston", 6, "yellow")];
         let lincoln = new Player("lincoln");
         let brennah = new Player("Brennah");
         this.players = [ ben, lincoln, brennah ];
