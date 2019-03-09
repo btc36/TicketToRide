@@ -9,10 +9,10 @@ export const GameView  = (component: I.IGameViewModel) => {
     	{component.playerInfoViewModel}
 
     	<h3>Player Hand</h3><hr/>
-		<p>component.playerHandViewModel</p>
+      {component.playerHandViewModel}
 
     	<h3>Face Up Cards</h3><hr/>
-    	<p>component.faceUpCardsViewModel</p>
+      {component.faceUpCardsViewModel}
 
     	<h3>Destination Cards Selection</h3><hr/>
     	{component.destinationCardSelectionViewModel}
