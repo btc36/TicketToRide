@@ -278,22 +278,16 @@ public class ServerFacade extends Facade
         else
         {
             success = true;
-            room = ServerModel.getInstance().getChatRoombyID(gameID);
-            if(room == null) // initialize
-            {
-                room = new ChatRoom(gameID);
-                ServerModel.getInstance().addChatRoom(room);
-            }
             ChatMessage chat = new ChatMessage(chatMessage, time, username);
-            room.addChat(chat);
+            ServerModel.getInstance().addChat(gameID, chat);
+            room = ServerModel.getInstance().getChatRoombyID(gameID);
             result = room.getMessages();
-
         }
 
         command = new GenericCommand(
                 _className, "receiveChatCommand",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
-                new Object[]{success, message, gameID, room}
+                new Object[]{success, message, gameID, result}
         );
 
         commandsForClient.add(command);
