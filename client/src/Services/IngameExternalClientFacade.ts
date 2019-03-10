@@ -12,7 +12,7 @@ export class IngameExternalClientFacade {
   {
     this.root = root;
   }
-  
+
   claimRoute(player:string, route:Route) {
     this.root.claimRoute(player, route);
   }

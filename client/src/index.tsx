@@ -68,18 +68,23 @@ const player = new Player("user1");
 const game = new LobbyGame("game1", player, "f", 3);
 const games = new GameList();
 games.addGame(game);
+
+
 const root = new ClientRoot();
 root.gameList = games;
 root.myPlayer = player;
 
 const externalClientFacade = new ExternalClientFacade(root);
-const ingameExternalClientFacade = new IngameExternalClientFacade();
+
+const ingameRoot = new IngameClientRoot();
+
+const ingameExternalClientFacade = new IngameExternalClientFacade(ingameRoot);
 const serializer = new Serializer();
 const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);
 const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
 const ingameServerProxy = new IngameServerProxy(clientCommunicator);
-const ingameRoot = new IngameClientRoot();
+
 const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 
 ReactDOM.render(
