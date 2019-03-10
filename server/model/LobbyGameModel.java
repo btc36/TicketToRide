@@ -145,26 +145,59 @@ public class LobbyGameModel
         this.trainDeck = trainDeck;
     }
 
+    /**
+     * Sets up 30 Destination Cards
+     */
     public void setUpDestinationCard()
     {
-        destDeck.add(new DestinationCard("s1", "d1", 1));
-        destDeck.add(new DestinationCard("s2", "d2", 2));
-        destDeck.add(new DestinationCard("s3", "d3", 3));
-        destDeck.add(new DestinationCard("s4", "d4", 4));
-        destDeck.add(new DestinationCard("s5", "d5", 5));
-        destDeck.add(new DestinationCard("s6", "d6", 6));
-        destDeck.add(new DestinationCard("s7", "d7", 7));
-        destDeck.add(new DestinationCard("s8", "d8", 8));
-        destDeck.add(new DestinationCard("s9", "d9", 9));
-        destDeck.add(new DestinationCard("s10", "d10", 10));
-        destDeck.add(new DestinationCard("s11", "d11", 11));
-        destDeck.add(new DestinationCard("s12", "d12", 12));
-        destDeck.add(new DestinationCard("s13", "d13", 13));
-        destDeck.add(new DestinationCard("s14", "d14", 14));
-        destDeck.add(new DestinationCard("s15", "d15", 15));
+        destDeck.add(new DestinationCard("Atlanta", "Santa Fe", 8));
+
+        destDeck.add(new DestinationCard("Charleston", "El Paso", 10));
+        destDeck.add(new DestinationCard("Charleston", "New York", 9));
+
+        destDeck.add(new DestinationCard("Denver", "Nashville", 7));
+        destDeck.add(new DestinationCard("Duluth", "Charleston", 6));
+        destDeck.add(new DestinationCard("Duluth", "Miami", 9));
+
+        destDeck.add(new DestinationCard("El Paso", "Charleston", 8));
+        destDeck.add(new DestinationCard("El Paso", "Salt Lake City", 7));
+
+        destDeck.add(new DestinationCard("Helena", "Little Rock", 7));
+        destDeck.add(new DestinationCard("Helena", "Nashville", 9));
+        destDeck.add(new DestinationCard("Houston", "Phoenix", 11));
+        destDeck.add(new DestinationCard("Houston", "Raleigh", 8));
+
+        destDeck.add(new DestinationCard("Kansas City", "Dallas", 14));
+
+        destDeck.add(new DestinationCard("Las Vegas", "Denver", 4));
+        destDeck.add(new DestinationCard("Los Angeles", "Duluth", 10));
+        destDeck.add(new DestinationCard("Los Angeles", "Miami", 13));
+        destDeck.add(new DestinationCard("Los Angeles", "New York", 13));
+
+        destDeck.add(new DestinationCard("Miami", "Atlanta", 5));
+        destDeck.add(new DestinationCard("Miami", "Salt Lake City", 8));
+
+        destDeck.add(new DestinationCard("Omaha", "Miami", 6));
+
+        destDeck.add(new DestinationCard("Phoenix", "Helena", 5));
+        destDeck.add(new DestinationCard("Phoenix", "Washington DC", 10));
+        destDeck.add(new DestinationCard("Pittsburgh", "Santa Fe", 7));
+        destDeck.add(new DestinationCard("Portland", "New Orleans", 8));
+
+        destDeck.add(new DestinationCard("Saint Louis", "Atlanta", 9));
+        destDeck.add(new DestinationCard("Saint Louis", "Boston", 11));
+        destDeck.add(new DestinationCard("Salt Lake City", "Pittsburgh", 7));
+        destDeck.add(new DestinationCard("Salt Lake City", "Raleigh", 10));
+        destDeck.add(new DestinationCard("Santa Fe", "Charleston", 9));
+
+        destDeck.add(new DestinationCard("Washington DC", "Helena", 14));
+
         destDeck.shuffle();
     }
 
+    /**
+     * Sets up 110 Train Cards
+     */
     public void setUpTrainCard()
     {
         for(int i = 0; i < 12; i++)
