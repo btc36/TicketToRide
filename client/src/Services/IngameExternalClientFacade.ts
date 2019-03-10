@@ -7,6 +7,12 @@ import { FaceUpCards } from "../Models/FaceUpCards";
 
 export class IngameExternalClientFacade {
   root: IngameClientRoot
+
+  constructor(root:IngameClientRoot)
+  {
+    this.root = root;
+  }
+  
   claimRoute(player:string, route:Route) {
     this.root.claimRoute(player, route);
   }
@@ -51,9 +57,9 @@ export class IngameExternalClientFacade {
     this.root.changeTurn(player)
   }
 
-    receiveChatCommand(success: boolean, errorMessage: string, gameid: string, chats: any[]){
+    receiveChatCommand(success: boolean, errorMessage: string, gameID: string, chats: any[]){
         //TODO: test if it was a success, and if there was an error message
-        this.root.receiveChatCommand(gameid, chats);
+        this.root.receiveChatCommand(gameID, chats);
     }
 
     presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){

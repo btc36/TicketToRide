@@ -9,7 +9,7 @@ import { ChatMessage } from "./ChatMessage";
 import { Map } from "google-maps-react";
 
 export class Game {
-    gameID: string;
+    //gameID: string;
     players: Array<Player>;
     whoseTurn: number;
     map: GameMap;
@@ -18,10 +18,10 @@ export class Game {
     faceUpCards: FaceUpCards;
     chatRoom: ChatRoom;
     potentialDestinationCards: Array<DestinationCard>;
-    gameId: string;
+    gameID: string;
 
   constructor() {
-    this.gameId = "EPICGAME";
+    this.gameID = "EPICGAME";
         this.players = [];
         this.whoseTurn = 1;
         this.map = new GameMap();
@@ -33,7 +33,7 @@ export class Game {
     }
 
     getGameId() {
-      return this.gameId;
+      return this.gameID;
     }
     checkWinCondition(): Player {
         let maxPoints = 0;
