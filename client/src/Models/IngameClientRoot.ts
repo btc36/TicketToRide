@@ -89,6 +89,14 @@ export class IngameClientRoot implements ISubject {
     this.game.addTrainCard(trainCard);
   }*/
 
+  addTrainCards(username: string, trainCards: Array<TrainCard>)
+  {
+    for(let i = 0; i < trainCards.length; i++)
+    {
+      this.game.addTrainCard(username,trainCards[i]);
+    }
+  }
+
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
     this.game.addDestinationCard(username,destinationCards);
   }

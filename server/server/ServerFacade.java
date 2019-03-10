@@ -214,7 +214,7 @@ public class ServerFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         Boolean status = false;
         String message = "";
-
+        List<LobbyGameModel> returnGame = new ArrayList<>();
         if(!isInputValid(gameID)) { message = "invalid request info"; }
         else
         {
@@ -227,6 +227,7 @@ public class ServerFacade extends Facade
                     game.startGame();
                     status = true;
                     message = "start success";
+                    returnGame.add(game);
                 }
             }
             else { message = "game does not exist"; }
@@ -237,8 +238,8 @@ public class ServerFacade extends Facade
         GenericCommand command;
         command = new GenericCommand(
                 _className, "startGame",
-                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString},
-                new Object[]{status, message, gameID}
+                new String[]{_paramTypeBoolean, _paramTypeString,_paramTypeString, _paramTypeList},
+                new Object[]{status, message, gameID, returnGame}
         );
         commandsForClient.add(command);
         return commandsForClient;

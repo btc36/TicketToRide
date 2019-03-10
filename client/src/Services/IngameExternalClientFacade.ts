@@ -5,6 +5,7 @@ import { Route } from "../Models/Route";
 import { TrainCard } from "../Models/TrainCard";
 import { FaceUpCards } from "../Models/FaceUpCards";
 
+// operations on the model
 export class IngameExternalClientFacade {
   root: IngameClientRoot
 
@@ -28,6 +29,12 @@ export class IngameExternalClientFacade {
   /*removeTrainCard(trainCard:TrainCard) {
     this.root.removeTrainCard(trainCard);
   }*/
+
+  // username (aka. player:string)
+  storeTrainCards(username: string, trainCards: Array<TrainCard>)
+  {
+    this.root.addTrainCards(username, trainCards);
+  }
 
   updateNumTrainCards(player:string,numUsed:number) {
     this.root.updateNumTrainCars(player,numUsed)

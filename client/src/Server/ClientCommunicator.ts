@@ -44,6 +44,7 @@ export class ClientCommunicator {
     request.send(data);
   }
 
+  // Execute the command received from the server
   public executeCommands(commands: ClientCommandObjects[]){
     for (var i = 0; i < commands.length; i++){
       if (commands[i]._methodName == "loginStatus"){
@@ -76,6 +77,13 @@ export class ClientCommunicator {
       }
       else if (commands[i]._methodName == "startGame"){
         this.clientFacade.startGame(commands[i]._paramValues[2]);
+        const game = commands[i]._paramValues[3][0];
+        const players = game.playerList.playerList; // JSON
+        this.inGameClientFacade.setFaceUpCards(game.faceUpCards.faceUpCards); // 5 face up cards
+        for(let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
+        {
+          this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
+        }
       }
       else if (commands[i]._methodName == "receiveChatCommand"){
         this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);

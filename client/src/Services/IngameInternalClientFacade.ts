@@ -4,7 +4,9 @@ import { FaceUpCards } from "../Models/FaceUpCards";
 import { DestinationCard } from "../Models/DestinationCard";
 import { Route } from "../Models/Route";
 import { PlayerHand } from "../Models/PlayerHand";
+import {TrainCard} from "../Models/TrainCard";
 
+// calls proxy
 export class IngameInternalClientFacade {
   proxy: IngameServerProxy;
   root: IngameClientRoot;

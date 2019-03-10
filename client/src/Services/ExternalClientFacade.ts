@@ -2,6 +2,7 @@ import { ClientRoot } from "../Models/ClientRoot";
 import { LobbyGame } from "../Models/LobbyGame";
 import { GameList } from "../Models/GameList";
 
+// operations on the model
 export class ExternalClientFacade {
   root: ClientRoot;
 

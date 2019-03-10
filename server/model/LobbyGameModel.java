@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class LobbyGameModel
     private State state;
     private Deck destDeck;
     private Deck trainDeck;
+    private FaceUpCards faceUpCards;
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
         //this.LobbyGameModel(host, maxPlayer, gamename);
@@ -32,6 +34,7 @@ public class LobbyGameModel
         state = State.WAITING;
         destDeck = null;
         trainDeck = null;
+        faceUpCards = null;
     }
     public void addPlayer(PlayerModel player)
     {
@@ -96,8 +99,10 @@ public class LobbyGameModel
         this.state = State.ONGOING;
         destDeck = new Deck();
         trainDeck = new Deck();
-        setUpDestinationCard();
-        setUpTrainCard();
+        faceUpCards = new FaceUpCards();
+        setUpDestinationCards();
+        setUpTrainCards();
+        setUpFaceUpCards();
         giveTrainCards();
     }
 
@@ -148,7 +153,7 @@ public class LobbyGameModel
     /**
      * Sets up 30 Destination Cards
      */
-    public void setUpDestinationCard()
+    public void setUpDestinationCards()
     {
         destDeck.add(new DestinationCard("Atlanta", "Santa Fe", 8));
 
@@ -198,7 +203,7 @@ public class LobbyGameModel
     /**
      * Sets up 110 Train Cards
      */
-    public void setUpTrainCard()
+    public void setUpTrainCards()
     {
         for(int i = 0; i < 12; i++)
         {
@@ -215,6 +220,30 @@ public class LobbyGameModel
         trainDeck.add(new TrainCard("rainbow"));
         trainDeck.add(new TrainCard("rainbow"));
         trainDeck.shuffle();
+    }
+
+    private void setUpFaceUpCards()
+    {
+        //List<TrainCard> list = new ArrayList<>();
+        for(Object o : this.trainDeck.getFive())
+        {
+            faceUpCards.addFaceUpCard((TrainCard) o);
+        }
+
+        if(faceUpCards.isThreeOrMoreWild())
+        {
+            for(TrainCard card : faceUpCards.getFaceUpCards())
+            {
+                trainDeck.add(card);
+            }
+            faceUpCards.clear();
+
+            setUpFaceUpCards();
+        }
+        else
+        {
+            return;
+        }
     }
 
     private void giveTrainCards()

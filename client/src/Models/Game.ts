@@ -25,8 +25,8 @@ export class Game {
         this.players = [];
         this.whoseTurn = 1;
         this.map = new GameMap();
-        this.numDestinationCardsRemaining = 50;
-        this.numTrainCardsRemaining = 50;
+        this.numDestinationCardsRemaining = 30;
+        this.numTrainCardsRemaining = 110;
     this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
@@ -106,6 +106,7 @@ export class Game {
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
+                this.numTrainCardsRemaining -= 1;
                 return;
             }
         });
