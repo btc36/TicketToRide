@@ -109,6 +109,7 @@ public class ServerFacade extends Facade
      */
     public List<GenericCommand> createGame(String username, String gamename, String max)
     {
+
         Boolean status = false;
         String message = "";
         String gameID = "";
@@ -269,6 +270,7 @@ public class ServerFacade extends Facade
     {
         test();
         List<GenericCommand> temp = createGame("user1","game1","4");
+
         String message = "";
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -295,6 +297,7 @@ public class ServerFacade extends Facade
         );
         commandsForClient.addAll(temp);
         commandsForClient.add(command);
+
         return commandsForClient;
     }
 
@@ -315,7 +318,7 @@ public class ServerFacade extends Facade
             result = room.getMessages();
         }
         GenericCommand command = new GenericCommand(
-                _className, "getChatCommand",
+                "IngameExternalClientFacade", "receiveChatCommand",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
@@ -338,6 +341,7 @@ public class ServerFacade extends Facade
         login("user2", "user2");
         login("user3", "user3");
         login("user4", "user4");
+
         System.out.println(divider);
 //
 //        joinGame("user2", "game1");

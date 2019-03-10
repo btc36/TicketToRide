@@ -18,8 +18,8 @@ public class ChatMessage {
         this.time = time;
     }
 
-    public String getPlyaerName() { return username; }
-    public void setPlyaerName(String username) {
+    public String getPlayerName() { return username; }
+    public void setPlayerName(String username) {
         this.username = username;
     }
 

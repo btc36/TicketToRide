@@ -30,13 +30,16 @@ export class ClientRoot implements ISubject {
     }
 
     notify(updateType: string, data: any) {
+        //console.log("notify called. Update type: " + updateType + "   data: " + data.toString());
         for (const o of this.observers) {
             if (o != null) {
                 o.update(updateType, data);
             }
         }
     }
+
     transitionPage(pageName: string) {
+        console.log("transition page called");
         this.session.setCurrentPage(pageName);
         this.notify("transitionPage", pageName);
     }
@@ -64,9 +67,10 @@ export class ClientRoot implements ISubject {
     }
 
     joinGame(gameId: string) {
+        console.log("joinGame called");
         let game = this.gameList.findGameById(gameId);
         game.addPlayer(this.myPlayer);
-        this.transitionPage("lobbyGame");
+        this.transitionPage("lobbyGame"); //If you want to see the chat window work this must be commented out.
     }
 
     getCurrentUser() {

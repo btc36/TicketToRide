@@ -8,14 +8,14 @@ export class PollerChat {
   polling: any;
 
   constructor(facadeInIn:IngameInternalClientFacade) {
-    this.frequency = 500;
+    this.frequency = 1000;
     this.ingameInternalClientFacade = facadeInIn;
     this.polling = null;
   }
 
   public start() {
     let that = this;
-    //this.polling = setInterval(() => { that.ingameInternalClientFacade.getChatHistory() }, that.frequency);
+    this.polling = setInterval(() => { that.ingameInternalClientFacade.getChatHistory() }, that.frequency);
   }
 
   public stop() {

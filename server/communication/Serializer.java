@@ -14,7 +14,6 @@ public class Serializer {
     //Turns json into list of GenericCommands
     public static List<GenericCommand> deserializeCommand(String json) throws Exception{
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(json);
         List<GenericCommand> myCommands = objectMapper.readValue(json, new TypeReference<ArrayList<GenericCommand>>(){});
         return myCommands;
     }

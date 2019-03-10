@@ -31,6 +31,7 @@ export class ExternalClientFacade {
   }
 
   joinGame(gameId: string) {
+    console.log("joinGame in externalClientFacade called");
     this.root.joinGame(gameId);
   }
 

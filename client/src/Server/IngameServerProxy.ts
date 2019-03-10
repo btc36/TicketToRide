@@ -31,8 +31,9 @@ export class IngameServerProxy {
     }
 
   public getChatHistory(gameId: String){
-    //const command = new ClientCommandObjects(this.serverClass, "getChatHistory", [this.paramTypeString], [gameId]);
-    //this.communicator.sendCommand(command);
+    gameId = "game1" //fixme this is for testing.
+    const command = new ClientCommandObjects(this.serverClass, "getChatHistory", [this.paramTypeString], [gameId]);
+    this.communicator.sendCommand(command);
   }
 
     /**

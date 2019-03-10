@@ -21,12 +21,13 @@ export class ChatViewModel extends React.Component<IngameViewModelProps, State> 
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
     }
+    else if (updateType == "updateMessageList") {
+      this.setState({"messageList": data});
+    }
   }
 
   sendChat = (e: any) => {
     e.preventDefault();
-    //call facade.sendchat
-    alert("sending chat");
     const msg: string = this.state.currentMessage;
     let today = new Date();
     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();

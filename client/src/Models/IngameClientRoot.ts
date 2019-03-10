@@ -176,7 +176,9 @@ export class IngameClientRoot implements ISubject {
 
   receiveChatCommand(gameid: string, chats: any[]){
     this.game.setChatHistory(chats);
+    this.notify("updateMessageList", chats);
   }
+  
   presentDestinationCard(destinationCards: any[]){
     this.game.presentDestinationCard(destinationCards);
     this.notify("drawDestination", null);
