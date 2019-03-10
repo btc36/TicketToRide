@@ -89,7 +89,7 @@ public class GameFacade extends Facade
             }
         }
         System.out.println(message);
-        command = commandForDestination(draw, status, message, gameID, username, cards, kept);
+        command = commandForDestination(draw, status, message, gameID, username, cards, -1);
         commandsForClient.add(command);
         return commandsForClient;
     }
@@ -104,9 +104,9 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
-        String message = "";
+        String message;
         GenericCommand command;
-
+        int kept = 0;
         if(!isInputValid(gameID)) { message = "gameID is invalid";}
         else if(!gameExists(gameID)) { message = "game doesn't exist";}
         else if(!isGameStarted(gameID)) { message = "game did not start"; }
@@ -117,6 +117,7 @@ public class GameFacade extends Facade
             for(DestinationCard card : cards)
                 game.addDestCard(card);
 
+            kept = 3 - cards.size();
             cards.clear();
 
             status  = true;
@@ -124,7 +125,7 @@ public class GameFacade extends Facade
         }
 
         System.out.println(message);
-        command = commandForDestination(discard, status, message, gameID, username, cards, -1);
+        command = commandForDestination(discard, status, message, gameID, username, cards, kept);
         commandsForClient.add(command);
         return commandsForClient;
     }

@@ -15,7 +15,7 @@ import {PlayerHand} from "./PlayerHand";
 
 export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
-  game: Game;
+  game: Game; // a game
   session: Session;
   localPlayer: Player;
 
@@ -73,8 +73,8 @@ export class IngameClientRoot implements ISubject {
 
   }
 
-  getGameId():string {
-    return this.game.getGameId();
+  getGameID():string {
+    return this.game.getGameID();
   }
 
   claimRoute(player: string, route: Route): void {
@@ -109,10 +109,22 @@ export class IngameClientRoot implements ISubject {
     return this.game.getPlayerList();
   }
 
+  setPlayerList(playerList: Array<Player>)
+  {
+    this.game.setPlayerList(playerList);
+  }
   getCurrentTurnIndex(): number {
     return this.game.getCurrentTurnIndex();
   }
 
+  getGame(): Game
+  {
+    return this.game;
+  }
+  setGame(game: Game)
+  {
+    this.game = game;
+  }
   getMap(): GameMap {
     return this.game.getMap();
   }

@@ -25,6 +25,7 @@ public class LobbyGameModel
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
         playerList = new PlayerListModel();
+        //TODO: UNCOMMENT AFTER DONE WITH TESTING
         gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
         currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;

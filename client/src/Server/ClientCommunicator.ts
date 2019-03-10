@@ -79,7 +79,22 @@ export class ClientCommunicator {
         this.clientFacade.startGame(commands[i]._paramValues[2]);
         const game = commands[i]._paramValues[3][0];
         const players = game.playerList.playerList; // JSON
+
+
+        let gamePlayers = new Array<Player>();
+
+        // Players from lobby are in game: 6 percent
+        for(let i = 0; i < players.length; i++)
+        {
+          const player = new Player(players[i].username);
+          gamePlayers.push(player);
+        }
+        this.inGameClientFacade.setPlayerList(gamePlayers);
+
+        // Face-up Deck is initialized by random cards from the server: 7 percent
         this.inGameClientFacade.setFaceUpCards(game.faceUpCards.faceUpCards); // 5 face up cards
+
+        // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
         for(let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
         {
           this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)

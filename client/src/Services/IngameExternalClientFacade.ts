@@ -9,8 +9,7 @@ import { FaceUpCards } from "../Models/FaceUpCards";
 export class IngameExternalClientFacade {
   root: IngameClientRoot
 
-  constructor(root:IngameClientRoot)
-  {
+  constructor(root:IngameClientRoot) {
     this.root = root;
   }
 
@@ -21,6 +20,10 @@ export class IngameExternalClientFacade {
   /*addTrainCard(trainCard:TrainCard) {
     this.root.addTrainCard(trainCard);
   }*/
+
+  setPlayerList(players: Array<Player>) {
+    this.root.setPlayerList(players);
+  }
 
   updatePlayerPoints(player: string, points:number) {
     this.root.updatePlayerPoints(player, points);
@@ -64,24 +67,24 @@ export class IngameExternalClientFacade {
     this.root.changeTurn(player)
   }
 
-    receiveChatCommand(success: boolean, errorMessage: string, gameID: string, chats: any[]){
-        //TODO: test if it was a success, and if there was an error message
-        this.root.receiveChatCommand(gameID, chats);
-    }
+  receiveChatCommand(success: boolean, errorMessage: string, gameID: string, chats: any[]){
+    //TODO: test if it was a success, and if there was an error message
+    this.root.receiveChatCommand(gameID, chats);
+  }
 
-    presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
-        //TODO: test if it was a success, and if there was an error message
-        this.root.presentDestinationCard(destinationCards);
+  presentDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
+    //TODO: test if it was a success, and if there was an error message
+    this.root.presentDestinationCard(destinationCards);
+  }
+  discardDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
+    //TODO: test if it was a success, and if there was an error message
+    this.root.discardDestinationCard();
+  }
+  addDestinationCard(success: boolean, errorMessage: string, username: string, destinationCards: any[]){
+    //TODO: test if it was a success, and if there was an error message
+    for (var i = 0; i < destinationCards.length; i++){
+      this.root.addDestinationCard(username, destinationCards[i]);
     }
-    discardDestinationCard(success: boolean, errorMessage: string, destinationCards: any[]){
-        //TODO: test if it was a success, and if there was an error message
-        this.root.discardDestinationCard();
-    }
-    addDestinationCard(success: boolean, errorMessage: string, username: string, destinationCards: any[]){
-        //TODO: test if it was a success, and if there was an error message
-        for (var i = 0; i < destinationCards.length; i++){
-            this.root.addDestinationCard(username, destinationCards[i]);
-        }
-    }
+  }
 
 }

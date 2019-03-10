@@ -32,7 +32,7 @@ export class Game {
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
 
-    getGameId() {
+    getGameID() {
       return this.gameID;
     }
     checkWinCondition(): Player {
@@ -112,14 +112,13 @@ export class Game {
         });
     }
 
-    addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
-        this.players.forEach((thisPlayer) => {
-            if (thisPlayer.getUsername() == username) {
-                thisPlayer.drawDestinationCard(destinationCards);
-                return;
-            }
-        });
-
+  addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    this.players.forEach((thisPlayer) => {
+      if (thisPlayer.getUsername() == username) {
+        thisPlayer.drawDestinationCard(destinationCards);
+          return;
+        }
+       });
     }
 
     setFaceUpCards(faceUpCards: FaceUpCards): void {
@@ -145,13 +144,13 @@ export class Game {
         });
     }
 
-    setNumDestinationCardsRemaining( newNum: number): void {
-        this.numDestinationCardsRemaining = newNum;
-    }
+  setNumDestinationCardsRemaining( newNum: number): void {
+    this.numDestinationCardsRemaining = newNum;
+  }
 
-    setNumTrainCardsRemaining(newNum: number): void {
-        this.numTrainCardsRemaining = newNum;
-    }
+  setNumTrainCardsRemaining(newNum: number): void {
+    this.numTrainCardsRemaining = newNum;
+  }
 
   setNumTrainCards(username: string,numCards:number) {
     this.players.forEach((player) => {
@@ -179,9 +178,9 @@ export class Game {
     return this.potentialDestinationCards;
   }
 
-    discardDestinationCard(){
-        this.potentialDestinationCards.length = 0;
-    }
+  discardDestinationCard(){
+    this.potentialDestinationCards.length = 0;
+  }
 
   changeTurn(username: string): void {
     this.players.forEach((player) => {
