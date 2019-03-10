@@ -31,8 +31,9 @@ export class IngameInternalClientFacade {
   }
 
   SendChatCommand(message: String, time: string) {
-    let username = this.root.session.loggedInUser.username;
-    let gameId = this.root.game.gameID;
+    //TODO: TEST
+    let username = "user1";//this.root.session.loggedInUser.username;
+    let gameId = "game1";//this.root.game.gameID;
 
     this.proxy.SendChat(message, time, username, gameId);
   }

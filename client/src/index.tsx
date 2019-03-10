@@ -23,6 +23,10 @@ import { IngameClientRoot } from './Models/IngameClientRoot';
 import { IngameInternalClientFacade } from './Services/IngameInternalClientFacade';
 import { IngameExternalClientFacade } from './Services/IngameExternalClientFacade';
 import { IngameServerProxy } from './Server/IngameServerProxy';
+import {Game} from "./Models/Game";
+import {GameList} from "./Models/GameList";
+import {LobbyGame} from "./Models/LobbyGame";
+import {Player} from "./Models/Player";
 
 
 export const initialState = {
@@ -55,7 +59,17 @@ class MainComponent extends React.Component<any, any> {
   }
 }
 
+/**
+ * TODO: SETUP stuffs
+ */
+const player = new Player("user1");
+const game = new LobbyGame("game1", player, "f", 3);
+const games = new GameList();
+games.addGame(game);
 const root = new ClientRoot();
+root.gameList = games;
+root.myPlayer = player;
+
 const externalClientFacade = new ExternalClientFacade(root);
 const ingameExternalClientFacade = new IngameExternalClientFacade();
 const serializer = new Serializer();
