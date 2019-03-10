@@ -44,7 +44,7 @@ public class GameFacade extends Facade
             else
             {
                 status = true;
-                cards.addAll(destDeck.getThree());
+                cards.addAll(destDeck.pollThree());
                 message = "success : " + potential;
             }
         }
@@ -151,7 +151,7 @@ public class GameFacade extends Facade
             }
             else
             {
-                cards.addAll(trainDeck.getThisMany(count));
+                cards.addAll(trainDeck.pollThisMany(count));
                 status = true;
                 message = "success : " + trains;
             }

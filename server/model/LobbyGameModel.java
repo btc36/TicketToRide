@@ -226,7 +226,7 @@ public class LobbyGameModel
     private void setUpFaceUpCards()
     {
         //List<TrainCard> list = new ArrayList<>();
-        for(Object o : this.trainDeck.getFive())
+        for(Object o : this.trainDeck.pollFive())
         {
             faceUpCards.addFaceUpCard((TrainCard) o);
         }
@@ -247,12 +247,16 @@ public class LobbyGameModel
         }
     }
 
+    public FaceUpCards getFaceUpCards() {
+        return faceUpCards;
+    }
+
     private void giveTrainCards()
     {
         for(PlayerModel p : playerList.getPlayerList())
         {
             assert(trainDeck.getSize() >= 4);
-            p.addTrainCards(trainDeck.getThisMany(4));
+            p.addTrainCards(trainDeck.pollThisMany(4));
         }
     }
 

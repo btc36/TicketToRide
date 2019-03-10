@@ -30,8 +30,9 @@ public class Phase2Tester
         facade.joinGame("user3", "game1");
         facade.joinGame("user4", "game1");
         System.out.println(divider);
-        facade.startGame("game1");
-//        Date date = new Date();
+        List<GenericCommand> l = facade.startGame("game1");
+        System.out.println("w");
+        //        Date date = new Date();
 //        facade.sendChat("HELLO", date,"user1", "game1" );
 //        facade.sendChat("WORLD", date,"user2", "game1" );
 //        facade.sendChat("QWERY", date,"user3", "game1" );

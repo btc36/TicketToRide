@@ -317,6 +317,8 @@ public class ServerFacade extends Facade
             room = ServerModel.getInstance().getChatRoombyID(gameID);
             result = room.getMessages();
         }
+
+        System.out.println(message);
         GenericCommand command = new GenericCommand(
                 "IngameExternalClientFacade", "receiveChatCommand",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},

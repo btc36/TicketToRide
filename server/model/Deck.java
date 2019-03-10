@@ -28,7 +28,7 @@ public class Deck<T>
         Collections.shuffle((LinkedList)deck);
     }
 
-    public List<T> getThree()
+    public List<T> pollThree()
     {
         List<T> cards = new ArrayList<>();
         while(!deck.isEmpty() && cards.size() < 3)
@@ -37,7 +37,7 @@ public class Deck<T>
         }
         return cards;
     }
-    public List<T> getFive()
+    public List<T> pollFive()
     {
         List<T> cards = new ArrayList<>();
         while(!deck.isEmpty() && cards.size() < 5)
@@ -46,7 +46,7 @@ public class Deck<T>
         }
         return cards;
     }
-    public List<T> getThisMany(int count)
+    public List<T> pollThisMany(int count)
     {
         List<T> cards = new ArrayList<>();
         while(!deck.isEmpty() && cards.size() < count)

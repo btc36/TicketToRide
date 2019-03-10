@@ -8,7 +8,7 @@ export class PollerChat {
   polling: any;
 
   constructor(facadeInIn:IngameInternalClientFacade) {
-    this.frequency = 1000;
+    this.frequency = 10000;// 1000
     this.ingameInternalClientFacade = facadeInIn;
     this.polling = null;
   }

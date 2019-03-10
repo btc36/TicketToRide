@@ -92,6 +92,7 @@ export class ClientCommunicator {
         this.inGameClientFacade.setPlayerList(gamePlayers);
 
         // Face-up Deck is initialized by random cards from the server: 7 percent
+        //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
         this.inGameClientFacade.setFaceUpCards(game.faceUpCards.faceUpCards); // 5 face up cards
 
         // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent

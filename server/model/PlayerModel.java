@@ -27,6 +27,30 @@ public class PlayerModel
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public List<DestinationCard> getDestinationCards() {
+        return destinationCards;
+    }
+
+    public void setDestinationCards(List<DestinationCard> destinationCards) {
+        this.destinationCards = destinationCards;
+    }
+
+    public List<TrainCard> getTrainCards() {
+        return trainCards;
+    }
+
+    public void setTrainCards(List<TrainCard> trainCards) {
+        this.trainCards = trainCards;
+    }
+
+    public void addDestinationards(List<DestinationCard> destCards)
+    {
+        if(this.destinationCards == null)
+            this.destinationCards = new ArrayList<>();
+        this.destinationCards.addAll(destCards);
+    }
+
     public void addTrainCards(List<TrainCard> trainCards)
     {
         if(this.trainCards == null)
