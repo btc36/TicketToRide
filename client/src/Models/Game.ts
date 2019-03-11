@@ -24,7 +24,7 @@ export class Game {
   constructor() {
     this.gameID = "EPICGAME";
         
-        this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
+        this.players = [new Player("ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
         this.whoseTurn = 1;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 30;
@@ -84,7 +84,19 @@ export class Game {
 
     getFaceUpCards(): FaceUpCards {
         return this.faceUpCards;
-    }
+  }
+
+  drawTrainCard() {
+    let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
+    this.faceUpCards.drawCard(this.randomInt(0, 4), trainCards[this.randomInt(0, 4)]);
+  }
+
+
+  randomInt(min:number, max:number):number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+ 
 
   claimRoute(username: string, route: Route): void {
         this.players.forEach((player) => {

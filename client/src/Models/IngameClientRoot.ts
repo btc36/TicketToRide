@@ -98,7 +98,8 @@ export class IngameClientRoot implements ISubject {
   }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
-    this.game.addDestinationCard(username,destinationCards);
+    this.game.addDestinationCard(username, destinationCards);
+    this.localPlayer.drawDestinationCard(destinationCards);
   }
 
   checkWinCondition(): Player {
@@ -144,6 +145,11 @@ export class IngameClientRoot implements ISubject {
   setFaceUpCards(faceUpCards: FaceUpCards): void {
     this.game.setFaceUpCards(faceUpCards);
     this.notify("setFaceUpCards", faceUpCards);
+  }
+
+  changeFaceUpCards() {
+    this.game.drawTrainCard();
+    this.notify('setFaceUpCards',null);
   }
 
   updatePlayerPoints(player: string, points: number): void {
