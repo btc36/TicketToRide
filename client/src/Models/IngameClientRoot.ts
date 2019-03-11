@@ -94,6 +94,8 @@ export class IngameClientRoot implements ISubject {
   }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    console.log("AHAHAHAHAHAHHAHAH");
+    console.log(destinationCards);
     this.game.addDestinationCard(username, destinationCards);
     this.localPlayer.drawDestinationCard(destinationCards);
     this.notify("keptDestination", null);
@@ -124,7 +126,9 @@ export class IngameClientRoot implements ISubject {
   }
   setGame(game: Game)
   {
-    this.game = game;
+    console.log("MY GAME IS !!!!!!!!!!!!!")
+    console.log(game);
+    this.game.setGameID(game.gameID);
   }
   getMap(): GameMap {
     return this.game.getMap();

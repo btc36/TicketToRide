@@ -52,6 +52,8 @@ export class IngameInternalClientFacade {
   }
 
   storeDestinationCard(destinationCards: Array<DestinationCard>) {
+    console.log("DUMB BU+G");
+    console.log(destinationCards);
     let username = this.root.getUsername();
       this.root.addDestinationCard(username, destinationCards);
   }

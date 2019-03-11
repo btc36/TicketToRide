@@ -35,7 +35,7 @@ export class Game {
         this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
         this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
         this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
-    }
+  }
 
     setGameID(input: string): void{
       this.gameID = input;
@@ -109,7 +109,7 @@ export class Game {
     let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
     let drawnCard = trainCards[this.randomInt(0, 4)];
     this.faceUpCards.drawCard(this.randomInt(0, 4), drawnCard);
-    this.numTrainCardsRemaining -= 1;
+   //this.numTrainCardsRemaining -= 1;
     this.addTrainCard('ben', drawnCard);
     return drawnCard;
   }
@@ -139,6 +139,8 @@ export class Game {
     }
 
   addTrainCard(username: string, trainCard: TrainCard): void {
+      console.log("WHY ARE MY PLAYERS EMPTY");
+    console.log(this.players);     
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
