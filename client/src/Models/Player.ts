@@ -29,6 +29,10 @@ export class Player {
     return this.username;
   }
   getHand(): PlayerHand{
+    /*let currCard = new TrainCard("blue");
+      this.myHand.addTrainCard(currCard);
+      let dCard = new DestinationCard("alabama", "provo", 8)
+      this.myHand.addDestinationCard([dCard]);*/
     return this.myHand
   }
 
