@@ -106,6 +106,7 @@ export class Game {
     let drawnCard = trainCards[this.randomInt(0, 4)];
     this.faceUpCards.drawCard(this.randomInt(0, 4), drawnCard);
     this.numTrainCardsRemaining -= 1;
+    this.addTrainCard('ben', drawnCard);
     return drawnCard;
   }
 
