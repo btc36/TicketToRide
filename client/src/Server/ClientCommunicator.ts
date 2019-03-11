@@ -6,6 +6,7 @@ import { Player } from "../Models/Player";
 import { LobbyGame } from "../Models/LobbyGame";
 import { IngameExternalClientFacade } from "../Services/IngameExternalClientFacade";
 import {TrainCard} from "../Models/TrainCard";
+import {FaceUpCards} from "../Models/FaceUpCards";
 
 export class ClientCommunicator {
   serverUrl: string;
@@ -109,8 +110,8 @@ export class ClientCommunicator {
           faceUpArray.push(card);
         }
 
-
-        this.inGameClientFacade.setFaceUpCards(game.faceUpCards); // 5 face up cards  Solution 1
+        let faceUp = new FaceUpCards(faceUpArray);
+        this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
         //this.inGameClientFacade.setDest
 
         // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
