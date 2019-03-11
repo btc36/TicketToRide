@@ -21,6 +21,10 @@ export class PlayerHandViewModel extends React.Component<IngameViewModelProps, S
     this.setState({ playerHand: this.props.services.getPlayerHand() });
   }
 
+  refreshHand = (e: any) => {
+    this.setState({ playerHand: this.props.services.getPlayerHand() });
+  }
+
   render(): JSX.Element {
     return PlayerHandView(this);
   }

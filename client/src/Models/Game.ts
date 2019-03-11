@@ -146,7 +146,8 @@ export class Game {
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
-                this.numTrainCardsRemaining -= 1;
+              this.numTrainCardsRemaining -= 1;
+              player.setNumTrainCars(player.getNumTrainCars() - 1);
                 return;
             }
         });
