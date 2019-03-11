@@ -87,7 +87,7 @@ export class Game {
 
     
     getFaceUpCards(): FaceUpCards {
-      this.gameID = "EPICGAME";
+     /* this.gameID = "EPICGAME";
       this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
       this.players[0].initiateGame(new PlayerHand(),40,"Green",10,39,true);
       this.players[1].initiateGame(new PlayerHand(),40,"Green",15,3,true);
@@ -97,8 +97,7 @@ export class Game {
      // this.numTrainCardsRemaining = 110;
      // this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
-      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
-      this.numTrainCardsRemaining -= 1;
+      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];*/
         return this.faceUpCards;
   }
 
