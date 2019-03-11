@@ -94,7 +94,7 @@ export class ClientCommunicator {
           const player = new Player(players[i].username);
           player.setTurn(players[i].turn);
           player.score = players[i].color;
-          gamePlayers.push(players[i]);
+          gamePlayers.push(player);
           if (players[i].username == this.clientFacade.getCurrentUser()) {
             this.inGameClientFacade.setLocalPlayer(player);
           }
