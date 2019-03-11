@@ -5,6 +5,7 @@ import { GameList } from "../Models/GameList";
 import { Player } from "../Models/Player";
 import { LobbyGame } from "../Models/LobbyGame";
 import { IngameExternalClientFacade } from "../Services/IngameExternalClientFacade";
+import {TrainCard} from "../Models/TrainCard";
 
 export class ClientCommunicator {
   serverUrl: string;
@@ -82,22 +83,35 @@ export class ClientCommunicator {
       }
       else if (commands[i]._methodName == "startGame") {
         this.clientFacade.startGame(commands[i]._paramValues[2]);
-        const game = commands[i]._paramValues[3][0];
-        const players = game.playerList.playerList; // JSON
-
+        const game = commands[i]._paramValues[3][0]; // JSON game
+        const players = game.playerList.playerList; // JSON players
 
         let gamePlayers = new Array<Player>();
 
         // Players from lobby are in game: 6 percent
         for (let i = 0; i < players.length; i++) {
           const player = new Player(players[i].username);
-          gamePlayers.push(player);
+          player.setTurn(players[i].turn);
+          player.score = players[i].color;
+          gamePlayers.push(players[i]);
         }
         this.inGameClientFacade.setPlayerList(gamePlayers);
-
+        this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
+        this.inGameClientFacade.setNumDestinationCardsRemaining(game.trainDeck.size)
         // Face-up Deck is initialized by random cards from the server: 7 percent
         //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
-        this.inGameClientFacade.setFaceUpCards(game.faceUpCards.faceUpCards); // 5 face up cards
+
+        const faceUps = game.faceUpCards.faceUpCards;
+        let faceUpArray = new Array<TrainCard>();
+        for(let j = 0; j < faceUps.length; j++)
+        {
+          const card = new TrainCard(faceUps[i].color);
+          faceUpArray.push(card);
+        }
+
+
+        this.inGameClientFacade.setFaceUpCards(game.faceUpCards); // 5 face up cards  Solution 1
+        //this.inGameClientFacade.setDest
 
         // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
         for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
