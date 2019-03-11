@@ -140,5 +140,9 @@ export class Player {
     return this.trainCars;
   }
 
+  getNumTrainCards() {
+    return this.numTrainCards;
+  }
+
 
 }
