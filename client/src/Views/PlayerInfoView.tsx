@@ -31,6 +31,8 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
             //{playerList[i].numTrainCards} {playerList[i].numDestinationCards}</li>
         );
         players.push(<li> score : {playerList[i].score} </li>);
+        // players.push(<li> TrainCards : {playerList[i].myHand.trainCards.length} </li>);
+        // players.push(<li> DestinationCards : {playerList[i].myHand.destinationCards.length} </li>);
         players.push(<li> TrainCards : {playerList[i].numTrainCards} </li>);
         players.push(<li> DestinationCards : {playerList[i].numDestinationCards} </li>);
         players.push(<li> Remaining Train Cars : {playerList[i].trainCars} </li>);

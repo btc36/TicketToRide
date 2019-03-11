@@ -23,7 +23,7 @@ export class Player {
     this.username = username;
     this.myHand = new PlayerHand();
     this.colorCountMap = new Map<string, number>();
-    this.numTrainCards = 0;
+    this.numTrainCards = 4;
     this.numDestinationCards = 0;
     this.trainCars = 0;
   }
@@ -87,6 +87,7 @@ export class Player {
    */
   drawTrainCard(trainCard: TrainCard):void {
     this.myHand.addTrainCard(trainCard);
+    this.numTrainCards += 1;
     const color = trainCard.getColor();
     let count = 0;
       if (this.colorCountMap.get(color) != null){
@@ -100,6 +101,7 @@ export class Player {
    * @param destinationCard
    */
   drawDestinationCard(destinationCard: Array<DestinationCard>):void {
+    this.numDestinationCards += 1;
     this.myHand.addDestinationCard(destinationCard);
   }
   getColorCountMap() : Map<string,number>{
