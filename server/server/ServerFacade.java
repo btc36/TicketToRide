@@ -268,9 +268,6 @@ public class ServerFacade extends Facade
      */
     public List<GenericCommand> sendChat(String chatMessage, String time, String username, String gameID)
     {
-        //test();
-
-
         String message = "";
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();

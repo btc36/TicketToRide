@@ -190,7 +190,7 @@ public class LobbyGameModel
         destDeck.add(new DestinationCard("Phoenix", "Washington DC", 10));
         destDeck.add(new DestinationCard("Pittsburgh", "Santa Fe", 7));
         destDeck.add(new DestinationCard("Portland", "New Orleans", 8));
-
+        destDeck.shuffle();
         destDeck.add(new DestinationCard("Saint Louis", "Atlanta", 9));
         destDeck.add(new DestinationCard("Saint Louis", "Boston", 11));
         destDeck.add(new DestinationCard("Salt Lake City", "Pittsburgh", 7));
@@ -200,6 +200,8 @@ public class LobbyGameModel
         destDeck.add(new DestinationCard("Washington DC", "Helena", 14));
 
         destDeck.shuffle();
+        destDeck.shuffle();
+
     }
 
     /**
@@ -207,17 +209,26 @@ public class LobbyGameModel
      */
     public void setUpTrainCards()
     {
-        for(int i = 0; i < 12; i++)
+        for(int i = 0; i < 6; i++)
         {
             trainDeck.add(new TrainCard("pink"));
             trainDeck.add(new TrainCard("white"));
-            trainDeck.add(new TrainCard("blue"));
+            trainDeck.add(new TrainCard("green"));
             trainDeck.add(new TrainCard("yellow"));
-            trainDeck.add(new TrainCard("orange"));
+            trainDeck.add(new TrainCard("rainbow"));
             trainDeck.add(new TrainCard("black"));
             trainDeck.add(new TrainCard("red"));
+            trainDeck.add(new TrainCard("white"));
+            trainDeck.add(new TrainCard("blue"));
+            trainDeck.add(new TrainCard("orange"));
+            trainDeck.add(new TrainCard("blue"));
+            trainDeck.add(new TrainCard("yellow"));
             trainDeck.add(new TrainCard("green"));
+            trainDeck.add(new TrainCard("red"));
+            trainDeck.add(new TrainCard("orange"));
+            trainDeck.add(new TrainCard("black"));
             trainDeck.add(new TrainCard("rainbow"));
+            trainDeck.add(new TrainCard("pink"));
         }
         trainDeck.add(new TrainCard("rainbow"));
         trainDeck.add(new TrainCard("rainbow"));
