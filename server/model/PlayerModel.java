@@ -9,6 +9,8 @@ public class PlayerModel
     private String password;
     private List<DestinationCard> destinationCards = null;
     private List<TrainCard> trainCards = null;
+    private boolean turn;
+    private String color;
 
     public PlayerModel() {}
     public PlayerModel(String username)
@@ -57,6 +59,23 @@ public class PlayerModel
             this.trainCards = new ArrayList<>();
         this.trainCards.addAll(trainCards);
     }
+
+    public boolean isTurn() {
+        return turn;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     @Override
     public boolean equals(Object o)
     {

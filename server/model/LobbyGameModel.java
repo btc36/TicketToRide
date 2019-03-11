@@ -1,8 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class LobbyGameModel
 {
@@ -105,6 +103,9 @@ public class LobbyGameModel
         setUpTrainCards();
         setUpFaceUpCards();
         giveTrainCards();
+        giveDestinationCards();
+        setColors();
+        setTurn();
     }
 
     public String getGamename() {
@@ -258,6 +259,29 @@ public class LobbyGameModel
             assert(trainDeck.getSize() >= 4);
             p.addTrainCards(trainDeck.pollThisMany(4));
         }
+    }
+    private void giveDestinationCards()
+    {
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            assert(destDeck.getSize() >= 3);
+            p.addDestinationards(destDeck.pollThisMany(3));
+        }
+    }
+    private void setColors()
+    {
+        ArrayList<String> colors = new ArrayList<String>( Arrays.asList("green", "red", "orange", "yellow","blue"));
+        Collections.shuffle(colors);
+
+        for(int i = 0; i < playerList.getPlayerList().size(); i++)
+        {
+            PlayerModel p = playerList.getPlayerList().get(i);
+            p.setColor(colors.get(i));
+        }
+    }
+    private void setTurn()
+    {
+        playerList.getPlayerList().get(0).setTurn(true);
     }
 
     @Override
