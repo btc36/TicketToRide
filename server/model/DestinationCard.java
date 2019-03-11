@@ -2,39 +2,39 @@ package model;
 
 public class DestinationCard extends Card
 {
-    private String src;
-    private String dst;
-    private Integer point;
+    private String city1;
+    private String city2;
+    private int pointValue;
     public DestinationCard(){}
 
-    public DestinationCard(String src, String dst, Integer point)
+    public DestinationCard(String city1, String city2, Integer point)
     {
-        this.src= src;
-        this.dst = dst;
-        this.point = point;
+        this.city1= city1;
+        this.city2 = city2;
+        this.pointValue = point;
     }
 
-    public String getSrc() {
-        return src;
+    public String getCity1() {
+        return city1;
     }
 
-    public void setSrc(String src) {
-        this.src = src;
+    public void setCity1(String city1) {
+        this.city1 = city1;
     }
 
-    public String getDst() {
-        return dst;
+    public String getCity2() {
+        return city2;
     }
 
-    public void setDst(String dst) {
-        this.dst = dst;
+    public void setCity2(String city2) {
+        this.city2 = city2;
     }
 
-    public Integer getPoint() {
-        return point;
+    public int getPointValue() {
+        return pointValue;
     }
 
-    public void setPoint(Integer point) {
-        this.point = point;
+    public void setPointValue(Integer pointValue) {
+        this.pointValue = pointValue;
     }
 }

@@ -6,15 +6,16 @@ import model.LobbyGameModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class GameFacade extends Facade
 {
 
+
     private final String potential = "potentialDestinationCard";
     private final String draw = "drawDestinationCard";
-    private final String discard = "discardDestinationCard";
+    private final String discard = "updateNumDestinationCards";
     private final String trains = "getTrainCard";
 
     /**
@@ -37,6 +38,7 @@ public class GameFacade extends Facade
         else
         {
             Deck destDeck = getDestinationDeck(gameID);
+
             if(destDeck.isEmpty())
             {
                 message = "deck empty";
@@ -100,32 +102,33 @@ public class GameFacade extends Facade
      * @param cards to be discarded
      * @return list of command that contains
      */
-    public List<GenericCommand> discardDestinationCardCommand(String gameID, String username, List<DestinationCard> cards)
+    public List<GenericCommand> discardDestinationCard(String gameID, String username, String city1, String city2, Integer pointValue)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
         String message;
         GenericCommand command;
-        int kept = 0;
+        int kept = 3;
         if(!isInputValid(gameID)) { message = "gameID is invalid";}
         else if(!gameExists(gameID)) { message = "game doesn't exist";}
         else if(!isGameStarted(gameID)) { message = "game did not start"; }
         else
         {
             LobbyGameModel game = getGameByID(gameID);
+            if(pointValue != -1)
+            {
+                DestinationCard card = new DestinationCard(city1, city2, pointValue);
+                game.getDestDeck().add(card);
+                kept -= 1;
+            }
 
-            for(DestinationCard card : cards)
-                game.addDestCard(card);
-
-            kept = 3 - cards.size();
-            cards.clear();
 
             status  = true;
             message = "success : " + discard;
         }
 
         System.out.println(message);
-        command = commandForDestination(discard, status, message, gameID, username, cards, kept);
+        command = commandForDestination(discard, status, message, gameID, username, null, kept);
         commandsForClient.add(command);
         return commandsForClient;
     }
@@ -186,10 +189,10 @@ public class GameFacade extends Facade
     private GenericCommand commandForDestination(String method, boolean status, String message, String gameID, String username, List<DestinationCard> cards, int kept)
     {
         GenericCommand command;
-        if(kept != -1)
+        if(kept == -1)
         {
              command = new GenericCommand(
-                    _className, method,
+                    _gameClassName, method,
                     new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList},
                     new Object[]{ status, message, gameID, username, cards }
             );
@@ -197,7 +200,7 @@ public class GameFacade extends Facade
         else
         {
             command = new GenericCommand(
-                    _className, method,
+                    _gameClassName, method,
                     new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList, _paramTypeInteger},
                     new Object[]{ status, message, gameID, username, cards, kept }
             );
@@ -210,7 +213,7 @@ public class GameFacade extends Facade
         GenericCommand command;
 
             command = new GenericCommand(
-                    _className, method,
+                    _gameClassName, method,
                     new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList, _paramTypeInteger},
                     new Object[]{ status, message, gameID, username, cards, cards.size() }
             );
