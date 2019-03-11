@@ -25,7 +25,7 @@ export class Player {
     this.colorCountMap = new Map<string, number>();
     this.numTrainCards = 4;
     this.numDestinationCards = 0;
-    this.trainCars = 0;
+    this.trainCars = 45;
   }
 
   getUsername(): string {
@@ -65,6 +65,7 @@ export class Player {
   claimRoute(route: Route): void {
     this.ownedRoutes.push(route);
     let length = route.getLength();
+    this.trainCars -= length;
     if (length == 1) {
       this.score += 1;
     }

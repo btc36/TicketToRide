@@ -100,7 +100,7 @@ export class IngameClientRoot implements ISubject {
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
     console.log("AHAHAHAHAHAHHAHAH");
     console.log(destinationCards);
-    this.game.addDestinationCard(username, destinationCards);
+    //this.game.addDestinationCard(username, destinationCards);
     this.localPlayer.drawDestinationCard(destinationCards);
     this.notify("keptDestination", null);
     this.notify("myHandUpdated", null);
