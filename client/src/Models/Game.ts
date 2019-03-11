@@ -28,7 +28,7 @@ export class Game {
         this.players[0].drawTrainCard(currCard);
         let dCard = new DestinationCard("alabama", "provo", 8)
         this.players[0].drawDestinationCard([dCard]);
-        this.whoseTurn = 1;
+        this.whoseTurn = 0;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 30;
         this.numTrainCardsRemaining = 110;
