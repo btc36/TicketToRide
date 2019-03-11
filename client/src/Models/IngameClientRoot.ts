@@ -177,6 +177,14 @@ export class IngameClientRoot implements ISubject {
     this.game.setNumTrainCardsRemaining(newNum);
   }
 
+  setNumDestinationCardsRemaining( newNum: number): void {
+    this.game.setNumDestinationCardsRemaining(newNum);
+  }
+
+  setNumTrainCardsRemaining(newNum: number): void {
+    this.game.setNumTrainCardsRemaining(newNum);
+  }
+
   changeTurn(player: string): void {
     this.game.changeTurn(player);
   }
