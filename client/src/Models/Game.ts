@@ -63,6 +63,8 @@ export class Game {
 
     setPlayerList(list: Array<Player>) {
         this.players = list;
+        console.log("PLAYER");
+        console.log(this.players);
     }
 
     getPlayerList(): Array<Player> {

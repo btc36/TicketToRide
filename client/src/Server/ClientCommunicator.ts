@@ -96,20 +96,25 @@ export class ClientCommunicator {
           player.score = players[i].color;
           gamePlayers.push(players[i]);
         }
+
         this.inGameClientFacade.setPlayerList(gamePlayers);
         this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
         this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
         // Face-up Deck is initialized by random cards from the server: 7 percent
         //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
-
+        console.log(gamePlayers);
         const faceUps = game.faceUpCards.faceUpCards;
         let faceUpArray = new Array<TrainCard>();
+        console.log(faceUps);
         for(let j = 0; j < faceUps.length; j++)
         {
-          const card = new TrainCard(faceUps[i].color);
-          faceUpArray.push(card);
+          console.log(faceUps[j].color);
+          let c = new TrainCard(faceUps[j].color);
+          faceUpArray.push(c);
         }
 
+        console.log("FACEUP");
+        console.log(faceUpArray);
         let faceUp = new FaceUpCards(faceUpArray);
         this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
         //this.inGameClientFacade.setDest
