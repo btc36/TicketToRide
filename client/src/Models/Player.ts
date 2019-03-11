@@ -132,6 +132,14 @@ export class Player {
     this.numTrainCards = numCards;
   }
 
+  getNumTrainCards(): number{
+    return this.numTrainCards;
+  }
+
+  getNumDestinationCards(): number{
+    return this.numDestinationCards;
+  }
+
   setNumDestinationCards(numCards:number){
     this.numDestinationCards = numCards
   }
