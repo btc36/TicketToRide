@@ -22,6 +22,7 @@ export class ClientCommunicator {
   }
   public sendCommand(command: ClientCommandObjects){
     var data = this.serializer.toJSON(command);
+
     var request = new XMLHttpRequest();
     request.open('POST', "/command", true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -31,11 +32,15 @@ export class ClientCommunicator {
       if (request.status >= 200 && request.status < 400) {
         // Success!
         var result = serial.parseJSON(request.responseText);
+        console.log(result);
         that.executeCommands(result);
       } else {
         // We reached our target server, but it returned an error
 
       }
+
+      console.log("dragon");
+      console.log(data);
     };
 
     request.onerror = function() {
@@ -108,6 +113,7 @@ export class ClientCommunicator {
         this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
       else if (commands[i]._methodName == "discardDestinationCard"){
+        console.log("zolpidem and coding. bddd idea");
         this.inGameClientFacade.discardDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
       else if (commands[i]._methodName == "drawDestinationCard"){

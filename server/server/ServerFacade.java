@@ -269,7 +269,7 @@ public class ServerFacade extends Facade
     public List<GenericCommand> sendChat(String chatMessage, String time, String username, String gameID)
     {
         test();
-        List<GenericCommand> temp = createGame("user1","game1","4");
+
 
         String message = "";
         boolean success = false;
@@ -295,7 +295,7 @@ public class ServerFacade extends Facade
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
-        commandsForClient.addAll(temp);
+
         commandsForClient.add(command);
 
         return commandsForClient;
@@ -316,6 +316,7 @@ public class ServerFacade extends Facade
             success = true;
             room = ServerModel.getInstance().getChatRoombyID(gameID);
             result = room.getMessages();
+            message = "chat : success";
         }
 
         System.out.println(message);
@@ -343,7 +344,7 @@ public class ServerFacade extends Facade
         login("user2", "user2");
         login("user3", "user3");
         login("user4", "user4");
-
+        List<GenericCommand> temp = createGame("user1","game1","4");
         System.out.println(divider);
 //
 //        joinGame("user2", "game1");

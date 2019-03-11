@@ -43,8 +43,11 @@ export class IngameInternalClientFacade {
   DiscardDestinationCard(destinationCards: Array<DestinationCard>) {
     let gameID = this.root.getGameID();
     let username = this.root.getUsername();
+
     this.proxy.DiscardDestinationCard(gameID, username, destinationCards);
+    console.log("Destination cardcccc");
     this.root.discardDestinationCard();
+
   }
 
   storeDestinationCard(destinationCards: Array<DestinationCard>) {
