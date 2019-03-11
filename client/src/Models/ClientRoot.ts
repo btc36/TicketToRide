@@ -39,7 +39,7 @@ export class ClientRoot implements ISubject {
     }
 
     transitionPage(pageName: string) {
-        console.log("transition page called");
+        //console.log("transition page called");
         this.session.setCurrentPage(pageName);
         this.notify("transitionPage", pageName);
     }

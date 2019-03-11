@@ -33,9 +33,13 @@ export class IngameClientRoot implements ISubject {
     let jake = new Player("Jake");
     let rand = Math.floor(Math.random() * AllRoutes.length);
     ben.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    rand = Math.floor(Math.random() * AllRoutes.length);
     lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    rand = Math.floor(Math.random() * AllRoutes.length);
     brennah.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    rand = Math.floor(Math.random() * AllRoutes.length);
     jordan.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
+    rand = Math.floor(Math.random() * AllRoutes.length);
     jake.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
     this.game.setPlayerList([ ben, lincoln, brennah, jordan, jake]);
     this.notify("updatedPlayerList", this.game.getPlayerList());
