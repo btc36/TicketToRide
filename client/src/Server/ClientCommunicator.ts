@@ -7,6 +7,8 @@ import { LobbyGame } from "../Models/LobbyGame";
 import { IngameExternalClientFacade } from "../Services/IngameExternalClientFacade";
 import {TrainCard} from "../Models/TrainCard";
 import {FaceUpCards} from "../Models/FaceUpCards";
+import {DestinationCard} from "../Models/DestinationCard";
+import {PlayerHand} from "../Models/PlayerHand";
 
 export class ClientCommunicator {
   serverUrl: string;
@@ -93,8 +95,32 @@ export class ClientCommunicator {
         for (let i = 0; i < players.length; i++) {
           const player = new Player(players[i].username);
           player.setTurn(players[i].turn);
-          player.score = players[i].color;
-          gamePlayers.push(players[i]);
+          player.color = players[i].color;
+          player.score = 0;
+          const hand = new PlayerHand();
+
+          let dests = Array<DestinationCard>();
+
+          for(let j = 0; j < players[i].destinationCards.length; j++)
+          {
+            const city1 = players[i].destinationCards[j].city1;
+            const city2 = players[i].destinationCards[j].city2;
+            const pointValue = players[i].destinationCards[j].pointValue;
+            dests.push(new DestinationCard(city1,city2,pointValue));
+          }
+          hand.addDestinationCard(dests);
+
+
+          let trains = Array<TrainCard>();
+          for(let j = 0; j < players[i].trainCards.length; j++)
+          {
+            hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
+          }
+          player.myHand = hand;
+          gamePlayers.push(player);
+
+
+
         }
 
         this.inGameClientFacade.setPlayerList(gamePlayers);
