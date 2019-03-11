@@ -5,11 +5,16 @@ import play = Simulate.play;
 
 export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
 
+    if (component.state.game == null){
+        return (
+          <div> Loading...</div>
+        )
+      }
     const players = new Array<any>();
-    const playerList = component.state.playerList;
+    const playerList = component.state.game.getPlayerList();
     const trainInfos = new Array<any>();
     const turn = new Array<any>();
-    let colorCountMap;
+    let colorCountMap = null;
 
     for (let i = 0; i < playerList.length; i++) {
         if(component.state.username == playerList[i].username)
@@ -40,11 +45,10 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
       <div>
           <div>
               <p><b><u>Player Info</u></b></p>
-              {turn}
+              <p>{turn}</p>
               <ul>
                   {players}
               </ul>
-              <p><b>Message</b></p>
           </div>
       </div>
   );

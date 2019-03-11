@@ -34,6 +34,7 @@ export class IngameClientRoot implements ISubject {
     lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, "red")];
     this.game.setPlayerList([ ben, lincoln]);
     this.notify("updatedPlayerList", this.game.getPlayerList());
+    this.notify("playerInfoChanged", null);
   }
 
   setLocalPlayer(localPlayer: Player) {
@@ -95,7 +96,10 @@ export class IngameClientRoot implements ISubject {
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
     this.game.addDestinationCard(username, destinationCards);
     this.localPlayer.drawDestinationCard(destinationCards);
-    this.notify("keptDestination",null);
+    this.notify("keptDestination", null);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
+
   }
 
   checkWinCondition(): Player {
@@ -144,8 +148,13 @@ export class IngameClientRoot implements ISubject {
   }
 
   changeFaceUpCards() {
-    this.game.drawTrainCard();
-    this.notify('setFaceUpCards',null);
+    let drawnCard = this.game.drawTrainCard();
+    this.localPlayer.drawTrainCard(drawnCard);
+    this.notify('setFaceUpCards', null);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
+    console.log(this.game);
+    console.log(this.localPlayer);
   }
 
   updatePlayerPoints(player: string, points: number): void {
@@ -172,8 +181,17 @@ export class IngameClientRoot implements ISubject {
     this.game.setNumTrainCardsRemaining(newNum);
   }
 
+  setNumDestinationCardsRemaining( newNum: number): void {
+    this.game.setNumDestinationCardsRemaining(newNum);
+  }
+
+  setNumTrainCardsRemaining(newNum: number): void {
+    this.game.setNumTrainCardsRemaining(newNum);
+  }
+
   changeTurn(player: string): void {
     this.game.changeTurn(player);
+    this.notify("playerInfoChanged", null);
   }
 
   receiveChatCommand(gameid: string, chats: any[]){

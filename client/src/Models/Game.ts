@@ -23,19 +23,25 @@ export class Game {
 
   constructor() {
     this.gameID = "EPICGAME";
-    this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
-    this.whoseTurn = 1;
-    this.map = new GameMap();
-    this.numDestinationCardsRemaining = 30;
-    this.numTrainCardsRemaining = 110;
-    this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
-    this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
-    this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
-    this.players[0].initiateGame(null, 0, "red", 0, 0, false);
-    this.players[1].initiateGame(null, 0, "blue", 0, 0, false);
-  }
+        this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
+        let currCard = new TrainCard("blue");
+        this.players[0].drawTrainCard(currCard);
+        let dCard = new DestinationCard("alabama", "provo", 8)
+        this.players[0].drawDestinationCard([dCard]);
+        this.whoseTurn = 0;
+        this.map = new GameMap();
+        this.numDestinationCardsRemaining = 30;
+        this.numTrainCardsRemaining = 110;
+        this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
+        this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
+        this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
+    }
 
-    getGameID() {
+    setGameID(input: string): void{
+      this.gameID = input;
+    }
+
+    getGameID(): string{
       return this.gameID;
   }
     checkWinCondition(): Player {
@@ -83,14 +89,29 @@ export class Game {
         return this.numTrainCardsRemaining;
     }
 
+    
     getFaceUpCards(): FaceUpCards {
+     /* this.gameID = "EPICGAME";
+      this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
+      this.players[0].initiateGame(new PlayerHand(),40,"Green",10,39,true);
+      this.players[1].initiateGame(new PlayerHand(),40,"Green",15,3,true);
+      this.whoseTurn = 1;
+      this.map = new GameMap();
+      //this.numDestinationCardsRemaining = 30;
+     // this.numTrainCardsRemaining = 110;
+     // this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
+      this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
+      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];*/
         return this.faceUpCards;
   }
 
-  drawTrainCard() {
+  drawTrainCard():TrainCard {
     let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
-    this.faceUpCards.drawCard(this.randomInt(0, 4), trainCards[this.randomInt(0, 4)]);
+    let drawnCard = trainCards[this.randomInt(0, 4)];
+    this.faceUpCards.drawCard(this.randomInt(0, 4), drawnCard);
     this.numTrainCardsRemaining -= 1;
+    this.addTrainCard('ben', drawnCard);
+    return drawnCard;
   }
 
 

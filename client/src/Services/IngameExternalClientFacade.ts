@@ -63,6 +63,15 @@ export class IngameExternalClientFacade {
     this.root.updateNumberOfDestinationCards(player, numCards);
   }
 
+  // number of total in the gmae
+  setNumDestinationCardsRemaining( newNum: number): void {
+    this.root.setNumDestinationCardsRemaining(newNum);
+  }
+
+  setNumTrainCardsRemaining(newNum: number): void {
+    this.root.setNumTrainCardsRemaining(newNum);
+  }
+
   changeTurn(player: string) {
     this.root.changeTurn(player)
   }

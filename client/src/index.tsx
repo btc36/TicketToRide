@@ -63,16 +63,16 @@ class MainComponent extends React.Component<any, any> {
  * TODO: SETUP stuffs.
  */
 
-// With this setup, sending chat takes to list of games
-const player = new Player("user1");
-const game = new LobbyGame("game1", player, "f", 3);
-const games = new GameList();
-games.addGame(game);
+// // With this setup, sending chat takes to list of games
+// const player = new Player("user1");
+// const game = new LobbyGame("game1", player, "f", 3);
+// const games = new GameList();
+// games.addGame(game);
 
 
 const root = new ClientRoot();
-root.gameList = games;
-root.myPlayer = player;
+// root.gameList = games;
+// root.myPlayer = player;
 
 const externalClientFacade = new ExternalClientFacade(root);
 

@@ -35,8 +35,7 @@ export class PlayerHand {
       return this.colorCountMap;
     }
 
-  addDestinationCard(destinationCard: Array<DestinationCard>): void {
-      
+    addDestinationCard(destinationCard: Array<DestinationCard>): void {    
       this.destinationCards = this.destinationCards.concat(destinationCard);
     }
 
@@ -54,7 +53,10 @@ export class PlayerHand {
     addTrainCard(trainCard: TrainCard): void {
       this.trainCards.push(trainCard);
       const color = trainCard.getColor();
-      let count = this.colorCountMap.get(color);
+      let count = 0;
+      if (this.colorCountMap.get(color) != null){
+        count = this.colorCountMap.get(color);
+      }
       this.colorCountMap.set(color, count + 1);
     }
 }
