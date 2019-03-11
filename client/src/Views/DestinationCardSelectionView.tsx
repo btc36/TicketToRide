@@ -10,7 +10,7 @@ export const DestinationCardSelectionView  = (component: I.IDestinationCardSelec
   }
   if (component.state.isActive) {
     return (
-      <form action="/action_page.php" onSubmit={component.onSubmitButtonPressed}>
+      <form onSubmit={component.onSubmitButtonPressed}>
         <p>Destination Card A----City1: {component.state.destinationCards[0].city1} , City2: {component.state.destinationCards[0].city2}, Points: {component.state.destinationCards[0].pointValue}</p><p>
         </p><p>Destination Card B----City1:  {component.state.destinationCards[1].city1} , City2: {component.state.destinationCards[1].city2}, Points: {component.state.destinationCards[1].pointValue}</p><p>
         </p><p>Destination Card C----City1:  {component.state.destinationCards[2].city1} , City2: {component.state.destinationCards[2].city2}, Points: {component.state.destinationCards[2].pointValue}</p><p>
