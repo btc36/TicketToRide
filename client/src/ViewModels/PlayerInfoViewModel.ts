@@ -14,6 +14,10 @@ export class PlayerInfoViewModel extends React.Component<IngameViewModelProps, S
     }
   }
 
+  componentDidMount() {
+    this.setState({ game: this.props.services.getGame(), username: this.props.services.getUsername() });
+  }
+
   render(): JSX.Element {
     return PlayerInfoView(this);
   }
