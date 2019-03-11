@@ -18,10 +18,18 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
-      this.props.main.setState({"page": data});      
+      this.props.main.setState({ "page": data });
     } else if (updateType == "setFaceUpCards") {
       this.setState({ faceUpCards: this.props.services.getFaceUpCards() });
+      this.setState({ numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining()});
+    } else if ( updateType == "keptDestination") {
+      this.setState({ numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining()});
     }
+  }
+
+  drawCard = (e: any) => {
+    this.props.services.drawTrainCard();
+    this.props.services
   }
 
   render(): JSX.Element {

@@ -14,4 +14,5 @@ export type State = {
 
 export interface IFaceUpCardsViewModel {
   state: State;
+  drawCard(e: any): void;
 }

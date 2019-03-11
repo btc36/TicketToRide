@@ -100,7 +100,19 @@ export class Game {
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
         return this.faceUpCards;
-    }
+  }
+
+  drawTrainCard() {
+    let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
+    this.faceUpCards.drawCard(this.randomInt(0, 4), trainCards[this.randomInt(0, 4)]);
+    this.numTrainCardsRemaining -= 1;
+  }
+
+
+  randomInt(min:number, max:number):number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 
   claimRoute(username: string, route: Route): void {
         this.players.forEach((player) => {
@@ -131,6 +143,7 @@ export class Game {
     }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    this.numDestinationCardsRemaining -= destinationCards.length;
     this.players.forEach((thisPlayer) => {
       if (thisPlayer.getUsername() == username) {
         thisPlayer.drawDestinationCard(destinationCards);
