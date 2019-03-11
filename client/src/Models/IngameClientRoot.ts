@@ -95,7 +95,8 @@ export class IngameClientRoot implements ISubject {
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
     this.game.addDestinationCard(username, destinationCards);
     this.localPlayer.drawDestinationCard(destinationCards);
-    this.notify("keptDestination",null);
+    this.notify("keptDestination", null);
+    this.notify("myHandUpdated", null);
   }
 
   checkWinCondition(): Player {
@@ -147,6 +148,7 @@ export class IngameClientRoot implements ISubject {
     let drawnCard = this.game.drawTrainCard();
     this.localPlayer.drawTrainCard(drawnCard);
     this.notify('setFaceUpCards', null);
+    this.notify("myHandUpdated", null);
     console.log(this.game);
     console.log(this.localPlayer);
   }
