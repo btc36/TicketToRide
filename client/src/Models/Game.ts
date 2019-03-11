@@ -28,7 +28,7 @@ export class Game {
         this.players[0].drawTrainCard(currCard);
         let dCard = new DestinationCard("alabama", "provo", 8)
         this.players[0].drawDestinationCard([dCard]);
-        this.whoseTurn = 1;
+        this.whoseTurn = 0;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 30;
         this.numTrainCardsRemaining = 110;
@@ -37,10 +37,11 @@ export class Game {
         this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
 
-    setGameID(gameId: string) {
-      this.gameID = gameId;
+    setGameID(input: string): void{
+      this.gameID = input;
     }
-    getGameID() {
+
+    getGameID(): string{
       return this.gameID;
     }
     checkWinCondition(): Player {
@@ -66,6 +67,8 @@ export class Game {
 
     setPlayerList(list: Array<Player>) {
         this.players = list;
+        console.log("PLAYER");
+        console.log(this.players);
     }
 
     getPlayerList(): Array<Player> {
@@ -90,6 +93,7 @@ export class Game {
 
     
     getFaceUpCards(): FaceUpCards {
+     /* this.gameID = "EPICGAME";
       this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
       this.players[0].initiateGame(new PlayerHand(),40,"Green",10,39,true);
       this.players[1].initiateGame(new PlayerHand(),40,"Green",15,3,true);
@@ -99,8 +103,7 @@ export class Game {
      // this.numTrainCardsRemaining = 110;
      // this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
-      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
-      this.numTrainCardsRemaining -= 1;
+      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];*/
         return this.faceUpCards;
   }
 
@@ -109,6 +112,7 @@ export class Game {
     let drawnCard = trainCards[this.randomInt(0, 4)];
     this.faceUpCards.drawCard(this.randomInt(0, 4), drawnCard);
     this.numTrainCardsRemaining -= 1;
+    this.addTrainCard('ben', drawnCard);
     return drawnCard;
   }
 

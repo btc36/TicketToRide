@@ -1,4 +1,5 @@
 import { FaceUpCards } from "../Models/FaceUpCards";
+import { TrainCard } from "../Models/TrainCard";
 
 export const initialState = {
   faceUpCards: null,

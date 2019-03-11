@@ -11,6 +11,8 @@ export class PlayerInfoViewModel extends React.Component<IngameViewModelProps, S
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
+    } if (updateType == "playerInfoChanged") {
+      this.setState({ game: this.props.services.getGame(), username: this.props.services.getUsername() });
     }
   }
 

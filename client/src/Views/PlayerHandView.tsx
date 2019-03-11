@@ -18,6 +18,7 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
         <li>{key} : {value}</li>
     )
   });
+  console.log(destCards);
   for (let i = 0; i < destCards.length; i++) {
     destCardsList.push(<li>Cities: {destCards[i].getCities()} Points: {destCards[i].getPointValue()}</li>);
   }
