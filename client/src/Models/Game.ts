@@ -89,6 +89,7 @@ export class Game {
   drawTrainCard() {
     let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
     this.faceUpCards.drawCard(this.randomInt(0, 4), trainCards[this.randomInt(0, 4)]);
+    this.numTrainCardsRemaining -= 1;
   }
 
 
@@ -96,7 +97,6 @@ export class Game {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
- 
 
   claimRoute(username: string, route: Route): void {
         this.players.forEach((player) => {
@@ -127,6 +127,7 @@ export class Game {
     }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    this.numDestinationCardsRemaining -= destinationCards.length;
     this.players.forEach((thisPlayer) => {
       if (thisPlayer.getUsername() == username) {
         thisPlayer.drawDestinationCard(destinationCards);

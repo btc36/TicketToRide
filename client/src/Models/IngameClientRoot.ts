@@ -104,6 +104,7 @@ export class IngameClientRoot implements ISubject {
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
     this.game.addDestinationCard(username, destinationCards);
     this.localPlayer.drawDestinationCard(destinationCards);
+    this.notify("keptDestination",null);
   }
 
   checkWinCondition(): Player {
