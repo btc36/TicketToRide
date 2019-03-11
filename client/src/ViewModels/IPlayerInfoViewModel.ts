@@ -1,6 +1,8 @@
+import { Game } from "../Models/Game";
+
 export const initialState = {
-  playerList : new Array<any>(),
-  username : "ben"
+  game: null,
+  username : null
 };
 
 export type State = Readonly<typeof initialState>;

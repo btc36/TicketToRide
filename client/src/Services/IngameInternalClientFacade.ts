@@ -5,6 +5,7 @@ import { DestinationCard } from "../Models/DestinationCard";
 import { Route } from "../Models/Route";
 import { PlayerHand } from "../Models/PlayerHand";
 import {TrainCard} from "../Models/TrainCard";
+import {Game} from "../Models/Game";
 
 // calls proxy
 export class IngameInternalClientFacade {
@@ -76,7 +77,15 @@ export class IngameInternalClientFacade {
 
   getPlayerHand(): PlayerHand{
     return this.root.getPlayerHand();
-  } 
+  }
+
+  getGame(): Game{
+    return this.root.getGame();
+  }
+
+  getUsername(): String{
+    return this.root.getUsername();
+  }
 
   getAllOwnedRoutes(): Array<Route> {
     let routes = new Array<Route>();
