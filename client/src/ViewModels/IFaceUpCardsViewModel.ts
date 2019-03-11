@@ -1,4 +1,5 @@
 import { FaceUpCards } from "../Models/FaceUpCards";
+import { TrainCard } from "../Models/TrainCard";
 
 export const initialState = {
   faceUpCards: null,
@@ -7,7 +8,7 @@ export const initialState = {
 };
 
 export type State = {
-  readonly faceUpCards: FaceUpCards,
+  readonly faceUpCards: Array<TrainCard>,
   readonly numTrainCardsRemaining: number,
   readonly numDestinationCardsRemaining: number
 }

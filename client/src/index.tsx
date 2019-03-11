@@ -30,7 +30,7 @@ import {Player} from "./Models/Player";
 
 
 export const initialState = {
-  "page": "game"
+  "page": "loginRegister"
 };
 
 export type State = Readonly<typeof initialState>;
