@@ -100,10 +100,12 @@ export class Game {
         return this.faceUpCards;
   }
 
-  drawTrainCard() {
+  drawTrainCard():TrainCard {
     let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
-    this.faceUpCards.drawCard(this.randomInt(0, 4), trainCards[this.randomInt(0, 4)]);
+    let drawnCard = trainCards[this.randomInt(0, 4)];
+    this.faceUpCards.drawCard(this.randomInt(0, 4), drawnCard);
     this.numTrainCardsRemaining -= 1;
+    return drawnCard;
   }
 
 
