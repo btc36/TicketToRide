@@ -23,6 +23,9 @@ export class Player {
     this.username = username;
     this.myHand = new PlayerHand();
     this.colorCountMap = new Map<string, number>();
+    this.numTrainCards = 0;
+    this.numDestinationCards = 0;
+    this.trainCars = 0;
   }
 
   getUsername(): string {

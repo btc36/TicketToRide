@@ -127,13 +127,11 @@ export class ClientCommunicator {
               hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
             }
             player.myHand = hand;
+            gamePlayers.push(player);
             if (players[i].username == this.clientFacade.getCurrentUser()) {
                 this.inGameClientFacade.setLocalPlayer(player);
               }
             }
-    
-            
-          gamePlayers.push(player);
           this.inGameClientFacade.setPlayerList(gamePlayers);
           this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
           this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
