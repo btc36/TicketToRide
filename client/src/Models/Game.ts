@@ -43,7 +43,7 @@ export class Game {
 
     getGameID(): string{
       return this.gameID;
-  }
+    }
     checkWinCondition(): Player {
         let maxPoints = 0;
         let winningPlayer = null;

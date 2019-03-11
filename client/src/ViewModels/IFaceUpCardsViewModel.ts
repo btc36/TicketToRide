@@ -8,7 +8,7 @@ export const initialState = {
 };
 
 export type State = {
-  readonly faceUpCards: Array<TrainCard>,
+  readonly faceUpCards: FaceUpCards,
   readonly numTrainCardsRemaining: number,
   readonly numDestinationCardsRemaining: number
 }

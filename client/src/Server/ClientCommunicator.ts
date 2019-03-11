@@ -7,8 +7,6 @@ import { LobbyGame } from "../Models/LobbyGame";
 import { IngameExternalClientFacade } from "../Services/IngameExternalClientFacade";
 import {TrainCard} from "../Models/TrainCard";
 import {FaceUpCards} from "../Models/FaceUpCards";
-import {DestinationCard} from "../Models/DestinationCard";
-import {PlayerHand} from "../Models/PlayerHand";
 
 export class ClientCommunicator {
   serverUrl: string;
@@ -108,27 +106,15 @@ export class ClientCommunicator {
             const pointValue = players[i].destinationCards[j].pointValue;
             dests.push(new DestinationCard(city1,city2,pointValue));
           }
-          hand.addDestinationCard(dests);
-
-
-          let trains = Array<TrainCard>();
-          for(let j = 0; j < players[i].trainCards.length; j++)
-          {
-            hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
-          }
-          player.myHand = hand;
-          gamePlayers.push(player);
-
-
-
         }
 
+        this.inGameClientFacade.setGameId(game.gameID);
         this.inGameClientFacade.setPlayerList(gamePlayers);
         this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
         this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
         // Face-up Deck is initialized by random cards from the server: 7 percent
         //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
-        console.log(gamePlayers);
+
         const faceUps = game.faceUpCards.faceUpCards;
         let faceUpArray = new Array<TrainCard>();
         console.log(faceUps);
