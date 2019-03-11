@@ -31,14 +31,9 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
             //{playerList[i].numTrainCards} {playerList[i].numDestinationCards}</li>
         );
         players.push(<li> score : {playerList[i].score} </li>);
-<<<<<<< HEAD
         players.push(<li> TrainCards : {playerList[i].getNumTrainCards()} </li>);
         players.push(<li> DestinationCards : {playerList[i].getNumDestinationCards()} </li>);
         players.push(<li> Remaining Train Cars : {playerList[i].trainCars} </li>);
-=======
-        players.push(<li> TrainCards : {playerList[i].getNumTr} </li>);
-        players.push(<li> DestinationCards : {playerList[i].numDestinationCards} </li>);
->>>>>>> 69ab48596d3da59f5aa70cc8cabe1395056a4404
     }
     if (colorCountMap) {
       colorCountMap.forEach((value: number, key: string) => {
