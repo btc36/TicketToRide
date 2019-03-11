@@ -71,6 +71,10 @@ export class IngameExternalClientFacade {
     this.root.updateNumberOfDestinationCards(player, numCards);
   }
 
+  setGame(game: any) {
+    this.root.setGame(game);
+  }
+
   // number of total in the gmae
   setNumDestinationCardsRemaining( newNum: number): void {
     this.root.setNumDestinationCardsRemaining(newNum);

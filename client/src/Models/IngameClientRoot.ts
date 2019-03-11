@@ -32,7 +32,7 @@ export class IngameClientRoot implements ISubject {
     ben.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, "blue")];
     rand = Math.floor(Math.random() * AllRoutes.length);
     lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, "red")];
-    this.game.setPlayerList([ ben, lincoln]);
+    this.game.setPlayerList([ben, lincoln]);
     this.notify("updatedPlayerList", this.game.getPlayerList());
     this.notify("playerInfoChanged", null);
   }
@@ -98,6 +98,8 @@ export class IngameClientRoot implements ISubject {
   }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
+    console.log("AHAHAHAHAHAHHAHAH");
+    console.log(destinationCards);
     this.game.addDestinationCard(username, destinationCards);
     this.localPlayer.drawDestinationCard(destinationCards);
     this.notify("keptDestination", null);
@@ -128,7 +130,9 @@ export class IngameClientRoot implements ISubject {
   }
   setGame(game: Game)
   {
-    this.game = game;
+    console.log("MY GAME IS !!!!!!!!!!!!!")
+    console.log(game);
+    this.game.setGameID(game.gameID);
   }
   getMap(): GameMap {
     return this.game.getMap();

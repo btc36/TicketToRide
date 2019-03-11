@@ -7,6 +7,8 @@ import { LobbyGame } from "../Models/LobbyGame";
 import { IngameExternalClientFacade } from "../Services/IngameExternalClientFacade";
 import {TrainCard} from "../Models/TrainCard";
 import {FaceUpCards} from "../Models/FaceUpCards";
+import { PlayerHand } from "../Models/PlayerHand";
+import { DestinationCard } from "../Models/DestinationCard";
 
 export class ClientCommunicator {
   serverUrl: string;
@@ -86,10 +88,14 @@ export class ClientCommunicator {
         this.clientFacade.startGame(commands[i]._paramValues[2]);
         const game = commands[i]._paramValues[3][0]; // JSON game
         const players = game.playerList.playerList; // JSON players
-
+        console.log("MY GAME IS:");
+        console.log(game);
+        console.log("MY PLAYERS ARE");
+        console.log(players);
         let gamePlayers = new Array<Player>();
-
+        this.inGameClientFacade.setGame(game);
         // Players from lobby are in game: 6 percent
+        this.inGameClientFacade.setGameId(game.gameID);
         for (let i = 0; i < players.length; i++) {
           const player = new Player(players[i].username);
           player.setTurn(players[i].turn);
@@ -98,43 +104,56 @@ export class ClientCommunicator {
           const hand = new PlayerHand();
 
           let dests = Array<DestinationCard>();
+          for (let i = 0; i < players.length; i++) {
+            const player = new Player(players[i].username);
+            player.setTurn(players[i].turn);
+            player.color = players[i].color;
+            player.score = 0;
+            //const hand = new PlayerHand();
 
-          for(let j = 0; j < players[i].destinationCards.length; j++)
-          {
-            const city1 = players[i].destinationCards[j].city1;
-            const city2 = players[i].destinationCards[j].city2;
-            const pointValue = players[i].destinationCards[j].pointValue;
-            dests.push(new DestinationCard(city1,city2,pointValue));
+            let dests = Array<DestinationCard>();
+
+            for (let j = 0; j < players[i].destinationCards.length; j++) {
+              const city1 = players[i].destinationCards[j].city1;
+              const city2 = players[i].destinationCards[j].city2;
+              const pointValue = players[i].destinationCards[j].pointValue;
+              dests.push(new DestinationCard(city1, city2, pointValue));
+            }
+            //hand.addDestinationCard(dests);
+            console.log("PASSING STUFF");
+            this.inGameClientFacade.presentDestinationCard(true, "NONE", dests);
+            let trains = Array<TrainCard>();
+            for (let j = 0; j < players[i].trainCards.length; j++) {
+              hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
+            }
+            player.myHand = hand;
+            gamePlayers.push(player);
+            if (players[i].username == this.clientFacade.getCurrentUser()) {
+                this.inGameClientFacade.setLocalPlayer(player);
+              }
+            }
+          this.inGameClientFacade.setPlayerList(gamePlayers);
+          this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
+          this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
+          // Face-up Deck is initialized by random cards from the server: 7 percent
+          //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
+
+          const faceUps = game.faceUpCards.faceUpCards;
+          let faceUpArray = new Array<TrainCard>();
+          for (let j = 0; j < faceUps.length; j++) {
+            const card = new TrainCard(faceUps[j].color);
+            faceUpArray.push(card);
           }
-        }
 
-        this.inGameClientFacade.setGameId(game.gameID);
-        this.inGameClientFacade.setPlayerList(gamePlayers);
-        this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
-        this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
-        // Face-up Deck is initialized by random cards from the server: 7 percent
-        //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
+          let faceUp = new FaceUpCards(faceUpArray);
+          this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
+          //this.inGameClientFacade.setDest
 
-        const faceUps = game.faceUpCards.faceUpCards;
-        let faceUpArray = new Array<TrainCard>();
-        console.log(faceUps);
-        for(let j = 0; j < faceUps.length; j++)
-        {
-          console.log(faceUps[j].color);
-          let c = new TrainCard(faceUps[j].color);
-          faceUpArray.push(c);
-        }
-
-        console.log("FACEUP");
-        console.log(faceUpArray);
-        let faceUp = new FaceUpCards(faceUpArray);
-        this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
-        //this.inGameClientFacade.setDest
-
-        // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
-        for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
-        {
-          this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
+          // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
+          for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
+          {
+            this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
+          }
         }
       }
       else if (commands[i]._methodName == "receiveChatCommand") {

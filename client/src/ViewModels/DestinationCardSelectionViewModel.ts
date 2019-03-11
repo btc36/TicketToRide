@@ -41,24 +41,24 @@ export class DestinationCardSelectionViewModel extends React.Component<ViewModel
     e.preventDefault();
     console.log("I DECIDED TO DISCARD CARD: ");
     console.log(this.state.toDiscard);
-    if (this.state.toDiscard == "a") {
-      this.props.services.DiscardDestinationCard([this.state.destinationCards[0]]);
+    if (this.state.toDiscard == "a") {      
       this.props.services.storeDestinationCard([this.state.destinationCards[1], this.state.destinationCards[2]]);
+      this.props.services.DiscardDestinationCard([this.state.destinationCards[0]]);
       this.props.services.printRoot();
 
     } else if (this.state.toDiscard == "b") {
-      this.props.services.DiscardDestinationCard([this.state.destinationCards[1]])
       this.props.services.storeDestinationCard([this.state.destinationCards[0], this.state.destinationCards[2]]);
+      this.props.services.DiscardDestinationCard([this.state.destinationCards[1]])
       this.props.services.printRoot();
 
     } else if (this.state.toDiscard == "c") {
-      this.props.services.DiscardDestinationCard([this.state.destinationCards[2]])
       this.props.services.storeDestinationCard([this.state.destinationCards[0], this.state.destinationCards[1]]);
+      this.props.services.DiscardDestinationCard([this.state.destinationCards[2]])
       this.props.services.printRoot();
 
     } else if (this.state.toDiscard == "none") {
-      this.props.services.DiscardDestinationCard([])
       this.props.services.storeDestinationCard([this.state.destinationCards[0], this.state.destinationCards[1], this.state.destinationCards[2]]);
+      this.props.services.DiscardDestinationCard([])
       this.props.services.printRoot();
     }
   }

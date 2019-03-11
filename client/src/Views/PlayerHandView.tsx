@@ -38,6 +38,7 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
                   {trainCardsList}
               </ul>
       </div>
+      <button onClick={component.refreshHand}>Refresh</button>
     </div>
   );
 }

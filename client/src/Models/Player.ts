@@ -23,6 +23,9 @@ export class Player {
     this.username = username;
     this.myHand = new PlayerHand();
     this.colorCountMap = new Map<string, number>();
+    this.numTrainCards = 0;
+    this.numDestinationCards = 0;
+    this.trainCars = 0;
   }
 
   getUsername(): string {
@@ -40,7 +43,7 @@ export class Player {
   //Acts as a constructor for when actual gameplay starts
   initiateGame(myHand:PlayerHand,trainCards:number,color:string,numTrainCards:number,numDestinationCards:number,isOtherPlayer:boolean) {
     this.myHand = myHand;
-    this.trainCars = trainCards;
+    this.trainCars = 45;
     this.color = color;
     this.numTrainCards = numTrainCards;
     this.numDestinationCards = numDestinationCards;
@@ -87,7 +90,7 @@ export class Player {
     const color = trainCard.getColor();
     let count = 0;
       if (this.colorCountMap.get(color) != null){
-        let count = this.colorCountMap.get(color);
+        count = this.colorCountMap.get(color);
       }
     this.colorCountMap.set(color, count + 1);
   }
@@ -132,8 +135,20 @@ export class Player {
     this.numTrainCards = numCards;
   }
 
+  getNumDestinationCards(): number{
+    return this.numDestinationCards;
+  }
+
   setNumDestinationCards(numCards:number){
     this.numDestinationCards = numCards
+  }
+
+  getNumTrainCars(): number {
+    return this.trainCars;
+  }
+
+  getNumTrainCards() {
+    return this.numTrainCards;
   }
 
 

@@ -10,4 +10,5 @@ export type State = {
 
 export interface IPlayerHandViewModel {
   state: State;
+  refreshHand(e: any): void;
 }
