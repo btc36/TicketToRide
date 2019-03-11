@@ -7,6 +7,7 @@ import { Route } from "./Route";
 import { ChatRoom } from "./ChatRoom";
 import { ChatMessage } from "./ChatMessage";
 import { Map } from "google-maps-react";
+import { PlayerHand } from "./PlayerHand";
 
 export class Game {
     //gameID: string;
@@ -22,7 +23,8 @@ export class Game {
 
   constructor() {
     this.gameID = "EPICGAME";
-        this.players = [];
+        
+        this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
         this.whoseTurn = 1;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 30;
@@ -34,7 +36,7 @@ export class Game {
 
     getGameID() {
       return this.gameID;
-    }
+  }
     checkWinCondition(): Player {
         let maxPoints = 0;
         let winningPlayer = null;
