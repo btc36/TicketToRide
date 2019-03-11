@@ -48,6 +48,9 @@ export class Player {
     this.ownedRoutes = new Array<Route>();
     this.ownedRoutes.push(new Route("Seattle", "Portland", 1, "grey"));
     this.myTurn = false;
+    if (numDestinationCards == 3){
+      this.myTurn = true;
+    }
     this.colorCountMap = new Map<string, number>();
   }
 
