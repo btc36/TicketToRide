@@ -95,6 +95,7 @@ export class ClientCommunicator {
         let gamePlayers = new Array<Player>();
         this.inGameClientFacade.setGame(game);
         // Players from lobby are in game: 6 percent
+        this.inGameClientFacade.setGameId(game.gameID);
         for (let i = 0; i < players.length; i++) {
           const player = new Player(players[i].username);
           player.setTurn(players[i].turn);
@@ -126,8 +127,13 @@ export class ClientCommunicator {
               hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
             }
             player.myHand = hand;
-            gamePlayers.push(player);
-          }
+            if (players[i].username == this.clientFacade.getCurrentUser()) {
+                this.inGameClientFacade.setLocalPlayer(player);
+              }
+            }
+    
+            
+          gamePlayers.push(player);
           this.inGameClientFacade.setPlayerList(gamePlayers);
           this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
           this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
