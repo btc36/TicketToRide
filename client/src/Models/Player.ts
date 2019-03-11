@@ -22,12 +22,17 @@ export class Player {
   constructor(username: string) {
     this.username = username;
     this.myHand = new PlayerHand();
+    this.colorCountMap = new Map<string, number>();
   }
 
   getUsername(): string {
     return this.username;
   }
   getHand(): PlayerHand{
+    let currCard = new TrainCard("blue");
+      this.myHand.addTrainCard(currCard);
+      let dCard = new DestinationCard("alabama", "provo", 8)
+      this.myHand.addDestinationCard([dCard]);
     return this.myHand
   }
 
@@ -43,6 +48,9 @@ export class Player {
     this.ownedRoutes = new Array<Route>();
     this.ownedRoutes.push(new Route("Seattle", "Portland", 1, "grey"));
     this.myTurn = false;
+    if (numDestinationCards == 3){
+      this.myTurn = true;
+    }
     this.colorCountMap = new Map<string, number>();
   }
 
@@ -76,7 +84,10 @@ export class Player {
   drawTrainCard(trainCard: TrainCard):void {
     this.myHand.addTrainCard(trainCard);
     const color = trainCard.getColor();
-    let count = this.colorCountMap.get(color);
+    let count = 0;
+      if (this.colorCountMap.get(color) != null){
+        let count = this.colorCountMap.get(color);
+      }
     this.colorCountMap.set(color, count + 1);
   }
 

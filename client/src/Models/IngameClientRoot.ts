@@ -144,8 +144,11 @@ export class IngameClientRoot implements ISubject {
   }
 
   changeFaceUpCards() {
-    this.game.drawTrainCard();
-    this.notify('setFaceUpCards',null);
+    let drawnCard = this.game.drawTrainCard();
+    this.localPlayer.drawTrainCard(drawnCard);
+    this.notify('setFaceUpCards', null);
+    console.log(this.game);
+    console.log(this.localPlayer);
   }
 
   updatePlayerPoints(player: string, points: number): void {
