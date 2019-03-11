@@ -24,6 +24,10 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
     }
   }
 
+  drawCard = (e: any) => {
+    this.props.services.drawTrainCard();
+  }
+
   render(): JSX.Element {
     return FaceUpCardsView(this);
   }

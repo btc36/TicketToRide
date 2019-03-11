@@ -85,7 +85,19 @@ export class Game {
 
     getFaceUpCards(): FaceUpCards {
         return this.faceUpCards;
-    }
+  }
+
+  drawTrainCard() {
+    let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
+    this.faceUpCards.drawCard(this.randomInt(0, 4), trainCards[this.randomInt(0, 4)]);
+  }
+
+
+  randomInt(min:number, max:number):number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+ 
 
   claimRoute(username: string, route: Route): void {
         this.players.forEach((player) => {
