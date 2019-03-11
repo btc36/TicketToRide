@@ -55,6 +55,10 @@ export class IngameInternalClientFacade {
       this.root.addDestinationCard(username, destinationCards);
   }
 
+  drawTrainCard() {
+    this.root.changeFaceUpCards();
+  }
+
   printRoot() {
     console.log(this.root);
   }

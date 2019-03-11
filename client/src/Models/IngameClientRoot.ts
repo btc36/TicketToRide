@@ -28,16 +28,11 @@ export class IngameClientRoot implements ISubject {
   randomize() {
     let ben = new Player("ben");
     let lincoln = new Player("lincoln");
-    let brennah = new Player("Brennah");
-    let jordan = new Player("Jordan");
-    let jake = new Player("Jake");
     let rand = Math.floor(Math.random() * AllRoutes.length);
-    ben.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
-    lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
-    brennah.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
-    jordan.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
-    jake.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, AllRoutes[rand].color)];
-    this.game.setPlayerList([ ben, lincoln, brennah, jordan, jake]);
+    ben.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, "blue")];
+    rand = Math.floor(Math.random() * AllRoutes.length);
+    lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, "red")];
+    this.game.setPlayerList([ ben, lincoln]);
     this.notify("updatedPlayerList", this.game.getPlayerList());
   }
 
@@ -98,7 +93,8 @@ export class IngameClientRoot implements ISubject {
   }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
-    this.game.addDestinationCard(username,destinationCards);
+    this.game.addDestinationCard(username, destinationCards);
+    this.localPlayer.drawDestinationCard(destinationCards);
   }
 
   checkWinCondition(): Player {
@@ -144,6 +140,11 @@ export class IngameClientRoot implements ISubject {
   setFaceUpCards(faceUpCards: FaceUpCards): void {
     this.game.setFaceUpCards(faceUpCards);
     this.notify("setFaceUpCards", faceUpCards);
+  }
+
+  changeFaceUpCards() {
+    this.game.drawTrainCard();
+    this.notify('setFaceUpCards',null);
   }
 
   updatePlayerPoints(player: string, points: number): void {
