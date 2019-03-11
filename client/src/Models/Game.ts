@@ -37,9 +37,12 @@ export class Game {
         this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
     }
 
+    setGameID(gameId: string) {
+      this.gameID = gameId;
+    }
     getGameID() {
       return this.gameID;
-  }
+    }
     checkWinCondition(): Player {
         let maxPoints = 0;
         let winningPlayer = null;
@@ -87,7 +90,6 @@ export class Game {
 
     
     getFaceUpCards(): FaceUpCards {
-      this.gameID = "EPICGAME";
       this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
       this.players[0].initiateGame(new PlayerHand(),40,"Green",10,39,true);
       this.players[1].initiateGame(new PlayerHand(),40,"Green",15,3,true);

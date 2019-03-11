@@ -95,13 +95,19 @@ export class ClientCommunicator {
           player.setTurn(players[i].turn);
           player.score = players[i].color;
           gamePlayers.push(players[i]);
+          if (players[i].username == this.clientFacade.getCurrentUser()) {
+            this.inGameClientFacade.setLocalPlayer(player);
+          }
         }
+
+        this.inGameClientFacade.setGameId(game.gameID);
+
         this.inGameClientFacade.setPlayerList(gamePlayers);
         this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
         this.inGameClientFacade.setNumDestinationCardsRemaining(game.trainDeck.size)
         // Face-up Deck is initialized by random cards from the server: 7 percent
         //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
-
+        
         const faceUps = game.faceUpCards.faceUpCards;
         let faceUpArray = new Array<TrainCard>();
         for(let j = 0; j < faceUps.length; j++)

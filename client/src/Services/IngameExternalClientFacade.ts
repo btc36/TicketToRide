@@ -21,6 +21,10 @@ export class IngameExternalClientFacade {
     this.root.addTrainCard(trainCard);
   }*/
 
+  setLocalPlayer(localPlayer: Player) {
+    this.root.setLocalPlayer(localPlayer);
+  }
+
   setPlayerList(players: Array<Player>) {
     this.root.setPlayerList(players);
   }
@@ -53,6 +57,10 @@ export class IngameExternalClientFacade {
 
   setFaceUpCards(faceUpCards:FaceUpCards) {
     this.root.setFaceUpCards(faceUpCards);
+  }
+
+  setGameId(gameId: string) {
+    this.root.setGameID(gameId);
   }
 
   updateNumInDeck(newNum:number) {

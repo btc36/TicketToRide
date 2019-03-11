@@ -68,6 +68,10 @@ export class IngameClientRoot implements ISubject {
 
   }
 
+  setGameID(gameId: string) {
+    this.game.setGameID(gameId);
+  }
+
   getGameID():string {
     return this.game.getGameID();
   }
