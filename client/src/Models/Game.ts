@@ -23,16 +23,17 @@ export class Game {
 
   constructor() {
     this.gameID = "EPICGAME";
-        
-        this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
-        this.whoseTurn = 1;
-        this.map = new GameMap();
-        this.numDestinationCardsRemaining = 30;
-        this.numTrainCardsRemaining = 110;
+    this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
+    this.whoseTurn = 1;
+    this.map = new GameMap();
+    this.numDestinationCardsRemaining = 30;
+    this.numTrainCardsRemaining = 110;
     this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
-      this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
-      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
-    }
+    this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
+    this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
+    this.players[0].initiateGame(null, 0, "red", 0, 0, false);
+    this.players[1].initiateGame(null, 0, "blue", 0, 0, false);
+  }
 
     getGameID() {
       return this.gameID;
