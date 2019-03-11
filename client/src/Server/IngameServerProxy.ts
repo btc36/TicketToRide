@@ -44,9 +44,22 @@ export class IngameServerProxy {
      * @return gameID, username,
      */
   DiscardDestinationCard(gameId: String, username: String, destinationCards: Array<DestinationCard>) {
-    console.log(destinationCards);
-    return;
-        const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeList], [gameId, username, destinationCards]);
+    // console.log(destinationCards);
+    // return;
+        console.log("Inproxy discard");
+        let city1 = "";
+        let city2 = "";
+        let pointValue = -1;
+        // const card = destinationCards[0];
+        if(destinationCards.length > 0)
+        {
+            const card = destinationCards[0];
+            city1 = card.city1.valueOf();
+            city2 = card.city2.valueOf();
+            pointValue = card.getPointValue();
+        }
+
+        const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameId, username, city1, city2, pointValue]);
         this.communicator.sendCommand(command);
     }
 

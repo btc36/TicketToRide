@@ -8,6 +8,7 @@ import java.util.List;
 public class Facade
 {
     protected String _className = "ExternalClientFacade";
+    protected String _gameClassName = "IngameExternalClientFacade";
     protected final String _paramTypeString = "java.lang.String";
     protected final String _paramTypeBoolean = "java.lang.Boolean";
     protected final String _paramTypeInteger = "java.lang.Integer";

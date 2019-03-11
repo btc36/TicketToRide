@@ -22,6 +22,7 @@ export class ClientCommunicator {
   }
   public sendCommand(command: ClientCommandObjects){
     var data = this.serializer.toJSON(command);
+
     var request = new XMLHttpRequest();
     request.open('POST', "/command", true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -31,11 +32,15 @@ export class ClientCommunicator {
       if (request.status >= 200 && request.status < 400) {
         // Success!
         var result = serial.parseJSON(request.responseText);
+        console.log(result);
         that.executeCommands(result);
       } else {
         // We reached our target server, but it returned an error
 
       }
+
+      console.log("dragon");
+      console.log(data);
     };
 
     request.onerror = function() {
@@ -47,13 +52,13 @@ export class ClientCommunicator {
   // Execute the command received from the server
   public executeCommands(commands: ClientCommandObjects[]){
     for (var i = 0; i < commands.length; i++){
-      if (commands[i]._methodName == "loginStatus") {
+      if (commands[i]._methodName == "loginStatus"){
         this.clientFacade.loginResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
       }
-      else if (commands[i]._methodName == "registerStatus") {
+      else if (commands[i]._methodName == "registerStatus"){
         this.clientFacade.registerResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
       }
-      else if (commands[i]._methodName == "updateGameList") {
+      else if (commands[i]._methodName == "updateGameList"){
         const games = commands[i]._paramValues[2];
         const gameList = new GameList();
         for (let i = 0; i < games.length; i++) {
@@ -72,10 +77,10 @@ export class ClientCommunicator {
         }
         this.clientFacade.updateGameList(commands[i]._paramValues[0], gameList, commands[i]._paramValues[1]);
       }
-      else if (commands[i]._methodName == "joinGame") {
+      else if (commands[i]._methodName == "joinGame"){
         this.clientFacade.joinGame(commands[i]._paramValues[2]);
       }
-      else if (commands[i]._methodName == "startGame") {
+      else if (commands[i]._methodName == "startGame"){
         this.clientFacade.startGame(commands[i]._paramValues[2]);
         const game = commands[i]._paramValues[3][0];
         const players = game.playerList.playerList; // JSON
@@ -84,7 +89,8 @@ export class ClientCommunicator {
         let gamePlayers = new Array<Player>();
 
         // Players from lobby are in game: 6 percent
-        for (let i = 0; i < players.length; i++) {
+        for(let i = 0; i < players.length; i++)
+        {
           const player = new Player(players[i].username);
           gamePlayers.push(player);
         }
@@ -95,25 +101,23 @@ export class ClientCommunicator {
         this.inGameClientFacade.setFaceUpCards(game.faceUpCards.faceUpCards); // 5 face up cards
 
         // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
-        for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
+        for(let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
         {
           this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
         }
       }
-      else if (commands[i]._methodName == "receiveChatCommand") {
+      else if (commands[i]._methodName == "receiveChatCommand"){
         this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
       }
-      else if (commands[i]._methodName == "potentialDestinationCard") {
+      else if (commands[i]._methodName == "potentialDestinationCard"){
         this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
-      else if (commands[i]._methodName == "discardDestinationCard") {
+      else if (commands[i]._methodName == "discardDestinationCard"){
+        console.log("zolpidem and coding. bddd idea");
         this.inGameClientFacade.discardDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
-      else if (commands[i]._methodName == "drawDestinationCard") {
+      else if (commands[i]._methodName == "drawDestinationCard"){
         this.inGameClientFacade.addDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[3], commands[i]._paramValues[4]);
-      }
-      else if (commands[i]._methodName == "updateNumDestinationCards") {
-        this.inGameClientFacade.updateNumberOfDestinationCards(commands[i]._paramValues[3], commands[i]._paramValues[5]);
       }
     }
   }
