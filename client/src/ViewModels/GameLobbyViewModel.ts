@@ -27,12 +27,14 @@ export class GameLobbyViewModel extends React.Component<ViewModelProps, State> i
       this.props.main.setState({"page": data});      
     } else if (updateType == "updateGameList") {
       this.setState({"playerList": this.props.services.getPlayerList(this.gameId)});
+    } else if (updateType == "startGame") {
+      this.props.main.setState({"page": "game"});      
     }
   }
 
   startGameButtonPressed = (e: any) => {
     e.preventDefault();
-    alert("starting game...");
+    this.props.services.startGame(this.gameId);
   }
 
   render(): JSX.Element {
