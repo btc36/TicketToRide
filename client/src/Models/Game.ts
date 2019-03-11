@@ -89,10 +89,8 @@ export class Game {
     getFaceUpCards(): FaceUpCards {
       this.gameID = "EPICGAME";
       this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
-      let currCard = new TrainCard("blue");
-      this.players[0].drawTrainCard(currCard);
-      let dCard = new DestinationCard("alabama", "provo", 8)
-      this.players[0].drawDestinationCard([dCard]);
+      this.players[0].initiateGame(new PlayerHand(),40,"Green",10,39,true);
+      this.players[1].initiateGame(new PlayerHand(),40,"Green",15,3,true);
       this.whoseTurn = 1;
       this.map = new GameMap();
       //this.numDestinationCardsRemaining = 30;
