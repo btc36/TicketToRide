@@ -96,19 +96,20 @@ export class ClientCommunicator {
         this.inGameClientFacade.setGame(game);
         // Players from lobby are in game: 6 percent
         this.inGameClientFacade.setGameId(game.gameID);
-        for (let i = 0; i < players.length; i++) {
+        for (let i = 0; i < players.length; i++)
+        {
           const player = new Player(players[i].username);
           player.setTurn(players[i].turn);
           player.color = players[i].color;
           player.score = 0;
           const hand = new PlayerHand();
 
-          let dests = Array<DestinationCard>();
-          for (let i = 0; i < players.length; i++) {
-            const player = new Player(players[i].username);
-            player.setTurn(players[i].turn);
-            player.color = players[i].color;
-            player.score = 0;
+          // let dests = Array<DestinationCard>();
+          // for (let i = 0; i < players.length; i++) {
+          //   const player = new Player(players[i].username);
+          //   player.setTurn(players[i].turn);
+          //   player.color = players[i].color;
+          //   player.score = 0;
             //const hand = new PlayerHand();
 
             let dests = Array<DestinationCard>();
@@ -133,7 +134,8 @@ export class ClientCommunicator {
               }
             }
           this.inGameClientFacade.setPlayerList(gamePlayers);
-          this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
+          this.inGameClientFacade.setNumDestinationCardsRemaining(30);
+          //this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
           this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
           // Face-up Deck is initialized by random cards from the server: 7 percent
           //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
@@ -149,13 +151,13 @@ export class ClientCommunicator {
           this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
           //this.inGameClientFacade.setDest
 
-          // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
-          for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
-          {
-            this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
-          }
+          // // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
+          // for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
+          // {
+          //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
+          // }
         }
-      }
+      //}
       else if (commands[i]._methodName == "receiveChatCommand") {
         this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
       }

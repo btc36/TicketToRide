@@ -41,6 +41,7 @@ export class IngameExternalClientFacade {
   storeTrainCards(username: string, trainCards: Array<TrainCard>)
   {
     this.root.addTrainCards(username, trainCards);
+    //this.root.nextTurn();
   }
 
   updateNumTrainCards(player:string,numUsed:number) {
@@ -106,6 +107,7 @@ export class IngameExternalClientFacade {
     for (var i = 0; i < destinationCards.length; i++){
       this.root.addDestinationCard(username, destinationCards[i]);
     }
+    //this.root.nextTurn();
   }
 
 }

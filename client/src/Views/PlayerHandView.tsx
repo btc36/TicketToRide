@@ -13,6 +13,7 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
 
   const destCards = component.state.playerHand.getDestinationCards();
   const trainCards = component.state.playerHand.getColorMap();
+    console.log(trainCards);
   trainCards.forEach((value: number, key: string) => {
     trainCardsList.push(
         <li>{key} : {value}</li>

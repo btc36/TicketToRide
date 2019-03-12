@@ -101,7 +101,11 @@ export class IngameClientRoot implements ISubject {
     console.log("AHAHAHAHAHAHHAHAH");
     console.log(destinationCards);
     //this.game.addDestinationCard(username, destinationCards);
+    //
+    this.game.numDestinationCardsRemaining -= destinationCards.length;
+    this.game.nextTurn();
     this.localPlayer.drawDestinationCard(destinationCards);
+    this.localPlayer = this.game.players[this.game.whoseTurn];
     this.notify("keptDestination", null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
@@ -158,6 +162,7 @@ export class IngameClientRoot implements ISubject {
   changeFaceUpCards() {
     let drawnCard = this.game.drawTrainCard();
     this.localPlayer.drawTrainCard(drawnCard);
+    this.localPlayer = this.game.players[this.game.whoseTurn];
     this.notify('setFaceUpCards', null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
@@ -221,6 +226,10 @@ export class IngameClientRoot implements ISubject {
     this.notify("discardDestination", null);
   }
 
+  // nextTurn()
+  // {
+  //   this.game.nextTurn();
+  // }
   /*removeTrainCard(trainCard){
 
   }

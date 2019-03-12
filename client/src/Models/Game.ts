@@ -23,11 +23,12 @@ export class Game {
 
   constructor() {
     this.gameID = "EPICGAME";
-        this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
-        let currCard = new TrainCard("blue");
-        this.players[0].drawTrainCard(currCard);
-        let dCard = new DestinationCard("alabama", "provo", 8)
-        this.players[0].drawDestinationCard([dCard]);
+        this.players = new Array<Player>();
+        //this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
+        //let currCard = new TrainCard("blue");
+        //this.players[0].drawTrainCard(currCard);
+        //let dCard = new DestinationCard("alabama", "provo", 8)
+        //this.players[0].drawDestinationCard([dCard]);
         this.whoseTurn = 0;
         this.map = new GameMap();
         this.numDestinationCardsRemaining = 30;
@@ -108,9 +109,11 @@ export class Game {
   }
 
   drawTrainCard():TrainCard {
+
     let trainCards = [new TrainCard("blue"), new TrainCard("pink"), new TrainCard("yellow"), new TrainCard("white"), new TrainCard("black")];
     let drawnCard = trainCards[this.randomInt(0, 4)];
     this.faceUpCards.drawCard(this.randomInt(0, 4), drawnCard);
+    this.numTrainCardsRemaining -= 1;
    //this.numTrainCardsRemaining -= 1;
     this.addTrainCard('ben', drawnCard);
     return drawnCard;
@@ -147,20 +150,23 @@ export class Game {
             if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
               this.numTrainCardsRemaining -= 1;
-              player.setNumTrainCars(player.getNumTrainCars() - 1);
+              player.setNumTrainCards(player.getNumTrainCards() - 1);
                 return;
             }
         });
+      this.nextTurn();
     }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
-    this.numDestinationCardsRemaining -= destinationCards.length;
+    //this.numDestinationCardsRemaining -= destinationCards.length;
+    console.log("DSFSDOFDIOSFIOSDFOIDSFOISDOIFDS");
     this.players.forEach((thisPlayer) => {
       if (thisPlayer.getUsername() == username) {
         thisPlayer.drawDestinationCard(destinationCards);
           return;
         }
        });
+    this.nextTurn();
     }
 
     setFaceUpCards(faceUpCards: FaceUpCards): void {
@@ -180,7 +186,7 @@ export class Game {
   updateNumTrainCars(username: string, numUsed: number): void {
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
-                player.setNumTrainCars(numUsed)
+                player.setNumTrains(numUsed)
                 return;
             }
         });
@@ -197,7 +203,7 @@ export class Game {
   setNumTrainCards(username: string,numCards:number) {
     this.players.forEach((player) => {
       if (player.getUsername() == username) {
-        player.setNumTrainCars(numCards);
+        player.setNumTrainCards(numCards);
         return;
       }
     });
@@ -232,5 +238,13 @@ export class Game {
             player.setTurn(false);
         }
     });
+  }
+  nextTurn(): void
+  {
+    this.players[this.whoseTurn].myTurn = false;
+    console.log(this.players[this.whoseTurn].username + " false");
+    this.whoseTurn = (this.whoseTurn + 1) % this.players.length;
+    this.players[this.whoseTurn].myTurn = true;
+      console.log(this.players[this.whoseTurn].username + " true");
   }
 }

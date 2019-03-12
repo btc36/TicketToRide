@@ -7,7 +7,7 @@ import {string} from "prop-types";
 export class Player {
   username: string;
   myHand: PlayerHand;
-  trainCars: number;
+  numTrains: number;
   color: string;
   score: number;
   connectedCities: Array<Array<string>>;
@@ -25,7 +25,7 @@ export class Player {
     this.colorCountMap = new Map<string, number>();
     this.numTrainCards = 4;
     this.numDestinationCards = 0;
-    this.trainCars = 45;
+    this.numTrains = 45;
   }
 
   getUsername(): string {
@@ -43,7 +43,7 @@ export class Player {
   //Acts as a constructor for when actual gameplay starts
   initiateGame(myHand:PlayerHand,trainCards:number,color:string,numTrainCards:number,numDestinationCards:number,isOtherPlayer:boolean) {
     this.myHand = myHand;
-    this.trainCars = 45;
+    this.numTrains = 45;
     this.color = color;
     this.numTrainCards = numTrainCards;
     this.numDestinationCards = numDestinationCards;
@@ -65,7 +65,7 @@ export class Player {
   claimRoute(route: Route): void {
     this.ownedRoutes.push(route);
     let length = route.getLength();
-    this.trainCars -= length;
+    this.numTrains -= length;
     if (length == 1) {
       this.score += 1;
     }
@@ -102,7 +102,8 @@ export class Player {
    * @param destinationCard
    */
   drawDestinationCard(destinationCard: Array<DestinationCard>):void {
-    this.numDestinationCards += 1;
+    // one that gets handed to Players
+    this.numDestinationCards += destinationCard.length;
     this.myHand.addDestinationCard(destinationCard);
   }
   getColorCountMap() : Map<string,number>{
@@ -126,8 +127,8 @@ export class Player {
     this.myHand.removeTrainCard(trainCard);
   }
 
-  setNumTrainCars(numCars: number) {
-    this.trainCars -= numCars;
+  setNumTrains(numTrains: number) {
+    this.numTrains -= numTrains;
   }
 
   setTurn(isMyTurn: boolean) {
@@ -146,8 +147,8 @@ export class Player {
     this.numDestinationCards = numCards
   }
 
-  getNumTrainCars(): number {
-    return this.trainCars;
+  getNumTrains(): number {
+    return this.numTrains;
   }
 
   getNumTrainCards() {
