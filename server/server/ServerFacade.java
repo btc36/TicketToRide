@@ -229,6 +229,8 @@ public class ServerFacade extends Facade
                     status = true;
                     message = "start success";
                     returnGame.add(game);
+                    ChatRoom room = new ChatRoom(gameID);
+                    ServerModel.getInstance().addChatRoom(room);
                 }
             }
             else { message = "game does not exist"; }
