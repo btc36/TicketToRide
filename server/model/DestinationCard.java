@@ -1,6 +1,6 @@
 package model;
 
-public class DestinationCard extends Card
+public class DestinationCard
 {
     private String city1;
     private String city2;

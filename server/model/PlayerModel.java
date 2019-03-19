@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerModel
 {
@@ -11,7 +12,9 @@ public class PlayerModel
     private List<TrainCard> trainCards = null;
     private boolean turn;
     private String color;
-
+    private int score;
+    private List<Route> claimedRoutes;
+    private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -22,6 +25,13 @@ public class PlayerModel
     {
         this.username = username;
         this.password = password;
+
+    }
+
+    public void startGame()
+    {
+        claimedRoutes = new ArrayList<>();
+
     }
     public String getUsername() {
         return username;
@@ -75,6 +85,16 @@ public class PlayerModel
     public void setColor(String color) {
         this.color = color;
     }
+
+    // update score and add route
+    public void claimRoute(Route route, String username)
+    {
+        int score = scoreMap.get(route.getLength());
+        this.score += score;
+        claimedRoutes.add(route);
+    }
+
+
 
     @Override
     public boolean equals(Object o)

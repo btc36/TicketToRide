@@ -15,6 +15,9 @@ public class LobbyGameModel
     private Deck destDeck;
     private Deck trainDeck;
     private FaceUpCards faceUpCards;
+    private List<Route> unClaimedRoutes;
+    private List<Route> claimedRoutes;
+    private List<City> allCities;
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
         //this.LobbyGameModel(host, maxPlayer, gamename);
@@ -99,9 +102,12 @@ public class LobbyGameModel
         destDeck = new Deck();
         trainDeck = new Deck();
         faceUpCards = new FaceUpCards();
+        unClaimedRoutes = new ArrayList<>();
+        claimedRoutes = new ArrayList<>();
         setUpDestinationCards();
         setUpTrainCards();
         setUpFaceUpCards();
+        setUpRoutes();
         giveTrainCards();
         giveDestinationCards();
         setColors();
@@ -128,6 +134,26 @@ public class LobbyGameModel
     }
 
 
+    public void claimRoute(Route route, String username)
+    {
+        unClaimedRoutes.remove(route); // for sale
+        route.setClaimedBy(username); // mark the territory
+        claimedRoutes.add(route); // sold list
+    }
+
+    public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
+
+    public Route findRoute(String cityOne, String cityTwo, int length, String color)
+    {
+        Route route = new Route(cityOne, cityTwo, length, color);
+        for(Route r : claimedRoutes)
+        {
+            if(r.equals(route)) return r;
+        }
+        return null;
+    }
+
+
     public void addDestCard(DestinationCard card)
     {
         destDeck.add(card);
@@ -150,6 +176,32 @@ public class LobbyGameModel
 
     public void setTrainDeck(Deck trainDeck) {
         this.trainDeck = trainDeck;
+    }
+
+
+    private void setUpRoutes()
+    {
+        unClaimedRoutes.add(new Route("Seattle","Portland",1,"grey"));
+        unClaimedRoutes.add(new Route("Portland","San Francisco",1,"green"));
+        unClaimedRoutes.add(new Route("San Francisco","Los Angeles",3,"pink"));
+        unClaimedRoutes.add(new Route("Los Angeles","Phoenix",3,"grey"));
+        unClaimedRoutes.add(new Route("Los Angeles","Las Vegas",2,"grey"));
+        unClaimedRoutes.add(new Route("Los Angeles","El Paso",6,"black"));
+        unClaimedRoutes.add(new Route("Phoenix","Santa Fe",1,"grey"));
+        unClaimedRoutes.add(new Route("El Paso","Santa Fe",1,"grey"));
+        unClaimedRoutes.add(new Route("Phoenix","El Paso",1,"grey"));
+        unClaimedRoutes.add(new Route("El Paso","Dallas",1,"grey"));
+        unClaimedRoutes.add(new Route("El Paso","Houston",1,"grey"));
+        unClaimedRoutes.add(new Route("Dallas","Arkansas",1,"grey"));
+        unClaimedRoutes.add(new Route("Dallas","Houston",1,"grey"));
+        unClaimedRoutes.add(new Route("Houston","New Orleans",1,"grey"));
+        unClaimedRoutes.add(new Route("New Orleans","Miami",1,"grey"));
+        unClaimedRoutes.add(new Route("Atlanta","Miami",1,"grey"));
+        unClaimedRoutes.add(new Route("New York","Washington",1,"grey"));
+        unClaimedRoutes.add(new Route("Washington","Raleigh",1,"grey"));
+        unClaimedRoutes.add(new Route("Raleigh","Charleston",1,"grey"));
+        unClaimedRoutes.add(new Route("Charleston","Miami",1,"grey"));
+        unClaimedRoutes.add(new Route("Pittsburgh","New York",1,"grey"));
     }
 
     /**
@@ -234,7 +286,115 @@ public class LobbyGameModel
         trainDeck.add(new TrainCard("rainbow"));
         trainDeck.shuffle();
     }
+    private void setUpCities()
+    {
+        allCities = new ArrayList<>();
+        City seattle = new City("Seattle");
+        City portland = new City("Portland");
+        City sfo = new City("San Francisco");
+        City la = new City("Los Angeles");
+        City vegas = new City("Las Vegas");
+        City phx = new City("Phoenix");
+        City paso = new City("El Paso");
+        City houston = new City("Houston");
+        City orleans = new City("New Orleans");
+        City miami = new City("Miami");
+        City atlanta = new City("Atlanta");
+        City charleston = new City("Charleston");
+        City raleigh = new City("Raleigh");
+        City washington = new City("Washington DC");
+        City ny = new City("New York");
+        City boston = new City("Boston");
+        City pitts = new City("Pittsburgh");
+        City chicago = new City("Chicago");
+        City duluth = new City("Duluth");
+        City omaha = new City("Omaha");
+        City helena = new City("Helena");
+        City slc = new City("Salt Lake City");
+        City denver = new City("Denver");
+        City oklahoma = new City("Oklahoma");
+        City kansas = new City("Kansas");
+        City louis = new City("St Louis");
+        City rock = new City("Little Rock");
+        City dallas = new City("Dallas");
+        City nash = new City("Nashville");
+        City santa = new City("Santa Fe");
 
+        allCities.add(seattle);
+        allCities.add(portland);
+        allCities.add(sfo);
+        allCities.add(la);
+//        allCities.add()
+
+        seattle.addNeighbor(helena);
+        seattle.addNeighbor(portland);
+        portland.addNeighbor(seattle);
+        portland.addNeighbor(sfo);
+        portland.addNeighbor(slc);
+        sfo.addNeighbor(portland);
+        sfo.addNeighbor(slc);
+        sfo.addNeighbor(la);
+        la.addNeighbor(sfo);
+        la.addNeighbor(vegas);
+        la.addNeighbor(phx);
+        la.addNeighbor(paso);
+        vegas.addNeighbor(la);
+        vegas.addNeighbor(slc);
+        slc.addNeighbor(denver);
+        slc.addNeighbor(helena);
+        slc.addNeighbor(portland);
+        slc.addNeighbor(sfo);
+        slc.addNeighbor(vegas);
+        helena.addNeighbor(seattle);
+        helena.addNeighbor(slc);
+        helena.addNeighbor(duluth);
+        helena.addNeighbor(omaha);
+        helena.addNeighbor(denver);
+        denver.addNeighbor(helena);
+        denver.addNeighbor(slc);
+        denver.addNeighbor(phx);
+        denver.addNeighbor(omaha);
+        denver.addNeighbor(santa);
+        denver.addNeighbor(kansas);
+        denver.addNeighbor(oklahoma);
+
+        duluth.addNeighbor(helena);
+        duluth.addNeighbor(omaha);
+        duluth.addNeighbor(chicago);
+
+        omaha.addNeighbor(denver);
+        omaha.addNeighbor(helena);
+        omaha.addNeighbor(duluth);
+        omaha.addNeighbor(chicago);
+        omaha.addNeighbor(kansas);
+
+        kansas.addNeighbor(denver);
+        kansas.addNeighbor(omaha);
+        kansas.addNeighbor(louis);
+        kansas.addNeighbor(oklahoma);
+
+        chicago.addNeighbor(omaha);
+        chicago.addNeighbor(duluth);
+        chicago.addNeighbor(pitts);
+        chicago.addNeighbor(louis);
+
+        pitts.addNeighbor(nash);
+        pitts.addNeighbor(louis);
+        pitts.addNeighbor(chicago);
+        pitts.addNeighbor(ny);
+        pitts.addNeighbor(washington);
+        pitts.addNeighbor(raleigh);
+
+
+        ny.addNeighbor(boston);
+        ny.addNeighbor(pitts);
+        ny.addNeighbor(washington);
+        boston.addNeighbor(ny);
+
+
+
+
+    }
     private void setUpFaceUpCards()
     {
         //List<TrainCard> list = new ArrayList<>();
@@ -294,6 +454,7 @@ public class LobbyGameModel
     {
         playerList.getPlayerList().get(0).setTurn(true);
     }
+
 
     @Override
     public int hashCode()

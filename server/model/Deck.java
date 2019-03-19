@@ -10,15 +10,18 @@ public class Deck<T>
      */
     Queue<T> deck;
 
+    /**
+     * @pre none
+     */
     public Deck()
     {
         deck = new LinkedList<>();
     }
 
     /**
-     * @pre none
+     * @pre card != null
      * @post deck is unchanged
-     * @return
+     * @return deck, which is queue, that contains Type T, which is instance of Destination Card or Train Card
      */
     public Queue<T> getCards()
     {
@@ -27,7 +30,10 @@ public class Deck<T>
 
     /**
      * Add a Card to the very bottom (end) of the deck
+     * @param card to be added to the queue
      * @pre deck != null
+     * @pre card != null
+     * @pre card is instance of Destinatino Card or Train Card
      * @post size() == old(size()) + 1
      * @post Add a Card to the very bottom (end) of the deck
      */
@@ -38,7 +44,7 @@ public class Deck<T>
 
     /**
      * removes and returns the very front (or the top) of Card in the deck
-     * @pre !isEmpty()
+     * @pre !isEmpty() (which means size() >= 1)
      * @post size() == old(size()) - 1
      * @post returns a Card from the very front (or the top) of the deck
      */
@@ -74,9 +80,20 @@ public class Deck<T>
      * @post return size()
      * @post deck remains unchanged
      */
-    public int getSize() { return deck.size(); }
+    public int getSize()
+    {
+        return deck.size();
+    }
 
 
+
+    /**
+     * removes and returns the first three of Cards from the deck
+     * @pre !isEmpty()
+     * @pre size() >= 3
+     * @post size() == old(size()) - 3
+     * @post returns three cards from the very front (or the top) of the deck
+     */
     public List<T> pollThree()
     {
         List<T> cards = new ArrayList<>();
@@ -86,6 +103,7 @@ public class Deck<T>
         }
         return cards;
     }
+
     public List<T> pollFive()
     {
         List<T> cards = new ArrayList<>();
