@@ -1,3 +1,3 @@
 export interface IStateful {
-    changeState(): void;
+    changeState(state:DrawTrainCardState): void;
 }

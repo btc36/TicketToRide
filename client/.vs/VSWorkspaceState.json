@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\inGameModels",
+    "\\src\\Models",
+    "\\src\\Server",
+    "\\src\\Services",
+    "\\src\\ViewModels",
+    "\\src\\Views"
+  ],
+  "SelectedNode": "\\src\\Models\\FaceUpCards.ts",
+  "PreviewInSolutionExplorer": false
+}

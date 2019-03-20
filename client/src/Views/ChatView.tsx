@@ -13,7 +13,7 @@ export const ChatView  = (component: I.IChatViewModel) => {
     <div>
       <div>
         <p><b><u>Messages</u></b></p>
-        <ul>
+        <ul className="chat-ul">
           {messages}
         </ul>
         <p><b>Message</b></p>

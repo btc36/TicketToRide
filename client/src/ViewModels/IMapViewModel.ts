@@ -56,4 +56,5 @@ export interface IMapViewModel {
   state: State;
   props: any;
   cityToCoordinates: Map<String, any>;
+  claimRoute(route: Route): void;
 }

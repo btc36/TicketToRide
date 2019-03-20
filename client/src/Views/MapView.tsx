@@ -45,7 +45,7 @@ export const renderPolylines = (map: any, maps: any, component: I.IMapViewModel)
   for(let i = 0; i < AllRoutes.length; i++) {
     let currentRoute = AllRoutes[i];
     renderDottedPolyline(map, maps, currentRoute);
-    renderRoute(currentRoute, 0);
+    renderRoute(currentRoute, component, 0);
   }
 }
 
@@ -70,7 +70,7 @@ export const renderMapAddons = (map: any, maps: any, component: I.IMapViewModel)
   renderMarkers(map, maps, component);
 }
 
-const renderRoute = (route: Route, opacity = 1)  => {
+const renderRoute = (route: Route, component: I.IMapViewModel, opacity = 1)  => {
   let invisibleClickableLine = new MAPS.Polyline({
     path: [
       I.cityToCoordinates.get(route.getCities()[0]),
@@ -82,12 +82,15 @@ const renderRoute = (route: Route, opacity = 1)  => {
   });
   invisibleLines.push(invisibleClickableLine);
   invisibleClickableLine.setMap(MAP);
+  MAPS.event.addListener(invisibleClickableLine, 'click', function() {
+    component.claimRoute(route);
+  });
 }
 
 export const MapView  = (component: I.IMapViewModel) => { 
   if (MAP && MAPS && component.state.ownedRoutes) {
     for (let i = 0; i < component.state.ownedRoutes.length; i++) {
-      renderRoute(component.state.ownedRoutes[i]);
+      renderRoute(component.state.ownedRoutes[i], component);
     }
   }
   return (
@@ -96,6 +99,7 @@ export const MapView  = (component: I.IMapViewModel) => {
         bootstrapURLKeys={{ key: component.state.apiKey }}
         defaultCenter={component.state.center}
         defaultZoom={component.state.zoom}
+        yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({map, maps}) => this.renderMapAddons(map, maps, component)}>
       </GoogleMap>
     </div>

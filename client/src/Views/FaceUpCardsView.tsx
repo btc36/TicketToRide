@@ -16,6 +16,9 @@ export const FaceUpCardsView  = (component: I.IFaceUpCardsViewModel) => {
     <div>
       <div>
         {faceUpCardsList}
+        <input type="number" name="quantity" min="1" max="5"></input>
+        <button onClick={component.drawFaceUp} type="submit">Draw Faceup</button>
+        <button onClick={component.drawCard} type="submit">Draw Mystery Card</button>
       </div>
       <div className="deck">
         <p>Train Cards Deck</p>
@@ -25,7 +28,6 @@ export const FaceUpCardsView  = (component: I.IFaceUpCardsViewModel) => {
         <p>Destination Cards Deck</p>
         <p>{component.state.numDestinationCardsRemaining} cards remaining.</p>
       </div>
-      <button onClick={component.drawCard} type="submit">Draw Card</button>
     </div>
   );
 }
