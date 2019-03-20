@@ -1,5 +1,6 @@
 import { ClientCommunicator } from "./ClientCommunicator";
 import { DestinationCard } from "../Models/DestinationCard";
+import { Route } from "../Models/Route";
 import { ClientCommandObjects } from "./ClientCommandObjects";
 
 //This sends commands to the Server
@@ -18,6 +19,12 @@ export class IngameServerProxy {
 
     constructor(public commIn: ClientCommunicator) {
         this.communicator = commIn;
+    }
+
+    claimRoute(route: Route, username: String, gameId: String) {
+        console.log(route);
+        console.log(username);
+        console.log(gameId);
     }
 
     DrawDestinationCard(gameId:String, username:String) {

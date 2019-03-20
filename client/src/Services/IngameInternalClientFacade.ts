@@ -21,6 +21,12 @@ export class IngameInternalClientFacade {
     this.root.randomize();
   }
 
+  claimRoute(route: Route) {
+    let gameID = this.root.getGameID();
+    let username = this.root.getUsername();
+    this.proxy.claimRoute(route, username, gameID);
+  }
+
   PresentDestinationCard() {
 
   }
