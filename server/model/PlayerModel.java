@@ -14,6 +14,9 @@ public class PlayerModel
     private boolean turn;
     private String color;
     private int score;
+    private int destCardNum;
+    private int trainNum;
+    private int trainCardNum;
     private List<Route> claimedRoutes;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     private Map<String, Integer> colorMap = null;
@@ -27,13 +30,17 @@ public class PlayerModel
     {
         this.username = username;
         this.password = password;
-
+        destCardNum = 0;
+        trainNum = 0;
+        trainCardNum = 0;
+        score = 0;
     }
 
     public void startGame()
     {
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
+
     }
     public String getUsername() {
         return username;
@@ -88,12 +95,20 @@ public class PlayerModel
         this.color = color;
     }
 
-    // update score and add route
-    public void claimRoute(Route route, String username)
+    /**
+     * 1. route 2. add score, 3. decrement train card 4. decrement trains
+     * @param route
+     */
+    public void claimRoute(Route route)
     {
-        int score = scoreMap.get(route.getLength());
-        this.score += score;
+        int len = route.getLength();
+
         claimedRoutes.add(route);
+
+        int score = scoreMap.get(len);
+        this.score += score;
+        trainCardNum -= len;
+        trainNum -= len;
     }
 
     public int getScore() {

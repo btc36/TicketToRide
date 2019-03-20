@@ -195,6 +195,7 @@ public class GameFacade extends Facade
             new Object[]{ status, message, gameID, username, route}
         );
 
+        commandsForClient.add(command);
         return commandsForClient;
     }
 

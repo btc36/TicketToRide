@@ -104,6 +104,8 @@ public class LobbyGameModel
         faceUpCards = new FaceUpCards();
         unClaimedRoutes = new ArrayList<>();
         claimedRoutes = new ArrayList<>();
+
+        setUpPlayers();
         setUpDestinationCards();
         setUpTrainCards();
         setUpFaceUpCards();
@@ -113,7 +115,13 @@ public class LobbyGameModel
         setColors();
         setTurn();
     }
-
+    public void setUpPlayers()
+    {
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            p.startGame();
+        }
+    }
     public String getGamename() {
         return gamename;
     }
@@ -139,6 +147,9 @@ public class LobbyGameModel
         unClaimedRoutes.remove(route); // for sale
         route.setClaimedBy(username); // mark the territory
         claimedRoutes.add(route); // sold list
+        PlayerModel luckyGuy = getPlayer(username);
+        assert (luckyGuy != null);
+        luckyGuy.claimRoute(route);
     }
 
     public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
@@ -455,6 +466,15 @@ public class LobbyGameModel
         playerList.getPlayerList().get(0).setTurn(true);
     }
 
+    private PlayerModel getPlayer(String username)
+    {
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            if(p.getUsername().equals(username))
+                return p;
+        }
+        return null;
+    }
 
     @Override
     public int hashCode()
