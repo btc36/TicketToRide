@@ -7,6 +7,7 @@ import java.util.List;
 public class City {
     String name;
     List<City> neighbors;
+    List<Route> routes;
 
     public City(){}
 
@@ -39,4 +40,11 @@ public class City {
     {
         neighbors.add(city);
     }
+
+    public List<Route> getRoutes()
+    {
+        return routes;
+    }
+
+    public void addRoute(Route route) { routes.add(route);}
 }

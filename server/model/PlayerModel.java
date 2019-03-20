@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class PlayerModel
     private int score;
     private List<Route> claimedRoutes;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
+    private Map<String, Integer> colorMap = null;
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -31,7 +33,7 @@ public class PlayerModel
     public void startGame()
     {
         claimedRoutes = new ArrayList<>();
-
+        colorMap = new HashMap<>();
     }
     public String getUsername() {
         return username;
@@ -94,7 +96,37 @@ public class PlayerModel
         claimedRoutes.add(route);
     }
 
+    public int getScore() {
+        return score;
+    }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public List<Route> getClaimedRoutes() {
+        return claimedRoutes;
+    }
+
+    public void setClaimedRoutes(List<Route> claimedRoutes) {
+        this.claimedRoutes = claimedRoutes;
+    }
+
+    public Map<Integer, Integer> getScoreMap() {
+        return scoreMap;
+    }
+
+    public void setScoreMap(Map<Integer, Integer> scoreMap) {
+        this.scoreMap = scoreMap;
+    }
+
+    public Map<String, Integer> getColorMap() {
+        return colorMap;
+    }
+
+    public void setColorMap(Map<String, Integer> colorMap) {
+        this.colorMap = colorMap;
+    }
 
     @Override
     public boolean equals(Object o)

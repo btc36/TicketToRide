@@ -10,6 +10,7 @@ public class ServerModel
     private PlayerListModel allPlayers;
     private GameListModel allGames;
     private List<ChatRoom> allChatrooms;
+    private List<GameHistory> allGameHistory;
 
     private static ServerModel _instance;
     private ServerModel()
@@ -81,12 +82,27 @@ public class ServerModel
         }
 
     }
+
+    public void addHistory(String gameID, HistoryEntry entry)
+    {
+        getGameHistorybyID(gameID);
+    }
     public ChatRoom getChatRoombyID(String gameID)
     {
         for(ChatRoom room : allChatrooms)
         {
             if(room.getGameID().equals(gameID))
                 return room;
+        }
+        return null;
+    }
+
+    public GameHistory getGameHistorybyID(String gameID)
+    {
+        for(GameHistory history : allGameHistory)
+        {
+            if(history.getGameID().equals(gameID))
+                return history;
         }
         return null;
     }

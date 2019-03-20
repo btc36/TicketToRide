@@ -5,6 +5,7 @@ import model.*;
 import model.LobbyGameModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -253,6 +254,74 @@ public class GameFacade extends Facade
 
         commandCheck(command);
         return command;
+    }
+
+    /// send end turn command or end game command to client.. end
+
+
+    /**
+     @param move, timestamp, username, gameID
+     @return command that contains success, result message, gameID,
+     and all of the chat history associated with the gameID
+     */
+    public List<GenericCommand> sendGameHistory(String move, String username, String gameID)
+    {
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GenericCommand command;
+        ChatRoom room = null;
+        List<HistoryEntry> result = new ArrayList<>();
+
+        if(!playerExists(username)) message = "invalid username";
+        else if(!gameExists(gameID)) message = "invalid gameID";
+        else
+        {
+            success = true;
+            HistoryEntry entry = new HistoryEntry(move, username);
+            ServerModel.getInstance().addHistory(gameID, entry);
+            result.addAll(ServerModel.getInstance().getGameHistorybyID(gameID).getGameHistory()); // bad .. but... ㅈㄲ
+        }
+
+        command = new GenericCommand(
+                _className, "receiveHistoryCommand",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, result}
+        );
+
+        commandsForClient.add(command);
+
+        return commandsForClient;
+    }
+
+    public List<GenericCommand> getGameHistory(String gameID)
+    {
+
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        GameHistory history = null;
+        List<HistoryEntry> result = new ArrayList<>();
+
+        if(!gameExists(gameID)) message = "invalid gameID";
+        else
+        {
+            success = true;
+            history = ServerModel.getInstance().getGameHistorybyID(gameID);
+            result.addAll(history.getGameHistory());
+            message = "history : success";
+        }
+
+        System.out.println(message);
+        GenericCommand command = new GenericCommand(
+                "IngameExternalClientFacade", "receiveHistoryCommand",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, result}
+        );
+
+        commandCheck(command);
+        commandsForClient.add(command);
+        return commandsForClient;
     }
 
     private String checkInput(String gameID, String username)
