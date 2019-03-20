@@ -82,6 +82,10 @@ const renderRoute = (route: Route, opacity = 1)  => {
   });
   invisibleLines.push(invisibleClickableLine);
   invisibleClickableLine.setMap(MAP);
+  MAPS.event.addListener(invisibleClickableLine, 'click', function() {
+     alert("path clicked: " + route.getCities()[0] + " to " + route.getCities()[1]);
+     // TODO: display which section of the polyline has been clicked?
+  });
 }
 
 export const MapView  = (component: I.IMapViewModel) => { 
