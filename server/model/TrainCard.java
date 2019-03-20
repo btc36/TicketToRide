@@ -1,6 +1,6 @@
 package model;
 
-public class TrainCard extends Card
+public class TrainCard
 {
     String color;
     public TrainCard()

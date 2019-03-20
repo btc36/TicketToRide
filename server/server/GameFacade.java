@@ -17,6 +17,7 @@ public class GameFacade extends Facade
     private final String draw = "drawDestinationCard";
     private final String discard = "updateNumDestinationCards";
     private final String trains = "getTrainCard";
+    private final String claim = "claimRoute";
 
     /**
      *
@@ -99,7 +100,6 @@ public class GameFacade extends Facade
     /**
      * @param gameID which game is it in
      * @param username which user is performing the action
-     * @param cards to be discarded
      * @return list of command that contains
      */
     public List<GenericCommand> discardDestinationCard(String gameID, String username, String city1, String city2, Integer pointValue)
@@ -166,6 +166,37 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
+    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String color, int length)
+    {
+        boolean status = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        String message = checkInput(gameID, username);
+        Route route = null;
+        if(message.isEmpty())
+        {
+            route = new Route(cityOne, cityTwo, length, color);
+            LobbyGameModel game = getGameByID(gameID);
+            if(game.isClaimed(route))
+            {
+                message = "error : route is ALREADY claimed";
+            }
+            else
+            {
+                status = true;
+                game.claimRoute(route, username);
+                message = "sucess : " + claim;
+            }
+        }
+
+        GenericCommand command = new GenericCommand(
+            _gameClassName, claim,
+            new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , "model.Route"},
+            new Object[]{ status, message, gameID, username, route}
+        );
+
+        return commandsForClient;
+    }
+
     private Deck getDestinationDeck(String gameID)
     {
         LobbyGameModel game = getGameByID(gameID);
@@ -181,6 +212,8 @@ public class GameFacade extends Facade
     {
         return ServerModel.getInstance().getAllGames().getGameList();
     }
+
+
 
     private boolean isGameStarted(String gameID)
     {
@@ -220,5 +253,15 @@ public class GameFacade extends Facade
 
         commandCheck(command);
         return command;
+    }
+
+    private String checkInput(String gameID, String username)
+    {
+        String message = "";
+        if(!isInputValid(gameID) || !gameExists(gameID)) { message = "invalid gameID"; }
+        else if(!isInputValid(username)) { message = "username is invalid\n"; }
+        else if(!playerExists(username)) { message = "user does not exist\n"; }
+        else if(!isGameStarted(gameID)) { message = "game did not start"; }
+        return message;
     }
 }

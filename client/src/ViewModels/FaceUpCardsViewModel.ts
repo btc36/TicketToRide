@@ -3,8 +3,9 @@ import { FaceUpCardsView } from "../Views/FaceUpCardsView";
 import { initialState, State, IFaceUpCardsViewModel } from "./IFaceUpCardsViewModel";
 import { IObserver } from "./IObserver";
 import { IngameViewModelProps } from "./ViewModelProps";
+import {IStateful} from "./IStateful";
 
-export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, State> implements IFaceUpCardsViewModel, IObserver {
+export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, State> implements IFaceUpCardsViewModel, IObserver, IStateful {
 
   state: State = initialState;
 
@@ -34,6 +35,10 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
 
   render(): JSX.Element {
     return FaceUpCardsView(this);
+  }
+
+  changeState(): void {
+    
   }
 }
 
