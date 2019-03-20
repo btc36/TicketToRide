@@ -100,6 +100,7 @@ export const MapView  = (component: I.IMapViewModel) => {
         bootstrapURLKeys={{ key: component.state.apiKey }}
         defaultCenter={component.state.center}
         defaultZoom={component.state.zoom}
+        yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({map, maps}) => this.renderMapAddons(map, maps, component)}>
       </GoogleMap>
     </div>
