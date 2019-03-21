@@ -114,7 +114,11 @@ public class PlayerModel
         this.score += score;
         trainCardNum -= len;
         trainNum -= len;
+
+
     }
+
+
 
     public int getScore() {
         return score;
@@ -162,4 +166,10 @@ public class PlayerModel
 
     @Override
     public int hashCode() { return this.username.hashCode(); }
+
+    public void completeDestinaton(DestinationCard card)
+    {
+        score += card.getPointValue();
+        card.complete();
+    }
 }

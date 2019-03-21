@@ -238,7 +238,7 @@ public class GameFacade extends Facade
         commandCheck(command);
         return command;
     }
-    
+
 
     /**
      @param move, timestamp, username, gameID
@@ -419,6 +419,8 @@ public class GameFacade extends Facade
         else if(!isGameStarted(gameID)) { message += "game did not start"; }
         return message;
     }
+
+
     private String checkPlayer(String username)
     {
         String message = "";

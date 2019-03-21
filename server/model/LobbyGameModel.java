@@ -154,9 +154,54 @@ public class LobbyGameModel
         PlayerModel luckyGuy = getPlayer(username);
         assert (luckyGuy != null);
         luckyGuy.claimRoute(route);
+        checkDestinationCard(luckyGuy);
     }
 
     public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
+
+    public void checkDestinationCard(PlayerModel player)
+    {
+        List<DestinationCard> destinationCards = player.getDestinationCards();
+        //check for route
+        for(DestinationCard card : destinationCards)
+        {
+            Set<City> visited = new HashSet<>();
+            City src = getCityByName(card.getCity1());
+            City dst = getCityByName(card.getCity2());
+            if(destinationTraverse(src, dst, visited))
+            {
+                player.completeDestinaton(card);
+            }
+        }
+    }
+    private boolean destinationTraverse(City src, City dst, Set<City> visited)
+    {
+        List<City> neighbors = src.getNeighbors();
+        if(neighbors.contains(dst)) return true;
+
+        for(City c : src.getNeighbors())
+        {
+            if(!visited.contains(c))
+            {
+                visited.add(c);
+                destinationTraverse(c, dst, visited);
+                visited.remove(c);
+            }
+        }
+
+        return false;
+    }
+
+    private City getCityByName(String city1) {
+        for(City c : allCities)
+        {
+            if(c.getName().equals(city1))
+            {
+                return c;
+            }
+        }
+        return null;
+    }
 
     public Route findRoute(String cityOne, String cityTwo, int length, String color)
     {
@@ -179,6 +224,8 @@ public class LobbyGameModel
         turn = list.get(turnIndex).getUsername();
         list.get(turnIndex).setTurn(true);
     }
+
+
 
 
 
@@ -205,6 +252,25 @@ public class LobbyGameModel
     public void setTrainDeck(Deck trainDeck) {
         this.trainDeck = trainDeck;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private void initalize()
@@ -240,8 +306,6 @@ public class LobbyGameModel
         unClaimedRoutes.add(new Route("Charleston","Miami",1,"grey"));
         unClaimedRoutes.add(new Route("Pittsburgh","New York",1,"grey"));
     }
-
-
 
 
     /**
@@ -326,6 +390,7 @@ public class LobbyGameModel
         trainDeck.add(new TrainCard("rainbow"));
         trainDeck.shuffle();
     }
+
     private void setUpCities()
     {
         allCities = new ArrayList<>();

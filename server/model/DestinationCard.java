@@ -5,6 +5,7 @@ public class DestinationCard
     private String city1;
     private String city2;
     private int pointValue;
+    private boolean completed;
     public DestinationCard(){}
 
     public DestinationCard(String city1, String city2, Integer point)
@@ -12,6 +13,7 @@ public class DestinationCard
         this.city1= city1;
         this.city2 = city2;
         this.pointValue = point;
+        this.completed = false;
     }
 
     public String getCity1() {
@@ -37,4 +39,8 @@ public class DestinationCard
     public void setPointValue(Integer pointValue) {
         this.pointValue = pointValue;
     }
+
+    public void complete() { this.completed = true; }
+
+    public boolean isCompleted() { return this.completed;}
 }
