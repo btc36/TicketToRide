@@ -30,14 +30,9 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
-        String message = "";
         List<DestinationCard> cards = new ArrayList<>();
-        if(!isInputValid(gameID)) { message = "gameID is invalid\n";}
-        else if(!isInputValid(username)) { message = "username is invalid\n"; }
-        else if(!playerExists(username)) { message = "user does not exist\n"; }
-        else if(!gameExists(gameID)) { message = "game doesn't exist\n";}
-        else if(!isGameStarted(gameID)) { message = "game did not start\n"; }
-        else
+        String message = checkInput(gameID, username);
+        if(message.isEmpty())
         {
             Deck destDeck = getDestinationDeck(gameID);
 
@@ -69,15 +64,11 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
-        String message;
         GenericCommand command;
         int kept = 0;
         List<DestinationCard> cards = new ArrayList<>();
-        if(!isInputValid(gameID) || !gameExists(gameID)) { message = "invalid gameID"; }
-        else if(!isInputValid(username)) { message = "username is invalid\n"; }
-        else if(!playerExists(username)) { message = "user does not exist\n"; }
-        else if(!isGameStarted(gameID)) { message = "game did not start"; }
-        else
+        String message = checkInput(gameID, username);
+        if(message.isEmpty())
         {
             Deck destDeck = getDestinationDeck(gameID);
 
@@ -110,10 +101,8 @@ public class GameFacade extends Facade
         String message;
         GenericCommand command;
         int kept = 3;
-        if(!isInputValid(gameID)) { message = "gameID is invalid";}
-        else if(!gameExists(gameID)) { message = "game doesn't exist";}
-        else if(!isGameStarted(gameID)) { message = "game did not start"; }
-        else
+        message = checkInput(gameID, username);
+        if(message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
             if(pointValue != -1)
@@ -138,14 +127,9 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
-        String message;
-        GenericCommand command;
         List<TrainCard> cards = new ArrayList<>();
-        if(!isInputValid(gameID) || !gameExists(gameID)) { message = "invalid gameID"; }
-        else if(!isInputValid(username)) { message = "username is invalid\n"; }
-        else if(!playerExists(username)) { message = "user does not exist\n"; }
-        else if(!isGameStarted(gameID)) { message = "game did not start"; }
-        else
+        String message = checkInput(gameID, username);
+        if(message.isEmpty())
         {
             Deck trainDeck = getTrainDeck(gameID);
 
@@ -162,7 +146,7 @@ public class GameFacade extends Facade
         }
 
         System.out.println(message);
-        command = commandForTrain(trains, status, message, gameID, username, cards);
+        GenericCommand command = commandForTrain(trains, status, message, gameID, username, cards);
         commandsForClient.add(command);
         return commandsForClient;
     }
@@ -215,8 +199,6 @@ public class GameFacade extends Facade
         return ServerModel.getInstance().getAllGames().getGameList();
     }
 
-
-
     private boolean isGameStarted(String gameID)
     {
         return (getGameByID(gameID).getState() == LobbyGameModel.State.ONGOING);
@@ -259,7 +241,6 @@ public class GameFacade extends Facade
 
     /// send end turn command or end game command to client.. end
 
-
     /**
      @param move, timestamp, username, gameID
      @return command that contains success, result message, gameID,
@@ -267,16 +248,14 @@ public class GameFacade extends Facade
      */
     public List<GenericCommand> sendGameHistory(String move, String username, String gameID)
     {
-        String message = "";
+        String message = checkInput(gameID, username);
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
         GenericCommand command;
         ChatRoom room = null;
         List<HistoryEntry> result = new ArrayList<>();
 
-        if(!playerExists(username)) message = "invalid username";
-        else if(!gameExists(gameID)) message = "invalid gameID";
-        else
+        if(message.isEmpty())
         {
             success = true;
             HistoryEntry entry = new HistoryEntry(move, username);
@@ -298,14 +277,13 @@ public class GameFacade extends Facade
     public List<GenericCommand> getGameHistory(String gameID)
     {
 
-        String message = "";
+        String message = checkGame(gameID);
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
         GameHistory history = null;
         List<HistoryEntry> result = new ArrayList<>();
 
-        if(!gameExists(gameID)) message = "invalid gameID";
-        else
+        if(message.isEmpty())
         {
             success = true;
             history = ServerModel.getInstance().getGameHistorybyID(gameID);
@@ -325,13 +303,96 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
+    public List<GenericCommand> getRoutes(String gameID)
+    {
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+
+        return commandsForClient;
+    }
+
+    public List<GenericCommand> lastRound(String gameID)
+    {
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+
+        return commandsForClient;
+    }
+    public List<GenericCommand> endGame(String gameID)
+    {
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+
+        return commandsForClient;
+    }
+
+    public List<GenericCommand> endTurn(String gameID, String username)
+    {
+        String message = "";
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+
+        message = checkInput(gameID, username);
+        if(message.isEmpty())
+        {
+            LobbyGameModel game = getGameByID(gameID);
+            //game.endTurn();
+        }
+
+        GenericCommand command = new GenericCommand(
+                "IngameExternalClientFacade", "endTurn",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
+                new Object[]{success, message, gameID}
+        );
+
+        commandCheck(command);
+        commandsForClient.add(command);
+        commandsForClient.addAll(whoseTurn(gameID));
+        return commandsForClient;
+    }
+
+    public List<GenericCommand> whoseTurn(String gameID)
+    {
+
+        boolean success = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+
+        String message = checkGame(gameID);
+        String username = "wtf";
+        if(message.isEmpty())
+        {
+            LobbyGameModel game = getGameByID(gameID);
+            //username = game.getTurn();
+        }
+
+        GenericCommand command = new GenericCommand(
+                "IngameExternalClientFacade", "currentTurn",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
+                new Object[]{success, message, gameID, username}
+        );
+
+        commandCheck(command);
+        commandsForClient.add(command);
+        return commandsForClient;
+    }
+
     private String checkInput(String gameID, String username)
     {
         String message = "";
-        if(!isInputValid(gameID) || !gameExists(gameID)) { message = "invalid gameID"; }
-        else if(!isInputValid(username)) { message = "username is invalid\n"; }
-        else if(!playerExists(username)) { message = "user does not exist\n"; }
-        else if(!isGameStarted(gameID)) { message = "game did not start"; }
+        message += checkPlayer(username);
+        message += checkGame(gameID);
+        return message;
+    }
+
+    private String checkGame(String gameID)
+    {
+        String message = "";
+        if(!isInputValid(gameID) || !gameExists(gameID)) { message += "invalid gameID"; }
+        else if(!isGameStarted(gameID)) { message += "game did not start"; }
+        return message;
+    }
+    private String checkPlayer(String username)
+    {
+        String message = "";
+        if(!isInputValid(username)) { message += "username is invalid\n"; }
+        if(!playerExists(username)) { message += "user does not exist\n"; }
         return message;
     }
 }

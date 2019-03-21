@@ -77,6 +77,11 @@ public class PlayerModel
         if(this.trainCards == null)
             this.trainCards = new ArrayList<>();
         this.trainCards.addAll(trainCards);
+        for(TrainCard c : trainCards)
+        {
+            int num = colorMap.getOrDefault(c.getColor(), 0);
+            colorMap.put(c.getColor(), ++num);
+        }
     }
 
     public boolean isTurn() {
