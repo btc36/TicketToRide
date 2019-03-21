@@ -238,8 +238,7 @@ public class GameFacade extends Facade
         commandCheck(command);
         return command;
     }
-
-    /// send end turn command or end game command to client.. end
+    
 
     /**
      @param move, timestamp, username, gameID
@@ -276,7 +275,6 @@ public class GameFacade extends Facade
 
     public List<GenericCommand> getGameHistory(String gameID)
     {
-
         String message = checkGame(gameID);
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -305,7 +303,24 @@ public class GameFacade extends Facade
 
     public List<GenericCommand> getRoutes(String gameID)
     {
+        String username = "wtf";
         List<GenericCommand> commandsForClient = new ArrayList<>();
+        List<Route> result = new ArrayList<>();
+        boolean success = false;
+        String message = checkGame(gameID);
+        if(message.isEmpty())
+        {
+            success = true;
+            LobbyGameModel game = getGameByID(gameID);
+            PlayerModel player = game.getPlayer(username);
+            result = player.getClaimedRoutes();
+        }
+
+        GenericCommand command = new GenericCommand(
+                "IngameExternalClientFacade", "",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, result}
+        );
 
         return commandsForClient;
     }
@@ -319,21 +334,37 @@ public class GameFacade extends Facade
     public List<GenericCommand> endGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
+        boolean success = false;
+        String message = checkGame(gameID);
+        if(message.isEmpty())
+        {
+            LobbyGameModel game = getGameByID(gameID);
+            game.endGame();
+            success = true;
+        }
 
+        GenericCommand command = new GenericCommand(
+                "IngameExternalClientFacade", "endGame",
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
+                new Object[]{success, message, gameID}
+        );
+
+        commandCheck(command);
+        commandsForClient.add(command);
         return commandsForClient;
     }
 
     public List<GenericCommand> endTurn(String gameID, String username)
     {
-        String message = "";
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
 
-        message = checkInput(gameID, username);
+        String message = checkInput(gameID, username);
         if(message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
-            //game.endTurn();
+            game.endTurn();
+            success = true;
         }
 
         GenericCommand command = new GenericCommand(
@@ -359,7 +390,7 @@ public class GameFacade extends Facade
         if(message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
-            //username = game.getTurn();
+            username = game.getTurn();
         }
 
         GenericCommand command = new GenericCommand(

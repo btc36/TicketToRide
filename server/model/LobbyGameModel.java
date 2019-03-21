@@ -4,6 +4,10 @@ import java.util.*;
 
 public class LobbyGameModel
 {
+
+
+
+
     public enum State {WAITING, ONGOING, FINISHED;}
     private String gameID;
     private String gamename;
@@ -18,6 +22,8 @@ public class LobbyGameModel
     private List<Route> unClaimedRoutes;
     private List<Route> claimedRoutes;
     private List<City> allCities;
+    private String turn;
+    private int turnIndex;
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
         //this.LobbyGameModel(host, maxPlayer, gamename);
@@ -94,17 +100,14 @@ public class LobbyGameModel
 
     public void endGame()
     {
+        //do calculations here
         this.state = State.FINISHED;
     }
     public void startGame()
     {
         this.state = State.ONGOING;
-        destDeck = new Deck();
-        trainDeck = new Deck();
-        faceUpCards = new FaceUpCards();
-        unClaimedRoutes = new ArrayList<>();
-        claimedRoutes = new ArrayList<>();
 
+        initalize();
         setUpPlayers();
         setUpDestinationCards();
         setUpTrainCards();
@@ -115,6 +118,7 @@ public class LobbyGameModel
         setColors();
         setTurn();
     }
+
     public void setUpPlayers()
     {
         for(PlayerModel p : playerList.getPlayerList())
@@ -164,6 +168,19 @@ public class LobbyGameModel
         return null;
     }
 
+    public String getTurn() {
+        return turn;
+    }
+
+    public void endTurn() {
+        List<PlayerModel> list = playerList.getPlayerList();
+        list.get(turnIndex).setTurn(false);
+        turnIndex = (++turnIndex) % list.size();
+        turn = list.get(turnIndex).getUsername();
+        list.get(turnIndex).setTurn(true);
+    }
+
+
 
     public void addDestCard(DestinationCard card)
     {
@@ -190,6 +207,15 @@ public class LobbyGameModel
     }
 
 
+    private void initalize()
+    {
+        destDeck = new Deck();
+        trainDeck = new Deck();
+        faceUpCards = new FaceUpCards();
+        unClaimedRoutes = new ArrayList<>();
+        claimedRoutes = new ArrayList<>();
+    }
+
     private void setUpRoutes()
     {
         unClaimedRoutes.add(new Route("Seattle","Portland",1,"grey"));
@@ -214,6 +240,9 @@ public class LobbyGameModel
         unClaimedRoutes.add(new Route("Charleston","Miami",1,"grey"));
         unClaimedRoutes.add(new Route("Pittsburgh","New York",1,"grey"));
     }
+
+
+
 
     /**
      * Sets up 30 Destination Cards
@@ -463,10 +492,13 @@ public class LobbyGameModel
     }
     private void setTurn()
     {
-        playerList.getPlayerList().get(0).setTurn(true);
+        PlayerModel firstGuy = playerList.getPlayerList().get(0);
+        turn = firstGuy.getUsername();
+        turnIndex = 0;
+        firstGuy.setTurn(true);
     }
 
-    private PlayerModel getPlayer(String username)
+    public PlayerModel getPlayer(String username)
     {
         for(PlayerModel p : playerList.getPlayerList())
         {
