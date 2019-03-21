@@ -6,6 +6,7 @@ public class LobbyGameModel
 {
 
 
+    private PlayerModel winner;
     public enum State {WAITING, ONGOING, FINISHED;}
     private String gameID;
     private String gamename;
@@ -42,110 +43,107 @@ public class LobbyGameModel
         trainDeck = null;
         faceUpCards = null;
     }
-    public void addPlayer(PlayerModel player)
+
+    /*************************************** BEGIN START GAME ***************************************/
+
+    public void startGame() { this.state = State.ONGOING; initalize(); }
+
+    private void initalize()
     {
-        playerList.addPlayer(player);
-    }
-    public void removePlayer(PlayerModel player)
-    {
-        playerList.removePlayer(player);
+        setUpPlayers();
+        faceUpCards = new FaceUpCards();
+        claimedRoutes = new ArrayList<>();
+        destDeck = GameSetUp.getInstance().getDestDeck();
+        trainDeck = GameSetUp.getInstance().getTrainDeck();
+        unClaimedRoutes = GameSetUp.getInstance().getUnClaimedRoutes();
+        setUpFaceUpCards();
+        giveTrainCards();
+        giveDestinationCards();
+        setColors();
+        setTurn();
     }
 
-    public String getGameID()
+
+    private void setUpPlayers() { for(PlayerModel p : playerList.getPlayerList()) p.startGame(); }
+
+    private void setUpFaceUpCards()
     {
-        return gameID;
-    }
-    public void setGameID(String gameID)
-    {
-        this.gameID = gameID;
+        while(faceUpCards.size() < 5)
+        {
+            TrainCard card = (TrainCard) this.trainDeck.poll();
+            faceUpCards.addFaceUpCard(card);
+        }
+
+        if(faceUpCards.isThreeOrMoreWild())
+        {
+            for(TrainCard card : faceUpCards.getFaceUpCards())
+                trainDeck.add(card); //add back to the deck
+
+            faceUpCards.clear(); // then clear faceup to re set up
+            setUpFaceUpCards();
+        }
     }
 
-    public PlayerListModel getPlayerList()
-    {
-        return playerList;
-    }
-    public void setPlayerList(PlayerListModel playerList)
-    {
-        this.playerList = playerList;
-    }
 
-    public int getMaxPlayer()
-    {
-        return maxPlayer;
-    }
-    public void setMaxPlayer(int maxPlayer)
-    {
-        this.maxPlayer = maxPlayer;
-    }
-
-    public PlayerModel getHost()
-    {
-        return host;
-    }
-    public void setHost(PlayerModel host)
-    {
-        this.host = host;
-    }
-
-    public State getState()
-    {
-        return state;
-    }
-    public void setState(State state)
-    {
-        this.state = state;
-    }
-
-    public void endGame()
-    {
-        //do calculations here
-        this.state = State.FINISHED;
-    }
-    public void startGame()
-    {
-        this.state = State.ONGOING;
-        initalize();
-    }
-
-    public void setUpPlayers()
+    private void giveTrainCards()
     {
         for(PlayerModel p : playerList.getPlayerList())
         {
-            p.startGame();
+            assert(trainDeck.getSize() >= 4);
+            p.addTrainCards(trainDeck.pollThisMany(4));
         }
     }
-    public String getGamename() {
-        return gamename;
-    }
-    public void setGamename(String gamename)
+    private void giveDestinationCards()
     {
-        this.gamename = gamename;
-
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            assert(destDeck.getSize() >= 3);
+            p.addDestinationards(destDeck.pollThisMany(3));
+        }
     }
 
-    public int getCurrentPlayerNum()
+    private void setColors()
     {
-        currentPlayerNum = playerList.getPlayerList().size();
-        return currentPlayerNum;
+        ArrayList<String> colors = new ArrayList<String>( Arrays.asList("green", "red", "orange", "yellow","blue"));
+        Collections.shuffle(colors);
+
+        for(int i = 0; i < playerList.getPlayerList().size(); i++)
+        {
+            PlayerModel p = playerList.getPlayerList().get(i);
+            p.setColor(colors.get(i));
+        }
     }
-
-    public void setCurrentPlayerNum(int currentPlayerNum) {
-        this.currentPlayerNum = currentPlayerNum;
-    }
-
-
-    public void claimRoute(Route route, String username)
+    private void setTurn()
     {
-        unClaimedRoutes.remove(route); // for sale
-        route.setClaimedBy(username); // mark the territory
-        claimedRoutes.add(route); // sold list
-        PlayerModel luckyGuy = getPlayer(username);
-        assert (luckyGuy != null);
-        luckyGuy.claimRoute(route);
-        checkDestinationCard(luckyGuy);
+        PlayerModel firstGuy = playerList.getPlayerList().get(0);
+        turn = firstGuy.getUsername();
+        turnIndex = 0;
+        firstGuy.setTurn(true);
+    }
+    /*************************************** END START GAME           ***************************************/
+
+
+    /*************************************** BEGIN MIDDLE OF THE GAME ***************************************/
+    public Route findRoute(String cityOne, String cityTwo, int length, String color)
+    {
+        Route route = new Route(cityOne, cityTwo, length, color);
+        for(Route r : claimedRoutes)
+        {
+            if(r.equals(route)) return r;
+        }
+        return null;
     }
 
-    public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
+    public String getTurn() { return turn; }
+
+    public void endTurn() {
+        List<PlayerModel> list = playerList.getPlayerList();
+        list.get(turnIndex).setTurn(false);
+        turnIndex = (++turnIndex) % list.size();
+        turn = list.get(turnIndex).getUsername();
+        list.get(turnIndex).setTurn(true);
+    }
+
 
     private void checkDestinationCard(PlayerModel player)
     {
@@ -179,159 +177,140 @@ public class LobbyGameModel
         return false;
     }
 
-    private City getCityByName(String city1) {
-        for(City c : allCities)
-        {
-            if(c.getName().equals(city1))
-            {
-                return c;
-            }
-        }
-        return null;
-    }
+    public TrainCard drawTrainCardDeck() { return destDeck.isEmpty() ? null : (TrainCard) trainDeck.poll(); }
 
-    public Route findRoute(String cityOne, String cityTwo, int length, String color)
+    public TrainCard drawTrainCardFace(int index)
     {
-        Route route = new Route(cityOne, cityTwo, length, color);
-        for(Route r : claimedRoutes)
-        {
-            if(r.equals(route)) return r;
-        }
-        return null;
-    }
-
-    public String getTurn() {
-        return turn;
-    }
-
-    public void endTurn() {
-        List<PlayerModel> list = playerList.getPlayerList();
-        list.get(turnIndex).setTurn(false);
-        turnIndex = (++turnIndex) % list.size();
-        turn = list.get(turnIndex).getUsername();
-        list.get(turnIndex).setTurn(true);
-    }
-
-
-    public void addDestCard(DestinationCard card)
-    {
-        destDeck.add(card);
-    }
-    public void addTrainCard(TrainCard card)
-    {
-        trainDeck.add(card);
-    }
-    public Deck getDestDeck() {
-        return destDeck;
-    }
-
-    public void setDestDeck(Deck destDeck) {
-        this.destDeck = destDeck;
-    }
-
-    public Deck getTrainDeck() {
-        return trainDeck;
-    }
-
-    public void setTrainDeck(Deck trainDeck) {
-        this.trainDeck = trainDeck;
-    }
-
-
-    private void initalize()
-    {
-        setUpPlayers();
-        faceUpCards = new FaceUpCards();
-        claimedRoutes = new ArrayList<>();
-        destDeck = GameSetUp.getInstance().getDestDeck();
-        trainDeck = GameSetUp.getInstance().getTrainDeck();
-        unClaimedRoutes = GameSetUp.getInstance().getUnClaimedRoutes();
+        TrainCard card = faceUpCards.getCardAt(index);
+        faceUpCards.setCardAt(index, (TrainCard) trainDeck.poll());
         setUpFaceUpCards();
-        giveTrainCards();
-        giveDestinationCards();
-        setColors();
-        setTurn();
+        return card;
     }
 
-
-    private void setUpFaceUpCards()
+    public void claimRoute(Route route, String username, List<String> colors)
     {
-        //List<TrainCard> list = new ArrayList<>();
-        for(Object o : this.trainDeck.pollFive())
-        {
-            faceUpCards.addFaceUpCard((TrainCard) o);
-        }
+        unClaimedRoutes.remove(route); // for sale
+        route.setClaimedBy(username); // mark the territory
+        claimedRoutes.add(route); // sold list
+        PlayerModel luckyGuy = getPlayer(username);
+        assert (luckyGuy != null);
+        luckyGuy.claimRoute(route);
+        checkDestinationCard(luckyGuy);
 
-        if(faceUpCards.isThreeOrMoreWild())
-        {
-            for(TrainCard card : faceUpCards.getFaceUpCards())
-            {
-                trainDeck.add(card);
-            }
-            faceUpCards.clear();
+        for(int i = 0; i < colors.size(); i++)
+            destDeck.add(new TrainCard(colors.get(i)));
 
-            setUpFaceUpCards();
-        }
-        else
-        {
-            return;
-        }
+        destDeck.shuffle();
     }
+
+    /*************************************** FINISH BEING MIDDLE OF THE GAME ***************************************/
+
+
+
+
+    /*************************************** BEGING END OF GAME ***************************************/
+    private void findWinner()
+    {
+        int max = 0;
+        List<Integer> indices = new ArrayList<>();
+        List<PlayerModel> list = playerList.getPlayerList();
+        for(int i = 0; i < list.size(); i++)
+        {
+            PlayerModel p = list.get(i);
+            if(p.getScore() >= max)
+            {
+                max = p.getScore();
+                indices.add(i);
+            }
+        }
+
+        winner = list.get(indices.get(0));
+    }
+    public PlayerModel getWinner()
+    {
+        return winner;
+    }
+
+    public void endGame()
+    {
+        //do calculations here
+        this.state = State.FINISHED;
+        findWinner();
+        findLongestRoute();
+
+    }
+
+    private void findLongestRoute()
+    {
+        // TODO: IMPLEMENT
+    }
+
+
+    /*************************************** END OF END GAME           ***************************************/
+
+
+    /*************************************** BEGIN GETTERS AND SETTERS ***************************************/
 
     public FaceUpCards getFaceUpCards() {
         return faceUpCards;
     }
 
-    private void giveTrainCards()
-    {
-        for(PlayerModel p : playerList.getPlayerList())
-        {
-            assert(trainDeck.getSize() >= 4);
-            p.addTrainCards(trainDeck.pollThisMany(4));
-        }
-    }
-    private void giveDestinationCards()
-    {
-        for(PlayerModel p : playerList.getPlayerList())
-        {
-            assert(destDeck.getSize() >= 3);
-            p.addDestinationards(destDeck.pollThisMany(3));
-        }
-    }
-    private void setColors()
-    {
-        ArrayList<String> colors = new ArrayList<String>( Arrays.asList("green", "red", "orange", "yellow","blue"));
-        Collections.shuffle(colors);
+    public void addPlayer(PlayerModel player) { playerList.addPlayer(player); }
+    public void removePlayer(PlayerModel player) { playerList.removePlayer(player); }
 
-        for(int i = 0; i < playerList.getPlayerList().size(); i++)
-        {
-            PlayerModel p = playerList.getPlayerList().get(i);
-            p.setColor(colors.get(i));
-        }
-    }
-    private void setTurn()
+    public String getGameID() { return gameID; }
+    public void setGameID(String gameID) { this.gameID = gameID; }
+
+    public PlayerListModel getPlayerList() { return playerList; }
+    public void setPlayerList(PlayerListModel playerList) { this.playerList = playerList; }
+
+    public int getMaxPlayer() { return maxPlayer; }
+    public void setMaxPlayer(int maxPlayer) { this.maxPlayer = maxPlayer; }
+
+    public PlayerModel getHost() { return host; }
+    public void setHost(PlayerModel host) { this.host = host; }
+
+    public State getState() { return state; }
+    public void setState(State state) { this.state = state; }
+
+    public String getGamename() { return gamename; }
+    public void setGamename(String gamename) { this.gamename = gamename; }
+
+    public int getCurrentPlayerNum()
     {
-        PlayerModel firstGuy = playerList.getPlayerList().get(0);
-        turn = firstGuy.getUsername();
-        turnIndex = 0;
-        firstGuy.setTurn(true);
+        currentPlayerNum = playerList.getPlayerList().size();
+        return currentPlayerNum;
     }
+
+    public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
+
+    private City getCityByName(String city1) {
+        for(City c : allCities)
+            if(c.getName().equals(city1))
+                return c;
+
+        return null;
+    }
+
+    public void addTrainCard(TrainCard card) { trainDeck.add(card); }
+    public Deck getDestDeck() { return destDeck; }
+    public void setDestDeck(Deck destDeck) { this.destDeck = destDeck; }
+    public Deck getTrainDeck() { return trainDeck; }
+    public void setTrainDeck(Deck trainDeck) { this.trainDeck = trainDeck; }
+
 
     public PlayerModel getPlayer(String username)
     {
         for(PlayerModel p : playerList.getPlayerList())
-        {
             if(p.getUsername().equals(username))
                 return p;
-        }
         return null;
     }
 
+    /*************************************** END GETTERS AND SETTERS ***************************************/
+
     @Override
-    public int hashCode()
-    {
-        return gameID.hashCode();
-    }
+    public int hashCode() { return gameID.hashCode(); }
 
     @Override
     public boolean equals(Object o)

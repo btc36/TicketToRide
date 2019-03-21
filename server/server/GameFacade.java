@@ -19,6 +19,12 @@ public class GameFacade extends Facade
     private final String discard = "updateNumDestinationCards";
     private final String trains = "getTrainCard";
     private final String claim = "claimRoute";
+    private final String getRoute = "getRoute";
+    private final String endGame = "endGame";
+    private final String endTurn = "endTurn";
+    private final String currentTurn = "currentTurn";
+    private final String getHistory = "receiveHistory";
+    private final String sMessage = "success : ";
 
     /**
      *
@@ -36,7 +42,7 @@ public class GameFacade extends Facade
         {
             Deck destDeck = getDestinationDeck(gameID);
 
-            if(destDeck.isEmpty())
+            if(destDeck == null || destDeck.isEmpty())
             {
                 message = "deck empty";
             }
@@ -44,7 +50,7 @@ public class GameFacade extends Facade
             {
                 status = true;
                 cards.addAll(destDeck.pollThree());
-                message = "success : " + potential;
+                message = sMessage + potential;
             }
         }
 
@@ -72,7 +78,7 @@ public class GameFacade extends Facade
         {
             Deck destDeck = getDestinationDeck(gameID);
 
-            if(destDeck.isEmpty())
+            if(destDeck == null || destDeck.isEmpty())
             {
                 message = "empty deck";
             }
@@ -80,7 +86,7 @@ public class GameFacade extends Facade
             {
                 cards.add((DestinationCard) destDeck.poll());
                 status = true;
-                message = "success : " + draw;
+                message = sMessage + draw;
             }
         }
         System.out.println(message);
@@ -114,7 +120,7 @@ public class GameFacade extends Facade
 
 
             status  = true;
-            message = "success : " + discard;
+            message = sMessage + discard;
         }
 
         System.out.println(message);
@@ -141,7 +147,7 @@ public class GameFacade extends Facade
             {
                 cards.addAll(trainDeck.pollThisMany(count));
                 status = true;
-                message = "success : " + trains;
+                message = sMessage + trains;
             }
         }
 
@@ -151,7 +157,7 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String color, int length)
+    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, int length, List<String> colors)
     {
         boolean status = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -159,7 +165,7 @@ public class GameFacade extends Facade
         Route route = null;
         if(message.isEmpty())
         {
-            route = new Route(cityOne, cityTwo, length, color);
+            route = new Route(cityOne, cityTwo, length, routeColor);
             LobbyGameModel game = getGameByID(gameID);
             if(game.isClaimed(route))
             {
@@ -168,8 +174,8 @@ public class GameFacade extends Facade
             else
             {
                 status = true;
-                game.claimRoute(route, username);
-                message = "sucess : " + claim;
+                game.claimRoute(route, username, colors);
+                message = sMessage + claim;
             }
         }
 
@@ -259,11 +265,12 @@ public class GameFacade extends Facade
             success = true;
             HistoryEntry entry = new HistoryEntry(move, username);
             ServerModel.getInstance().addHistory(gameID, entry);
-            result.addAll(ServerModel.getInstance().getGameHistorybyID(gameID).getGameHistory()); // bad .. but... ㅈㄲ
+            result.addAll(ServerModel.getInstance().getGameHistory(gameID)); // bad .. but... ㅈㄲ
+            message = sMessage + getHistory;
         }
 
         command = new GenericCommand(
-                _className, "receiveHistoryCommand",
+                _className, getHistory,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
@@ -286,12 +293,12 @@ public class GameFacade extends Facade
             success = true;
             history = ServerModel.getInstance().getGameHistorybyID(gameID);
             result.addAll(history.getGameHistory());
-            message = "history : success";
+            message = sMessage + getHistory;
         }
 
         System.out.println(message);
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", "receiveHistoryCommand",
+                "IngameExternalClientFacade", getHistory,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
@@ -314,10 +321,11 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             PlayerModel player = game.getPlayer(username);
             result = player.getClaimedRoutes();
+            message = sMessage + getRoute;
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", "",
+                "IngameExternalClientFacade", getRoute,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
@@ -329,24 +337,31 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
 
+        // ???
+        // ???
         return commandsForClient;
     }
+
     public List<GenericCommand> endGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean success = false;
         String message = checkGame(gameID);
+        String winner = "Winner winner chicken dinner";
+        List<PlayerModel> result = new ArrayList<>();
         if(message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
             game.endGame();
             success = true;
+            message = sMessage + endGame;
+            winner = game.getWinner().getUsername();
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", "endGame",
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
-                new Object[]{success, message, gameID}
+                "IngameExternalClientFacade", endGame,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeString},
+                new Object[]{success, message, gameID, result, winner}
         );
 
         commandCheck(command);
@@ -365,10 +380,11 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             game.endTurn();
             success = true;
+            message = sMessage + endTurn;
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", "endTurn",
+                "IngameExternalClientFacade", endTurn,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
                 new Object[]{success, message, gameID}
         );
@@ -381,7 +397,6 @@ public class GameFacade extends Facade
 
     public List<GenericCommand> whoseTurn(String gameID)
     {
-
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
 
@@ -391,10 +406,11 @@ public class GameFacade extends Facade
         {
             LobbyGameModel game = getGameByID(gameID);
             username = game.getTurn();
+            message = sMessage + currentTurn;
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", "currentTurn",
+                "IngameExternalClientFacade", currentTurn,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
                 new Object[]{success, message, gameID, username}
         );

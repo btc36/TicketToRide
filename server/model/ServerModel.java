@@ -119,6 +119,15 @@ public class ServerModel
         }
         return null;
     }
+    public List<HistoryEntry> getGameHistory(String gameID)
+    {
+        List<HistoryEntry> empty = new ArrayList<>();
+        GameHistory g = getGameHistorybyID(gameID);
+        if(g != null)
+            return g.getGameHistory();
+
+        return empty;
+    }
 
 }
 
