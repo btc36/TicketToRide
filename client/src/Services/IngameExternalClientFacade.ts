@@ -112,6 +112,9 @@ export class IngameExternalClientFacade {
   currentTurn(username: string){
     this.root.currentTurn(username);
   }
+  updateScores(scores: number[]){
+    this.root.updateScores(scores);
+  }
   endGame(username: string){
     this.root.endGame(username);
   }

@@ -177,6 +177,9 @@ export class ClientCommunicator {
       else if (commands[i]._methodName == "currentTurn") {
         this.inGameClientFacade.currentTurn(commands[i]._paramValues[2]);
       }
+      else if (commands[i]._methodName == "updateScores") {
+        this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
+      }
       else if (commands[i]._methodName == "endGame") {
         this.inGameClientFacade.endGame(commands[i]._paramValues[2]);
       }

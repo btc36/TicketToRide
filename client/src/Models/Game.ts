@@ -233,12 +233,15 @@ export class Game {
   }
 
   changeTurn(username: string): void {
+    let index = 0;
     this.players.forEach((player) => {
         if (player.getUsername() == username) {
+            this.whoseTurn = index;
             player.setTurn(true);
         } else {
             player.setTurn(false);
         }
+        index++;
     });
   }
   nextTurn(): void {
@@ -253,5 +256,13 @@ export class Game {
   }
   getWinner(): string {
     return this.winner;
+  }
+
+  updateScores(scores: number[]): void {
+    let index = 0;
+    this.players.forEach((player) => {
+        player.setScore(scores[index]);
+        index++;
+    });
   }
 }
