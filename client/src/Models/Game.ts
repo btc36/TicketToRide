@@ -254,4 +254,12 @@ export class Game {
   getWinner(): string {
     return this.winner;
   }
+
+  updateScores(scores: number[]): void {
+    let index = 0;
+    this.players.forEach((player) => {
+        player.setScore(scores[index]);
+        index++;
+    });
+  }
 }
