@@ -18,4 +18,7 @@ export class DestinationCard {
         return [this.city1,this.city2]
     }
 
+    toString(): string {
+      return "{" + this.city1 + "->" + this.city2 + ":" + this.pointValue + "}";
+    }
 }
