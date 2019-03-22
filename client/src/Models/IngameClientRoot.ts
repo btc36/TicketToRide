@@ -159,7 +159,7 @@ export class IngameClientRoot implements ISubject {
     this.notify("setFaceUpCards", faceUpCards);
   }
 
-  changeFaceUpCards() {
+  changeFaceUpCards(): TrainCard {
     let drawnCard = this.game.drawTrainCard();
     this.localPlayer.drawTrainCard(drawnCard);
     this.localPlayer = this.game.players[this.game.whoseTurn];
@@ -168,6 +168,7 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
     console.log(this.game);
     console.log(this.localPlayer);
+    return drawnCard;
   }
 
   updatePlayerPoints(player: string, points: number): void {
