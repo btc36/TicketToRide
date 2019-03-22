@@ -207,7 +207,7 @@ export class IngameClientRoot implements ISubject {
   changeTurn(player: string): void {
     this.game.changeTurn(player);
     this.notify("playerInfoChanged", null);
-    if (player == this.localPlayer.username) {
+    if (player == this.localPlayer) {
       this.notify("isMyTurn",null);
     }
   }

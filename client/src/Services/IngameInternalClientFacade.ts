@@ -68,7 +68,8 @@ export class IngameInternalClientFacade {
     this.SendChatCommand("Stored destination card(s): " + destinationCards.join(", "));
   }
 
-  drawTrainCard() {
+  drawTrainCard(index: number) {
+    //This needs to ask the server, not dummy test code;
     let drawnCard = this.root.changeFaceUpCards();
     this.SendChatCommand("Drew a card: " + drawnCard);
   }
