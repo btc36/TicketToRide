@@ -7,4 +7,8 @@ export class TrainCard {
   getColor(): string{
     return this.color;
   }
+
+  toString(): string {
+    return this.color + " train car";
+  }
 }

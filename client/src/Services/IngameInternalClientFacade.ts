@@ -24,6 +24,7 @@ export class IngameInternalClientFacade {
   claimRoute(route: Route) {
     let gameID = this.root.getGameID();
     let username = this.root.getUsername();
+    this.SendChatCommand("Claimed the route from " + route.getCities()[0] + " to " + route.getCities()[1]);
     this.proxy.claimRoute(route, username, gameID);
   }
 
@@ -39,7 +40,11 @@ export class IngameInternalClientFacade {
     this.proxy.getChatHistory(this.root.game.gameID);
   }
 
-  SendChatCommand(message: String, time: string) {
+  SendChatCommand(message: String, time?: string) {
+    if (!time) {
+      let today = new Date();
+      time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+    }
     let username = this.root.getUsername();
     let gameID = this.root.getGameID();
     this.proxy.SendChat(message, time, username, gameID);
@@ -52,19 +57,20 @@ export class IngameInternalClientFacade {
     this.proxy.DiscardDestinationCard(gameID, username, destinationCards);
     console.log("Destination cardcccc");
     this.root.discardDestinationCard();
-
+    this.SendChatCommand("Discarded destination card(s): " + destinationCards.join(", "));
   }
 
   storeDestinationCard(destinationCards: Array<DestinationCard>) {
     console.log("DUMB BU+G");
     console.log(destinationCards);
     let username = this.root.getUsername();
-      this.root.addDestinationCard(username, destinationCards);
+    this.root.addDestinationCard(username, destinationCards);
+    this.SendChatCommand("Stored destination card(s): " + destinationCards.join(", "));
   }
 
-  drawTrainCard(index:number) { //-1 is deck, 0-4 is FaceUp
-
-   // this.root.changeFaceUpCards();
+  drawTrainCard() {
+    let drawnCard = this.root.changeFaceUpCards();
+    this.SendChatCommand("Drew a card: " + drawnCard);
   }
 
   printRoot() {

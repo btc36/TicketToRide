@@ -2,10 +2,10 @@ import * as React from "react";
 import { DestinationCardSelectionView } from "../Views/DestinationCardSelectionView";
 import { initialState, State, IDestinationCardSelectionViewModel } from "./IDestinationCardSelectionViewModel";
 import { IObserver } from "./IObserver";
-import { ViewModelProps } from "./ViewModelProps";
+import { IngameViewModelProps } from "./ViewModelProps";
 import { DestinationCard } from "../Models/DestinationCard";
 
-export class DestinationCardSelectionViewModel extends React.Component<ViewModelProps, State> implements IDestinationCardSelectionViewModel, IObserver {
+export class DestinationCardSelectionViewModel extends React.Component<IngameViewModelProps, State> implements IDestinationCardSelectionViewModel, IObserver {
   state: State = initialState;
   noCards = [new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0)];
   isActive = true;

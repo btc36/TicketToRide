@@ -9,4 +9,5 @@ export type State = Readonly<typeof initialState>;
 
 export interface IPlayerInfoViewModel {
   state: State;
+  refreshInfo(): void;
 }
