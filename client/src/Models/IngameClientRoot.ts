@@ -226,17 +226,10 @@ export class IngameClientRoot implements ISubject {
     this.notify("discardDestination", null);
   }
 
-  // nextTurn()
-  // {
-  //   this.game.nextTurn();
-  // }
-  /*removeTrainCard(trainCard){
-
+  currentTurn(username: string){
+    this.game.changeTurn(username);
+    this.notify("playerInfoChanged", null);
   }
-
-  addTrainCard(trainCard){
-
-  }*/
 
 
 }

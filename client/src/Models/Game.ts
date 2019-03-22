@@ -20,6 +20,7 @@ export class Game {
     chatRoom: ChatRoom;
     potentialDestinationCards: Array<DestinationCard>;
     gameID: string;
+    winner: string;
 
   constructor() {
     this.gameID = "EPICGAME";
@@ -36,6 +37,7 @@ export class Game {
         this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
         this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
         this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
+        this.winner = null;
   }
 
     setGameID(input: string): void{
@@ -239,12 +241,17 @@ export class Game {
         }
     });
   }
-  nextTurn(): void
-  {
+  nextTurn(): void {
     this.players[this.whoseTurn].myTurn = false;
     console.log(this.players[this.whoseTurn].username + " false");
     this.whoseTurn = (this.whoseTurn + 1) % this.players.length;
     this.players[this.whoseTurn].myTurn = true;
       console.log(this.players[this.whoseTurn].username + " true");
+  }
+  setWinner(username: string): void {
+    this.winner = username;
+  }
+  getWinner(): string {
+    return this.winner;
   }
 }
