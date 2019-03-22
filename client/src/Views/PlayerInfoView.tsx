@@ -53,6 +53,7 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
                   {players}
               </ul>
           </div>
+          <button onClick={component.refreshInfo}>Refresh</button>
       </div>
   );
 }
