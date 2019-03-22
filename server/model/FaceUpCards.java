@@ -30,6 +30,8 @@ public class FaceUpCards {
     {
         return faceUpCards;
     }
+    public TrainCard getCardAt(int index) { return faceUpCards.get(index); }
+    public void setCardAt(int index, TrainCard card) { faceUpCards.set(index, card); }
     public void setFaceUpCards(List<TrainCard> faceUpCards)
     {
         this.faceUpCards = faceUpCards;
@@ -42,4 +44,6 @@ public class FaceUpCards {
     {
         this.faceUpCards.clear();
     }
+    public int size() { return faceUpCards.size(); }
 }
+

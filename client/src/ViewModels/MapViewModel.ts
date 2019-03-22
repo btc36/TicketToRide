@@ -1,5 +1,6 @@
 import * as React from "react";
 import { MapView } from "../Views/MapView";
+import { Route } from "../Models/Route";
 import { initialState, State, IMapViewModel } from "./IMapViewModel";
 import { IObserver } from "./IObserver";
 import { IngameViewModelProps } from "./ViewModelProps";
@@ -17,6 +18,10 @@ export class MapViewModel extends React.Component<IngameViewModelProps, State> i
       this.setState({ ownedRoutes: this.props.services.getAllOwnedRoutes() });
       this.forceUpdate();
     }
+  }
+
+  claimRoute(route: Route) {
+    this.props.services.claimRoute(route);
   }
 
   componentDidMount() {

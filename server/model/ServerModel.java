@@ -10,6 +10,7 @@ public class ServerModel
     private PlayerListModel allPlayers;
     private GameListModel allGames;
     private List<ChatRoom> allChatrooms;
+    private List<GameHistory> allGameHistory;
 
     private static ServerModel _instance;
     private ServerModel()
@@ -17,6 +18,7 @@ public class ServerModel
         allPlayers = new PlayerListModel();
         allGames = new GameListModel();
         allChatrooms = new ArrayList<>();
+        allGameHistory = new ArrayList<>();
     }
     public static ServerModel getInstance()
     {
@@ -65,6 +67,7 @@ public class ServerModel
     {
         allChatrooms.add(chatRoom);
     }
+
     public List<ChatRoom> getChatrooms() { return allChatrooms;}
     public void addChat(String gameID, ChatMessage message)
     {
@@ -81,6 +84,22 @@ public class ServerModel
         }
 
     }
+
+    public void addHistory(String gameID, HistoryEntry entry)
+    {
+
+        GameHistory history = getGameHistorybyID(gameID);
+        if(history == null)
+        {
+            history = new GameHistory(gameID);
+            history.addHistory(entry);
+            allGameHistory.add(history);
+        }
+        else
+        {
+            history.addHistory(entry);
+        }
+    }
     public ChatRoom getChatRoombyID(String gameID)
     {
         for(ChatRoom room : allChatrooms)
@@ -89,6 +108,25 @@ public class ServerModel
                 return room;
         }
         return null;
+    }
+
+    public GameHistory getGameHistorybyID(String gameID)
+    {
+        for(GameHistory history : allGameHistory)
+        {
+            if(history.getGameID().equals(gameID))
+                return history;
+        }
+        return null;
+    }
+    public List<HistoryEntry> getGameHistory(String gameID)
+    {
+        List<HistoryEntry> empty = new ArrayList<>();
+        GameHistory g = getGameHistorybyID(gameID);
+        if(g != null)
+            return g.getGameHistory();
+
+        return empty;
     }
 
 }

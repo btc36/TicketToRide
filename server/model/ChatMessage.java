@@ -7,10 +7,6 @@ public class ChatMessage {
     String message;
     String time;
 
-    public ChatMessage()
-    {
-
-    }
     public ChatMessage(String message, String time, String username)
     {
         this.username = username;
@@ -19,6 +15,7 @@ public class ChatMessage {
     }
 
     public String getPlayerName() { return username; }
+    
     public void setPlayerName(String username) {
         this.username = username;
     }

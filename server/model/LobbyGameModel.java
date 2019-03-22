@@ -4,6 +4,20 @@ import java.util.*;
 
 public class LobbyGameModel
 {
+
+
+    private PlayerModel winner;
+
+    public Route getMatchingRoute(Route temp)
+    {
+        for(Route r : unClaimedRoutes)
+            if(r.equals(temp)) return r;
+        for(Route r : claimedRoutes)
+            if(r.equals(temp)) return r;
+
+        return null;
+    }
+
     public enum State {WAITING, ONGOING, FINISHED;}
     private String gameID;
     private String gamename;
@@ -18,6 +32,8 @@ public class LobbyGameModel
     private List<Route> unClaimedRoutes;
     private List<Route> claimedRoutes;
     private List<City> allCities;
+    private String turn;
+    private int turnIndex;
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
         //this.LobbyGameModel(host, maxPlayer, gamename);
@@ -38,390 +54,48 @@ public class LobbyGameModel
         trainDeck = null;
         faceUpCards = null;
     }
-    public void addPlayer(PlayerModel player)
-    {
-        playerList.addPlayer(player);
-    }
-    public void removePlayer(PlayerModel player)
-    {
-        playerList.removePlayer(player);
-    }
 
-    public String getGameID()
-    {
-        return gameID;
-    }
-    public void setGameID(String gameID)
-    {
-        this.gameID = gameID;
-    }
+    /*************************************** BEGIN START GAME ***************************************/
 
-    public PlayerListModel getPlayerList()
-    {
-        return playerList;
-    }
-    public void setPlayerList(PlayerListModel playerList)
-    {
-        this.playerList = playerList;
-    }
+    public void startGame() { this.state = State.ONGOING; initalize(); }
 
-    public int getMaxPlayer()
+    private void initalize()
     {
-        return maxPlayer;
-    }
-    public void setMaxPlayer(int maxPlayer)
-    {
-        this.maxPlayer = maxPlayer;
-    }
-
-    public PlayerModel getHost()
-    {
-        return host;
-    }
-    public void setHost(PlayerModel host)
-    {
-        this.host = host;
-    }
-
-    public State getState()
-    {
-        return state;
-    }
-    public void setState(State state)
-    {
-        this.state = state;
-    }
-
-    public void endGame()
-    {
-        this.state = State.FINISHED;
-    }
-    public void startGame()
-    {
-        this.state = State.ONGOING;
-        destDeck = new Deck();
-        trainDeck = new Deck();
+        setUpPlayers();
         faceUpCards = new FaceUpCards();
-        unClaimedRoutes = new ArrayList<>();
         claimedRoutes = new ArrayList<>();
-        setUpDestinationCards();
-        setUpTrainCards();
+        destDeck = GameSetUp.getInstance().getDestDeck();
+        trainDeck = GameSetUp.getInstance().getTrainDeck();
+        unClaimedRoutes = GameSetUp.getInstance().getUnClaimedRoutes();
+        allCities = GameSetUp.getInstance().getAllCities();
         setUpFaceUpCards();
-        setUpRoutes();
         giveTrainCards();
-        giveDestinationCards();
+      //  giveDestinationCards();
         setColors();
         setTurn();
     }
 
-    public String getGamename() {
-        return gamename;
-    }
-    public void setGamename(String gamename)
-    {
-        this.gamename = gamename;
 
-    }
+    private void setUpPlayers() { for(PlayerModel p : playerList.getPlayerList()) p.startGame(); }
 
-    public int getCurrentPlayerNum()
-    {
-        currentPlayerNum = playerList.getPlayerList().size();
-        return currentPlayerNum;
-    }
-
-    public void setCurrentPlayerNum(int currentPlayerNum) {
-        this.currentPlayerNum = currentPlayerNum;
-    }
-
-
-    public void claimRoute(Route route, String username)
-    {
-        unClaimedRoutes.remove(route); // for sale
-        route.setClaimedBy(username); // mark the territory
-        claimedRoutes.add(route); // sold list
-    }
-
-    public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
-
-    public Route findRoute(String cityOne, String cityTwo, int length, String color)
-    {
-        Route route = new Route(cityOne, cityTwo, length, color);
-        for(Route r : claimedRoutes)
-        {
-            if(r.equals(route)) return r;
-        }
-        return null;
-    }
-
-
-    public void addDestCard(DestinationCard card)
-    {
-        destDeck.add(card);
-    }
-    public void addTrainCard(TrainCard card)
-    {
-        trainDeck.add(card);
-    }
-    public Deck getDestDeck() {
-        return destDeck;
-    }
-
-    public void setDestDeck(Deck destDeck) {
-        this.destDeck = destDeck;
-    }
-
-    public Deck getTrainDeck() {
-        return trainDeck;
-    }
-
-    public void setTrainDeck(Deck trainDeck) {
-        this.trainDeck = trainDeck;
-    }
-
-
-    private void setUpRoutes()
-    {
-        unClaimedRoutes.add(new Route("Seattle","Portland",1,"grey"));
-        unClaimedRoutes.add(new Route("Portland","San Francisco",1,"green"));
-        unClaimedRoutes.add(new Route("San Francisco","Los Angeles",3,"pink"));
-        unClaimedRoutes.add(new Route("Los Angeles","Phoenix",3,"grey"));
-        unClaimedRoutes.add(new Route("Los Angeles","Las Vegas",2,"grey"));
-        unClaimedRoutes.add(new Route("Los Angeles","El Paso",6,"black"));
-        unClaimedRoutes.add(new Route("Phoenix","Santa Fe",1,"grey"));
-        unClaimedRoutes.add(new Route("El Paso","Santa Fe",1,"grey"));
-        unClaimedRoutes.add(new Route("Phoenix","El Paso",1,"grey"));
-        unClaimedRoutes.add(new Route("El Paso","Dallas",1,"grey"));
-        unClaimedRoutes.add(new Route("El Paso","Houston",1,"grey"));
-        unClaimedRoutes.add(new Route("Dallas","Arkansas",1,"grey"));
-        unClaimedRoutes.add(new Route("Dallas","Houston",1,"grey"));
-        unClaimedRoutes.add(new Route("Houston","New Orleans",1,"grey"));
-        unClaimedRoutes.add(new Route("New Orleans","Miami",1,"grey"));
-        unClaimedRoutes.add(new Route("Atlanta","Miami",1,"grey"));
-        unClaimedRoutes.add(new Route("New York","Washington",1,"grey"));
-        unClaimedRoutes.add(new Route("Washington","Raleigh",1,"grey"));
-        unClaimedRoutes.add(new Route("Raleigh","Charleston",1,"grey"));
-        unClaimedRoutes.add(new Route("Charleston","Miami",1,"grey"));
-        unClaimedRoutes.add(new Route("Pittsburgh","New York",1,"grey"));
-    }
-
-    /**
-     * Sets up 30 Destination Cards
-     */
-    public void setUpDestinationCards()
-    {
-        destDeck.add(new DestinationCard("Atlanta", "Santa Fe", 8));
-
-        destDeck.add(new DestinationCard("Charleston", "El Paso", 10));
-        destDeck.add(new DestinationCard("Charleston", "New York", 9));
-
-        destDeck.add(new DestinationCard("Denver", "Nashville", 7));
-        destDeck.add(new DestinationCard("Duluth", "Charleston", 6));
-        destDeck.add(new DestinationCard("Duluth", "Miami", 9));
-
-        destDeck.add(new DestinationCard("El Paso", "Charleston", 8));
-        destDeck.add(new DestinationCard("El Paso", "Salt Lake City", 7));
-
-        destDeck.add(new DestinationCard("Helena", "Little Rock", 7));
-        destDeck.add(new DestinationCard("Helena", "Nashville", 9));
-        destDeck.add(new DestinationCard("Houston", "Phoenix", 11));
-        destDeck.add(new DestinationCard("Houston", "Raleigh", 8));
-
-        destDeck.add(new DestinationCard("Kansas City", "Dallas", 14));
-
-        destDeck.add(new DestinationCard("Las Vegas", "Denver", 4));
-        destDeck.add(new DestinationCard("Los Angeles", "Duluth", 10));
-        destDeck.add(new DestinationCard("Los Angeles", "Miami", 13));
-        destDeck.add(new DestinationCard("Los Angeles", "New York", 13));
-
-        destDeck.add(new DestinationCard("Miami", "Atlanta", 5));
-        destDeck.add(new DestinationCard("Miami", "Salt Lake City", 8));
-
-        destDeck.add(new DestinationCard("Omaha", "Miami", 6));
-
-        destDeck.add(new DestinationCard("Phoenix", "Helena", 5));
-        destDeck.add(new DestinationCard("Phoenix", "Washington DC", 10));
-        destDeck.add(new DestinationCard("Pittsburgh", "Santa Fe", 7));
-        destDeck.add(new DestinationCard("Portland", "New Orleans", 8));
-        destDeck.shuffle();
-        destDeck.add(new DestinationCard("Saint Louis", "Atlanta", 9));
-        destDeck.add(new DestinationCard("Saint Louis", "Boston", 11));
-        destDeck.add(new DestinationCard("Salt Lake City", "Pittsburgh", 7));
-        destDeck.add(new DestinationCard("Salt Lake City", "Raleigh", 10));
-        destDeck.add(new DestinationCard("Santa Fe", "Charleston", 9));
-
-        destDeck.add(new DestinationCard("Washington DC", "Helena", 14));
-
-        destDeck.shuffle();
-        destDeck.shuffle();
-
-    }
-
-    /**
-     * Sets up 110 Train Cards
-     */
-    public void setUpTrainCards()
-    {
-        for(int i = 0; i < 6; i++)
-        {
-            trainDeck.add(new TrainCard("pink"));
-            trainDeck.add(new TrainCard("white"));
-            trainDeck.add(new TrainCard("green"));
-            trainDeck.add(new TrainCard("yellow"));
-            trainDeck.add(new TrainCard("rainbow"));
-            trainDeck.add(new TrainCard("black"));
-            trainDeck.add(new TrainCard("red"));
-            trainDeck.add(new TrainCard("white"));
-            trainDeck.add(new TrainCard("blue"));
-            trainDeck.add(new TrainCard("orange"));
-            trainDeck.add(new TrainCard("blue"));
-            trainDeck.add(new TrainCard("yellow"));
-            trainDeck.add(new TrainCard("green"));
-            trainDeck.add(new TrainCard("red"));
-            trainDeck.add(new TrainCard("orange"));
-            trainDeck.add(new TrainCard("black"));
-            trainDeck.add(new TrainCard("rainbow"));
-            trainDeck.add(new TrainCard("pink"));
-        }
-        trainDeck.add(new TrainCard("rainbow"));
-        trainDeck.add(new TrainCard("rainbow"));
-        trainDeck.shuffle();
-    }
-    private void setUpCities()
-    {
-        allCities = new ArrayList<>();
-        City seattle = new City("Seattle");
-        City portland = new City("Portland");
-        City sfo = new City("San Francisco");
-        City la = new City("Los Angeles");
-        City vegas = new City("Las Vegas");
-        City phx = new City("Phoenix");
-        City paso = new City("El Paso");
-        City houston = new City("Houston");
-        City orleans = new City("New Orleans");
-        City miami = new City("Miami");
-        City atlanta = new City("Atlanta");
-        City charleston = new City("Charleston");
-        City raleigh = new City("Raleigh");
-        City washington = new City("Washington DC");
-        City ny = new City("New York");
-        City boston = new City("Boston");
-        City pitts = new City("Pittsburgh");
-        City chicago = new City("Chicago");
-        City duluth = new City("Duluth");
-        City omaha = new City("Omaha");
-        City helena = new City("Helena");
-        City slc = new City("Salt Lake City");
-        City denver = new City("Denver");
-        City oklahoma = new City("Oklahoma");
-        City kansas = new City("Kansas");
-        City louis = new City("St Louis");
-        City rock = new City("Little Rock");
-        City dallas = new City("Dallas");
-        City nash = new City("Nashville");
-        City santa = new City("Santa Fe");
-
-        allCities.add(seattle);
-        allCities.add(portland);
-        allCities.add(sfo);
-        allCities.add(la);
-//        allCities.add()
-
-        seattle.addNeighbor(helena);
-        seattle.addNeighbor(portland);
-        portland.addNeighbor(seattle);
-        portland.addNeighbor(sfo);
-        portland.addNeighbor(slc);
-        sfo.addNeighbor(portland);
-        sfo.addNeighbor(slc);
-        sfo.addNeighbor(la);
-        la.addNeighbor(sfo);
-        la.addNeighbor(vegas);
-        la.addNeighbor(phx);
-        la.addNeighbor(paso);
-        vegas.addNeighbor(la);
-        vegas.addNeighbor(slc);
-        slc.addNeighbor(denver);
-        slc.addNeighbor(helena);
-        slc.addNeighbor(portland);
-        slc.addNeighbor(sfo);
-        slc.addNeighbor(vegas);
-        helena.addNeighbor(seattle);
-        helena.addNeighbor(slc);
-        helena.addNeighbor(duluth);
-        helena.addNeighbor(omaha);
-        helena.addNeighbor(denver);
-        denver.addNeighbor(helena);
-        denver.addNeighbor(slc);
-        denver.addNeighbor(phx);
-        denver.addNeighbor(omaha);
-        denver.addNeighbor(santa);
-        denver.addNeighbor(kansas);
-        denver.addNeighbor(oklahoma);
-
-        duluth.addNeighbor(helena);
-        duluth.addNeighbor(omaha);
-        duluth.addNeighbor(chicago);
-
-        omaha.addNeighbor(denver);
-        omaha.addNeighbor(helena);
-        omaha.addNeighbor(duluth);
-        omaha.addNeighbor(chicago);
-        omaha.addNeighbor(kansas);
-
-        kansas.addNeighbor(denver);
-        kansas.addNeighbor(omaha);
-        kansas.addNeighbor(louis);
-        kansas.addNeighbor(oklahoma);
-
-        chicago.addNeighbor(omaha);
-        chicago.addNeighbor(duluth);
-        chicago.addNeighbor(pitts);
-        chicago.addNeighbor(louis);
-
-        pitts.addNeighbor(nash);
-        pitts.addNeighbor(louis);
-        pitts.addNeighbor(chicago);
-        pitts.addNeighbor(ny);
-        pitts.addNeighbor(washington);
-        pitts.addNeighbor(raleigh);
-
-
-        ny.addNeighbor(boston);
-        ny.addNeighbor(pitts);
-        ny.addNeighbor(washington);
-        boston.addNeighbor(ny);
-
-
-
-
-    }
     private void setUpFaceUpCards()
     {
-        //List<TrainCard> list = new ArrayList<>();
-        for(Object o : this.trainDeck.pollFive())
+        while(faceUpCards.size() < 5)
         {
-            faceUpCards.addFaceUpCard((TrainCard) o);
+            TrainCard card = (TrainCard) this.trainDeck.poll();
+            faceUpCards.addFaceUpCard(card);
         }
 
         if(faceUpCards.isThreeOrMoreWild())
         {
             for(TrainCard card : faceUpCards.getFaceUpCards())
-            {
-                trainDeck.add(card);
-            }
-            faceUpCards.clear();
+                trainDeck.add(card); //add back to the deck
 
+            faceUpCards.clear(); // then clear faceup to re set up
             setUpFaceUpCards();
         }
-        else
-        {
-            return;
-        }
     }
 
-    public FaceUpCards getFaceUpCards() {
-        return faceUpCards;
-    }
 
     private void giveTrainCards()
     {
@@ -439,6 +113,7 @@ public class LobbyGameModel
             p.addDestinationards(destDeck.pollThisMany(3));
         }
     }
+
     private void setColors()
     {
         ArrayList<String> colors = new ArrayList<String>( Arrays.asList("green", "red", "orange", "yellow","blue"));
@@ -452,15 +127,209 @@ public class LobbyGameModel
     }
     private void setTurn()
     {
-        playerList.getPlayerList().get(0).setTurn(true);
+        PlayerModel firstGuy = playerList.getPlayerList().get(0);
+        turn = firstGuy.getUsername();
+        turnIndex = 0;
+        firstGuy.setTurn(true);
+    }
+    /*************************************** END START GAME           ***************************************/
+
+
+    /*************************************** BEGIN MIDDLE OF THE GAME ***************************************/
+    public Route findRoute(String cityOne, String cityTwo, int length, String color)
+    {
+        Route route = new Route(cityOne, cityTwo, length, color);
+        for(Route r : claimedRoutes)
+        {
+            if(r.equals(route)) return r;
+        }
+        return null;
     }
 
+    public String getTurn() { return turn; }
+
+    public void endTurn() {
+        List<PlayerModel> list = playerList.getPlayerList();
+        list.get(turnIndex).setTurn(false);
+        turnIndex = (++turnIndex) % list.size();
+        turn = list.get(turnIndex).getUsername();
+        list.get(turnIndex).setTurn(true);
+    }
+
+
+    private void checkDestinationCard(PlayerModel player)
+    {
+        List<DestinationCard> destinationCards = player.getDestinationCards();
+        //check for route
+        for(DestinationCard card : destinationCards)
+        {
+            Set<City> visited = new HashSet<>(); // prevents visiting same city
+            City src = getCityByName(card.getCity1());
+            City dst = getCityByName(card.getCity2());
+
+            if(destinationTraverse(src, dst, visited)) // if found complete the card
+                player.completeDestinaton(card);
+        }
+    }
+    private boolean destinationTraverse(City src, City dst, Set<City> visited)
+    {
+//        List<City> neighbors = src.getNeighbors();
+//        if(neighbors.contains(dst)) return true;
+//
+//        for(City c : src.getNeighbors())
+//        {
+//            if(!visited.contains(c))
+//            {
+//                visited.add(c);
+//                destinationTraverse(c, dst, visited);
+//                visited.remove(c);
+//            }
+//        }
+        return false;
+    }
+
+    public TrainCard drawTrainCardDeck() { return destDeck.isEmpty() ? null : (TrainCard) trainDeck.poll(); }
+
+    public TrainCard drawTrainCardFace(int index)
+    {
+        TrainCard card = faceUpCards.getCardAt(index);
+        faceUpCards.setCardAt(index, (TrainCard) trainDeck.poll());
+        setUpFaceUpCards();
+        return card;
+    }
+
+    public void claimRoute(Route route, String username, List<String> colors)
+    {
+        unClaimedRoutes.remove(route); // for sale
+        route.setClaimedBy(username); // mark the territory
+        claimedRoutes.add(route); // sold list
+        PlayerModel luckyGuy = getPlayer(username);
+        assert (luckyGuy != null);
+        luckyGuy.claimRoute(route);
+        checkDestinationCard(luckyGuy);
+
+        for(int i = 0; i < colors.size(); i++)
+            destDeck.add(new TrainCard(colors.get(i)));
+
+        destDeck.shuffle();
+    }
+
+    /*************************************** FINISH BEING MIDDLE OF THE GAME ***************************************/
+
+
+
+
+    /***************************************        BEGING END OF GAME      ***************************************/
+    private void findWinner()
+    {
+        int max = 0;
+        List<Integer> indices = new ArrayList<>();
+        List<PlayerModel> list = playerList.getPlayerList();
+        for(int i = 0; i < list.size(); i++)
+        {
+            PlayerModel p = list.get(i);
+            if(p.getScore() >= max)
+            {
+                max = p.getScore();
+                indices.add(i);
+            }
+        }
+
+        winner = list.get(indices.get(0));
+    }
+    public PlayerModel getWinner()
+    {
+        return winner;
+    }
+
+    public void endGame()
+    {
+        //do calculations here
+        this.state = State.FINISHED;
+        for(PlayerModel p : playerList.getPlayerList())
+            p.calculateDestination();
+        findLongestRoute();
+        findWinner();
+
+
+    }
+
+    private void findLongestRoute()
+    {
+        int LONGEST_POINT = 10;
+        PlayerModel longestPerson = new PlayerModel();
+
+        // TODO: IMPLEMENT
+
+        longestPerson.setScore(longestPerson.getScore() + LONGEST_POINT);
+    }
+
+
+    /***************************************      END OF END GAME      ***************************************/
+
+
+    /*************************************** BEGIN GETTERS AND SETTERS ***************************************/
+    public FaceUpCards getFaceUpCards() { return faceUpCards; }
+    public void addPlayer(PlayerModel player) { playerList.addPlayer(player); }
+    public void removePlayer(PlayerModel player) { playerList.removePlayer(player); }
+
+    public String getGameID() { return gameID; }
+    public void setGameID(String gameID) { this.gameID = gameID; }
+
+    public PlayerListModel getPlayerList() { return playerList; }
+    public void setPlayerList(PlayerListModel playerList) { this.playerList = playerList; }
+
+    public int getMaxPlayer() { return maxPlayer; }
+    public void setMaxPlayer(int maxPlayer) { this.maxPlayer = maxPlayer; }
+
+    public PlayerModel getHost() { return host; }
+    public void setHost(PlayerModel host) { this.host = host; }
+
+    public State getState() { return state; }
+    public void setState(State state) { this.state = state; }
+
+    public String getGamename() { return gamename; }
+    public void setGamename(String gamename) { this.gamename = gamename; }
+
+    public int getCurrentPlayerNum()
+    {
+        currentPlayerNum = playerList.getPlayerList().size();
+        return currentPlayerNum;
+    }
+
+    public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
+
+    private City getCityByName(String city1) {
+        for(City c : allCities)
+            if(c.getName().equals(city1))
+                return c;
+
+        return null;
+    }
+
+    public void addTrainCard(TrainCard card) { trainDeck.add(card); }
+    public Deck getDestDeck() { return destDeck; }
+    public void setDestDeck(Deck destDeck) { this.destDeck = destDeck; }
+    public Deck getTrainDeck() { return trainDeck; }
+    public void setTrainDeck(Deck trainDeck) { this.trainDeck = trainDeck; }
+
+    public List<Route> getUnClaimedRoutes() { return unClaimedRoutes; }
+    public List<Route> getClaimedRoutes() { return claimedRoutes; }
+    //public List<City> getAllCities() { return allCities; }
+    public int getTurnIndex() { return turnIndex; }
+
+    public PlayerModel getPlayer(String username)
+    {
+        for(PlayerModel p : playerList.getPlayerList())
+            if(p.getUsername().equals(username))
+                return p;
+        return null;
+    }
+
+    /*************************************** END GETTERS AND SETTERS ***************************************/
 
     @Override
-    public int hashCode()
-    {
-        return gameID.hashCode();
-    }
+    public int hashCode() { return gameID.hashCode(); }
 
     @Override
     public boolean equals(Object o)

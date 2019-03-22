@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,12 @@ public class PlayerModel
     private boolean turn;
     private String color;
     private int score;
+    private int destCardNum;
+    private int trainNum;
+    private int trainCardNum;
     private List<Route> claimedRoutes;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
+    private Map<String, Integer> colorMap = null;
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -25,12 +30,18 @@ public class PlayerModel
     {
         this.username = username;
         this.password = password;
-
+        destCardNum = 0;
+        trainNum = 0;
+        trainCardNum = 0;
+        score = 0;
     }
 
     public void startGame()
     {
         claimedRoutes = new ArrayList<>();
+        colorMap = new HashMap<>();
+        trainCardNum = 4;
+        trainNum = 45;
 
     }
     public String getUsername() {
@@ -58,6 +69,8 @@ public class PlayerModel
 
     public void addDestinationards(List<DestinationCard> destCards)
     {
+        destCardNum += destCards.size();
+
         if(this.destinationCards == null)
             this.destinationCards = new ArrayList<>();
         this.destinationCards.addAll(destCards);
@@ -65,10 +78,18 @@ public class PlayerModel
 
     public void addTrainCards(List<TrainCard> trainCards)
     {
+        trainCardNum += trainCards.size();
+
         if(this.trainCards == null)
             this.trainCards = new ArrayList<>();
         this.trainCards.addAll(trainCards);
+        for(TrainCard c : trainCards)
+        {
+            int num = colorMap.getOrDefault(c.getColor(), 0);
+            colorMap.put(c.getColor(), ++num);
+        }
     }
+
 
     public boolean isTurn() {
         return turn;
@@ -86,14 +107,86 @@ public class PlayerModel
         this.color = color;
     }
 
-    // update score and add route
-    public void claimRoute(Route route, String username)
+    /**
+     * 1. route 2. add score, 3. decrement train card 4. decrement trains
+     * @param route
+     */
+    public void claimRoute(Route route)
     {
-        int score = scoreMap.get(route.getLength());
-        this.score += score;
+        int len = route.getLength();
+
         claimedRoutes.add(route);
+
+        int score = scoreMap.get(len);
+        this.score += score;
+        trainCardNum -= len;
+        trainNum -= len;
+
     }
 
+
+    public void completeDestinaton(DestinationCard card)
+    {
+        score += card.getPointValue();
+        card.complete();
+    }
+
+    public void calculateDestination()
+    {
+        for(DestinationCard card : destinationCards)
+        {
+            if(card.isCompleted())
+                score += card.getPointValue();
+            else
+            {
+                score -= card.getPointValue();
+                if(score < 0) score = 0;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public List<Route> getClaimedRoutes() {
+        return claimedRoutes;
+    }
+
+    public void setClaimedRoutes(List<Route> claimedRoutes) {
+        this.claimedRoutes = claimedRoutes;
+    }
+
+    public Map<Integer, Integer> getScoreMap() {
+        return scoreMap;
+    }
+
+    public void setScoreMap(Map<Integer, Integer> scoreMap) {
+        this.scoreMap = scoreMap;
+    }
+
+    public Map<String, Integer> getColorMap() {
+        return colorMap;
+    }
+
+    public void setColorMap(Map<String, Integer> colorMap) {
+        this.colorMap = colorMap;
+    }
 
 
     @Override
@@ -110,4 +203,7 @@ public class PlayerModel
 
     @Override
     public int hashCode() { return this.username.hashCode(); }
+
+
+    public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
 }
