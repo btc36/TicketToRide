@@ -231,5 +231,9 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
   }
 
-
+  endGame(username: string){
+    this.game.setWinner(username);
+    //TODO notify the game over view!
+    //this.notify("playerInfoChanged", null);
+  }
 }
