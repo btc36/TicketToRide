@@ -33,8 +33,9 @@ public class Phase3Tester
         facade.joinGame("user4", "game1");
         System.out.println(divider);
         facade.startGame("game1");
-
-        List<GenericCommand> l =  game.claimRoute("game1", "user1", "Phoenix", "El Paso", "grey", 1);
+        List<String> colors = new ArrayList<>();
+        colors.add("grey");
+        List<GenericCommand> l =  game.claimRoute("game1", "user1", "Phoenix", "El Paso", "grey", 1, colors);
 
         System.out.println("w");
 

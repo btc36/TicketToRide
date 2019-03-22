@@ -7,6 +7,17 @@ public class LobbyGameModel
 
 
     private PlayerModel winner;
+
+    public Route getMatchingRoute(Route temp)
+    {
+        for(Route r : unClaimedRoutes)
+            if(r.equals(temp)) return r;
+        for(Route r : claimedRoutes)
+            if(r.equals(temp)) return r;
+
+        return null;
+    }
+
     public enum State {WAITING, ONGOING, FINISHED;}
     private String gameID;
     private String gamename;
@@ -56,9 +67,10 @@ public class LobbyGameModel
         destDeck = GameSetUp.getInstance().getDestDeck();
         trainDeck = GameSetUp.getInstance().getTrainDeck();
         unClaimedRoutes = GameSetUp.getInstance().getUnClaimedRoutes();
+        allCities = GameSetUp.getInstance().getAllCities();
         setUpFaceUpCards();
         giveTrainCards();
-        giveDestinationCards();
+      //  giveDestinationCards();
         setColors();
         setTurn();
     }
@@ -161,19 +173,18 @@ public class LobbyGameModel
     }
     private boolean destinationTraverse(City src, City dst, Set<City> visited)
     {
-        List<City> neighbors = src.getNeighbors();
-        if(neighbors.contains(dst)) return true;
-
-        for(City c : src.getNeighbors())
-        {
-            if(!visited.contains(c))
-            {
-                visited.add(c);
-                destinationTraverse(c, dst, visited);
-                visited.remove(c);
-            }
-        }
-
+//        List<City> neighbors = src.getNeighbors();
+//        if(neighbors.contains(dst)) return true;
+//
+//        for(City c : src.getNeighbors())
+//        {
+//            if(!visited.contains(c))
+//            {
+//                visited.add(c);
+//                destinationTraverse(c, dst, visited);
+//                visited.remove(c);
+//            }
+//        }
         return false;
     }
 
@@ -208,7 +219,7 @@ public class LobbyGameModel
 
 
 
-    /*************************************** BEGING END OF GAME ***************************************/
+    /***************************************        BEGING END OF GAME      ***************************************/
     private void findWinner()
     {
         int max = 0;
@@ -235,26 +246,30 @@ public class LobbyGameModel
     {
         //do calculations here
         this.state = State.FINISHED;
-        findWinner();
+        for(PlayerModel p : playerList.getPlayerList())
+            p.calculateDestination();
         findLongestRoute();
+        findWinner();
+
 
     }
 
     private void findLongestRoute()
     {
+        int LONGEST_POINT = 10;
+        PlayerModel longestPerson = new PlayerModel();
+
         // TODO: IMPLEMENT
+
+        longestPerson.setScore(longestPerson.getScore() + LONGEST_POINT);
     }
 
 
-    /*************************************** END OF END GAME           ***************************************/
+    /***************************************      END OF END GAME      ***************************************/
 
 
     /*************************************** BEGIN GETTERS AND SETTERS ***************************************/
-
-    public FaceUpCards getFaceUpCards() {
-        return faceUpCards;
-    }
-
+    public FaceUpCards getFaceUpCards() { return faceUpCards; }
     public void addPlayer(PlayerModel player) { playerList.addPlayer(player); }
     public void removePlayer(PlayerModel player) { playerList.removePlayer(player); }
 
@@ -298,6 +313,10 @@ public class LobbyGameModel
     public Deck getTrainDeck() { return trainDeck; }
     public void setTrainDeck(Deck trainDeck) { this.trainDeck = trainDeck; }
 
+    public List<Route> getUnClaimedRoutes() { return unClaimedRoutes; }
+    public List<Route> getClaimedRoutes() { return claimedRoutes; }
+    //public List<City> getAllCities() { return allCities; }
+    public int getTurnIndex() { return turnIndex; }
 
     public PlayerModel getPlayer(String username)
     {

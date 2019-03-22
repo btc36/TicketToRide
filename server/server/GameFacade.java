@@ -16,6 +16,7 @@ public class GameFacade extends Facade
 
     private final String potential = "potentialDestinationCard";
     private final String draw = "drawDestinationCard";
+    private final String drawTrain = "drawTrainCard";
     private final String discard = "updateNumDestinationCards";
     private final String trains = "getTrainCard";
     private final String claim = "claimRoute";
@@ -25,6 +26,7 @@ public class GameFacade extends Facade
     private final String currentTurn = "currentTurn";
     private final String getHistory = "receiveHistory";
     private final String sMessage = "success : ";
+    private final String gameClass = "IngameExternalClientFacade";
 
     /**
      *
@@ -50,6 +52,8 @@ public class GameFacade extends Facade
             {
                 status = true;
                 cards.addAll(destDeck.pollThree());
+                PlayerModel p = getPlayer(username);
+                p.addDestinationards(cards);
                 message = sMessage + potential;
             }
         }
@@ -71,17 +75,13 @@ public class GameFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean status = false;
         GenericCommand command;
-        int kept = 0;
         List<DestinationCard> cards = new ArrayList<>();
         String message = checkInput(gameID, username);
         if(message.isEmpty())
         {
             Deck destDeck = getDestinationDeck(gameID);
 
-            if(destDeck == null || destDeck.isEmpty())
-            {
-                message = "empty deck";
-            }
+            if(destDeck == null || destDeck.isEmpty()) { message = "empty deck"; }
             else
             {
                 cards.add((DestinationCard) destDeck.poll());
@@ -113,7 +113,9 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             if(pointValue != -1)
             {
+                PlayerModel p = getPlayer(username);
                 DestinationCard card = new DestinationCard(city1, city2, pointValue);
+                p.removeDestinationCard(card);
                 game.getDestDeck().add(card);
                 kept -= 1;
             }
@@ -129,35 +131,68 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-    public List<GenericCommand> getMultipleTrainCards(String gameID, String username, int count)
+    public List<GenericCommand> drawTrainCard(String gameID, String username, Integer index)
     {
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-        boolean status = false;
-        List<TrainCard> cards = new ArrayList<>();
+
         String message = checkInput(gameID, username);
+        List<TrainCard> result = new ArrayList<>();
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        boolean success = false;
+        if(index >= 5 || index < -1)
+            message += "invalid card index\n";
         if(message.isEmpty())
         {
-            Deck trainDeck = getTrainDeck(gameID);
+            LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
 
-            if(trainDeck.isEmpty())
-            {
-                message = "empty deck";
-            }
+            if(index == -1)
+                result.add(game.drawTrainCardDeck());
             else
-            {
-                cards.addAll(trainDeck.pollThisMany(count));
-                status = true;
-                message = sMessage + trains;
-            }
+                result.add(game.drawTrainCardFace(index));
+
+            success = true;
         }
 
-        System.out.println(message);
-        GenericCommand command = commandForTrain(trains, status, message, gameID, username, cards);
+        GenericCommand command = new GenericCommand(
+                gameClass, getRoute,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{success, message, gameID, username, result}
+        );
+
         commandsForClient.add(command);
         return commandsForClient;
     }
 
-    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, int length, List<String> colors)
+
+
+//    public List<GenericCommand> getMultipleTrainCards(String gameID, String username, int count)
+//    {
+//        List<GenericCommand> commandsForClient = new ArrayList<>();
+//        boolean status = false;
+//        List<TrainCard> cards = new ArrayList<>();
+//        String message = checkInput(gameID, username);
+//        if(message.isEmpty())
+//        {
+//            Deck trainDeck = getTrainDeck(gameID);
+//
+//            if(trainDeck.isEmpty())
+//            {
+//                message = "empty deck";
+//            }
+//            else
+//            {
+//                cards.addAll(trainDeck.pollThisMany(count));
+//                status = true;
+//                message = sMessage + trains;
+//            }
+//        }
+//
+//        System.out.println(message);
+//        GenericCommand command = commandForTrain(trains, status, message, gameID, username, cards);
+//        commandsForClient.add(command);
+//        return commandsForClient;
+//    }
+
+    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length, List<String> colors)
     {
         boolean status = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -165,12 +200,13 @@ public class GameFacade extends Facade
         Route route = null;
         if(message.isEmpty())
         {
-            route = new Route(cityOne, cityTwo, length, routeColor);
+            Route temp = new Route(cityOne, cityTwo, length, routeColor);
             LobbyGameModel game = getGameByID(gameID);
-            if(game.isClaimed(route))
-            {
-                message = "error : route is ALREADY claimed";
-            }
+            route = game.getMatchingRoute(temp);
+            if(route == null)
+                message = "error : invalid route\n";
+            else if(game.isClaimed(route))
+                message = "error : route is ALREADY claimed\n";
             else
             {
                 status = true;
@@ -298,7 +334,7 @@ public class GameFacade extends Facade
 
         System.out.println(message);
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", getHistory,
+                gameClass, getHistory,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
@@ -325,7 +361,7 @@ public class GameFacade extends Facade
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", getRoute,
+                gameClass, getRoute,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
                 new Object[]{success, message, gameID, result}
         );
@@ -359,7 +395,7 @@ public class GameFacade extends Facade
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", endGame,
+                gameClass, endGame,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeString},
                 new Object[]{success, message, gameID, result, winner}
         );
@@ -384,7 +420,7 @@ public class GameFacade extends Facade
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", endTurn,
+                gameClass, endTurn,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
                 new Object[]{success, message, gameID}
         );
@@ -410,7 +446,7 @@ public class GameFacade extends Facade
         }
 
         GenericCommand command = new GenericCommand(
-                "IngameExternalClientFacade", currentTurn,
+                gameClass, currentTurn,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
                 new Object[]{success, message, gameID, username}
         );

@@ -16,6 +16,7 @@ public class City {
     {
         this.name = name;
         neighbors = new ArrayList<>();
+        routes = new ArrayList<>();
     }
 
     public City(String name, City[] neighbors)

@@ -40,6 +40,8 @@ public class PlayerModel
     {
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
+        trainCardNum = 4;
+        trainNum = 45;
 
     }
     public String getUsername() {
@@ -67,6 +69,8 @@ public class PlayerModel
 
     public void addDestinationards(List<DestinationCard> destCards)
     {
+        destCardNum += destCards.size();
+
         if(this.destinationCards == null)
             this.destinationCards = new ArrayList<>();
         this.destinationCards.addAll(destCards);
@@ -74,6 +78,8 @@ public class PlayerModel
 
     public void addTrainCards(List<TrainCard> trainCards)
     {
+        trainCardNum += trainCards.size();
+
         if(this.trainCards == null)
             this.trainCards = new ArrayList<>();
         this.trainCards.addAll(trainCards);
@@ -83,6 +89,7 @@ public class PlayerModel
             colorMap.put(c.getColor(), ++num);
         }
     }
+
 
     public boolean isTurn() {
         return turn;
@@ -115,8 +122,37 @@ public class PlayerModel
         trainCardNum -= len;
         trainNum -= len;
 
-
     }
+
+
+    public void completeDestinaton(DestinationCard card)
+    {
+        score += card.getPointValue();
+        card.complete();
+    }
+
+    public void calculateDestination()
+    {
+        for(DestinationCard card : destinationCards)
+        {
+            if(card.isCompleted())
+                score += card.getPointValue();
+            else
+            {
+                score -= card.getPointValue();
+                if(score < 0) score = 0;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -152,6 +188,7 @@ public class PlayerModel
         this.colorMap = colorMap;
     }
 
+
     @Override
     public boolean equals(Object o)
     {
@@ -167,9 +204,6 @@ public class PlayerModel
     @Override
     public int hashCode() { return this.username.hashCode(); }
 
-    public void completeDestinaton(DestinationCard card)
-    {
-        score += card.getPointValue();
-        card.complete();
-    }
+
+    public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
 }
