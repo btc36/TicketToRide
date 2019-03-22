@@ -265,4 +265,13 @@ export class Game {
         index++;
     });
   }
+  
+  getLocalPlayer(username: string): Player{
+    this.players.forEach((player) => {
+        if (player.getUsername() == username) {
+            return player;
+        }
+    });
+    return null;
+  }
 }

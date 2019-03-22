@@ -22,7 +22,7 @@ export class IngameExternalClientFacade {
   }*/
 
   setLocalPlayer(localPlayer: Player) {
-    this.root.setLocalPlayer(localPlayer);
+    this.root.setLocalPlayer(localPlayer.username);
   }
 
   setPlayerList(players: Array<Player>) {

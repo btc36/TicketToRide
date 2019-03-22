@@ -17,12 +17,12 @@ export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
   game: Game; // a game
   session: Session;
-  localPlayer: Player;
+  localPlayer: string;
 
   constructor() {
     this.game = new Game();
     this.observers = new Array<IObserver>();
-    this.localPlayer = new Player("ben");
+    this.localPlayer = "ben";
   }
 
   randomize() {
@@ -37,15 +37,18 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
   }
 
-  setLocalPlayer(localPlayer: Player) {
+  setLocalPlayer(localPlayer: string) {
     this.localPlayer = localPlayer;
+  }
+  getLocalPlayer(): Player{
+    return this.game.getLocalPlayer(this.localPlayer);
   }
 
   getPlayerHand(): PlayerHand{
-    return this.localPlayer.getHand();
+    return this.game.getLocalPlayer(this.localPlayer).getHand();
   }
   getUsername():string{
-    return this.localPlayer.getUsername();
+    return this.game.getLocalPlayer(this.localPlayer).getUsername();
   }
 
   transitionPage(pageName: string): void {
@@ -103,9 +106,7 @@ export class IngameClientRoot implements ISubject {
     //this.game.addDestinationCard(username, destinationCards);
     //
     this.game.numDestinationCardsRemaining -= destinationCards.length;
-    this.game.nextTurn();
-    this.localPlayer.drawDestinationCard(destinationCards);
-    this.localPlayer = this.game.players[this.game.whoseTurn];
+    this.game.addDestinationCard(this.localPlayer, destinationCards);
     this.notify("keptDestination", null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
@@ -161,8 +162,8 @@ export class IngameClientRoot implements ISubject {
 
   changeFaceUpCards(): TrainCard {
     let drawnCard = this.game.drawTrainCard();
-    this.localPlayer.drawTrainCard(drawnCard);
-    this.localPlayer = this.game.players[this.game.whoseTurn];
+    this.game.addTrainCard(this.localPlayer, drawnCard);
+    //this.localPlayer = this.game.players[this.game.whoseTurn];
     this.notify('setFaceUpCards', null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
