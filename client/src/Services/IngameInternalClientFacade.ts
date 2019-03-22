@@ -62,8 +62,9 @@ export class IngameInternalClientFacade {
       this.root.addDestinationCard(username, destinationCards);
   }
 
-  drawTrainCard() {
-    this.root.changeFaceUpCards();
+  drawTrainCard(index:number) { //-1 is deck, 0-4 is FaceUp
+
+   // this.root.changeFaceUpCards();
   }
 
   printRoot() {

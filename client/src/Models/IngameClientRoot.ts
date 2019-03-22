@@ -205,6 +205,9 @@ export class IngameClientRoot implements ISubject {
   changeTurn(player: string): void {
     this.game.changeTurn(player);
     this.notify("playerInfoChanged", null);
+    if (player == this.localPlayer.username) {
+      this.notify("isMyTurn",null);
+    }
   }
 
   receiveChatCommand(gameid: string, chats: any[]){

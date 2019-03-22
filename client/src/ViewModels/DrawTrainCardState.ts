@@ -1,6 +1,8 @@
-abstract class DrawTrainCardState
+import { FaceUpCardsViewModel } from "./FaceUpCardsViewModel";
+
+export abstract class DrawTrainCardState
 {
-    abstract enter(): void;
-    abstract exit(): void;
-    abstract drawTrainCard(): void;
+  abstract enter(viewModel: FaceUpCardsViewModel): void;
+  abstract exit(viewModel: FaceUpCardsViewModel): void;
+    abstract drawTrainCard(viewModel:FaceUpCardsViewModel, index: number): void;
 }
