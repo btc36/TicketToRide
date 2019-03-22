@@ -109,5 +109,11 @@ export class IngameExternalClientFacade {
     }
     //this.root.nextTurn();
   }
+  currentTurn(username: string){
+    this.root.currentTurn(username);
+  }
+  endGame(username: string){
+    this.root.endGame(username);
+  }
 
 }

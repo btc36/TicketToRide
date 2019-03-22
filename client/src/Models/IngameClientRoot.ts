@@ -227,17 +227,14 @@ export class IngameClientRoot implements ISubject {
     this.notify("discardDestination", null);
   }
 
-  // nextTurn()
-  // {
-  //   this.game.nextTurn();
-  // }
-  /*removeTrainCard(trainCard){
-
+  currentTurn(username: string){
+    this.game.changeTurn(username);
+    this.notify("playerInfoChanged", null);
   }
 
-  addTrainCard(trainCard){
-
-  }*/
-
-
+  endGame(username: string){
+    this.game.setWinner(username);
+    //TODO notify the game over view!
+    //this.notify("playerInfoChanged", null);
+  }
 }
