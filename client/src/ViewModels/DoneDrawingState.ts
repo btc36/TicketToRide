@@ -6,7 +6,7 @@ export class DoneDrawingState implements DrawTrainCardState {
     alert("WAIT FOR YOUR TURN BUDDY!");
   }
   enter(viewModel: FaceUpCardsViewModel) {
-
+    viewModel.props.services.endTurn();
   }
   exit(viewModel: FaceUpCardsViewModel) {
 

@@ -12,7 +12,9 @@ export class OneNonWildSelectedState implements DrawTrainCardState {
       }
     } 
     viewModel.props.services.drawTrainCard(index);
-    viewModel.changeState(new DoneDrawingState());
+    let newState = new DoneDrawingState();
+    newState.enter(viewModel);
+    viewModel.changeState(newState);
   }
   enter(viewModel: FaceUpCardsViewModel) {
 
