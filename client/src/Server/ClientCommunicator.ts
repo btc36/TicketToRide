@@ -174,6 +174,15 @@ export class ClientCommunicator {
       else if (commands[i]._methodName == "updateNumDestinationCards") {
         this.inGameClientFacade.updateNumberOfDestinationCards(commands[i]._paramValues[3], commands[i]._paramValues[5]);
       }
+      else if (commands[i]._methodName == "currentTurn") {
+        this.inGameClientFacade.currentTurn(commands[i]._paramValues[2]);
+      }
+      else if (commands[i]._methodName == "updateScores") {
+        this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
+      }
+      else if (commands[i]._methodName == "endGame") {
+        this.inGameClientFacade.endGame(commands[i]._paramValues[2]);
+      }
     }
   }
 }

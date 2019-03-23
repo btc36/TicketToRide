@@ -22,7 +22,7 @@ export class IngameExternalClientFacade {
   }*/
 
   setLocalPlayer(localPlayer: Player) {
-    this.root.setLocalPlayer(localPlayer);
+    this.root.setLocalPlayer(localPlayer.username);
   }
 
   setPlayerList(players: Array<Player>) {
@@ -108,6 +108,15 @@ export class IngameExternalClientFacade {
       this.root.addDestinationCard(username, destinationCards[i]);
     }
     //this.root.nextTurn();
+  }
+  currentTurn(username: string){
+    this.root.currentTurn(username);
+  }
+  updateScores(scores: number[]){
+    this.root.updateScores(scores);
+  }
+  endGame(username: string){
+    this.root.endGame(username);
   }
 
 }

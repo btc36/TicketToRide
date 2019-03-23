@@ -5,7 +5,7 @@ export const ChatView  = (component: I.IChatViewModel) => {
   const messages = new Array<any>();
   const messageList = component.state.messageList;
   for (let i = 0; i < messageList.length; i++) {
-    messages.push(
+    messages.unshift(
       <li key={i}>{messageList[i].playerName} : {messageList[i].message}</li>
     );
   }

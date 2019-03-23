@@ -17,12 +17,12 @@ export class IngameClientRoot implements ISubject {
   observers: Array<IObserver>;
   game: Game; // a game
   session: Session;
-  localPlayer: Player;
+  localPlayer: string;
 
   constructor() {
     this.game = new Game();
     this.observers = new Array<IObserver>();
-    this.localPlayer = new Player("ben");
+    this.localPlayer = "ben";
   }
 
   randomize() {
@@ -37,15 +37,18 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
   }
 
-  setLocalPlayer(localPlayer: Player) {
+  setLocalPlayer(localPlayer: string) {
     this.localPlayer = localPlayer;
+  }
+  getLocalPlayer(): Player{
+    return this.game.getLocalPlayer(this.localPlayer);
   }
 
   getPlayerHand(): PlayerHand{
-    return this.localPlayer.getHand();
+    return this.game.getLocalPlayer(this.localPlayer).getHand();
   }
   getUsername():string{
-    return this.localPlayer.getUsername();
+    return this.game.getLocalPlayer(this.localPlayer).getUsername();
   }
 
   transitionPage(pageName: string): void {
@@ -103,9 +106,7 @@ export class IngameClientRoot implements ISubject {
     //this.game.addDestinationCard(username, destinationCards);
     //
     this.game.numDestinationCardsRemaining -= destinationCards.length;
-    this.game.nextTurn();
-    this.localPlayer.drawDestinationCard(destinationCards);
-    this.localPlayer = this.game.players[this.game.whoseTurn];
+    this.game.addDestinationCard(this.localPlayer, destinationCards);
     this.notify("keptDestination", null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
@@ -159,15 +160,16 @@ export class IngameClientRoot implements ISubject {
     this.notify("setFaceUpCards", faceUpCards);
   }
 
-  changeFaceUpCards() {
+  changeFaceUpCards(): TrainCard {
     let drawnCard = this.game.drawTrainCard();
-    this.localPlayer.drawTrainCard(drawnCard);
-    this.localPlayer = this.game.players[this.game.whoseTurn];
+    this.game.addTrainCard(this.localPlayer, drawnCard);
+    //this.localPlayer = this.game.players[this.game.whoseTurn];
     this.notify('setFaceUpCards', null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
     console.log(this.game);
     console.log(this.localPlayer);
+    return drawnCard;
   }
 
   updatePlayerPoints(player: string, points: number): void {
@@ -205,6 +207,9 @@ export class IngameClientRoot implements ISubject {
   changeTurn(player: string): void {
     this.game.changeTurn(player);
     this.notify("playerInfoChanged", null);
+    if (player == this.localPlayer) {
+      this.notify("isMyTurn",null);
+    }
   }
 
   receiveChatCommand(gameid: string, chats: any[]){
@@ -226,17 +231,19 @@ export class IngameClientRoot implements ISubject {
     this.notify("discardDestination", null);
   }
 
-  // nextTurn()
-  // {
-  //   this.game.nextTurn();
-  // }
-  /*removeTrainCard(trainCard){
-
+  currentTurn(username: string){
+    this.game.changeTurn(username);
+    this.notify("playerInfoChanged", null);
   }
 
-  addTrainCard(trainCard){
+  updateScores(scores: number[]){
+    this.game.updateScores(scores);
+    this.notify("playerInfoChanged", null);
+  }
 
-  }*/
-
-
+  endGame(username: string){
+    this.game.setWinner(username);
+    //TODO notify the game over view!
+    //this.notify("playerInfoChanged", null);
+  }
 }

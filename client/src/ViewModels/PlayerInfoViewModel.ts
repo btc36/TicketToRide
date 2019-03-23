@@ -13,10 +13,14 @@ export class PlayerInfoViewModel extends React.Component<IngameViewModelProps, S
       this.props.main.setState({"page": data});      
     } if (updateType == "playerInfoChanged") {
       this.setState({ game: this.props.services.getGame(), username: this.props.services.getUsername() });
-    }
+    } 
   }
 
   componentDidMount() {
+    this.setState({ game: this.props.services.getGame(), username: this.props.services.getUsername() });
+  }
+
+  refreshInfo = (): void => {
     this.setState({ game: this.props.services.getGame(), username: this.props.services.getUsername() });
   }
 

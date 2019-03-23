@@ -90,7 +90,7 @@ public class LobbyGameModel
         allCities = GameSetUp.getInstance().getAllCities();
         setUpFaceUpCards();
         giveTrainCards();
-      //  giveDestinationCards();
+        giveDestinationCards();
         setColors();
         setTurn();
     }

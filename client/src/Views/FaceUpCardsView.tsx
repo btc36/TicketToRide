@@ -16,7 +16,7 @@ export const FaceUpCardsView  = (component: I.IFaceUpCardsViewModel) => {
     <div>
       <div>
         {faceUpCardsList}
-        <input type="number" name="quantity" min="1" max="5"></input>
+        <input type="number" name="quantity" min="1" max="5" onChange={component.onFaceUpIndexChanged}></input>
         <button onClick={component.drawFaceUp} type="submit">Draw Faceup</button>
         <button onClick={component.drawCard} type="submit">Draw Mystery Card</button>
       </div>
