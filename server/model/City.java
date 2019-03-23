@@ -43,12 +43,40 @@ public class City {
         neighbors.add(city);
     }
 
+    public void addNeighbor(City city1, City city2, City city3, City city4)
+    {
+        neighbors.add(city1);
+        neighbors.add(city2);
+        neighbors.add(city3);
+        neighbors.add(city4);
+    }
+
+    public void addNeighbor(City city1, City city2, City city3, City city4, City city5)
+    {
+        addNeighbor(city1, city2, city3, city4);
+        neighbors.add(city5);
+    }
+    public void addNeighbor(City city1, City city2, City city3)
+    {
+        neighbors.add(city1);
+        neighbors.add(city2);
+        neighbors.add(city3);
+    }
+    public void addNeighbor(City city1, City city2)
+    {
+        neighbors.add(city1);
+        neighbors.add(city2);
+    }
+
     public List<Route> getRoutes()
     {
         return routes;
     }
 
-    public void addRoute(Route route) { routes.add(route);}
+    public void addRoute(Route route) {
+        if(!routes.contains(route))
+        routes.add(route);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -84,9 +84,16 @@ public class LobbyGameModel
         setUpPlayers();
         faceUpCards = new FaceUpCards();
         claimedRoutes = new ArrayList<>();
-        destDeck = GameSetUp.getInstance().getDestDeck();
-        trainDeck = GameSetUp.getInstance().getTrainDeck();
-        unClaimedRoutes = GameSetUp.getInstance().getUnClaimedRoutes();
+        unClaimedRoutes = new ArrayList<>();
+        destDeck = new Deck();
+
+        for(Object o : GameSetUp.getInstance().getDestDeck().getCards())
+            destDeck.add((DestinationCard) o);
+
+        for(Object o : GameSetUp.getInstance().getTrainDeck().getCards())
+            trainDeck.add((TrainCard) o);
+
+        unClaimedRoutes.addAll(GameSetUp.getInstance().getUnClaimedRoutes());
         allCities = GameSetUp.getInstance().getAllCities();
         setUpFaceUpCards();
         giveTrainCards();
@@ -255,7 +262,8 @@ public class LobbyGameModel
             }
         }
 
-        winner = list.get(indices.get(0));
+        int index = indices.get(indices.size() - 1);
+        winner = list.get(index);
     }
     public PlayerModel getWinner()
     {
@@ -265,13 +273,11 @@ public class LobbyGameModel
     public void endGame()
     {
         //do calculations here
-        this.state = State.FINISHED;
+        //this.state = State.FINISHED;
         for(PlayerModel p : playerList.getPlayerList())
             p.calculateDestination();
         findLongestRoute();
         findWinner();
-
-
     }
 
     private void findLongestRoute()
