@@ -58,12 +58,16 @@ public class GameFacade extends Facade
                 PlayerModel p = getPlayer(username);
                 p.addDestinationards(cards);
                 message = sMessage + potential;
+                GenericCommand command = commandForDestination(potential, status, message, gameID, username, cards, -1);
+                commandsForClient.add(command);
+                commandsForClient.add(updateScoreCommand(gameID));
+                System.out.println(message);
+                return commandsForClient;
             }
         }
 
-        //System.out.println(message);
-        GenericCommand command = commandForDestination(potential, status, message, gameID, username, cards, -1);
-        commandsForClient.add(command);
+        System.out.println(message);
+        commandsForClient.add(failureCommand(message, potential));
         return commandsForClient;
     }
 
@@ -91,10 +95,16 @@ public class GameFacade extends Facade
                 status = true;
                 message = sMessage + draw;
             }
+            command = commandForDestination(draw, status, message, gameID, username, cards, -1);
+            commandsForClient.add(command);
+            commandsForClient.add(updateScoreCommand(gameID));
         }
-        //System.out.println(message);
-        command = commandForDestination(draw, status, message, gameID, username, cards, -1);
-        commandsForClient.add(command);
+        else
+        {
+            commandsForClient.add(failureCommand(message, draw));
+        }
+
+        System.out.println(message);
         return commandsForClient;
     }
 
@@ -125,11 +135,17 @@ public class GameFacade extends Facade
 
             status  = true;
             message = sMessage + discard;
+            command = commandForDestination(discard, status, message, gameID, username, null, kept);
+            commandsForClient.add(command);
+            commandsForClient.add(updateScoreCommand(gameID));
+        }
+        else
+        {
+            commandsForClient.add(failureCommand(message, discard));
         }
 
-        //System.out.println(message);
-        command = commandForDestination(discard, status, message, gameID, username, null, kept);
-        commandsForClient.add(command);
+        System.out.println(message);
+
         return commandsForClient;
     }
 
@@ -140,11 +156,9 @@ public class GameFacade extends Facade
         List<TrainCard> result = new ArrayList<>();
         List<TrainCard> faceUpCards = new ArrayList<>();
         List<GenericCommand> commandsForClient = new ArrayList<>();
-        boolean success = false;
 
         if(index >= 5 || index < -1)
             message += "invalid card index\n";
-
         if(message.isEmpty())
         {
             LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
@@ -155,15 +169,21 @@ public class GameFacade extends Facade
                 result.add(game.drawTrainCardFace(index));
 
             faceUpCards.addAll(game.getFaceUpCards().getFaceUpCards());
-            success = true;
+            GenericCommand command = new GenericCommand(
+                    gameClass, drawTrain,
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
+                    new Object[]{true, message, gameID, username, result, faceUpCards}
+                    // contains, success, message, gameID, username, a single card drawn, and latest faceupCards
+            );
+            commandsForClient.add(command);
+            commandsForClient.add(updateScoreCommand(gameID));
+        }
+        else
+        {
+            failureCommand(message, drawTrain);
         }
 
-        GenericCommand command = new GenericCommand(
-                gameClass, drawTrain,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
-                new Object[]{success, message, gameID, username, result, faceUpCards}
-        );
-        commandsForClient.add(command);
+        System.out.println(message);
         return commandsForClient;
     }
 
@@ -224,16 +244,20 @@ public class GameFacade extends Facade
                 status = true;
                 game.claimRoute(route, username, colors);
                 message = sMessage + claim;
+                GenericCommand command = new GenericCommand(
+                        _gameClassName, claim,
+                        new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , "model.Route"},
+                        new Object[]{ status, message, gameID, username, route}
+                );
+
+                commandsForClient.add(command);
+                commandsForClient.add(updateScoreCommand(gameID));
+                System.out.println(message);
+                return commandsForClient;
             }
         }
 
-        GenericCommand command = new GenericCommand(
-                _gameClassName, claim,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , "model.Route"},
-                new Object[]{ status, message, gameID, username, route}
-        );
-
-        commandsForClient.add(command);
+        commandsForClient.add(failureCommand(message, claim));
         return commandsForClient;
     }
 
@@ -336,16 +360,23 @@ public class GameFacade extends Facade
             success = true;
             message = sMessage + endGame;
             winner = game.getWinner().getUsername();
+            GenericCommand command = new GenericCommand(
+                    gameClass, endGame,
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
+                    new Object[]{success, message, gameID, winner}
+            );
+
+            commandCheck(command);
+            commandsForClient.add(command);
+            commandsForClient.add(updateScoreCommand(gameID));
+        }
+        else
+        {
+            commandsForClient.add(failureCommand(message, endGame));
         }
 
-        GenericCommand command = new GenericCommand(
-                gameClass, endGame,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
-                new Object[]{success, message, gameID, winner}
-        );
+        System.out.println(endGame);
 
-        commandCheck(command);
-        commandsForClient.add(command);
         return commandsForClient;
     }
 
@@ -368,15 +399,18 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
+    // used for update contains latest scores and players
     private GenericCommand updateScoreCommand(String gameID)
     {
         LobbyGameModel game = getGameByID(gameID);
         List<Integer> scores = game.getScores();
+        List<PlayerModel> players = game.getPlayerList().getPlayerList();
         GenericCommand command = new GenericCommand(
                 gameClass, updateScore,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
-                new Object[]{true, sMessage, gameID, scores}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
+                new Object[]{true, sMessage, gameID, scores, players}
         );
+        commandCheck(command);
         return command;
     }
 
