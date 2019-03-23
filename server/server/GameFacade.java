@@ -4,10 +4,13 @@ import command.GenericCommand;
 import model.*;
 import model.LobbyGameModel;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static model.LobbyGameModel.State.*;
 
 
 public class GameFacade extends Facade
@@ -27,6 +30,10 @@ public class GameFacade extends Facade
     private final String getHistory = "receiveHistory";
     private final String sMessage = "success : ";
     private final String gameClass = "IngameExternalClientFacade";
+    private final String updateScore = "updateScore";
+    private final String whoseTurn = "whoseTurn";
+
+    int LASTCARNUM = 5;
 
     /**
      *
@@ -120,7 +127,6 @@ public class GameFacade extends Facade
                 kept -= 1;
             }
 
-
             status  = true;
             message = sMessage + discard;
         }
@@ -133,13 +139,15 @@ public class GameFacade extends Facade
 
     public List<GenericCommand> drawTrainCard(String gameID, String username, Integer index)
     {
-
         String message = checkInput(gameID, username);
         List<TrainCard> result = new ArrayList<>();
+        List<TrainCard> faceUpCards = new ArrayList<>();
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean success = false;
+
         if(index >= 5 || index < -1)
             message += "invalid card index\n";
+
         if(message.isEmpty())
         {
             LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
@@ -149,48 +157,19 @@ public class GameFacade extends Facade
             else
                 result.add(game.drawTrainCardFace(index));
 
+            faceUpCards.addAll(game.getFaceUpCards().getFaceUpCards());
             success = true;
         }
 
         GenericCommand command = new GenericCommand(
                 gameClass, getRoute,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList},
-                new Object[]{success, message, gameID, username, result}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
+                new Object[]{success, message, gameID, username, result, faceUpCards}
         );
 
         commandsForClient.add(command);
         return commandsForClient;
     }
-
-
-
-//    public List<GenericCommand> getMultipleTrainCards(String gameID, String username, int count)
-//    {
-//        List<GenericCommand> commandsForClient = new ArrayList<>();
-//        boolean status = false;
-//        List<TrainCard> cards = new ArrayList<>();
-//        String message = checkInput(gameID, username);
-//        if(message.isEmpty())
-//        {
-//            Deck trainDeck = getTrainDeck(gameID);
-//
-//            if(trainDeck.isEmpty())
-//            {
-//                message = "empty deck";
-//            }
-//            else
-//            {
-//                cards.addAll(trainDeck.pollThisMany(count));
-//                status = true;
-//                message = sMessage + trains;
-//            }
-//        }
-//
-//        System.out.println(message);
-//        GenericCommand command = commandForTrain(trains, status, message, gameID, username, cards);
-//        commandsForClient.add(command);
-//        return commandsForClient;
-//    }
 
     public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length, List<String> colors)
     {
@@ -225,26 +204,6 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-    private Deck getDestinationDeck(String gameID)
-    {
-        LobbyGameModel game = getGameByID(gameID);
-        return game == null ? null : game.getDestDeck();
-    }
-
-    private Deck getTrainDeck(String gameID)
-    {
-        LobbyGameModel game = getGameByID(gameID);
-        return game == null ? null : game.getTrainDeck();
-    }
-    public List<LobbyGameModel> getGame()
-    {
-        return ServerModel.getInstance().getAllGames().getGameList();
-    }
-
-    private boolean isGameStarted(String gameID)
-    {
-        return (getGameByID(gameID).getState() == LobbyGameModel.State.ONGOING);
-    }
     private GenericCommand commandForDestination(String method, boolean status, String message, String gameID, String username, List<DestinationCard> cards, int kept)
     {
         GenericCommand command;
@@ -267,6 +226,7 @@ public class GameFacade extends Facade
         commandCheck(command);
         return command;
     }
+
     private GenericCommand commandForTrain(String method, boolean status, String message, String gameID, String username, List<TrainCard> cards)
     {
         GenericCommand command;
@@ -279,69 +239,6 @@ public class GameFacade extends Facade
 
         commandCheck(command);
         return command;
-    }
-
-
-    /**
-     @param move, timestamp, username, gameID
-     @return command that contains success, result message, gameID,
-     and all of the chat history associated with the gameID
-     */
-    public List<GenericCommand> sendGameHistory(String move, String username, String gameID)
-    {
-        String message = checkInput(gameID, username);
-        boolean success = false;
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-        GenericCommand command;
-        ChatRoom room = null;
-        List<HistoryEntry> result = new ArrayList<>();
-
-        if(message.isEmpty())
-        {
-            success = true;
-            HistoryEntry entry = new HistoryEntry(move, username);
-            ServerModel.getInstance().addHistory(gameID, entry);
-            result.addAll(ServerModel.getInstance().getGameHistory(gameID)); // bad .. but... ㅈㄲ
-            message = sMessage + getHistory;
-        }
-
-        command = new GenericCommand(
-                _className, getHistory,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
-                new Object[]{success, message, gameID, result}
-        );
-
-        commandsForClient.add(command);
-
-        return commandsForClient;
-    }
-
-    public List<GenericCommand> getGameHistory(String gameID)
-    {
-        String message = checkGame(gameID);
-        boolean success = false;
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-        GameHistory history = null;
-        List<HistoryEntry> result = new ArrayList<>();
-
-        if(message.isEmpty())
-        {
-            success = true;
-            history = ServerModel.getInstance().getGameHistorybyID(gameID);
-            result.addAll(history.getGameHistory());
-            message = sMessage + getHistory;
-        }
-
-        System.out.println(message);
-        GenericCommand command = new GenericCommand(
-                gameClass, getHistory,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
-                new Object[]{success, message, gameID, result}
-        );
-
-        commandCheck(command);
-        commandsForClient.add(command);
-        return commandsForClient;
     }
 
     public List<GenericCommand> getRoutes(String gameID)
@@ -366,29 +263,78 @@ public class GameFacade extends Facade
                 new Object[]{success, message, gameID, result}
         );
 
+        commandsForClient.add(command);
         return commandsForClient;
     }
 
-    public List<GenericCommand> lastRound(String gameID)
+    public GenericCommand lastRound(String gameID)
+    {
+        GenericCommand command = new GenericCommand(
+                gameClass, endGame,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
+                new Object[]{true, sMessage + "lastRound", gameID}
+        );
+        commandCheck(command);
+        return command;
+    }
+
+
+    public List<GenericCommand> endTurn(String gameID, String username)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
+        String message = checkInput(gameID, username);
+        if(message.isEmpty())
+        {
+            PlayerModel p = getPlayer(username);
+            LobbyGameModel game = getGameByID(gameID);
+            game.endTurn(); // turn change in game and the player
 
-        // ???
-        // ???
+            if(p.getTrainNum() < LASTCARNUM)
+                game.setState(LASTROUND);
+            else if(game.getState() == LASTROUND)
+                game.setState(FINISHED);
+
+            commandsForClient.addAll(roundCheck(game));
+        }
+        else
+        {
+            commandsForClient.add(failureCommand(message, endTurn));
+        }
+
         return commandsForClient;
     }
 
-    public List<GenericCommand> endGame(String gameID)
+    public List<GenericCommand> whoseTurn(String gameID)
+    {
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        String message = checkGame(gameID);
+        if(message.isEmpty())
+        {
+            LobbyGameModel game = getGameByID(gameID);
+            commandsForClient.addAll(roundCheck(game));
+        }
+        else
+        {
+            commandsForClient.add(failureCommand(message, whoseTurn));
+        }
+
+        return commandsForClient;
+    }
+
+    private List<GenericCommand> endGame(String gameID)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         boolean success = false;
         String message = checkGame(gameID);
-        String winner = "Winner winner chicken dinner";
+        String winner = "Winner winner chicken dinner\n";
         List<PlayerModel> result = new ArrayList<>();
         if(message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
-            game.endGame();
+
+            if(game.getWinner() != null) // we don't want it to find longest every time
+                game.endGame();
+
             success = true;
             message = sMessage + endGame;
             winner = game.getWinner().getUsername();
@@ -396,8 +342,8 @@ public class GameFacade extends Facade
 
         GenericCommand command = new GenericCommand(
                 gameClass, endGame,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeString},
-                new Object[]{success, message, gameID, result, winner}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
+                new Object[]{success, message, gameID, winner}
         );
 
         commandCheck(command);
@@ -405,79 +351,55 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-    public List<GenericCommand> endTurn(String gameID, String username)
+
+    private List<GenericCommand> roundCheck(LobbyGameModel game)
     {
-        boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
+        String gameID = game.getGameID();
+        if(game.getState() == ONGOING)
+            commandsForClient.add(currentTurn(gameID, game.getTurn()));
+        else if(game.getState() == LASTROUND)
+            commandsForClient.add(currentTurn(gameID, game.getTurn()));
+        else if(game.getState() == FINISHED)
+            commandsForClient.addAll(endGame(gameID));
 
-        String message = checkInput(gameID, username);
-        if(message.isEmpty())
-        {
-            LobbyGameModel game = getGameByID(gameID);
-            game.endTurn();
-            success = true;
-            message = sMessage + endTurn;
-        }
+        commandsForClient.add(updateScoreCommand(game.getGameID()));
+        return commandsForClient;
+    }
 
+    private GenericCommand updateScoreCommand(String gameID)
+    {
+        LobbyGameModel game = getGameByID(gameID);
+        List<Integer> scores = game.getScores();
         GenericCommand command = new GenericCommand(
-                gameClass, endTurn,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
-                new Object[]{success, message, gameID}
+                gameClass, updateScore,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+                new Object[]{true, sMessage, gameID, scores}
         );
-
-        commandCheck(command);
-        commandsForClient.add(command);
-        commandsForClient.addAll(whoseTurn(gameID));
-        return commandsForClient;
+        return command;
     }
 
-    public List<GenericCommand> whoseTurn(String gameID)
+    private GenericCommand currentTurn(String gameID, String username)
     {
-        boolean success = false;
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-
-        String message = checkGame(gameID);
-        String username = "wtf";
-        if(message.isEmpty())
-        {
-            LobbyGameModel game = getGameByID(gameID);
-            username = game.getTurn();
-            message = sMessage + currentTurn;
-        }
-
         GenericCommand command = new GenericCommand(
                 gameClass, currentTurn,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
-                new Object[]{success, message, gameID, username}
+                new Object[]{true, sMessage + "currentTurn", gameID, username}
         );
+        return command;
+    }
 
+    private GenericCommand failureCommand(String message, String methodName)
+    {
+        GenericCommand command = new GenericCommand(
+                gameClass, methodName,
+                new String[]{_paramTypeBoolean, _paramTypeString},
+                new Object[]{false, message}
+        );
         commandCheck(command);
-        commandsForClient.add(command);
-        return commandsForClient;
-    }
-
-    private String checkInput(String gameID, String username)
-    {
-        String message = "";
-        message += checkPlayer(username);
-        message += checkGame(gameID);
-        return message;
-    }
-
-    private String checkGame(String gameID)
-    {
-        String message = "";
-        if(!isInputValid(gameID) || !gameExists(gameID)) { message += "invalid gameID"; }
-        else if(!isGameStarted(gameID)) { message += "game did not start"; }
-        return message;
+        return command;
     }
 
 
-    private String checkPlayer(String username)
-    {
-        String message = "";
-        if(!isInputValid(username)) { message += "username is invalid\n"; }
-        if(!playerExists(username)) { message += "user does not exist\n"; }
-        return message;
-    }
+
 }

@@ -76,5 +76,108 @@ public class Facade
         for(GenericCommand command : commands)
             commandCheck(command);
     }
+    public List<LobbyGameModel> getGame() { return ServerModel.getInstance().getAllGames().getGameList(); }
+    public boolean isGameStarted(String gameID) { return (getGameByID(gameID).getState() == LobbyGameModel.State.ONGOING); }
+
+    protected String checkInput(String gameID, String username)
+    {
+        String message = "";
+        message += checkPlayer(username);
+        message += checkGame(gameID);
+        return message;
+    }
+
+    protected String checkGame(String gameID)
+    {
+        String message = "";
+        if(!isInputValid(gameID) || !gameExists(gameID)) { message += "invalid gameID"; }
+        else if(!isGameStarted(gameID)) { message += "game did not start"; }
+        return message;
+    }
+
+
+    protected String checkPlayer(String username)
+    {
+        String message = "";
+        if(!isInputValid(username)) { message += "username is invalid\n"; }
+        if(!playerExists(username)) { message += "user does not exist\n"; }
+        return message;
+    }
+
+    protected Deck getDestinationDeck(String gameID)
+    {
+        LobbyGameModel game = getGameByID(gameID);
+        return game == null ? null : game.getDestDeck();
+    }
+
+    protected Deck getTrainDeck(String gameID)
+    {
+        LobbyGameModel game = getGameByID(gameID);
+        return game == null ? null : game.getTrainDeck();
+    }
+
+
+    //
+//    /**
+//     @param move, timestamp, username, gameID
+//     @return command that contains success, result message, gameID,
+//     and all of the chat history associated with the gameID
+//     */
+//    public List<GenericCommand> sendGameHistory(String move, String username, String gameID)
+//    {
+//        String message = checkInput(gameID, username);
+//        boolean success = false;
+//        List<GenericCommand> commandsForClient = new ArrayList<>();
+//        GenericCommand command;
+//        ChatRoom room = null;
+//        List<HistoryEntry> result = new ArrayList<>();
+//
+//        if(message.isEmpty())
+//        {
+//            success = true;
+//            HistoryEntry entry = new HistoryEntry(move, username);
+//            ServerModel.getInstance().addHistory(gameID, entry);
+//            result.addAll(ServerModel.getInstance().getGameHistory(gameID)); // bad .. but... ㅈㄲ
+//            message = sMessage + getHistory;
+//        }
+//
+//        command = new GenericCommand(
+//                _className, getHistory,
+//                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+//                new Object[]{success, message, gameID, result}
+//        );
+//
+//        commandsForClient.add(command);
+//
+//        return commandsForClient;
+//    }
+//
+//    public List<GenericCommand> getGameHistory(String gameID)
+//    {
+//        String message = checkGame(gameID);
+//        boolean success = false;
+//        List<GenericCommand> commandsForClient = new ArrayList<>();
+//        GameHistory history = null;
+//        List<HistoryEntry> result = new ArrayList<>();
+//
+//        if(message.isEmpty())
+//        {
+//            success = true;
+//            history = ServerModel.getInstance().getGameHistorybyID(gameID);
+//            result.addAll(history.getGameHistory());
+//            message = sMessage + getHistory;
+//        }
+//
+//        System.out.println(message);
+//        GenericCommand command = new GenericCommand(
+//                gameClass, getHistory,
+//                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},
+//                new Object[]{success, message, gameID, result}
+//        );
+//
+//        commandCheck(command);
+//        commandsForClient.add(command);
+//        return commandsForClient;
+//    }
 
 }

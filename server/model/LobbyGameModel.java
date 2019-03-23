@@ -18,7 +18,17 @@ public class LobbyGameModel
         return null;
     }
 
-    public enum State {WAITING, ONGOING, FINISHED;}
+    boolean lastRound;
+
+    public List<Integer> getScores()
+    {
+        List<Integer> scores = new ArrayList<>();
+        for(PlayerModel p : playerList.getPlayerList())
+            scores.add(p.getScore());
+        return scores;
+    }
+
+    public enum State {WAITING, ONGOING, LASTROUND, FINISHED;}
     private String gameID;
     private String gamename;
     private PlayerListModel playerList;
@@ -53,11 +63,21 @@ public class LobbyGameModel
         destDeck = null;
         trainDeck = null;
         faceUpCards = null;
+        lastRound = false;
+        winner = null;
     }
 
     /*************************************** BEGIN START GAME ***************************************/
 
-    public void startGame() { this.state = State.ONGOING; initalize(); }
+    public void startGame()
+    {
+        // game is already setup
+        if(this.state != State.ONGOING)
+        {
+            this.state = State.ONGOING;
+            initalize();
+        }
+    }
 
     private void initalize()
     {
@@ -317,7 +337,8 @@ public class LobbyGameModel
     public List<Route> getClaimedRoutes() { return claimedRoutes; }
     //public List<City> getAllCities() { return allCities; }
     public int getTurnIndex() { return turnIndex; }
-
+    public boolean isLastRound() { return lastRound; }
+    public void setLastRound(boolean b) { lastRound = b; }
     public PlayerModel getPlayer(String username)
     {
         for(PlayerModel p : playerList.getPlayerList())

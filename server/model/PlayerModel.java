@@ -188,6 +188,18 @@ public class PlayerModel
         this.colorMap = colorMap;
     }
 
+    public int getDestCardNum() { return destCardNum; }
+    public void setDestCardNum(int destCardNum) { this.destCardNum = destCardNum; }
+
+    public int getTrainNum() { return trainNum; }
+
+    public void setTrainNum(int trainNum) { this.trainNum = trainNum; }
+
+    public int getTrainCardNum() { return trainCardNum; }
+
+    public void setTrainCardNum(int trainCardNum) {
+        this.trainCardNum = trainCardNum;
+    }
 
     @Override
     public boolean equals(Object o)
