@@ -7,7 +7,7 @@ export class OneNonWildSelectedState implements DrawTrainCardState {
     if (index != -1) {
       let desiredCard = viewModel.getFaceUpCard(index);
       if (desiredCard.color == "rainbow") {
-        alert("ONLY 1 WILD ALLOWED MY FRIEND!");
+        alert("SORRY, BUT THAT WILD IS NOT FOR YOU!");
         return;
       }
     } 

@@ -69,15 +69,19 @@ export class IngameInternalClientFacade {
   }
 
   drawTrainCard(index: number) {
+    console.log("CALLING MY PROXY");
+    this.proxy.drawTrainCard(this.root.getGameID(), this.root.getLocalPlayer(), index);//Zero based index
     //This needs to ask the server, not dummy test code;
-    let drawnCard = this.root.changeFaceUpCards();
-    this.SendChatCommand("Drew a card: " + drawnCard);
+    //let drawnCard = this.root.changeFaceUpCards();
+    let humanNum = index += 1;
+    this.SendChatCommand("Drew Face Up Card: " + humanNum);
   }
 
   printRoot() {
     console.log(this.root);
   }
   getFaceUpCards(): FaceUpCards {
+    console.log(this.root);
     return this.root.getFaceUpCards();
   }
 

@@ -152,7 +152,7 @@ export class Game {
             if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
               this.numTrainCardsRemaining -= 1;
-              player.setNumTrainCards(player.getNumTrainCards() - 1);
+              //player.setNumTrainCards(player.getNumTrainCards() - 1);
                 return;
             }
         });
@@ -267,11 +267,14 @@ export class Game {
   }
   
   getLocalPlayer(username: string): Player{
+    let localPlayer = null;
     this.players.forEach((player) => {
-        if (player.getUsername() == username) {
-            return player;
+      console.log(player.getUsername());
+      if (player.getUsername() == username) {
+        console.log(player);
+        localPlayer = player;
         }
     });
-    return null;
+    return localPlayer;
   }
 }

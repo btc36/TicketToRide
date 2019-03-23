@@ -8,6 +8,7 @@ import { DoneDrawingState } from "./DoneDrawingState";
 import { TrainCard } from "../Models/TrainCard";
 import { DrawTrainCardState } from "./DrawTrainCardState";
 import { NothingSelectedState } from "./NothingSelectedState";
+import { FaceUpCards } from "../Models/FaceUpCards";
 
 export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, State> implements IFaceUpCardsViewModel, IObserver, IStateful {
 
@@ -35,8 +36,8 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
     }
   }
 
-  getFaceUpCard(index:number):TrainCard {
-    let faceUp = this.props.services.getFaceUpCards().getCards();
+  getFaceUpCard(index: number): TrainCard {
+    let faceUp = this.props.services.getFaceUpCards().faceUpCards;
     return faceUp[index];
   }
 
@@ -49,7 +50,13 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
   }
 
   onFaceUpIndexChanged = (e: any) => {
-    this.setState({ "faceUpIndex": e.target.value });
+    this.setState({ "faceUpIndex": e.target.value -1 });//Account for 0 based indexing
+  }
+
+  getCards(): any {
+    let myCards = this.props.services.getFaceUpCards().faceUpCards;
+    console.log("MY CARDS");
+    return myCards;
   }
 
   render(): JSX.Element {

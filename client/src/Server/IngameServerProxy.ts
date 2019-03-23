@@ -42,6 +42,15 @@ export class IngameServerProxy {
     this.communicator.sendCommand(command);
   }
 
+  drawTrainCard(gameID: string, player: string, index: number) {
+    console.log("SENDING TRAIN COMMAND");
+    console.log(gameID);
+    console.log(player);
+    console.log(index);
+    const command = new ClientCommandObjects(this.gameClass, "drawTrainCard", [this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameID, player, index]);
+    this.communicator.sendCommand(command);
+  }
+
     /**
      *
      * @param gameId

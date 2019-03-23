@@ -89,7 +89,7 @@ export class Player {
   drawTrainCard(trainCard: TrainCard):void {
     this.myHand.addTrainCard(trainCard);
     this.numTrainCards += 1;
-    const color = trainCard.getColor();
+    const color = trainCard.color;
     let count = 0;
       if (this.colorCountMap.get(color) != null){
         count = this.colorCountMap.get(color);

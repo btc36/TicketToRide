@@ -7,6 +7,14 @@ import { FaceUpCards } from "../Models/FaceUpCards";
 
 // operations on the model
 export class IngameExternalClientFacade {
+    setPlayerList(gamePlayers: Player[]): any {
+      this.root.setPlayerList(gamePlayers);
+    }
+  setLocalPlayer(player: Player): any {
+    console.log("SETTING PLAYER");
+    console.log(player);
+      this.root.setLocalPlayer(player.getUsername());
+    }
   root: IngameClientRoot
 
   constructor(root:IngameClientRoot) {
@@ -21,12 +29,15 @@ export class IngameExternalClientFacade {
     this.root.addTrainCard(trainCard);
   }*/
 
-  setLocalPlayer(localPlayer: Player) {
-    this.root.setLocalPlayer(localPlayer.username);
-  }
+  drawTrainCard(success: boolean, message: string, gameID: string, username: string, result: Array<TrainCard>, faceUpCards: FaceUpCards) {
+    if (success) {
 
-  setPlayerList(players: Array<Player>) {
-    this.root.setPlayerList(players);
+      this.root.addTrainCards(username, result);
+      this.root.setFaceUpCards(faceUpCards);
+    } else {
+      alert(message);
+    }
+
   }
 
   updatePlayerPoints(player: string, points:number) {
