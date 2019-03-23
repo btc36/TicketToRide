@@ -9,7 +9,9 @@ export class NothingSelectedState implements DrawTrainCardState {
       let desiredCard = viewModel.getFaceUpCard(index);
       if (desiredCard.color == "rainbow") {
         viewModel.props.services.drawTrainCard(index);
-        viewModel.changeState(new DoneDrawingState());
+        let newState = new DoneDrawingState();
+        newState.enter(null);
+        viewModel.changeState(newState);
         return;
       }
     }
