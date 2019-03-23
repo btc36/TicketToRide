@@ -5,8 +5,10 @@ import java.util.*;
 public class LobbyGameModel
 {
 
-
+    private final int LONGESTPOINT = 15;
     private PlayerModel winner;
+    private int longestPoint;
+    private String longestUser = "";
 
     public Route getMatchingRoute(Route temp)
     {
@@ -298,12 +300,58 @@ public class LobbyGameModel
 
     private void findLongestRoute()
     {
-        int LONGEST_POINT = 10;
-        PlayerModel longestPerson = new PlayerModel();
 
-        // TODO: IMPLEMENT
 
-        longestPerson.setScore(longestPerson.getScore() + LONGEST_POINT);
+        longestPoint = 0;
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            String username = p.getUsername();
+            List<Route> claimed = p.getClaimedRoutes();
+            for(City src : p.getClaimedCities())
+            {
+                int length = 0;
+                Set<Route> visited = new HashSet<>();
+                longtraverse(src, length, claimed, visited, username);
+            }
+        }
+
+        assert(!longestUser.isEmpty());
+        PlayerModel longestPerson = getPlayer(longestUser);
+        longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
+    }
+
+    private void longtraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
+    {
+        if(longestPoint < length)
+        {
+            longestPoint = length;
+            longestUser = username;
+        }
+
+        List<Route> dsts = src.getRoutes();
+        for (Route route : dsts)
+        {
+            if(claimed.contains(route) && !visited.contains(route))
+            {
+                visited.add(route);
+                City newSource = getOtherSideCity(src, route);
+                longtraverse(newSource, length + route.getLength(), claimed, visited, username);
+                visited.remove(route);
+            }
+        }
+    }
+
+
+
+    private City getOtherSideCity(City origin, Route r)
+    {
+        String originName = origin.getName();
+        if(originName.equals(r.getCityOne()))
+            return getCityByName(r.getCityTwo());
+        else if(originName.equals(r.getCityTwo()))
+            return getCityByName(r.getCityOne());
+        else
+            return null;
     }
 
 

@@ -222,4 +222,8 @@ public class PlayerModel
     public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
 
     public boolean claimedCity(City city) { return claimedCities.contains(city); }
+
+    public Set<City> getClaimedCities() { return claimedCities; }
+
+    public void setClaimedCities(Set<City> claimedCities) { this.claimedCities = claimedCities; }
 }
