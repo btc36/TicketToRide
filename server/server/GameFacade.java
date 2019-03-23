@@ -265,6 +265,11 @@ public class GameFacade extends Facade
 
     public GenericCommand lastRound(String gameID)
     {
+        // TESTING CODE//
+
+        getGameByID(gameID).setState(LASTROUND);
+
+        ///////
         GenericCommand command = new GenericCommand(
                 gameClass, endGame,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
@@ -325,7 +330,7 @@ public class GameFacade extends Facade
         {
             LobbyGameModel game = getGameByID(gameID);
 
-            if(game.getWinner() != null) // we don't want it to find longest every time
+            if(game.getWinner() == null) // we don't want it to find longest every time
                 game.endGame();
 
             success = true;

@@ -2,6 +2,7 @@ package server;
 
 import command.GenericCommand;
 import model.*;
+import static model.LobbyGameModel.State.*;
 
 import java.util.List;
 
@@ -78,7 +79,12 @@ public class Facade
             commandCheck(command);
     }
     public List<LobbyGameModel> getGame() { return ServerModel.getInstance().getAllGames().getGameList(); }
-    public boolean isGameStarted(String gameID) { return (getGameByID(gameID).getState() == LobbyGameModel.State.ONGOING); }
+    public boolean isGameStarted(String gameID)
+    {
+        LobbyGameModel.State state  = getGameByID(gameID).getState();
+        return state == ONGOING || state == LASTROUND || state == FINISHED;
+        //return (getGameByID(gameID).getState() != WAITING);
+    }
 
     protected String checkInput(String gameID, String username)
     {
