@@ -152,7 +152,7 @@ export class Game {
             if (player.getUsername() == username) {
                 player.drawTrainCard(trainCard);
               this.numTrainCardsRemaining -= 1;
-              player.setNumTrainCards(player.getNumTrainCards() - 1);
+              //player.setNumTrainCards(player.getNumTrainCards() - 1);
                 return;
             }
         });

@@ -24,9 +24,13 @@ export class ClientCommunicator {
     this.clientFacade = facadeIn;
     this.inGameClientFacade = inGameECFIn;
   }
-  public sendCommand(command: ClientCommandObjects){
+  public sendCommand(command: ClientCommandObjects) {
+    let method = command._methodName;
+    let isTrainCardCommand = null;
+    if (method == "drawTrainCard") {
+      isTrainCardCommand = true;
+    }
     var data = this.serializer.toJSON(command);
-
     var request = new XMLHttpRequest();
     request.open('POST', "/command", true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -36,15 +40,20 @@ export class ClientCommunicator {
       if (request.status >= 200 && request.status < 400) {
         // Success!
         var result = serial.parseJSON(request.responseText);
-        console.log(result);
+        if (isTrainCardCommand) {
+          console.log("success!!!!");
+          console.log(result);
+        }
         that.executeCommands(result);
       } else {
         // We reached our target server, but it returned an error
-
+        console.log("ERRROROROROROROROROROR");
+        var result = serial.parseJSON(request.responseText);
+        console.log(result);
       }
 
-      console.log("dragon");
-      console.log(data);
+      //console.log("dragon");
+      //console.log(data);
     };
 
     request.onerror = function() {
@@ -54,8 +63,12 @@ export class ClientCommunicator {
   }
 
   // Execute the command received from the server
-  public executeCommands(commands: ClientCommandObjects[]){
+  public executeCommands(commands: ClientCommandObjects[]) {
     for (var i = 0; i < commands.length; i++){
+      if (commands[i]._methodName == "drawTrainCard") {
+        console.log("YOUR WISH IS MY COMMAND");
+        console.log(commands);
+      }
       if (commands[i]._methodName == "loginStatus") {
         this.clientFacade.loginResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
       }
@@ -85,7 +98,20 @@ export class ClientCommunicator {
         this.clientFacade.joinGame(commands[i]._paramValues[2]);
       }
       else if (commands[i]._methodName == "drawTrainCard") {
-        this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], commands[i]._paramValues[4], commands[i]._paramValues[5]);
+        console.log("THE SERVER RESPONDED!!!! YAY!");
+        console.log(commands[i]);
+        let faceUpArray = new Array<TrainCard>();
+        for (let j = 0; j < commands[i]._paramValues[5].length; j++) {
+          const card = new TrainCard(commands[i]._paramValues[5][j].color);
+          faceUpArray.push(card);
+        }
+        let faceUp = new FaceUpCards(faceUpArray);
+        let drawnCards = new Array<TrainCard>();
+        for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
+          const card = new TrainCard(commands[i]._paramValues[4][k].color);
+          drawnCards.push(card);
+        }
+        this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], drawnCards, faceUp);
       }
       else if (commands[i]._methodName == "startGame") {
         console.log("IM HERE IM HERE IM HERE");
@@ -99,9 +125,13 @@ export class ClientCommunicator {
         this.inGameClientFacade.setGame(game);
         // Players from lobby are in game: 6 percent
         this.inGameClientFacade.setGameId(game.gameID);
+        let startingPlayer = null;
         for (let i = 0; i < players.length; i++)
         {
           const player = new Player(players[i].username);
+          if (players[i].turn) {
+            startingPlayer = players[i].username;
+          }
           player.setTurn(players[i].turn);
           player.color = players[i].color;
           player.score = 0;
@@ -150,7 +180,9 @@ export class ClientCommunicator {
             faceUpArray.push(card);
           }
 
-          let faceUp = new FaceUpCards(faceUpArray);
+        let faceUp = new FaceUpCards(faceUpArray);
+        console.log("FACE UP CARDS OBJECT");
+        console.log(faceUp);
           this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
           //this.inGameClientFacade.setDest
 
@@ -160,6 +192,7 @@ export class ClientCommunicator {
           //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
           // }
         this.clientFacade.startGame(commands[i]._paramValues[2]);
+        this.inGameClientFacade.changeTurn(startingPlayer);
         }
       //}
       else if (commands[i]._methodName == "receiveChatCommand") {

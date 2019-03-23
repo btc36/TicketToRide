@@ -61,7 +61,7 @@ public class GameFacade extends Facade
             }
         }
 
-        System.out.println(message);
+        //System.out.println(message);
         GenericCommand command = commandForDestination(potential, status, message, gameID, username, cards, -1);
         commandsForClient.add(command);
         return commandsForClient;
@@ -92,7 +92,7 @@ public class GameFacade extends Facade
                 message = sMessage + draw;
             }
         }
-        System.out.println(message);
+        //System.out.println(message);
         command = commandForDestination(draw, status, message, gameID, username, cards, -1);
         commandsForClient.add(command);
         return commandsForClient;
@@ -127,7 +127,7 @@ public class GameFacade extends Facade
             message = sMessage + discard;
         }
 
-        System.out.println(message);
+        //System.out.println(message);
         command = commandForDestination(discard, status, message, gameID, username, null, kept);
         commandsForClient.add(command);
         return commandsForClient;
@@ -135,6 +135,7 @@ public class GameFacade extends Facade
 
     public List<GenericCommand> drawTrainCard(String gameID, String username, Integer index)
     {
+        System.out.println("I DREW A TRAIN CARD");
         String message = checkInput(gameID, username);
         List<TrainCard> result = new ArrayList<>();
         List<TrainCard> faceUpCards = new ArrayList<>();

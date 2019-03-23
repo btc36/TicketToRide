@@ -20,4 +20,5 @@ export interface IFaceUpCardsViewModel {
   drawCard(e: any): void;
   drawFaceUp(e: any): void;
   onFaceUpIndexChanged(e: any): void;
+  getCards(): any;
 }
