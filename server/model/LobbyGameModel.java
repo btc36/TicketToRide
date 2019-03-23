@@ -30,7 +30,7 @@ public class LobbyGameModel
         return scores;
     }
 
-    public enum State {WAITING, ONGOING, LASTROUND, FINISHED;}
+    public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}
     private String gameID;
     private String gamename;
     private PlayerListModel playerList;
@@ -316,6 +316,10 @@ public class LobbyGameModel
         }
 
         assert(!longestUser.isEmpty());
+        System.out.println("WINNER : " + longestUser);
+        System.out.println("팀빨");
+        System.out.println("ㅈ 극혐");
+        System.out.println("ㄱㅅㄲ ㅡㅡ ");
         PlayerModel longestPerson = getPlayer(longestUser);
         longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
     }

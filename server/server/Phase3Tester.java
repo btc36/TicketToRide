@@ -41,6 +41,9 @@ public class Phase3Tester
         List<GenericCommand> t =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, colors);
         game.endTurn("game1", "user1");
         System.out.println("FINISHED\n");
+        game.lastRound("game1");
+        game.endTurn("game1", "user1");
+
 
     }
 }
