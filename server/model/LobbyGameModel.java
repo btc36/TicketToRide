@@ -86,6 +86,7 @@ public class LobbyGameModel
         claimedRoutes = new ArrayList<>();
         unClaimedRoutes = new ArrayList<>();
         destDeck = new Deck();
+        trainDeck = new Deck();
 
         for(Object o : GameSetUp.getInstance().getDestDeck().getCards())
             destDeck.add((DestinationCard) o);
@@ -134,11 +135,15 @@ public class LobbyGameModel
     }
     private void giveDestinationCards()
     {
+        List<DestinationCard> test = new ArrayList<>();
+        test.add(new DestinationCard("Miami", "Nashville", 5));
         for(PlayerModel p : playerList.getPlayerList())
         {
             assert(destDeck.getSize() >= 3);
             p.addDestinationards(destDeck.pollThisMany(3));
+            p.addDestinationards(test);
         }
+
     }
 
     private void setColors()
@@ -190,28 +195,37 @@ public class LobbyGameModel
         //check for route
         for(DestinationCard card : destinationCards)
         {
-            Set<City> visited = new HashSet<>(); // prevents visiting same city
             City src = getCityByName(card.getCity1());
             City dst = getCityByName(card.getCity2());
+            if(player.claimedCity(src) && player.claimedCity(dst)) // if player doesn't have those cities, not worth calculating
+            {
 
-            if(destinationTraverse(src, dst, visited)) // if found complete the card
-                player.completeDestinaton(card);
+                Set<City> visited = new HashSet<>(); // prevents visiting same city
+                if(destinationTraverse(src, dst, visited)) // if found complete the card
+                    player.completeDestinaton(card);
+            }
         }
     }
+
     private boolean destinationTraverse(City src, City dst, Set<City> visited)
     {
-//        List<City> neighbors = src.getNeighbors();
-//        if(neighbors.contains(dst)) return true;
-//
-//        for(City c : src.getNeighbors())
-//        {
-//            if(!visited.contains(c))
-//            {
-//                visited.add(c);
-//                destinationTraverse(c, dst, visited);
-//                visited.remove(c);
-//            }
-//        }
+
+        List<City> neighbors = src.getNeighbors();
+        if(neighbors.contains(dst))
+        {
+            return  true;
+        }
+
+        for(City c : src.getNeighbors())
+        {
+            if(!visited.contains(c))
+            {
+                visited.add(c);
+                if(destinationTraverse(c, dst, visited))
+                    return true;
+                visited.remove(c);
+            }
+        }
         return false;
     }
 
@@ -232,13 +246,15 @@ public class LobbyGameModel
         claimedRoutes.add(route); // sold list
         PlayerModel luckyGuy = getPlayer(username);
         assert (luckyGuy != null);
-        luckyGuy.claimRoute(route);
+        City city1 = getCityByName(route.getCityOne());
+        City city2 = getCityByName(route.getCityTwo());
+        luckyGuy.claimRoute(route, city1, city2);
         checkDestinationCard(luckyGuy);
 
         for(int i = 0; i < colors.size(); i++)
-            destDeck.add(new TrainCard(colors.get(i)));
+            trainDeck.add(new TrainCard(colors.get(i)));
 
-        destDeck.shuffle();
+        trainDeck.shuffle();
     }
 
     /*************************************** FINISH BEING MIDDLE OF THE GAME ***************************************/

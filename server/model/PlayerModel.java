@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerModel
 {
@@ -18,6 +15,7 @@ public class PlayerModel
     private int trainNum;
     private int trainCardNum;
     private List<Route> claimedRoutes;
+    private Set<City> claimedCities;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     private Map<String, Integer> colorMap = null;
     public PlayerModel() {}
@@ -40,6 +38,7 @@ public class PlayerModel
     {
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
+        claimedCities = new HashSet<>();
         trainCardNum = 4;
         trainNum = 45;
 
@@ -111,9 +110,12 @@ public class PlayerModel
      * 1. route 2. add score, 3. decrement train card 4. decrement trains
      * @param route
      */
-    public void claimRoute(Route route)
+    public void claimRoute(Route route, City city1, City city2)
     {
         int len = route.getLength();
+
+        claimedCities.add(city1);
+        claimedCities.add(city2);
 
         claimedRoutes.add(route);
 
@@ -218,4 +220,6 @@ public class PlayerModel
 
 
     public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
+
+    public boolean claimedCity(City city) { return claimedCities.contains(city); }
 }

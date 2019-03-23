@@ -5,7 +5,9 @@ import model.DestinationCard;
 import model.LobbyGameModel;
 import model.Route;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,11 +35,12 @@ public class Phase3Tester
         facade.joinGame("user4", "game1");
         System.out.println(divider);
         facade.startGame("game1");
-        List<String> colors = new ArrayList<>();
-        colors.add("grey");
-        List<GenericCommand> l =  game.claimRoute("game1", "user1", "Phoenix", "El Paso", "grey", 1, colors);
+        List<String> colors = Arrays.asList(new String[] {"blue", "blue", "blue", "blue", "blue"});
+        List<GenericCommand> l =  game.claimRoute("game1", "user1", "Miami", "Atlanta", "blue", 5, colors);
+        colors = Arrays.asList(new String[] {"grey"});
+        List<GenericCommand> t =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, colors);
 
-        System.out.println("w");
+        System.out.println("FINISHED\n");
 
     }
 }

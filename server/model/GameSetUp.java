@@ -358,7 +358,7 @@ public class GameSetUp {
         destDeck.add(new DestinationCard(La, Miami, 13));
         destDeck.add(new DestinationCard(La, Ny, 13));
 
-        destDeck.add(new DestinationCard(Miami, Atlanta, 5));
+        destDeck.add(new DestinationCard(Miami, Nash, 5));
         destDeck.add(new DestinationCard(Miami, Slc, 8));
 
         destDeck.add(new DestinationCard(Omaha, Miami, 6));
