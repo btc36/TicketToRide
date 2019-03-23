@@ -69,9 +69,10 @@ export class IngameInternalClientFacade {
   }
 
   drawTrainCard(index: number) {
+    this.proxy.drawTrainCard(this.root.getGameID(), this.root.getLocalPlayer(), index);
     //This needs to ask the server, not dummy test code;
-    let drawnCard = this.root.changeFaceUpCards();
-    this.SendChatCommand("Drew a card: " + drawnCard);
+    //let drawnCard = this.root.changeFaceUpCards();
+    this.SendChatCommand("Drew a card: " + index);
   }
 
   printRoot() {

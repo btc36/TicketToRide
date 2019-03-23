@@ -84,8 +84,11 @@ export class ClientCommunicator {
       else if (commands[i]._methodName == "joinGame") {
         this.clientFacade.joinGame(commands[i]._paramValues[2]);
       }
+      else if (commands[i]._methodName == "drawTrainCard") {
+        this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], commands[i]._paramValues[4], commands[i]._paramValues[5]);
+      }
       else if (commands[i]._methodName == "startGame") {
-        this.clientFacade.startGame(commands[i]._paramValues[2]);
+        console.log("IM HERE IM HERE IM HERE");
         const game = commands[i]._paramValues[3][0]; // JSON game
         const players = game.playerList.playerList; // JSON players
         console.log("MY GAME IS:");
@@ -156,6 +159,7 @@ export class ClientCommunicator {
           // {
           //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
           // }
+        this.clientFacade.startGame(commands[i]._paramValues[2]);
         }
       //}
       else if (commands[i]._methodName == "receiveChatCommand") {

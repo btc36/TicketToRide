@@ -158,11 +158,10 @@ public class GameFacade extends Facade
         }
 
         GenericCommand command = new GenericCommand(
-                gameClass, getRoute,
+                gameClass, drawTrain,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
                 new Object[]{success, message, gameID, username, result, faceUpCards}
         );
-
         commandsForClient.add(command);
         return commandsForClient;
     }

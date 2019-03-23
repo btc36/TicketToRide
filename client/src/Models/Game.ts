@@ -267,11 +267,14 @@ export class Game {
   }
   
   getLocalPlayer(username: string): Player{
+    let localPlayer = null;
     this.players.forEach((player) => {
-        if (player.getUsername() == username) {
-            return player;
+      console.log(player.getUsername());
+      if (player.getUsername() == username) {
+        console.log(player);
+        localPlayer = player;
         }
     });
-    return null;
+    return localPlayer;
   }
 }
