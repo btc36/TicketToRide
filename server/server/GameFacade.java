@@ -1,22 +1,18 @@
 package server;
 
-import command.GenericCommand;
-import model.*;
-import model.LobbyGameModel;
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import command.GenericCommand;
+import model.*;
+import model.LobbyGameModel;
 import static model.LobbyGameModel.State.*;
 
 
 public class GameFacade extends Facade
 {
-
-
     private final String potential = "potentialDestinationCard";
     private final String draw = "drawDestinationCard";
     private final String drawTrain = "drawTrainCard";
@@ -171,39 +167,6 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length, List<String> colors)
-    {
-        boolean status = false;
-        List<GenericCommand> commandsForClient = new ArrayList<>();
-        String message = checkInput(gameID, username);
-        Route route = null;
-        if(message.isEmpty())
-        {
-            Route temp = new Route(cityOne, cityTwo, length, routeColor);
-            LobbyGameModel game = getGameByID(gameID);
-            route = game.getMatchingRoute(temp);
-            if(route == null)
-                message = "error : invalid route\n";
-            else if(game.isClaimed(route))
-                message = "error : route is ALREADY claimed\n";
-            else
-            {
-                status = true;
-                game.claimRoute(route, username, colors);
-                message = sMessage + claim;
-            }
-        }
-
-        GenericCommand command = new GenericCommand(
-            _gameClassName, claim,
-            new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , "model.Route"},
-            new Object[]{ status, message, gameID, username, route}
-        );
-
-        commandsForClient.add(command);
-        return commandsForClient;
-    }
-
     private GenericCommand commandForDestination(String method, boolean status, String message, String gameID, String username, List<DestinationCard> cards, int kept)
     {
         GenericCommand command;
@@ -239,6 +202,39 @@ public class GameFacade extends Facade
 
         commandCheck(command);
         return command;
+    }
+
+    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length, List<String> colors)
+    {
+        boolean status = false;
+        List<GenericCommand> commandsForClient = new ArrayList<>();
+        String message = checkInput(gameID, username);
+        Route route = null;
+        if(message.isEmpty())
+        {
+            Route temp = new Route(cityOne, cityTwo, length, routeColor);
+            LobbyGameModel game = getGameByID(gameID);
+            route = game.getMatchingRoute(temp);
+            if(route == null)
+                message = "error : invalid route\n";
+            else if(game.isClaimed(route))
+                message = "error : route is ALREADY claimed\n";
+            else
+            {
+                status = true;
+                game.claimRoute(route, username, colors);
+                message = sMessage + claim;
+            }
+        }
+
+        GenericCommand command = new GenericCommand(
+                _gameClassName, claim,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , "model.Route"},
+                new Object[]{ status, message, gameID, username, route}
+        );
+
+        commandsForClient.add(command);
+        return commandsForClient;
     }
 
     public List<GenericCommand> getRoutes(String gameID)
@@ -278,7 +274,6 @@ public class GameFacade extends Facade
         return command;
     }
 
-
     public List<GenericCommand> endTurn(String gameID, String username)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -300,7 +295,6 @@ public class GameFacade extends Facade
         {
             commandsForClient.add(failureCommand(message, endTurn));
         }
-
         return commandsForClient;
     }
 
@@ -317,7 +311,6 @@ public class GameFacade extends Facade
         {
             commandsForClient.add(failureCommand(message, whoseTurn));
         }
-
         return commandsForClient;
     }
 
@@ -351,17 +344,20 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-
     private List<GenericCommand> roundCheck(LobbyGameModel game)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String gameID = game.getGameID();
-        if(game.getState() == ONGOING)
-            commandsForClient.add(currentTurn(gameID, game.getTurn()));
-        else if(game.getState() == LASTROUND)
-            commandsForClient.add(currentTurn(gameID, game.getTurn()));
-        else if(game.getState() == FINISHED)
+        if(game.getState() == FINISHED) // Time to announce game is over
+        {
             commandsForClient.addAll(endGame(gameID));
+        }
+        else
+        {
+            commandsForClient.add(currentTurn(gameID, game.getTurn()));
+            if(game.getState() == LASTROUND) // Time to announce last Round
+                commandsForClient.add(lastRound(gameID));
+        }
 
         commandsForClient.add(updateScoreCommand(game.getGameID()));
         return commandsForClient;
@@ -388,18 +384,5 @@ public class GameFacade extends Facade
         );
         return command;
     }
-
-    private GenericCommand failureCommand(String message, String methodName)
-    {
-        GenericCommand command = new GenericCommand(
-                gameClass, methodName,
-                new String[]{_paramTypeBoolean, _paramTypeString},
-                new Object[]{false, message}
-        );
-        commandCheck(command);
-        return command;
-    }
-
-
 
 }

@@ -39,7 +39,7 @@ public class Phase3Tester
         List<GenericCommand> l =  game.claimRoute("game1", "user1", "Miami", "Atlanta", "blue", 5, colors);
         colors = Arrays.asList(new String[] {"grey"});
         List<GenericCommand> t =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, colors);
-
+        game.endTurn("game1", "user1");
         System.out.println("FINISHED\n");
 
     }

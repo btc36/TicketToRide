@@ -22,6 +22,7 @@ public class Facade
     protected final String passwordError = "password empty";
 
 
+
     public boolean isInputValid(String input) // empty? or not?
     {
         if(input == null) return false;
@@ -116,7 +117,16 @@ public class Facade
         return game == null ? null : game.getTrainDeck();
     }
 
-
+    protected GenericCommand failureCommand(String message, String methodName)
+    {
+        GenericCommand command = new GenericCommand(
+                _gameClassName, methodName,
+                new String[]{_paramTypeBoolean, _paramTypeString},
+                new Object[]{false, message}
+        );
+        commandCheck(command);
+        return command;
+    }
     //
 //    /**
 //     @param move, timestamp, username, gameID
