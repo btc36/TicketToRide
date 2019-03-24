@@ -1,4 +1,6 @@
-package server;
+package tester;
+
+import server.ServerFacade;
 
 public class ServiceTester
 {

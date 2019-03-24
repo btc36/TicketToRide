@@ -2,7 +2,7 @@ package model;
 
 import java.util.*;
 
-public class LobbyGameModel
+public class LobbyGameModel extends GameSetUp
 {
 
     private final int LONGESTPOINT = 15;
@@ -38,12 +38,13 @@ public class LobbyGameModel
     private int currentPlayerNum;
     private PlayerModel host;
     private State state;
-    private Deck destDeck;
-    private Deck trainDeck;
+    //private Deck destDeck;
+    //private Deck trainDeck;
     private FaceUpCards faceUpCards;
-    private List<Route> unClaimedRoutes;
     private List<Route> claimedRoutes;
-    private List<City> allCities;
+//    private List<Route> unClaimedRoutes;
+//
+//    private List<City> allCities;
     private String turn;
     private int turnIndex;
 
@@ -73,8 +74,8 @@ public class LobbyGameModel
 
     public void startGame()
     {
-        // game is already setup
-        if(this.state != State.ONGOING)
+        // set up only if the game is uninitialized
+        if(this.state == State.WAITING)
         {
             this.state = State.ONGOING;
             initalize();
@@ -86,18 +87,22 @@ public class LobbyGameModel
         setUpPlayers();
         faceUpCards = new FaceUpCards();
         claimedRoutes = new ArrayList<>();
-        unClaimedRoutes = new ArrayList<>();
-        destDeck = new Deck();
-        trainDeck = new Deck();
+//        unClaimedRoutes = new ArrayList<>();
+        //destDeck = new Deck();
+       // trainDeck = new Deck();
 
-        for(Object o : GameSetUp.getInstance().getDestDeck().getCards())
-            destDeck.add((DestinationCard) o);
+        setUpDestinationCards();
+        setUpTrainCards();
+        setUpCities();
 
-        for(Object o : GameSetUp.getInstance().getTrainDeck().getCards())
-            trainDeck.add((TrainCard) o);
+//        for(Object o : GameSetUp.getInstance().getDestDeck().getCards())
+//            destDeck.add((DestinationCard) o);
 
-        unClaimedRoutes.addAll(GameSetUp.getInstance().getUnClaimedRoutes());
-        allCities = GameSetUp.getInstance().getAllCities();
+//        for(Object o : GameSetUp.getInstance().getTrainDeck().getCards())
+//            trainDeck.add((TrainCard) o);
+//
+//        unClaimedRoutes.addAll(GameSetUp.getInstance().getUnClaimedRoutes());
+//        allCities = GameSetUp.getInstance().getAllCities();
         setUpFaceUpCards();
         giveTrainCards();
         giveDestinationCards();
@@ -282,6 +287,7 @@ public class LobbyGameModel
 
         int index = indices.get(indices.size() - 1);
         winner = list.get(index);
+        System.out.println("WINNER : " + winner.getUsername());
     }
     public PlayerModel getWinner()
     {
@@ -300,8 +306,6 @@ public class LobbyGameModel
 
     private void findLongestRoute()
     {
-
-
         longestPoint = 0;
         for(PlayerModel p : playerList.getPlayerList())
         {
@@ -316,7 +320,7 @@ public class LobbyGameModel
         }
 
         assert(!longestUser.isEmpty());
-        System.out.println("WINNER : " + longestUser);
+        System.out.println("LONGEST : " + longestUser);
         System.out.println("팀빨");
         System.out.println("ㅈ 극혐");
         System.out.println("ㄱㅅㄲ ㅡㅡ ");
@@ -345,8 +349,6 @@ public class LobbyGameModel
         }
     }
 
-
-
     private City getOtherSideCity(City origin, Route r)
     {
         String originName = origin.getName();
@@ -357,7 +359,6 @@ public class LobbyGameModel
         else
             return null;
     }
-
 
     /***************************************      END OF END GAME      ***************************************/
 
@@ -391,25 +392,7 @@ public class LobbyGameModel
         return currentPlayerNum;
     }
 
-    public boolean isClaimed(Route route) { return claimedRoutes.contains(route); }
-
-    private City getCityByName(String city1) {
-        for(City c : allCities)
-            if(c.getName().equals(city1))
-                return c;
-
-        return null;
-    }
-
-    public void addTrainCard(TrainCard card) { trainDeck.add(card); }
-    public Deck getDestDeck() { return destDeck; }
-    public void setDestDeck(Deck destDeck) { this.destDeck = destDeck; }
-    public Deck getTrainDeck() { return trainDeck; }
-    public void setTrainDeck(Deck trainDeck) { this.trainDeck = trainDeck; }
-
-    public List<Route> getUnClaimedRoutes() { return unClaimedRoutes; }
     public List<Route> getClaimedRoutes() { return claimedRoutes; }
-    //public List<City> getAllCities() { return allCities; }
     public int getTurnIndex() { return turnIndex; }
     public boolean isLastRound() { return lastRound; }
     public void setLastRound(boolean b) { lastRound = b; }
