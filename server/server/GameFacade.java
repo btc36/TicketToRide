@@ -29,7 +29,7 @@ public class GameFacade extends Facade
     private final String whoseTurn = "whoseTurn";
 
 
-    int LASTCARNUM = 5;
+    int LASTCARNUM = 2;
 
     /**
      *
@@ -312,7 +312,7 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             game.endTurn(); // turn change in game and the player
 
-            if(p.getTrainNum() < LASTCARNUM)
+            if(p.getTrainNum() <= LASTCARNUM)
                 game.setState(LASTROUND);
             else if(game.getState() == LASTROUND)
                 game.setState(FINISHED);

@@ -8,7 +8,8 @@ public class LobbyGameModel extends GameSetUp
     private final int LONGESTPOINT = 15;
     private PlayerModel winner;
     private int longestPoint;
-    private String longestUser = "";
+    //private String longestUser = "";
+    private Set<String> longestUsers;
 
     public Route getMatchingRoute(Route temp)
     {
@@ -307,6 +308,7 @@ public class LobbyGameModel extends GameSetUp
     private void findLongestRoute()
     {
         longestPoint = 0;
+        longestUsers = new HashSet<>();
         for(PlayerModel p : playerList.getPlayerList())
         {
             String username = p.getUsername();
@@ -319,21 +321,30 @@ public class LobbyGameModel extends GameSetUp
             }
         }
 
-        assert(!longestUser.isEmpty());
-        System.out.println("LONGEST : " + longestUser);
-        System.out.println("팀빨");
-        System.out.println("ㅈ 극혐");
-        System.out.println("ㄱㅅㄲ ㅡㅡ ");
-        PlayerModel longestPerson = getPlayer(longestUser);
-        longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
+        for(String longestUser : longestUsers)
+        {
+            PlayerModel longestPerson = getPlayer(longestUser);
+            longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
+            assert(!longestUser.isEmpty());
+            System.out.println("LONGEST : " + longestUser);
+            System.out.println("팀빨");
+            System.out.println("ㅈ 극혐");
+            System.out.println("ㄱㅅㄲ ㅡㅡ ");
+        }
     }
 
     private void longtraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
     {
-        if(longestPoint < length)
+        if(longestPoint < length) // we found a better length
         {
             longestPoint = length;
-            longestUser = username;
+            longestUsers.clear();
+            longestUsers.add(username);
+//            longestUser = username;
+        }
+        else if(longestPoint == length)
+        {
+            longestUsers.add(username);
         }
 
         List<Route> dsts = src.getRoutes();
