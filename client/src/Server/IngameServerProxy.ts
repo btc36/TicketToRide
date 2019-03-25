@@ -28,7 +28,7 @@ export class IngameServerProxy {
     }
 
     DrawDestinationCard(gameId:String, username:String) {
-        const command = new ClientCommandObjects(this.gameClass, "drawDestinatGameFacadeionCard", [this.paramTypeString, this.paramTypeString], [gameId, username]);
+        const command = new ClientCommandObjects(this.gameClass, "drawDestinationCard", [this.paramTypeString, this.paramTypeString], [gameId, username]);
         this.communicator.sendCommand(command);
     }
 
