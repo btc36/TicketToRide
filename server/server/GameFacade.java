@@ -224,23 +224,20 @@ public class GameFacade extends Facade
         return command;
     }
 
-    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length, List<String> colors)
+    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkInput(gameID, username);
-        message += checkTrainColors(colors);
         if(message.isEmpty())
         {
             Route temp = new Route(cityOne, cityTwo, length, routeColor);
             LobbyGameModel game = getGameByID(gameID);
             Route route = game.getMatchingRoute(temp);
-            if(route == null)
-                message = "error : invalid route\n";
-            else if(game.isClaimed(route))
-                message = "error : route is ALREADY claimed\n";
-            else
-            {
-                game.claimRoute(route, username, colors);
+            if(route == null) {
+                message = "error : invalid route";
+            } else if (game.isClaimed(route)) {
+                message = "That route is already claimed.";
+            } else if (game.claimRoute(route, username)) {
                 message = sMessage + claim;
                 GenericCommand command = new GenericCommand(
                         _gameClassName, claim,
@@ -252,6 +249,8 @@ public class GameFacade extends Facade
                 commandsForClient.add(updateScoreCommand(gameID));
                 System.out.println(message);
                 return commandsForClient;
+            } else {
+                message = "Player has insufficient resources to claim route";
             }
         }
 
@@ -421,18 +420,6 @@ public class GameFacade extends Facade
                 new Object[]{true, sMessage + "currentTurn", gameID, username}
         );
         return command;
-    }
-
-    private String checkTrainColors(List<String> colors)
-    {
-        List<String> correctColors = Arrays.asList(new String[]{"pink","white","blue","yellow","orange","black","red","green","rainbow"});
-        for(String color : colors)
-        {
-            if(!correctColors.contains(color))
-                return "Incorrect Color";
-
-        }
-        return "";
     }
 
 }
