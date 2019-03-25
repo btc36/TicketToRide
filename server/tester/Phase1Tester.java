@@ -60,8 +60,5 @@ public class Phase1Tester
 //        facade.login("Joey", "Trib");
 //        facade.joinGame("Joey", "game1");
 //        facade.startGame("game1");
-
-
-
     }
 }
