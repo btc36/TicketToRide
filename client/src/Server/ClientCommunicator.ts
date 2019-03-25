@@ -69,7 +69,11 @@ export class ClientCommunicator {
         console.log("YOUR WISH IS MY COMMAND");
         console.log(commands);
       }
-      if (commands[i]._methodName == "loginStatus") {
+      if (commands[i]._className == "currentTurn") {
+        console.log("CURRENT TURN COMMAND EXECUTED");
+        this.inGameClientFacade.currentTurn(commands[i]._paramValues[3]);
+      }
+      else if (commands[i]._methodName == "loginStatus") {
         this.clientFacade.loginResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
       }
       else if (commands[i]._methodName == "registerStatus") {
@@ -216,6 +220,10 @@ export class ClientCommunicator {
       }
       else if (commands[i]._methodName == "updateScores") {
         this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
+        let currentPlayers = commands[i]._paramValues[4];
+        console.log("MY PLAYER INFO TO UPDATE SCORES");
+        console.log(currentPlayers);
+
       }
       else if (commands[i]._methodName == "endGame") {
         this.inGameClientFacade.endGame(commands[i]._paramValues[2]);
