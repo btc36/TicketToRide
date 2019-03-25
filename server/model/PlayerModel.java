@@ -18,6 +18,10 @@ public class PlayerModel
     private Set<City> claimedCities;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     private Map<String, Integer> colorMap = null;
+    private int claimedDestPoint;
+    private int unclaimedDestPoint;
+    private boolean longestRoute;
+
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -32,6 +36,9 @@ public class PlayerModel
         trainNum = 0;
         trainCardNum = 0;
         score = 0;
+        claimedDestPoint = 0;
+        unclaimedDestPoint = 0;
+        longestRoute = false;
     }
 
     public void startGame()
@@ -41,7 +48,6 @@ public class PlayerModel
         claimedCities = new HashSet<>();
         trainCardNum = 4;
         trainNum = 45;
-
     }
     public String getUsername() {
         return username;
@@ -89,7 +95,6 @@ public class PlayerModel
         }
     }
 
-
     public boolean isTurn() {
         return turn;
     }
@@ -123,7 +128,6 @@ public class PlayerModel
         this.score += score;
         trainCardNum -= len;
         trainNum -= len;
-
     }
 
 
@@ -138,24 +142,18 @@ public class PlayerModel
         for(DestinationCard card : destinationCards)
         {
             if(card.isCompleted())
+            {
+                claimedDestPoint += card.getPointValue();
                 score += card.getPointValue();
+            }
             else
             {
                 score -= card.getPointValue();
+                unclaimedDestPoint -= card.getPointValue();;
                 if(score < 0) score = 0;
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
     public int getScore() {
@@ -203,6 +201,14 @@ public class PlayerModel
         this.trainCardNum = trainCardNum;
     }
 
+    public int getClaimedDestPoint() { return claimedDestPoint; }
+
+    public void setClaimedDestPoint(int claimedDestPoint) { this.claimedDestPoint = claimedDestPoint; }
+
+    public int getUnclaimedDestPoint() { return unclaimedDestPoint; }
+
+    public void setUnclaimedDestPoint(int unclaimedDestPoint) { this.unclaimedDestPoint = unclaimedDestPoint; }
+
     @Override
     public boolean equals(Object o)
     {
@@ -218,8 +224,23 @@ public class PlayerModel
     @Override
     public int hashCode() { return this.username.hashCode(); }
 
+    public boolean isLongestRoute() { return longestRoute; }
+
+    public void setLongestRoute(boolean longestRoute) { this.longestRoute = longestRoute; }
 
     public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
+
+    public void removeTrainCard(String color) {
+        int index = -1;
+        for (int i = 0; i < trainCards.size(); i++) {
+            if (trainCards.get(i).color == color) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1)
+            trainCards.remove(index);
+    }
 
     public boolean claimedCity(City city) { return claimedCities.contains(city); }
 

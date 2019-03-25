@@ -28,6 +28,10 @@ export class Player {
     this.numTrains = 45;
   }
 
+  isMyTurn(): boolean {
+    return this.myTurn;
+  }
+
   getUsername(): string {
     return this.username;
   }

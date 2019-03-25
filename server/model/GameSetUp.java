@@ -7,11 +7,12 @@ import java.util.List;
 
 public class GameSetUp {
 
-    private static GameSetUp _instance;
-    private List<City> allCities;
-    private Deck destDeck;
-    private Deck trainDeck;
-    private List<Route> unClaimedRoutes;
+    //private static GameSetUp _instance;
+
+    protected List<City> allCities;
+    protected Deck destDeck;
+    protected Deck trainDeck;
+    protected List<Route> unClaimedRoutes;
 
     //-----------------------------------------------------------//
     private final String Seattle = "Seattle";
@@ -47,22 +48,22 @@ public class GameSetUp {
     private final String Nash = "Nashville";
     private final String Santa = "Santa Fe";
 
-    public static GameSetUp getInstance()
-    {
-        if(_instance == null)
-        {
-            _instance = new GameSetUp();
-        }
-        return _instance;
-    }
-    private GameSetUp()
-    {
-        setUpTrainCards();
-        setUpDestinationCards();
-        setUpCities();
-    }
+//    public static GameSetUp getInstance()
+//    {
+//        if(_instance == null)
+//        {
+//            _instance = new GameSetUp();
+//        }
+//        return _instance;
+//    }
+//    private GameSetUp()
+//    {
+//        setUpTrainCards();
+//        setUpDestinationCards();
+//        setUpCities();
+//    }
 
-    private void setUpCities()
+    protected void setUpCities()
     {
         allCities = new ArrayList<>();
 
@@ -105,45 +106,45 @@ public class GameSetUp {
                 atlanta, charleston, raleigh, washington, ny, boston, pitts, chicago, duluth, omaha,
                 helena, slc, denver, oklahoma, kansas, louis, rock, dallas, nash, santa);
 
-        seattle.addNeighbor(helena, portland);
-        portland.addNeighbor(seattle, sfo, slc);
-        sfo.addNeighbor(portland, slc, la);
-        la.addNeighbor(sfo, vegas, phx, paso);
-        vegas.addNeighbor(la, slc);
-        phx.addNeighbor(paso, denver, santa, la);
-        paso.addNeighbor(la, phx, santa, dallas, oklahoma);
-        paso.addNeighbor(houston);
-        houston.addNeighbor(dallas, paso, orleans);
-        orleans.addNeighbor(houston, rock, miami, atlanta);
-        miami.addNeighbor(atlanta, orleans, charleston);
-
-        //-----------------------------------------------------------//
-        atlanta.addNeighbor(orleans, nash, raleigh, charleston, miami);
-        charleston.addNeighbor(raleigh, atlanta, miami);
-        raleigh.addNeighbor(washington, nash, charleston, atlanta, pitts);
-        washington.addNeighbor(raleigh, ny, pitts);
-        ny.addNeighbor(boston, pitts, washington);
-        boston.addNeighbor(ny);
-        pitts.addNeighbor(nash);
-        pitts.addNeighbor(louis, chicago, ny, washington, raleigh);
-        chicago.addNeighbor(omaha, duluth, pitts, louis);
-        duluth.addNeighbor(helena, omaha, chicago);
-        omaha.addNeighbor(denver, helena, duluth, chicago, kansas);
-
-        //-----------------------------------------------------------//
-        helena.addNeighbor(seattle, slc, duluth, omaha, denver);
-        slc.addNeighbor(denver, helena, portland, sfo, vegas);
-        denver.addNeighbor(helena, oklahoma);
-        denver.addNeighbor(slc, phx, omaha, santa, kansas);
-        oklahoma.addNeighbor(paso);
-        oklahoma.addNeighbor(denver, kansas, santa, rock, dallas);
-        kansas.addNeighbor(denver, omaha, louis, oklahoma);
-        louis.addNeighbor(kansas, rock, nash, chicago, pitts);
-        rock.addNeighbor(dallas, orleans, nash, oklahoma, louis);
-        dallas.addNeighbor(houston, oklahoma, rock, paso);
-        nash.addNeighbor(louis, rock, atlanta, pitts, raleigh);
-        santa.addNeighbor(phx, paso, denver, oklahoma);
-        //-----------------------------------------------------------//
+//        seattle.addNeighbor(helena, portland);
+//        portland.addNeighbor(seattle, sfo, slc);
+//        sfo.addNeighbor(portland, slc, la);
+//        la.addNeighbor(sfo, vegas, phx, paso);
+//        vegas.addNeighbor(la, slc);
+//        phx.addNeighbor(paso, denver, santa, la);
+//        paso.addNeighbor(la, phx, santa, dallas, oklahoma);
+//        paso.addNeighbor(houston);
+//        houston.addNeighbor(dallas, paso, orleans);
+//        orleans.addNeighbor(houston, rock, miami, atlanta);
+//        miami.addNeighbor(atlanta, orleans, charleston);
+//
+//        //-----------------------------------------------------------//
+//        atlanta.addNeighbor(orleans, nash, raleigh, charleston, miami);
+//        charleston.addNeighbor(raleigh, atlanta, miami);
+//        raleigh.addNeighbor(washington, nash, charleston, atlanta, pitts);
+//        washington.addNeighbor(raleigh, ny, pitts);
+//        ny.addNeighbor(boston, pitts, washington);
+//        boston.addNeighbor(ny);
+//        pitts.addNeighbor(nash);
+//        pitts.addNeighbor(louis, chicago, ny, washington, raleigh);
+//        chicago.addNeighbor(omaha, duluth, pitts, louis);
+//        duluth.addNeighbor(helena, omaha, chicago);
+//        omaha.addNeighbor(denver, helena, duluth, chicago, kansas);
+//
+//        //-----------------------------------------------------------//
+//        helena.addNeighbor(seattle, slc, duluth, omaha, denver);
+//        slc.addNeighbor(denver, helena, portland, sfo, vegas);
+//        denver.addNeighbor(helena, oklahoma);
+//        denver.addNeighbor(slc, phx, omaha, santa, kansas);
+//        oklahoma.addNeighbor(paso);
+//        oklahoma.addNeighbor(denver, kansas, santa, rock, dallas);
+//        kansas.addNeighbor(denver, omaha, louis, oklahoma);
+//        louis.addNeighbor(kansas, rock, nash, chicago, pitts);
+//        rock.addNeighbor(dallas, orleans, nash, oklahoma, louis);
+//        dallas.addNeighbor(houston, oklahoma, rock, paso);
+//        nash.addNeighbor(louis, rock, atlanta, pitts, raleigh);
+//        santa.addNeighbor(phx, paso, denver, oklahoma);
+//        //-----------------------------------------------------------//
 
         unClaimedRoutes = new ArrayList<>();
         //-----------------------------------------------------------//
@@ -284,13 +285,13 @@ public class GameSetUp {
     {
         city.addRoute(recentRoute());
     }
-    public void addRoute(City city1, City city2)
+    private void addRoute(City city1, City city2)
     {
         Route r = recentRoute();
         city1.addRoute(r);
         city2.addRoute(r);
     }
-    public Route recentRoute()
+    private Route recentRoute()
     {
         return unClaimedRoutes.get(unClaimedRoutes.size() - 1);
     }
@@ -298,30 +299,21 @@ public class GameSetUp {
     /**
      * Sets up 110 Train Cards
      */
-    private void setUpTrainCards()
+    protected void setUpTrainCards()
     {
         trainDeck = new Deck();
 
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < 12; i++)
         {
             trainDeck.add(new TrainCard("pink"));
             trainDeck.add(new TrainCard("white"));
-            trainDeck.add(new TrainCard("green"));
-            trainDeck.add(new TrainCard("yellow"));
-            trainDeck.add(new TrainCard("rainbow"));
-            trainDeck.add(new TrainCard("black"));
-            trainDeck.add(new TrainCard("red"));
-            trainDeck.add(new TrainCard("white"));
-            trainDeck.add(new TrainCard("blue"));
-            trainDeck.add(new TrainCard("orange"));
             trainDeck.add(new TrainCard("blue"));
             trainDeck.add(new TrainCard("yellow"));
-            trainDeck.add(new TrainCard("green"));
-            trainDeck.add(new TrainCard("red"));
             trainDeck.add(new TrainCard("orange"));
             trainDeck.add(new TrainCard("black"));
+            trainDeck.add(new TrainCard("red"));
+            trainDeck.add(new TrainCard("green"));
             trainDeck.add(new TrainCard("rainbow"));
-            trainDeck.add(new TrainCard("pink"));
         }
         trainDeck.add(new TrainCard("rainbow"));
         trainDeck.add(new TrainCard("rainbow"));
@@ -331,7 +323,7 @@ public class GameSetUp {
     /**
      * Sets up 30 Destination Cards
      */
-    private void setUpDestinationCards()
+    protected void setUpDestinationCards()
     {
         destDeck = new Deck();
         destDeck.add(new DestinationCard(Atlanta, Santa, 8));
@@ -384,30 +376,21 @@ public class GameSetUp {
     public List<City> getAllCities() { return allCities; }
     public Deck getDestDeck() { return destDeck; }
     public Deck getTrainDeck() { return trainDeck; }
+    public void setAllCities(List<City> allCities) { this.allCities = allCities; }
+    public void setDestDeck(Deck destDeck) { this.destDeck = destDeck; }
+    public void setTrainDeck(Deck trainDeck) { this.trainDeck = trainDeck; }
+    public void setUnClaimedRoutes(List<Route> unClaimedRoutes) { this.unClaimedRoutes = unClaimedRoutes; }
     public List<Route> getUnClaimedRoutes() { return unClaimedRoutes; }
-//        allCities.add(seattle);
-//        allCities.add(portland);
-//        allCities.add(sfo);
-//        allCities.add(la);
-//        allCities.add(vegas);
-//        allCities.add(phx);
-//        allCities.add(paso);
-//        allCities.add(houston);
-//        allCities.add(pitts);
-//        allCities.add(duluth);
-//        allCities.add(omaha);
-//        allCities.add(helena);
-//        allCities.add(slc);
-//        allCities.add(denver);
-//        allCities.add(oklahoma);
-//        allCities.add(kansas);
-//        allCities.add(orleans);
-//        allCities.add(miami);
-//        allCities.add(atlanta);
-//        allCities.add(charleston);
-//        allCities.add(louis);
-//        allCities.add(nash);
-//        allCities.add(santa);
-//        allCities.add(rock);
-//        allCities.add(dallas);
+
+    public boolean isClaimed(Route route) { return !unClaimedRoutes.contains(route); }
+    protected City getCityByName(String city1) {
+        for(City c : allCities)
+            if(c.getName().equals(city1))
+                return c;
+
+        return null;
+    }
+
+    public void addTrainCard(TrainCard card) { trainDeck.add(card); }
+
 }

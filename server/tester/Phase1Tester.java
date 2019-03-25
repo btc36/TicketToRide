@@ -1,6 +1,8 @@
-package server;
+package tester;
 
-public class ServiceTester
+import server.ServerFacade;
+
+public class Phase1Tester
 {
     public static void main(String[] args)
     {
@@ -58,8 +60,5 @@ public class ServiceTester
 //        facade.login("Joey", "Trib");
 //        facade.joinGame("Joey", "game1");
 //        facade.startGame("game1");
-
-
-
     }
 }

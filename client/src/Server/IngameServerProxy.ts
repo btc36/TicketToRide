@@ -22,9 +22,11 @@ export class IngameServerProxy {
     }
 
     claimRoute(route: Route, username: String, gameId: String) {
-        console.log(route);
-        console.log(username);
-        console.log(gameId);
+        let cities = route.getCities();
+        const command = new ClientCommandObjects(this.gameClass, "claimRoute", 
+          [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger],
+          [gameId, username, cities[0], cities[1], route.getColor(), route.getLength()])
+        this.communicator.sendCommand(command);
     }
 
     DrawDestinationCard(gameId:String, username:String) {

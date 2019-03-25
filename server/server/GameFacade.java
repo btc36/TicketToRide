@@ -1,9 +1,7 @@
 package server;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import command.GenericCommand;
 import model.*;
@@ -27,9 +25,11 @@ public class GameFacade extends Facade
     private final String sMessage = "success : ";
     private final String gameClass = "IngameExternalClientFacade";
     private final String updateScore = "updateScore";
+    private final String lastRound = "lastRound";
     private final String whoseTurn = "whoseTurn";
 
-    int LASTCARNUM = 5;
+
+    int LASTCARNUM = 2;
 
     /**
      *
@@ -151,7 +151,7 @@ public class GameFacade extends Facade
 
     public List<GenericCommand> drawTrainCard(String gameID, String username, Integer index)
     {
-        System.out.println("I DREW A TRAIN CARD");
+        System.out.println("I DREW A TRAIN CARD\n");
         String message = checkInput(gameID, username);
         List<TrainCard> result = new ArrayList<>();
         List<TrainCard> faceUpCards = new ArrayList<>();
@@ -224,39 +224,37 @@ public class GameFacade extends Facade
         return command;
     }
 
-    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length, List<String> colors)
+    public List<GenericCommand> claimRoute(String gameID, String username, String cityOne, String cityTwo, String routeColor, Integer length)
     {
-        boolean status = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkInput(gameID, username);
-        Route route = null;
         if(message.isEmpty())
         {
             Route temp = new Route(cityOne, cityTwo, length, routeColor);
             LobbyGameModel game = getGameByID(gameID);
-            route = game.getMatchingRoute(temp);
-            if(route == null)
-                message = "error : invalid route\n";
-            else if(game.isClaimed(route))
-                message = "error : route is ALREADY claimed\n";
-            else
-            {
-                status = true;
-                game.claimRoute(route, username, colors);
+            Route route = game.getMatchingRoute(temp);
+            if(route == null) {
+                message = "error : invalid route";
+            } else if (game.isClaimed(route)) {
+                message = "That route is already claimed.";
+            } else if (game.claimRoute(route, username)) {
                 message = sMessage + claim;
                 GenericCommand command = new GenericCommand(
                         _gameClassName, claim,
                         new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , "model.Route"},
-                        new Object[]{ status, message, gameID, username, route}
+                        new Object[]{ true, message, gameID, username, route}
                 );
 
                 commandsForClient.add(command);
                 commandsForClient.add(updateScoreCommand(gameID));
                 System.out.println(message);
                 return commandsForClient;
+            } else {
+                message = "Player has insufficient resources to claim route";
             }
         }
 
+        System.out.println(message);
         commandsForClient.add(failureCommand(message, claim));
         return commandsForClient;
     }
@@ -295,7 +293,7 @@ public class GameFacade extends Facade
 
         ///////
         GenericCommand command = new GenericCommand(
-                gameClass, endGame,
+                gameClass, lastRound,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
                 new Object[]{true, sMessage + "lastRound", gameID}
         );
@@ -313,7 +311,7 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             game.endTurn(); // turn change in game and the player
 
-            if(p.getTrainNum() < LASTCARNUM)
+            if(p.getTrainNum() <= LASTCARNUM)
                 game.setState(LASTROUND);
             else if(game.getState() == LASTROUND)
                 game.setState(FINISHED);
