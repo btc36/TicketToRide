@@ -2,7 +2,7 @@ package tester;
 
 import server.ServerFacade;
 
-public class ServiceTester
+public class Phase1Tester
 {
     public static void main(String[] args)
     {
