@@ -48,6 +48,10 @@ export class IngameInternalClientFacade {
     this.proxy.endTurn(this.root.getGameID(), this.root.getLocalPlayer());
   }
 
+  whoseTurn() {
+    this.proxy.whoseTurn(this.root.getGameID());
+  }
+
   SendChatCommand(message: String, time?: string) {
     if (!time) {
       let today = new Date();
