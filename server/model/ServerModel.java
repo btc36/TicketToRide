@@ -88,7 +88,6 @@ public class ServerModel
 
     public void addHistory(String gameID, HistoryEntry entry)
     {
-
         GameHistory history = getGameHistorybyID(gameID);
         if(history == null)
         {
@@ -101,7 +100,7 @@ public class ServerModel
             history.addHistory(entry);
         }
     }
-    
+
     public ChatRoom getChatRoombyID(String gameID)
     {
         for(ChatRoom room : allChatrooms)
@@ -121,6 +120,7 @@ public class ServerModel
         }
         return null;
     }
+
     public List<HistoryEntry> getGameHistory(String gameID)
     {
         List<HistoryEntry> empty = new ArrayList<>();
@@ -132,4 +132,3 @@ public class ServerModel
     }
 
 }
-

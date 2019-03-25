@@ -18,6 +18,8 @@ public class PlayerModel
     private Set<City> claimedCities;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     private Map<String, Integer> colorMap = null;
+    private int claimedDestPoint;
+    private int unclaimedDestPoint;
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -32,6 +34,8 @@ public class PlayerModel
         trainNum = 0;
         trainCardNum = 0;
         score = 0;
+        claimedDestPoint = 0;
+        unclaimedDestPoint = 0;
     }
 
     public void startGame()
@@ -41,7 +45,6 @@ public class PlayerModel
         claimedCities = new HashSet<>();
         trainCardNum = 4;
         trainNum = 45;
-
     }
     public String getUsername() {
         return username;
@@ -89,7 +92,6 @@ public class PlayerModel
         }
     }
 
-
     public boolean isTurn() {
         return turn;
     }
@@ -123,7 +125,6 @@ public class PlayerModel
         this.score += score;
         trainCardNum -= len;
         trainNum -= len;
-
     }
 
 
@@ -138,24 +139,18 @@ public class PlayerModel
         for(DestinationCard card : destinationCards)
         {
             if(card.isCompleted())
+            {
+                claimedDestPoint += card.getPointValue();
                 score += card.getPointValue();
+            }
             else
             {
                 score -= card.getPointValue();
+                unclaimedDestPoint -= card.getPointValue();;
                 if(score < 0) score = 0;
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
     public int getScore() {
@@ -202,6 +197,14 @@ public class PlayerModel
     public void setTrainCardNum(int trainCardNum) {
         this.trainCardNum = trainCardNum;
     }
+
+    public int getClaimedDestPoint() { return claimedDestPoint; }
+
+    public void setClaimedDestPoint(int claimedDestPoint) { this.claimedDestPoint = claimedDestPoint; }
+
+    public int getUnclaimedDestPoint() { return unclaimedDestPoint; }
+
+    public void setUnclaimedDestPoint(int unclaimedDestPoint) { this.unclaimedDestPoint = unclaimedDestPoint; }
 
     @Override
     public boolean equals(Object o)
