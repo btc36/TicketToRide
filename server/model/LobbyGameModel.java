@@ -5,53 +5,37 @@ import java.util.*;
 public class LobbyGameModel extends GameSetUp
 {
 
-    private final int LONGESTPOINT = 15;
-    private PlayerModel winner;
-    private int longestPoint;
-    //private String longestUser = "";
-    private Set<String> longestUsers;
-
-    public Route getMatchingRoute(Route temp)
-    {
-        for(Route r : unClaimedRoutes)
-            if(r.equals(temp)) return r;
-        for(Route r : claimedRoutes)
-            if(r.equals(temp)) return r;
-
-        return null;
-    }
-
-    boolean lastRound;
-
-    public List<Integer> getScores()
-    {
-        List<Integer> scores = new ArrayList<>();
-        for(PlayerModel p : playerList.getPlayerList())
-            scores.add(p.getScore());
-        return scores;
-    }
-
     public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}
+    private State state;
+
+    /**
+     * START
+     */
     private String gameID;
     private String gamename;
-    private PlayerListModel playerList;
     private int maxPlayer;
     private int currentPlayerNum;
     private PlayerModel host;
-    private State state;
-    //private Deck destDeck;
-    //private Deck trainDeck;
+    private PlayerListModel playerList;
+
+    /**
+     * MIDDLE
+     */
     private FaceUpCards faceUpCards;
     private List<Route> claimedRoutes;
-//    private List<Route> unClaimedRoutes;
-//
-//    private List<City> allCities;
     private String turn;
     private int turnIndex;
 
-    public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) {
-        //this.LobbyGameModel(host, maxPlayer, gamename);
-    }
+    /**
+     * END
+     */
+    private final int LONGESTPOINT = 15;
+    private PlayerModel winner;
+    private int longestPath;
+    private Set<String> longestUsers;
+    boolean lastRound;
+
+    public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) { }
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename)
     {
@@ -72,7 +56,6 @@ public class LobbyGameModel extends GameSetUp
     }
 
     /*************************************** BEGIN START GAME ***************************************/
-
     public void startGame()
     {
         // set up only if the game is uninitialized
@@ -88,32 +71,27 @@ public class LobbyGameModel extends GameSetUp
         setUpPlayers();
         faceUpCards = new FaceUpCards();
         claimedRoutes = new ArrayList<>();
-//        unClaimedRoutes = new ArrayList<>();
-        //destDeck = new Deck();
-       // trainDeck = new Deck();
 
-        setUpDestinationCards();
-        setUpTrainCards();
+        /*Cities and Routes*/
         setUpCities();
 
-//        for(Object o : GameSetUp.getInstance().getDestDeck().getCards())
-//            destDeck.add((DestinationCard) o);
-
-//        for(Object o : GameSetUp.getInstance().getTrainDeck().getCards())
-//            trainDeck.add((TrainCard) o);
-//
-//        unClaimedRoutes.addAll(GameSetUp.getInstance().getUnClaimedRoutes());
-//        allCities = GameSetUp.getInstance().getAllCities();
+        /* Train Card */
+        setUpTrainCards();
         setUpFaceUpCards();
         giveTrainCards();
+
+        /* Destination Card */
+        setUpDestinationCards();
         giveDestinationCards();
+
+        /* player colors and turn */
         setColors();
         setTurn();
     }
 
-
     private void setUpPlayers() { for(PlayerModel p : playerList.getPlayerList()) p.startGame(); }
 
+    //recurse until faceup is good
     private void setUpFaceUpCards()
     {
         while(faceUpCards.size() < 5)
@@ -131,7 +109,6 @@ public class LobbyGameModel extends GameSetUp
             setUpFaceUpCards();
         }
     }
-
 
     private void giveTrainCards()
     {
@@ -152,14 +129,12 @@ public class LobbyGameModel extends GameSetUp
             p.addDestinationards(destDeck.pollThisMany(3));
             p.addDestinationards(test);
         }
-
     }
 
     private void setColors()
     {
         ArrayList<String> colors = new ArrayList<String>( Arrays.asList("green", "red", "orange", "yellow","blue"));
         Collections.shuffle(colors);
-
         for(int i = 0; i < playerList.getPlayerList().size(); i++)
         {
             PlayerModel p = playerList.getPlayerList().get(i);
@@ -173,7 +148,7 @@ public class LobbyGameModel extends GameSetUp
         turnIndex = 0;
         firstGuy.setTurn(true);
     }
-    /*************************************** END START GAME           ***************************************/
+    /***************************************       END START GAME     ***************************************/
 
 
     /*************************************** BEGIN MIDDLE OF THE GAME ***************************************/
@@ -181,9 +156,8 @@ public class LobbyGameModel extends GameSetUp
     {
         Route route = new Route(cityOne, cityTwo, length, color);
         for(Route r : claimedRoutes)
-        {
             if(r.equals(route)) return r;
-        }
+
         return null;
     }
 
@@ -218,21 +192,21 @@ public class LobbyGameModel extends GameSetUp
 
     private boolean destinationTraverse(City src, City dst, Set<City> visited)
     {
-
         List<City> neighbors = src.getNeighbors();
-        if(neighbors.contains(dst))
+        if(neighbors.contains(dst)) // reached destination
         {
-            return  true;
+            return true;
         }
 
-        for(City c : src.getNeighbors())
+        for(Route r : src.getRoutes())
         {
-            if(!visited.contains(c))
+            City newSource = getOtherSideCity(src, r); // opposite end of source city
+            if(!visited.contains(newSource))
             {
-                visited.add(c);
-                if(destinationTraverse(c, dst, visited))
+                visited.add(newSource);
+                if(destinationTraverse(newSource, dst, visited))
                     return true;
-                visited.remove(c);
+                visited.remove(newSource);
             }
         }
         return false;
@@ -269,8 +243,6 @@ public class LobbyGameModel extends GameSetUp
     /*************************************** FINISH BEING MIDDLE OF THE GAME ***************************************/
 
 
-
-
     /***************************************        BEGING END OF GAME      ***************************************/
     private void findWinner()
     {
@@ -280,25 +252,40 @@ public class LobbyGameModel extends GameSetUp
         for(int i = 0; i < list.size(); i++)
         {
             PlayerModel p = list.get(i);
-            if(p.getScore() >= max)
+            if(max < p.getScore())
             {
                 max = p.getScore();
+                indices.clear();
                 indices.add(i);
+            }
+            else if(max == p.getScore())
+                indices.add(i);
+        }
+
+        int index = 0;
+
+        winner = list.get(indices.get(0));
+
+        if(indices.size() > 1) // tie breaker
+        {
+            for(int i : indices)
+            {
+                PlayerModel p = list.get(i);
+                if(p.isLongestRoute())
+                {
+                    winner = p;
+                    break;
+                }
             }
         }
 
-        int index = indices.get(indices.size() - 1);
-        winner = list.get(index);
         System.out.println("WINNER : " + winner.getUsername());
     }
-    public PlayerModel getWinner()
-    {
-        return winner;
-    }
+
+    public PlayerModel getWinner() { return winner; }
 
     public void endGame()
     {
-        //do calculations here
         //this.state = State.FINISHED;
         for(PlayerModel p : playerList.getPlayerList())
             p.calculateDestination();
@@ -306,9 +293,10 @@ public class LobbyGameModel extends GameSetUp
         findWinner();
     }
 
+    // longest traversal wrapper class
     private void findLongestRoute()
     {
-        longestPoint = 0;
+        longestPath = 0;
         longestUsers = new HashSet<>();
         for(PlayerModel p : playerList.getPlayerList())
         {
@@ -318,15 +306,15 @@ public class LobbyGameModel extends GameSetUp
             {
                 int length = 0;
                 Set<Route> visited = new HashSet<>();
-                longtraverse(src, length, claimed, visited, username);
+                longTraverse(src, length, claimed, visited, username);
             }
         }
 
         for(String longestUser : longestUsers)
         {
             PlayerModel longestPerson = getPlayer(longestUser);
+            longestPerson.setLongestRoute(true);
             longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
-            assert(!longestUser.isEmpty());
             System.out.println("LONGEST : " + longestUser);
             System.out.println("팀빨");
             System.out.println("ㅈ 극혐");
@@ -334,16 +322,17 @@ public class LobbyGameModel extends GameSetUp
         }
     }
 
-    private void longtraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
+    // traversal for longest route
+    private void longTraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
     {
-        if(longestPoint < length) // we found a better length
+        if(longestPath < length) // we found a better length
         {
-            longestPoint = length;
+            longestPath = length; // update longest so far
+            // add username to a clean slate
             longestUsers.clear();
             longestUsers.add(username);
-//            longestUser = username;
         }
-        else if(longestPoint == length)
+        else if(longestPath == length)
         {
             longestUsers.add(username);
         }
@@ -355,7 +344,7 @@ public class LobbyGameModel extends GameSetUp
             {
                 visited.add(route);
                 City newSource = getOtherSideCity(src, route);
-                longtraverse(newSource, length + route.getLength(), claimed, visited, username);
+                longTraverse(newSource, length + route.getLength(), claimed, visited, username);
                 visited.remove(route);
             }
         }
@@ -414,6 +403,26 @@ public class LobbyGameModel extends GameSetUp
             if(p.getUsername().equals(username))
                 return p;
         return null;
+    }
+
+    public Set<String> getLongestUsers() { return longestUsers; }
+
+    public Route getMatchingRoute(Route temp)
+    {
+        for(Route r : unClaimedRoutes)
+            if(r.equals(temp)) return r;
+        for(Route r : claimedRoutes)
+            if(r.equals(temp)) return r;
+
+        return null;
+    }
+
+    public List<Integer> getScores()
+    {
+        List<Integer> scores = new ArrayList<>();
+        for(PlayerModel p : playerList.getPlayerList())
+            scores.add(p.getScore());
+        return scores;
     }
 
     /*************************************** END GETTERS AND SETTERS ***************************************/

@@ -106,45 +106,45 @@ public class GameSetUp {
                 atlanta, charleston, raleigh, washington, ny, boston, pitts, chicago, duluth, omaha,
                 helena, slc, denver, oklahoma, kansas, louis, rock, dallas, nash, santa);
 
-        seattle.addNeighbor(helena, portland);
-        portland.addNeighbor(seattle, sfo, slc);
-        sfo.addNeighbor(portland, slc, la);
-        la.addNeighbor(sfo, vegas, phx, paso);
-        vegas.addNeighbor(la, slc);
-        phx.addNeighbor(paso, denver, santa, la);
-        paso.addNeighbor(la, phx, santa, dallas, oklahoma);
-        paso.addNeighbor(houston);
-        houston.addNeighbor(dallas, paso, orleans);
-        orleans.addNeighbor(houston, rock, miami, atlanta);
-        miami.addNeighbor(atlanta, orleans, charleston);
-
-        //-----------------------------------------------------------//
-        atlanta.addNeighbor(orleans, nash, raleigh, charleston, miami);
-        charleston.addNeighbor(raleigh, atlanta, miami);
-        raleigh.addNeighbor(washington, nash, charleston, atlanta, pitts);
-        washington.addNeighbor(raleigh, ny, pitts);
-        ny.addNeighbor(boston, pitts, washington);
-        boston.addNeighbor(ny);
-        pitts.addNeighbor(nash);
-        pitts.addNeighbor(louis, chicago, ny, washington, raleigh);
-        chicago.addNeighbor(omaha, duluth, pitts, louis);
-        duluth.addNeighbor(helena, omaha, chicago);
-        omaha.addNeighbor(denver, helena, duluth, chicago, kansas);
-
-        //-----------------------------------------------------------//
-        helena.addNeighbor(seattle, slc, duluth, omaha, denver);
-        slc.addNeighbor(denver, helena, portland, sfo, vegas);
-        denver.addNeighbor(helena, oklahoma);
-        denver.addNeighbor(slc, phx, omaha, santa, kansas);
-        oklahoma.addNeighbor(paso);
-        oklahoma.addNeighbor(denver, kansas, santa, rock, dallas);
-        kansas.addNeighbor(denver, omaha, louis, oklahoma);
-        louis.addNeighbor(kansas, rock, nash, chicago, pitts);
-        rock.addNeighbor(dallas, orleans, nash, oklahoma, louis);
-        dallas.addNeighbor(houston, oklahoma, rock, paso);
-        nash.addNeighbor(louis, rock, atlanta, pitts, raleigh);
-        santa.addNeighbor(phx, paso, denver, oklahoma);
-        //-----------------------------------------------------------//
+//        seattle.addNeighbor(helena, portland);
+//        portland.addNeighbor(seattle, sfo, slc);
+//        sfo.addNeighbor(portland, slc, la);
+//        la.addNeighbor(sfo, vegas, phx, paso);
+//        vegas.addNeighbor(la, slc);
+//        phx.addNeighbor(paso, denver, santa, la);
+//        paso.addNeighbor(la, phx, santa, dallas, oklahoma);
+//        paso.addNeighbor(houston);
+//        houston.addNeighbor(dallas, paso, orleans);
+//        orleans.addNeighbor(houston, rock, miami, atlanta);
+//        miami.addNeighbor(atlanta, orleans, charleston);
+//
+//        //-----------------------------------------------------------//
+//        atlanta.addNeighbor(orleans, nash, raleigh, charleston, miami);
+//        charleston.addNeighbor(raleigh, atlanta, miami);
+//        raleigh.addNeighbor(washington, nash, charleston, atlanta, pitts);
+//        washington.addNeighbor(raleigh, ny, pitts);
+//        ny.addNeighbor(boston, pitts, washington);
+//        boston.addNeighbor(ny);
+//        pitts.addNeighbor(nash);
+//        pitts.addNeighbor(louis, chicago, ny, washington, raleigh);
+//        chicago.addNeighbor(omaha, duluth, pitts, louis);
+//        duluth.addNeighbor(helena, omaha, chicago);
+//        omaha.addNeighbor(denver, helena, duluth, chicago, kansas);
+//
+//        //-----------------------------------------------------------//
+//        helena.addNeighbor(seattle, slc, duluth, omaha, denver);
+//        slc.addNeighbor(denver, helena, portland, sfo, vegas);
+//        denver.addNeighbor(helena, oklahoma);
+//        denver.addNeighbor(slc, phx, omaha, santa, kansas);
+//        oklahoma.addNeighbor(paso);
+//        oklahoma.addNeighbor(denver, kansas, santa, rock, dallas);
+//        kansas.addNeighbor(denver, omaha, louis, oklahoma);
+//        louis.addNeighbor(kansas, rock, nash, chicago, pitts);
+//        rock.addNeighbor(dallas, orleans, nash, oklahoma, louis);
+//        dallas.addNeighbor(houston, oklahoma, rock, paso);
+//        nash.addNeighbor(louis, rock, atlanta, pitts, raleigh);
+//        santa.addNeighbor(phx, paso, denver, oklahoma);
+//        //-----------------------------------------------------------//
 
         unClaimedRoutes = new ArrayList<>();
         //-----------------------------------------------------------//

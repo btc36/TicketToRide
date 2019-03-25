@@ -28,6 +28,10 @@ export class IngameInternalClientFacade {
     this.proxy.claimRoute(route, username, gameID);
   }
 
+  isMyTurn(): boolean {
+    return this.root.isMyTurn();
+  }
+
   PresentDestinationCard() {
 
   }

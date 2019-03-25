@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ChatRoom
 {
-    List<ChatMessage> messages;
-    String gameID;
+    private List<ChatMessage> messages;
+    private String gameID;
 
     public ChatRoom()
     {
@@ -28,7 +28,6 @@ public class ChatRoom
     public List<ChatMessage> getMessages() {
         return messages;
     }
-
     public void setMessages(List<ChatMessage> messages) {
         this.messages = messages;
     }
@@ -36,7 +35,6 @@ public class ChatRoom
     public String getGameID() {
         return gameID;
     }
-
     public void setGameID(String gameID) {
         this.gameID = gameID;
     }
