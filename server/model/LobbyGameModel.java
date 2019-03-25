@@ -222,22 +222,42 @@ public class LobbyGameModel extends GameSetUp
         return card;
     }
 
-    public void claimRoute(Route route, String username, List<String> colors)
+    public boolean claimRoute(Route route, String username)
     {
+        // check that the player has sufficient cards
+        List<String> colorsUsed = new ArrayList<>();
+        PlayerModel luckyGuy = getPlayer(username);
+        assert (luckyGuy != null);
+
+        List<TrainCard> playerCards = luckyGuy.getTrainCards();
+        for (int i = 0; i < playerCards.size(); i++) {
+            if (playerCards.get(i).color.equals(route.getColor()) || playerCards.get(i).color.equals("rainbow")) {
+                colorsUsed.add(playerCards.get(i).color);
+            }
+        }
+        if (colorsUsed.size() != route.getLength()) {
+            return false;
+        }
+
         unClaimedRoutes.remove(route); // for sale
         route.setClaimedBy(username); // mark the territory
         claimedRoutes.add(route); // sold list
-        PlayerModel luckyGuy = getPlayer(username);
-        assert (luckyGuy != null);
+
         City city1 = getCityByName(route.getCityOne());
         City city2 = getCityByName(route.getCityTwo());
         luckyGuy.claimRoute(route, city1, city2);
         checkDestinationCard(luckyGuy);
 
-        for(int i = 0; i < colors.size(); i++)
-            trainDeck.add(new TrainCard(colors.get(i)));
+        // remove the train cards from the player
+        // add the train cards back into the deck
+        for(int i = 0; i < colorsUsed.size(); i++) {
+            luckyGuy.removeTrainCard(colorsUsed.get(i));
+            trainDeck.add(new TrainCard(colorsUsed.get(i)));
+        }
 
         trainDeck.shuffle();
+
+        return true;
     }
 
     /*************************************** FINISH BEING MIDDLE OF THE GAME ***************************************/

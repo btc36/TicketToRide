@@ -36,7 +36,6 @@ export class IngameExternalClientFacade {
 
   drawTrainCard(success: boolean, message: string, gameID: string, username: string, result: Array<TrainCard>, faceUpCards: FaceUpCards) {
     if (success) {
-
       this.root.addTrainCards(username, result);
       this.root.setFaceUpCards(faceUpCards);
     } else {
