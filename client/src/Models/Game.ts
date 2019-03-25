@@ -24,20 +24,20 @@ export class Game {
 
   constructor() {
     this.gameID = "EPICGAME";
-        this.players = new Array<Player>();
-        //this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
-        //let currCard = new TrainCard("blue");
-        //this.players[0].drawTrainCard(currCard);
-        //let dCard = new DestinationCard("alabama", "provo", 8)
-        //this.players[0].drawDestinationCard([dCard]);
-        this.whoseTurn = 0;
-        this.map = new GameMap();
-        this.numDestinationCardsRemaining = 30;
-        this.numTrainCardsRemaining = 110;
-        this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
-        this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
-        this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
-        this.winner = null;
+      this.players = new Array<Player>();
+      //this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
+      //let currCard = new TrainCard("blue");
+      //this.players[0].drawTrainCard(currCard);
+      //let dCard = new DestinationCard("alabama", "provo", 8)
+      //this.players[0].drawDestinationCard([dCard]);
+      this.whoseTurn = 0;
+      this.map = new GameMap();
+      this.numDestinationCardsRemaining = 30;
+      this.numTrainCardsRemaining = 110;
+      this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
+      this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
+      this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
+      this.winner = null;
   }
 
     setGameID(input: string): void{
@@ -48,50 +48,50 @@ export class Game {
       return this.gameID;
     }
     checkWinCondition(): Player {
-        let maxPoints = 0;
-        let winningPlayer = null;
-        this.players.forEach((player) => {
-            let score = player.getScore();
-            if (score > maxPoints) {
-                maxPoints = score;
-                winningPlayer = player;
-            }
-        });
-        return winningPlayer;
+      let maxPoints = 0;
+      let winningPlayer = null;
+      this.players.forEach((player) => {
+        let score = player.getScore();
+        if (score > maxPoints) {
+          maxPoints = score;
+          winningPlayer = player;
+        }
+      });
+      return winningPlayer;
     }
 
     getChatHistory(): Array<ChatMessage> {
-        return this.chatRoom.getChatHistory();
+      return this.chatRoom.getChatHistory();
     }
 
     setChatHistory(chats: Array<ChatMessage>) {
-        this.chatRoom.setChatHistory(chats);
+      this.chatRoom.setChatHistory(chats);
     }
 
     setPlayerList(list: Array<Player>) {
-        this.players = list;
-        console.log("PLAYER");
-        console.log(this.players);
+      this.players = list;
+      console.log("PLAYER");
+      console.log(this.players);
     }
 
     getPlayerList(): Array<Player> {
-        return this.players;
+      return this.players;
     }
 
     getCurrentTurnIndex(): number {
-        return this.whoseTurn;
+      return this.whoseTurn;
     }
 
     getMap(): GameMap {
-        return this.map;
+      return this.map;
     }
 
     getNumDestinationCardsRemaining(): number {
-        return this.numDestinationCardsRemaining;
+      return this.numDestinationCardsRemaining;
     }
 
     getNumTrainCardsRemaining(): number {
-        return this.numTrainCardsRemaining;
+      return this.numTrainCardsRemaining;
     }
 
     
@@ -107,7 +107,7 @@ export class Game {
      // this.faceUpCards = new FaceUpCards([new TrainCard("blue"), new TrainCard("blue"), new TrainCard("pink"), new TrainCard("brown"), new TrainCard("yellow")]);
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];*/
-        return this.faceUpCards;
+      return this.faceUpCards;
   }
 
   drawTrainCard():TrainCard {
@@ -128,21 +128,21 @@ export class Game {
 
 
   claimRoute(username: string, route: Route): void {
-        this.players.forEach((player) => {
-            if (player.getUsername() == username) {
-                player.claimRoute(route);
-                return;
-            }
-        });
+      this.players.forEach((player) => {
+        if (player.getUsername() == username) {
+          player.claimRoute(route);
+          return;
+        }
+      });
     }
 
   useTrainCard(username: string, trainCard: TrainCard,numUsed:number): void {
-        this.players.forEach((player) => {
-            if (player.getUsername() == username) {
-                player.useTrainCard(trainCard,numUsed);
-                return;
-            }
-        });
+      this.players.forEach((player) => {
+        if (player.getUsername() == username) {
+          player.useTrainCard(trainCard,numUsed);
+          return;
+        }
+      });
     }
 
   addTrainCard(username: string, trainCard: TrainCard): void {
@@ -150,10 +150,10 @@ export class Game {
     console.log(this.players);     
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
-                player.drawTrainCard(trainCard);
+              player.drawTrainCard(trainCard);
               this.numTrainCardsRemaining -= 1;
               //player.setNumTrainCards(player.getNumTrainCards() - 1);
-                return;
+              return;
             }
         });
       this.nextTurn();
