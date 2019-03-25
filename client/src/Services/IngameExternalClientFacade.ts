@@ -21,8 +21,13 @@ export class IngameExternalClientFacade {
     this.root = root;
   }
 
-  claimRoute(player:string, route:Route) {
-    this.root.claimRoute(player, route);
+  claimRoute(success: boolean, message: string, gameID: string, username: string, route:Route) {
+    if(success) {
+      this.root.claimRoute(username, route);
+    }
+    else {
+      alert(message);
+    }
   }
 
   /*addTrainCard(trainCard:TrainCard) {
