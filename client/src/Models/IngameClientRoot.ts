@@ -270,6 +270,6 @@ export class IngameClientRoot implements ISubject {
     //this.notify("playerInfoChanged", null);
   }
   isMyTurn(): boolean{
-    return this.getLocalPlayer().isMyTurn();
+    return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
   }
 }
