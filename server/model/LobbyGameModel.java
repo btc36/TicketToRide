@@ -118,6 +118,7 @@ public class LobbyGameModel extends GameSetUp
             p.addTrainCards(trainDeck.pollThisMany(4));
         }
     }
+
     private void giveDestinationCards()
     {
         List<DestinationCard> test = new ArrayList<>();
