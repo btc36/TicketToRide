@@ -44,6 +44,10 @@ export class IngameInternalClientFacade {
     this.proxy.getChatHistory(this.root.game.gameID);
   }
 
+  endTurn() {
+    this.proxy.endTurn(this.root.getGameID(), this.root.getLocalPlayer());
+  }
+
   SendChatCommand(message: String, time?: string) {
     if (!time) {
       let today = new Date();
@@ -72,15 +76,20 @@ export class IngameInternalClientFacade {
     this.SendChatCommand("Stored destination card(s): " + destinationCards.join(", "));
   }
 
-  drawTrainCard() {
-    let drawnCard = this.root.changeFaceUpCards();
-    this.SendChatCommand("Drew a card: " + drawnCard);
+  drawTrainCard(index: number) {
+    console.log("CALLING MY PROXY");
+    this.proxy.drawTrainCard(this.root.getGameID(), this.root.getLocalPlayer(), index);//Zero based index
+    //This needs to ask the server, not dummy test code;
+    //let drawnCard = this.root.changeFaceUpCards();
+    let humanNum = index += 1;
+    this.SendChatCommand("Drew Face Up Card: " + humanNum);
   }
 
   printRoot() {
     console.log(this.root);
   }
   getFaceUpCards(): FaceUpCards {
+    console.log(this.root);
     return this.root.getFaceUpCards();
   }
 

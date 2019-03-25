@@ -35,10 +35,24 @@ export class IngameServerProxy {
     SendChat(message: String, time: String, username:String, gameId: String) {
         const command = new ClientCommandObjects(this.serverClass, "sendChat", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString], [message,time,username,gameId]);
         this.communicator.sendCommand(command);
-    }
+  }
+
+  endTurn(gameID: string, username: string) {
+    const command = new ClientCommandObjects(this.gameClass, "endTurn", [this.paramTypeString, this.paramTypeString], [gameID, username]);
+    this.communicator.sendCommand(command);
+  }
 
   public getChatHistory(gameId: String){
     const command = new ClientCommandObjects(this.serverClass, "getChatHistory", [this.paramTypeString], [gameId]);
+    this.communicator.sendCommand(command);
+  }
+
+  drawTrainCard(gameID: string, player: string, index: number) {
+    console.log("SENDING TRAIN COMMAND");
+    console.log(gameID);
+    console.log(player);
+    console.log(index);
+    const command = new ClientCommandObjects(this.gameClass, "drawTrainCard", [this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameID, player, index]);
     this.communicator.sendCommand(command);
   }
 

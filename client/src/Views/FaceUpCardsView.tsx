@@ -8,15 +8,15 @@ export const FaceUpCardsView  = (component: I.IFaceUpCardsViewModel) => {
       <p>Loading...</p>
     );
   }
-  const cards = component.state.faceUpCards.getCards();
+  const cards = component.getCards();
   for (let i = 0; i < cards.length; i++) {
-    faceUpCardsList.push(<p key={i}>Train Card: {cards[i].getColor()}</p>);
+    faceUpCardsList.push(<p key={i}>Train Card: {cards[i].color}</p>);
   }
   return (
     <div>
       <div>
         {faceUpCardsList}
-        <input type="number" name="quantity" min="1" max="5"></input>
+        <input type="number" name="quantity" defaultValue="1" min="1" max="5" onChange={component.onFaceUpIndexChanged}></input>
         <button onClick={component.drawFaceUp} type="submit">Draw Faceup</button>
         <button onClick={component.drawCard} type="submit">Draw Mystery Card</button>
       </div>

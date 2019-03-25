@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerModel
 {
@@ -18,8 +15,11 @@ public class PlayerModel
     private int trainNum;
     private int trainCardNum;
     private List<Route> claimedRoutes;
+    private Set<City> claimedCities;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     private Map<String, Integer> colorMap = null;
+    private int claimedDestPoint;
+    private int unclaimedDestPoint;
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -34,15 +34,17 @@ public class PlayerModel
         trainNum = 0;
         trainCardNum = 0;
         score = 0;
+        claimedDestPoint = 0;
+        unclaimedDestPoint = 0;
     }
 
     public void startGame()
     {
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
+        claimedCities = new HashSet<>();
         trainCardNum = 4;
         trainNum = 45;
-
     }
     public String getUsername() {
         return username;
@@ -90,7 +92,6 @@ public class PlayerModel
         }
     }
 
-
     public boolean isTurn() {
         return turn;
     }
@@ -111,9 +112,12 @@ public class PlayerModel
      * 1. route 2. add score, 3. decrement train card 4. decrement trains
      * @param route
      */
-    public void claimRoute(Route route)
+    public void claimRoute(Route route, City city1, City city2)
     {
         int len = route.getLength();
+
+        claimedCities.add(city1);
+        claimedCities.add(city2);
 
         claimedRoutes.add(route);
 
@@ -121,7 +125,6 @@ public class PlayerModel
         this.score += score;
         trainCardNum -= len;
         trainNum -= len;
-
     }
 
 
@@ -136,24 +139,18 @@ public class PlayerModel
         for(DestinationCard card : destinationCards)
         {
             if(card.isCompleted())
+            {
+                claimedDestPoint += card.getPointValue();
                 score += card.getPointValue();
+            }
             else
             {
                 score -= card.getPointValue();
+                unclaimedDestPoint -= card.getPointValue();;
                 if(score < 0) score = 0;
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
     public int getScore() {
@@ -188,6 +185,26 @@ public class PlayerModel
         this.colorMap = colorMap;
     }
 
+    public int getDestCardNum() { return destCardNum; }
+    public void setDestCardNum(int destCardNum) { this.destCardNum = destCardNum; }
+
+    public int getTrainNum() { return trainNum; }
+
+    public void setTrainNum(int trainNum) { this.trainNum = trainNum; }
+
+    public int getTrainCardNum() { return trainCardNum; }
+
+    public void setTrainCardNum(int trainCardNum) {
+        this.trainCardNum = trainCardNum;
+    }
+
+    public int getClaimedDestPoint() { return claimedDestPoint; }
+
+    public void setClaimedDestPoint(int claimedDestPoint) { this.claimedDestPoint = claimedDestPoint; }
+
+    public int getUnclaimedDestPoint() { return unclaimedDestPoint; }
+
+    public void setUnclaimedDestPoint(int unclaimedDestPoint) { this.unclaimedDestPoint = unclaimedDestPoint; }
 
     @Override
     public boolean equals(Object o)
@@ -206,4 +223,10 @@ public class PlayerModel
 
 
     public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
+
+    public boolean claimedCity(City city) { return claimedCities.contains(city); }
+
+    public Set<City> getClaimedCities() { return claimedCities; }
+
+    public void setClaimedCities(Set<City> claimedCities) { this.claimedCities = claimedCities; }
 }

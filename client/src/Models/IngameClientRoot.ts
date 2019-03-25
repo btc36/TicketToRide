@@ -40,15 +40,19 @@ export class IngameClientRoot implements ISubject {
   setLocalPlayer(localPlayer: string) {
     this.localPlayer = localPlayer;
   }
-  getLocalPlayer(): Player{
-    return this.game.getLocalPlayer(this.localPlayer);
+  getLocalPlayer(): string{
+    return this.localPlayer;
   }
 
   getPlayerHand(): PlayerHand{
-    return this.game.getLocalPlayer(this.localPlayer).getHand();
+    let localPlayer = this.game.getLocalPlayer(this.localPlayer);
+    return localPlayer.getHand();
   }
-  getUsername():string{
-    return this.game.getLocalPlayer(this.localPlayer).getUsername();
+  getUsername(): string{
+    let crazylocalPlayer = this.game.getLocalPlayer(this.localPlayer);
+    console.log("ME MYSELF AND I");
+    console.log(crazylocalPlayer);
+    return crazylocalPlayer.getUsername();
   }
 
   transitionPage(pageName: string): void {
@@ -97,6 +101,10 @@ export class IngameClientRoot implements ISubject {
     for(let i = 0; i < trainCards.length; i++)
     {
       this.game.addTrainCard(username,trainCards[i]);
+    }
+    this.notify("playerInfoChanged", null);
+    if (this.localPlayer == username) {
+      this.notify("myHandUpdated", null);
     }
   }
 
@@ -174,6 +182,9 @@ export class IngameClientRoot implements ISubject {
 
   updatePlayerPoints(player: string, points: number): void {
     this.game.updatePlayerPoints(player, points);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
+
   }
 
   /*removeTrainCard(trainCard: TrainCard): void {
@@ -182,31 +193,46 @@ export class IngameClientRoot implements ISubject {
 
   updateNumTrainCars(player: string, numUsed: number): void {
     this.game.updateNumTrainCars(player, numUsed);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
   }
 
   updateNumberOfDestinationCards(player: string, numCards: number): void {
     this.game.setNumDestinationCards(player, numCards);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
   }
 
   setNumTrainCards(player: string, numCards: number) {
     this.game.setNumTrainCards(player, numCards);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
   }
 
   updateNumInDeck(newNum: number): void {
     this.game.setNumTrainCardsRemaining(newNum);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
   }
 
   setNumDestinationCardsRemaining( newNum: number): void {
     this.game.setNumDestinationCardsRemaining(newNum);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
   }
 
   setNumTrainCardsRemaining(newNum: number): void {
     this.game.setNumTrainCardsRemaining(newNum);
+    this.notify("myHandUpdated", null);
+    this.notify("playerInfoChanged", null);
   }
 
   changeTurn(player: string): void {
     this.game.changeTurn(player);
     this.notify("playerInfoChanged", null);
+    if (player == this.localPlayer) {
+      this.notify("isMyTurn",null);
+    }
   }
 
   receiveChatCommand(gameid: string, chats: any[]){

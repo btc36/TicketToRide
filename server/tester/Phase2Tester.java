@@ -1,8 +1,9 @@
-package server;
+package tester;
 
 import command.GenericCommand;
 import model.DestinationCard;
 import model.LobbyGameModel;
+import server.ServerFacade;
 
 import java.util.ArrayList;
 import java.util.Date;
