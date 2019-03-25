@@ -243,4 +243,7 @@ export class IngameClientRoot implements ISubject {
     //TODO notify the game over view!
     //this.notify("playerInfoChanged", null);
   }
+  isMyTurn(): boolean{
+    return this.getLocalPlayer().isMyTurn();
+  }
 }
