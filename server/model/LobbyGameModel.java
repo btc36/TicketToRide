@@ -219,21 +219,23 @@ public class LobbyGameModel extends GameSetUp
     {
 
         List<City> neighbors = src.getNeighbors();
-        if(neighbors.contains(dst))
+        if(neighbors.contains(dst)) // reached destination
         {
-            return  true;
+            return true;
         }
 
-        for(City c : src.getNeighbors())
+        for(Route r : src.getRoutes())
         {
-            if(!visited.contains(c))
+            City newSource = getOtherSideCity(src, r); // opposite end of source city
+            if(!visited.contains(newSource))
             {
-                visited.add(c);
-                if(destinationTraverse(c, dst, visited))
+                visited.add(newSource);
+                if(destinationTraverse(newSource, dst, visited))
                     return true;
-                visited.remove(c);
+                visited.remove(newSource);
             }
         }
+
         return false;
     }
 

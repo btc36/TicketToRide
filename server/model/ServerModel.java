@@ -13,6 +13,7 @@ public class ServerModel
     private List<GameHistory> allGameHistory;
 
     private static ServerModel _instance;
+
     private ServerModel()
     {
         allPlayers = new PlayerListModel();
@@ -20,6 +21,7 @@ public class ServerModel
         allChatrooms = new ArrayList<>();
         allGameHistory = new ArrayList<>();
     }
+
     public static ServerModel getInstance()
     {
         if(_instance == null)
@@ -82,7 +84,6 @@ public class ServerModel
         {
             room.addChat(message);
         }
-
     }
 
     public void addHistory(String gameID, HistoryEntry entry)
@@ -100,6 +101,7 @@ public class ServerModel
             history.addHistory(entry);
         }
     }
+    
     public ChatRoom getChatRoombyID(String gameID)
     {
         for(ChatRoom room : allChatrooms)
