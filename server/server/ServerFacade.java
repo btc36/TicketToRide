@@ -237,7 +237,7 @@ public class ServerFacade extends Facade
         }
 
         System.out.println(message);
-        List<LobbyGameModel> games = getGameAsList();
+        List<LobbyGameModel> games = getGameAsList(); //fixme why is this here
         GenericCommand command;
         command = new GenericCommand(
                 _className, "startGame",
@@ -247,6 +247,7 @@ public class ServerFacade extends Facade
         commandsForClient.add(command);
         return commandsForClient;
     }
+
     public List<GenericCommand> getGameList()
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();

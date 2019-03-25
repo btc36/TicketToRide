@@ -20,6 +20,8 @@ public class PlayerModel
     private Map<String, Integer> colorMap = null;
     private int claimedDestPoint;
     private int unclaimedDestPoint;
+    private boolean longestRoute;
+
     public PlayerModel() {}
     public PlayerModel(String username)
     {
@@ -36,6 +38,7 @@ public class PlayerModel
         score = 0;
         claimedDestPoint = 0;
         unclaimedDestPoint = 0;
+        longestRoute = false;
     }
 
     public void startGame()
@@ -221,6 +224,9 @@ public class PlayerModel
     @Override
     public int hashCode() { return this.username.hashCode(); }
 
+    public boolean isLongestRoute() { return longestRoute; }
+
+    public void setLongestRoute(boolean longestRoute) { this.longestRoute = longestRoute; }
 
     public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
 
