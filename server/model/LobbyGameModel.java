@@ -251,17 +251,36 @@ public class LobbyGameModel extends GameSetUp
         for(int i = 0; i < list.size(); i++)
         {
             PlayerModel p = list.get(i);
-            if(p.getScore() >= max)
+            if(max < p.getScore())
             {
                 max = p.getScore();
+                indices.clear();
                 indices.add(i);
+            }
+            else if(max == p.getScore())
+                indices.add(i);
+        }
+
+        int index = 0;
+
+        winner = list.get(indices.get(0));
+
+        if(indices.size() > 1) // tie breaker
+        {
+            for(int i : indices)
+            {
+                PlayerModel p = list.get(i);
+                if(p.isLongestRoute())
+                {
+                    winner = p;
+                    break;
+                }
             }
         }
 
-        int index = indices.get(indices.size() - 1);
-        winner = list.get(index);
         System.out.println("WINNER : " + winner.getUsername());
     }
+
     public PlayerModel getWinner() { return winner; }
 
     public void endGame()
@@ -273,6 +292,7 @@ public class LobbyGameModel extends GameSetUp
         findWinner();
     }
 
+    // longest traversal wrapper class
     private void findLongestRoute()
     {
         longestPath = 0;
@@ -285,15 +305,15 @@ public class LobbyGameModel extends GameSetUp
             {
                 int length = 0;
                 Set<Route> visited = new HashSet<>();
-                longtraverse(src, length, claimed, visited, username);
+                longTraverse(src, length, claimed, visited, username);
             }
         }
 
         for(String longestUser : longestUsers)
         {
             PlayerModel longestPerson = getPlayer(longestUser);
+            longestPerson.setLongestRoute(true);
             longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
-            assert(!longestUser.isEmpty());
             System.out.println("LONGEST : " + longestUser);
             System.out.println("팀빨");
             System.out.println("ㅈ 극혐");
@@ -301,7 +321,8 @@ public class LobbyGameModel extends GameSetUp
         }
     }
 
-    private void longtraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
+    // traversal for longest route
+    private void longTraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
     {
         if(longestPath < length) // we found a better length
         {
@@ -322,7 +343,7 @@ public class LobbyGameModel extends GameSetUp
             {
                 visited.add(route);
                 City newSource = getOtherSideCity(src, route);
-                longtraverse(newSource, length + route.getLength(), claimed, visited, username);
+                longTraverse(newSource, length + route.getLength(), claimed, visited, username);
                 visited.remove(route);
             }
         }

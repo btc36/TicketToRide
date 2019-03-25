@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class City {
-    String name;
-    List<City> neighbors;
-    List<Route> routes;
+    private String name;
+    private List<City> neighbors;
+    private List<Route> routes;
 
     public City(){}
 
