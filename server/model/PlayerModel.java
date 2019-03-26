@@ -16,7 +16,7 @@ public class PlayerModel
     private int trainCardNum;
     private List<Route> claimedRoutes;
     private Set<City> claimedCities;
-    private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
+    //private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
     private Map<String, Integer> colorMap = null;
     private int claimedDestPoint;
     private int unclaimedDestPoint;
@@ -115,7 +115,8 @@ public class PlayerModel
      * 1. route 2. add score, 3. decrement train card 4. decrement trains
      * @param route
      */
-    public void claimRoute(Route route, City city1, City city2)
+
+    public void claimRoute(Route route, City city1, City city2, List<String> colors)
     {
         int len = route.getLength();
 
@@ -124,8 +125,15 @@ public class PlayerModel
 
         claimedRoutes.add(route);
 
-        int score = scoreMap.get(len);
-        this.score += score;
+        //int score = scoreMap.get(len);
+
+        for(String color : colors)
+        {
+            int num = colorMap.getOrDefault(color, 0);
+            assert (num > 0);
+            colorMap.put(color, --num);
+        }
+        //this.score += score;
         trainCardNum -= len;
         trainNum -= len;
     }
@@ -172,13 +180,13 @@ public class PlayerModel
         this.claimedRoutes = claimedRoutes;
     }
 
-    public Map<Integer, Integer> getScoreMap() {
-        return scoreMap;
-    }
+    //public Map<Integer, Integer> getScoreMap() {
+//        return scoreMap;
+  //  }
 
-    public void setScoreMap(Map<Integer, Integer> scoreMap) {
-        this.scoreMap = scoreMap;
-    }
+    //public void setScoreMap(Map<Integer, Integer> scoreMap) {
+      //  this.scoreMap = scoreMap;
+    //}
 
     public Map<String, Integer> getColorMap() {
         return colorMap;
@@ -235,4 +243,30 @@ public class PlayerModel
     public Set<City> getClaimedCities() { return claimedCities; }
 
     public void setClaimedCities(Set<City> claimedCities) { this.claimedCities = claimedCities; }
+
+    public boolean sufficientResource(Route r, String selectedColor)
+    {
+
+        final String grey = "grey";
+        final int length = r.getLength();
+        if(trainNum > r.getLength())
+            return false;
+
+        String routeColor = r.getColor();
+        return checkColor(routeColor, length);
+//        if(routeColor.equals(grey))
+//            for(String userColor : colorMap.keySet())
+//        if(checkColor(userColor, length)) return userColor;
+//        else
+//        if(checkColor(routeColor, length)) return routeColor;
+    }
+    private boolean checkColor(String color, int length)
+    {
+        final String rainbow = "rainbow";
+        int colorNum = colorMap.get(color);
+        if(length <= colorNum)
+            return true;
+        else
+            return (colorMap.get(colorNum) + colorMap.get(rainbow) >= length);
+    }
 }

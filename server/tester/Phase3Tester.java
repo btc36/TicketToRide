@@ -38,26 +38,33 @@ public class Phase3Tester
         System.out.println(divider);
         facade.startGame("game1");
         List<String> colors = Arrays.asList(new String[] {"blue", "blue", "blue", "blue", "blue"});
-        List<GenericCommand> l =  game.claimRoute("game1", "user1", "Miami", "Atlanta", "blue", 5, colors);
+        String red = "red";
+        String blue = "blue";
+        String yellow = "yellow";
+        String green = "green";
+        String white = "white";
+//        String blue = "blue";
+
+        List<GenericCommand> l =  game.claimRoute("game1", "user1", "Miami", "Atlanta", "blue", 5, blue);
 
         //invalid color
         colors = Arrays.asList(new String[] {"grey"});
-        List<GenericCommand> t =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, colors);
+        List<GenericCommand> t =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, "grey");
         colors = Arrays.asList(new String[] {"blue"});
-        List<GenericCommand> m =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, colors);
+        List<GenericCommand> m =  game.claimRoute("game1", "user1", "Nashville", "Atlanta", "grey", 1, blue);
         //duplicate claim
-        List<GenericCommand> o =  game.claimRoute("game1", "user2", "Nashville", "Atlanta", "grey", 1, colors);
+        List<GenericCommand> o =  game.claimRoute("game1", "user2", "Nashville", "Atlanta", "grey", 1, yellow);
         colors = Arrays.asList(new String[] {"yellow","yellow","yellow","yellow"});
-        List<GenericCommand> p =  game.claimRoute("game1", "user2", "Atlanta", "New Orleans", "yellow", 4, colors);
+        List<GenericCommand> p =  game.claimRoute("game1", "user2", "Atlanta", "New Orleans", "yellow", 4, yellow);
         colors = Arrays.asList(new String[] {"green", "green", "green"});
-        List<GenericCommand> q =  game.claimRoute("game1", "user2", "New Orleans", "Little Rock", "green", 3, colors);
+        List<GenericCommand> q =  game.claimRoute("game1", "user2", "New Orleans", "Little Rock", "green", 3, green);
 
         colors = Arrays.asList(new String[] {"green", "green", "green","green", "green", "green"});
-        List<GenericCommand> r =  game.claimRoute("game1", "user1", "San Francisco", "Portland", "green", 6, colors);
+        List<GenericCommand> r =  game.claimRoute("game1", "user1", "San Francisco", "Portland", "green", 6, green);
         colors = Arrays.asList(new String[] {"yellow","yellow","yellow","yellow","yellow","yellow"});
-        List<GenericCommand> s =  game.claimRoute("game1", "user1", "Seattle", "Helena", "yellow", 6, colors);
+        List<GenericCommand> s =  game.claimRoute("game1", "user1", "Seattle", "Helena", "yellow", 6, yellow);
         colors = Arrays.asList(new String[] {"blue"});
-        List<GenericCommand> u =  game.claimRoute("game1", "user1", "Seattle", "Portland", "grey", 1, colors);
+        List<GenericCommand> u =  game.claimRoute("game1", "user1", "Seattle", "Portland", "grey", 1, blue);
         game.endTurn("game1", "user1");
         System.out.println("FINISHED\n");
         game.lastRound("game1");

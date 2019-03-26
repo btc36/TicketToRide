@@ -21,6 +21,10 @@ public class Facade
     protected final String _paramTypeGame = "LobbyGameModel";
     protected final String usernameError = "username empty";
     protected final String passwordError = "password empty";
+    protected final String _modelPackage = "model.";
+    protected final String _paramRoute = _modelPackage + "Route";
+    protected final String _paramDestinationCard = _modelPackage + "DestinatinoCard";
+    protected final String _paramTrainCard = _modelPackage + "TrainCard";
 
 
 

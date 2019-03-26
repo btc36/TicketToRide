@@ -7,6 +7,7 @@ public class LobbyGameModel extends GameSetUp
 
     public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}
     private State state;
+    private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
 
     /**
      * START
@@ -71,6 +72,7 @@ public class LobbyGameModel extends GameSetUp
         setUpPlayers();
         faceUpCards = new FaceUpCards();
         claimedRoutes = new ArrayList<>();
+        longestUsers = new HashSet<>();
 
         /*Cities and Routes*/
         setUpCities();
@@ -166,8 +168,10 @@ public class LobbyGameModel extends GameSetUp
     public void endTurn() {
         List<PlayerModel> list = playerList.getPlayerList();
         list.get(turnIndex).setTurn(false);
+        System.out.print("Turn changed from " + list.get(turnIndex).getUsername());
         turnIndex = (++turnIndex) % list.size();
         turn = list.get(turnIndex).getUsername();
+        System.out.println(" to " + list.get(turnIndex).getUsername());
         list.get(turnIndex).setTurn(true);
     }
 
@@ -222,20 +226,40 @@ public class LobbyGameModel extends GameSetUp
         return card;
     }
 
-    public void claimRoute(Route route, String username, List<String> colors)
+    public void claimRoute(Route route, String username, String color)
     {
         unClaimedRoutes.remove(route); // for sale
         route.setClaimedBy(username); // mark the territory
         claimedRoutes.add(route); // sold list
+
         PlayerModel luckyGuy = getPlayer(username);
         assert (luckyGuy != null);
+
+        Map<String, Integer> colorMap = luckyGuy.getColorMap();
+        List<String> colors = new ArrayList<>();
+        int colorNum = colorMap.get(color);
+        int routeLength = route.getLength();
+
+        int i;
+        for(i = 1; i <= colorNum; i++)
+        {
+            trainDeck.add(new TrainCard(color));
+            colors.add(color);
+        }
+        //rainbow
+        for(int j = 0; i < routeLength - colorNum; i++)
+        {
+            trainDeck.add(new TrainCard("rainbow"));
+            colors.add("rainbow");
+        }
+
         City city1 = getCityByName(route.getCityOne());
         City city2 = getCityByName(route.getCityTwo());
-        luckyGuy.claimRoute(route, city1, city2);
-        checkDestinationCard(luckyGuy);
+        luckyGuy.claimRoute(route, city1, city2, colors);
 
-        for(int i = 0; i < colors.size(); i++)
-            trainDeck.add(new TrainCard(colors.get(i)));
+        int currentScore = luckyGuy.getScore();
+        luckyGuy.setScore(scoreMap.get(routeLength) + currentScore);
+        checkDestinationCard(luckyGuy);
 
         trainDeck.shuffle();
     }
@@ -297,7 +321,7 @@ public class LobbyGameModel extends GameSetUp
     private void findLongestRoute()
     {
         longestPath = 0;
-        longestUsers = new HashSet<>();
+
         for(PlayerModel p : playerList.getPlayerList())
         {
             String username = p.getUsername();
