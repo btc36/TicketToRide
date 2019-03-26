@@ -65,21 +65,21 @@ export class ClientCommunicator {
   // Execute the command received from the server
   public executeCommands(commands: ClientCommandObjects[]) {
     for (var i = 0; i < commands.length; i++){
-      if (commands[i]._methodName == "drawTrainCard") {
+      /*if (commands[i]._methodName == "drawTrainCard") { // THIS WAS NOT THE FUNCTION, JUST AN IF STATEMENT TO LOG THE COMMAND
         console.log("YOUR WISH IS MY COMMAND");
         console.log(commands);
         let params = commands[i]._paramValues;
         if(params[0])
         {
           let cardList = new Array<TrainCard>();
-          let card = params[4]; // or new TrainCard(params[4].color);
-          let faceUpCards = params[5]; // will JSON be parsed correctly?
+          let card = new TrainCard(params[4].color);//params[4]; // or new TrainCard(params[4].color);
+          let faceUpCards = new FaceUpCards(params[5]); // will JSON be parsed correctly?
           cardList.push(card);
           let username = params[3];
           this.inGameClientFacade.storeTrainCards(username, cardList);
           this.inGameClientFacade.setFaceUpCards(faceUpCards);
         }
-      }
+      }*/
       if (commands[i]._className == "currentTurn") {
         console.log("CURRENT TURN COMMAND EXECUTED");
         this.inGameClientFacade.currentTurn(commands[i]._paramValues[3]);
@@ -113,20 +113,23 @@ export class ClientCommunicator {
         this.clientFacade.joinGame(commands[i]._paramValues[2]);
       }
       else if (commands[i]._methodName == "drawTrainCard") {
-        console.log("THE SERVER RESPONDED!!!! YAY!");
-        console.log(commands[i]);
-        let faceUpArray = new Array<TrainCard>();
-        for (let j = 0; j < commands[i]._paramValues[5].length; j++) {
-          const card = new TrainCard(commands[i]._paramValues[5][j].color);
-          faceUpArray.push(card);
+        if (commands[i]._paramValues[0]) {
+
+          console.log("THE SERVER RESPONDED!!!! YAY!");
+          console.log(commands[i]);
+          let faceUpArray = new Array<TrainCard>();
+          for (let j = 0; j < commands[i]._paramValues[5].length; j++) {
+            const card = new TrainCard(commands[i]._paramValues[5][j].color);
+            faceUpArray.push(card);
+          }
+          let faceUp = new FaceUpCards(faceUpArray);
+          let drawnCards = new Array<TrainCard>();
+          for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
+            const card = new TrainCard(commands[i]._paramValues[4][k].color);
+            drawnCards.push(card);
+          }
+          this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], drawnCards, faceUp);
         }
-        let faceUp = new FaceUpCards(faceUpArray);
-        let drawnCards = new Array<TrainCard>();
-        for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
-          const card = new TrainCard(commands[i]._paramValues[4][k].color);
-          drawnCards.push(card);
-        }
-        this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], drawnCards, faceUp);
       }
       else if (commands[i]._methodName == "startGame") {
         console.log("IM HERE IM HERE IM HERE");
