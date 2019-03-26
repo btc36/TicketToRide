@@ -68,6 +68,17 @@ export class ClientCommunicator {
       if (commands[i]._methodName == "drawTrainCard") {
         console.log("YOUR WISH IS MY COMMAND");
         console.log(commands);
+        let params = commands[i]._paramValues;
+        if(params[0])
+        {
+          let cardList = new Array<TrainCard>();
+          let card = params[4]; // or new TrainCard(params[4].color);
+          let faceUpCards = params[5]; // will JSON be parsed correctly?
+          cardList.push(card);
+          let username = params[3];
+          this.inGameClientFacade.storeTrainCards(username, cardList);
+          this.inGameClientFacade.setFaceUpCards(faceUpCards);
+        }
       }
       if (commands[i]._className == "currentTurn") {
         console.log("CURRENT TURN COMMAND EXECUTED");
@@ -206,7 +217,6 @@ export class ClientCommunicator {
         this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
       else if (commands[i]._methodName == "discardDestinationCard") {
-        console.log("zolpidem and coding. bddd idea");
         this.inGameClientFacade.discardDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
       else if (commands[i]._methodName == "drawDestinationCard") {
@@ -221,6 +231,9 @@ export class ClientCommunicator {
       else if (commands[i]._methodName == "updateScores") {
         this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
         let currentPlayers = commands[i]._paramValues[4];
+        let faceUpCards = commands[i]._paramValues[5]; // is JSON parsed correctly?
+
+        this.inGameClientFacade.setFaceUpCards(faceUpCards);
         console.log("MY PLAYER INFO TO UPDATE SCORES");
         console.log(currentPlayers);
 

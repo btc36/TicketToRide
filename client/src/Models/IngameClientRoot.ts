@@ -275,4 +275,5 @@ export class IngameClientRoot implements ISubject {
   isMyTurn(): boolean{
     return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
   }
+
 }
