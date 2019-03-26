@@ -244,7 +244,7 @@ public class GameFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkInput(gameID, username);
         message += checkTrainColors(selectionColor);
-        
+
         if(message.isEmpty())
         {
             Route temp = new Route(cityOne, cityTwo, length, routeColor);
