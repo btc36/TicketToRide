@@ -9,6 +9,7 @@ import { FaceUpCardsViewModel } from './FaceUpCardsViewModel';
 import { PlayerHandViewModel } from './PlayerHandViewModel';
 import { PlayerInfoViewModel } from './PlayerInfoViewModel';
 import { ChatViewModel } from './ChatViewModel';
+import { IngamePoller } from "../Server/IngamePoller";
 
 export class GameViewModel extends React.Component<any, State> implements IGameViewModel, IObserver {
 
@@ -20,9 +21,12 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
   playerHandViewModel: JSX.Element = <PlayerHandViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   playerInfoViewModel: JSX.Element = <PlayerInfoViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
   chatViewModel: JSX.Element = <ChatViewModel ref={(instance: any) => this.props.ingameRoot.attach(instance)} main={this} services={this.props.ingameServices} />;
+  poller: IngamePoller;
 
   constructor(props) {
     super(props);
+    this.poller = new IngamePoller(this.props.services);
+    this.poller.start();
   }
 
   update = (updateType: string, data: any) => {

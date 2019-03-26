@@ -44,6 +44,11 @@ export class IngameServerProxy {
     this.communicator.sendCommand(command);
   }
 
+  whoseTurn(gameID: string) {
+    const command = new ClientCommandObjects(this.gameClass, "whoseTurn", [this.paramTypeString], [gameID]);
+    this.communicator.sendCommand(command);
+  }
+
   public getChatHistory(gameId: String){
     const command = new ClientCommandObjects(this.serverClass, "getChatHistory", [this.paramTypeString], [gameId]);
     this.communicator.sendCommand(command);
