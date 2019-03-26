@@ -67,7 +67,8 @@ public class ServerModel
     }
     public void addChatRoom(ChatRoom chatRoom)
     {
-        allChatrooms.add(chatRoom);
+        if(!allChatrooms.contains(chatRoom))
+            allChatrooms.add(chatRoom);
     }
 
     public List<ChatRoom> getChatrooms() { return allChatrooms;}

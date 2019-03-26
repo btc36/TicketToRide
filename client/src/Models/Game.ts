@@ -185,10 +185,10 @@ export class Game {
     }
 
 
-  updateNumTrainCars(username: string, numUsed: number): void {
+  updateNumTrainCars(username: string, numTrains: number): void {
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
-                player.setNumTrains(numUsed)
+                player.setNumTrains(numTrains)
                 return;
             }
         });

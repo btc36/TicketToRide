@@ -382,6 +382,7 @@ public class GameSetUp {
     public void setUnClaimedRoutes(List<Route> unClaimedRoutes) { this.unClaimedRoutes = unClaimedRoutes; }
     public List<Route> getUnClaimedRoutes() { return unClaimedRoutes; }
 
+
     public boolean isClaimed(Route route) { return !unClaimedRoutes.contains(route); }
     protected City getCityByName(String city1) {
         for(City c : allCities)

@@ -131,8 +131,12 @@ export class Player {
     this.myHand.removeTrainCard(trainCard);
   }
 
-  setNumTrains(numTrains: number) {
+  subtractNumTrains(numTrains: number) {
     this.numTrains -= numTrains;
+  }
+
+  setNumTrains(numTrains: number) {
+    this.numTrains = numTrains;
   }
 
   setTurn(isMyTurn: boolean) {

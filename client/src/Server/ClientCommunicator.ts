@@ -9,6 +9,8 @@ import {TrainCard} from "../Models/TrainCard";
 import {FaceUpCards} from "../Models/FaceUpCards";
 import { PlayerHand } from "../Models/PlayerHand";
 import { DestinationCard } from "../Models/DestinationCard";
+import {Simulate} from "react-dom/test-utils";
+import play = Simulate.play;
 
 export class ClientCommunicator {
   serverUrl: string;
@@ -232,11 +234,28 @@ export class ClientCommunicator {
         this.inGameClientFacade.currentTurn(commands[i]._paramValues[2]);
       }
       else if (commands[i]._methodName == "updateScores") {
-        this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
-        let currentPlayers = commands[i]._paramValues[4];
-        let faceUpCards = commands[i]._paramValues[5]; // is JSON parsed correctly?
 
-        this.inGameClientFacade.setFaceUpCards(faceUpCards);
+        let players = commands[i]._paramValues[4];
+        for (let i = 0; i < players.length; i++)
+        {
+          let player = players[i];
+          this.inGameClientFacade.updateNumDestinationCards(player.username, player.destCardNum);
+          //TRAIN CARDS
+          this.inGameClientFacade.updateNumTrainCars(player.username, player.trainCardNum);
+          //TRAINS NOT CARDS
+          this.inGameClientFacade.updateNumTrainCars(player.username, player.trainNum);
+        }
+
+        const faceUps = commands[i]._paramValues[5].faceUpCards;
+        let faceUpArray = new Array<TrainCard>();
+        for (let j = 0; j < faceUps.length; j++) {
+          const card = new TrainCard(faceUps[j].color);
+          faceUpArray.push(card);
+        }
+        let faceUp = new FaceUpCards(faceUpArray);
+        this.inGameClientFacade.setFaceUpCards(faceUp);
+
+        this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
         console.log("MY PLAYER INFO TO UPDATE SCORES");
         console.log(commands[i]);
 
