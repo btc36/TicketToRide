@@ -222,7 +222,7 @@ export class ClientCommunicator {
         this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
         let currentPlayers = commands[i]._paramValues[4];
         console.log("MY PLAYER INFO TO UPDATE SCORES");
-        console.log(currentPlayers);
+        console.log(commands[i]);
 
       }
       else if (commands[i]._methodName == "endGame") {
