@@ -238,6 +238,18 @@ public class PlayerModel
 
     public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
 
+    public void removeTrainCard(String color) {
+        int index = -1;
+        for (int i = 0; i < trainCards.size(); i++) {
+            if (trainCards.get(i).color == color) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1)
+            trainCards.remove(index);
+    }
+
     public boolean claimedCity(City city) { return claimedCities.contains(city); }
 
     public Set<City> getClaimedCities() { return claimedCities; }

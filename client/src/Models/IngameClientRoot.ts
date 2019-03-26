@@ -257,6 +257,9 @@ export class IngameClientRoot implements ISubject {
   currentTurn(username: string){
     this.game.changeTurn(username);
     this.notify("playerInfoChanged", null);
+    if (username == this.localPlayer) {
+      this.notify("isMyTurn",null);
+    }
   }
 
   updateScores(scores: number[]){
@@ -270,6 +273,6 @@ export class IngameClientRoot implements ISubject {
     //this.notify("playerInfoChanged", null);
   }
   isMyTurn(): boolean{
-    return this.getLocalPlayer().isMyTurn();
+    return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
   }
 }
