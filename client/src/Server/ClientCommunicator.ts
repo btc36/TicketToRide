@@ -82,7 +82,7 @@ export class ClientCommunicator {
           this.inGameClientFacade.setFaceUpCards(faceUpCards);
         }
       }*/
-      if (commands[i]._className == "currentTurn") {
+      if (commands[i]._methodName == "currentTurn") {
         console.log("CURRENT TURN COMMAND EXECUTED");
         this.inGameClientFacade.currentTurn(commands[i]._paramValues[3]);
       }
@@ -229,9 +229,6 @@ export class ClientCommunicator {
       }
       else if (commands[i]._methodName == "updateNumDestinationCards") {
         this.inGameClientFacade.updateNumberOfDestinationCards(commands[i]._paramValues[3], commands[i]._paramValues[5]);
-      }
-      else if (commands[i]._methodName == "currentTurn") {
-        this.inGameClientFacade.currentTurn(commands[i]._paramValues[2]);
       }
       else if (commands[i]._methodName == "updateScores") {
 
