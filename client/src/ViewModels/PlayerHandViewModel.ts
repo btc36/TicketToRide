@@ -25,6 +25,12 @@ export class PlayerHandViewModel extends React.Component<IngameViewModelProps, S
     this.setState({ playerHand: this.props.services.getPlayerHand() });
   }
 
+  selectPreferredCard = (e: any) => {
+    let color = e.target.id;
+    this.setState({ preferredColor: color });
+    alert("preferred card set to " + color);
+  }
+
   render(): JSX.Element {
     return PlayerHandView(this);
   }
