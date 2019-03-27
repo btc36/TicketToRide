@@ -25,6 +25,11 @@ export class IngameClientRoot implements ISubject {
     this.localPlayer = "ben";
   }
 
+
+  /**
+   * OBSOLETE
+   */
+  
   randomize() {
     let ben = new Player("ben");
     let lincoln = new Player("lincoln");
