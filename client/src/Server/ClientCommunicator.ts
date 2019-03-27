@@ -216,7 +216,7 @@ export class ClientCommunicator {
           //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
           // }
         this.clientFacade.startGame(commands[i]._paramValues[2]);
-        this.inGameClientFacade.changeTurn(startingPlayer);
+       // this.inGameClientFacade.changeTurn(startingPlayer);
         }
       //}
       else if (commands[i]._methodName == "receiveChatCommand") {
