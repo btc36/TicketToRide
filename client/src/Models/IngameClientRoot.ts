@@ -37,6 +37,14 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
   }
 
+  drewTrainCard() {
+    this.notify("drewTrainCard", null);
+  }
+
+  endTurn() {
+    this.notify("endTurn", null);
+  }
+
   setLocalPlayer(localPlayer: string) {
     this.localPlayer = localPlayer;
   }

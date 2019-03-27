@@ -45,6 +45,7 @@ export class IngameInternalClientFacade {
   }
 
   endTurn() {
+    this.root.endTurn();
     this.proxy.endTurn(this.root.getGameID(), this.root.getLocalPlayer());
   }
 
@@ -82,6 +83,7 @@ export class IngameInternalClientFacade {
 
   drawTrainCard(index: number) {
     console.log("CALLING MY PROXY");
+
     this.proxy.drawTrainCard(this.root.getGameID(), this.root.getLocalPlayer(), index);//Zero based index
     //This needs to ask the server, not dummy test code;
     //let drawnCard = this.root.changeFaceUpCards();

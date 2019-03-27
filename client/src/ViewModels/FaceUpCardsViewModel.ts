@@ -33,6 +33,8 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
       this.setState({ numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining() });
     } else if (updateType == "isMyTurn") {
       this.changeState(new NothingSelectedState());
+    } else if (updateType == "endTurn") {
+      this.changeState(new DoneDrawingState());
     }
   }
 
