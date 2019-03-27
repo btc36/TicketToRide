@@ -25,7 +25,7 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
 
   constructor(props) {
     super(props);
-    this.poller = new IngamePoller(this.props.services);
+    this.poller = new IngamePoller(this.props.ingameServices);
     this.poller.start();
   }
 

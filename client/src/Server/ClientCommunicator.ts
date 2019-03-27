@@ -115,21 +115,25 @@ export class ClientCommunicator {
         this.clientFacade.joinGame(commands[i]._paramValues[2]);
       }
       else if (commands[i]._methodName == "drawTrainCard") {
-        if (commands[i]._paramValues[0]) {
+        if (commands[i]._paramValues[0]) { // success
 
           console.log("THE SERVER RESPONDED!!!! YAY!");
           console.log(commands[i]);
           let faceUpArray = new Array<TrainCard>();
+          //faceup
           for (let j = 0; j < commands[i]._paramValues[5].length; j++) {
             const card = new TrainCard(commands[i]._paramValues[5][j].color);
             faceUpArray.push(card);
           }
           let faceUp = new FaceUpCards(faceUpArray);
           let drawnCards = new Array<TrainCard>();
-          for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
-            const card = new TrainCard(commands[i]._paramValues[4][k].color);
-            drawnCards.push(card);
-          }
+          //drawncard
+           const card = new TrainCard(commands[i]._paramValues[4].color); // server now returns one card
+          drawnCards.push(card);
+         // for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
+          //  const card = new TrainCard(commands[i]._paramValues[4][k].color);
+           // drawnCards.push(card);
+          //}
           this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], drawnCards, faceUp);
         }
       }
