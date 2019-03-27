@@ -10,13 +10,16 @@ export class NothingSelectedState implements DrawTrainCardState {
       if (desiredCard.color == "rainbow") {
         viewModel.props.services.drawTrainCard(index);
         let newState = new DoneDrawingState();
-        newState.enter(null);
+        newState.enter(viewModel);
         viewModel.changeState(newState);
         return;
       }
     }
-      viewModel.props.services.drawTrainCard(index);
-      viewModel.changeState(new OneNonWildSelectedState());  
+    viewModel.props.services.drawTrainCard(index);
+    console.log("CHANGING STATE");
+    viewModel.changeState(new OneNonWildSelectedState()); 
+    console.log("MY STATE IS");
+    console.log(viewModel.statePatternState);
   }
   enter(viewModel: FaceUpCardsViewModel) {
 

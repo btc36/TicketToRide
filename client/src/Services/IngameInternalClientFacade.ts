@@ -63,6 +63,11 @@ export class IngameInternalClientFacade {
     this.proxy.SendChat(message, time, username, gameID);
   }
 
+  getMoreDestinationCards() {
+    this.root.drewDestinationCard();
+
+  }
+
   DiscardDestinationCard(destinationCards: Array<DestinationCard>) {
     let gameID = this.root.getGameID();
     let username = this.root.getUsername();

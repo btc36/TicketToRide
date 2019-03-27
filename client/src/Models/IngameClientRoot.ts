@@ -38,11 +38,15 @@ export class IngameClientRoot implements ISubject {
   }
 
   drewTrainCard() {
-    this.notify("drewTrainCard", null);
+    this.notify("drewCard", null);
   }
 
   endTurn() {
     this.notify("endTurn", null);
+  }
+
+  drewDestinationCard() {
+    this.notify("drewCard", null);
   }
 
   setLocalPlayer(localPlayer: string) {
@@ -58,8 +62,8 @@ export class IngameClientRoot implements ISubject {
   }
   getUsername(): string{
     let crazylocalPlayer = this.game.getLocalPlayer(this.localPlayer);
-    console.log("ME MYSELF AND I");
-    console.log(crazylocalPlayer);
+    //console.log("ME MYSELF AND I");
+    //console.log(crazylocalPlayer);
     return crazylocalPlayer.getUsername();
   }
 
@@ -183,8 +187,8 @@ export class IngameClientRoot implements ISubject {
     this.notify('setFaceUpCards', null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
-    console.log(this.game);
-    console.log(this.localPlayer);
+   // console.log(this.game);
+    //console.log(this.localPlayer);
     return drawnCard;
   }
 
