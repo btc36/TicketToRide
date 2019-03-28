@@ -183,9 +183,8 @@ public class PlayerModel
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
+    public void setScore(int score) { this.score = score; }
+    public void addScore(int score) { this.score += score; }
 
     public List<Route> getClaimedRoutes() {
         return claimedRoutes;
@@ -274,13 +273,14 @@ public class PlayerModel
     public boolean sufficientResource(Route r, String selectedColor)
     {
 
-        final String grey = "grey";
+        //final String grey = "grey";
         final int length = r.getLength();
-        if(trainNum > r.getLength())
+        // if total is less than the length. not even worth checking
+        if(trainNum < r.getLength())
             return false;
 
-        String routeColor = r.getColor();
-        return checkColor(routeColor, length);
+//        String routeColor = r.getColor();
+        return checkColor(selectedColor, length);
 //        if(routeColor.equals(grey))
 //            for(String userColor : colorMap.keySet())
 //        if(checkColor(userColor, length)) return userColor;
@@ -294,8 +294,6 @@ public class PlayerModel
         if(length <= colorNum)
             return true;
         else
-            return (colorMap.get(colorNum) + colorMap.get(rainbow) >= length);
+            return (colorMap.getOrDefault(colorNum, 0) + colorMap.getOrDefault(rainbow, 0) >= length);
     }
-
-
 }

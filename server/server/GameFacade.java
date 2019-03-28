@@ -21,7 +21,6 @@ public class GameFacade extends Facade
     private final String endTurn = "endTurn";
     private final String currentTurn = "currentTurn";
     private final String getHistory = "receiveHistory";
-    private final String sMessage = "success : ";
     private final String gameClass = "IngameExternalClientFacade";
     private final String updateScore = "updateScore";
     private final String lastRound = "lastRound";
@@ -253,15 +252,15 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             Route route = game.getMatchingRoute(temp);
             PlayerModel p = getPlayer(username);
-
+            String eMessage = error + username + " : " + claim + " ";
             if(route == null)
-                message += "error : invalid route\n";
+                message += eMessage + "invalid route\n";
             else if(game.isClaimed(route))
-                message += "error : route is ALREADY claimed\n";
+                message += eMessage + "route is ALREADY claimed\n";
             else if(p == null)
-                message += "error : invalid player\n";
+                message += eMessage + "invalid player\n";
             else if(!p.sufficientResource(route, selectionColor))
-                message += "error : insufficient resource\n";
+                message += eMessage + "insufficient resource\n";
             else
             {
                 game.claimRoute(route, username, selectionColor);
