@@ -169,6 +169,9 @@ public class GameFacade extends Facade
             else
                 card = game.drawTrainCardFace(index);
 
+            PlayerModel p = getPlayer(username);
+            p.addTrainCard(card);
+
             faceUpCards.addAll(game.getFaceUpCards().getFaceUpCards());
             GenericCommand command = new GenericCommand(
                     gameClass, drawTrain,

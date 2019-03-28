@@ -81,18 +81,33 @@ public class PlayerModel
         this.destinationCards.addAll(destCards);
     }
 
-    public void addTrainCards(List<TrainCard> trainCards)
+    public void addTrainCard(TrainCard card)
     {
-        trainCardNum += trainCards.size();
-
         if(this.trainCards == null)
             this.trainCards = new ArrayList<>();
-        this.trainCards.addAll(trainCards);
-        for(TrainCard c : trainCards)
+
+        trainCardNum++;
+        String color = card.getColor();
+        int num = colorMap.getOrDefault(color, 0);
+        colorMap.put(color, ++num);
+        trainCards.add(card);
+    }
+
+    public void addTrainCards(List<TrainCard> trainCards)
+    {
+        for(TrainCard card : trainCards)
         {
-            int num = colorMap.getOrDefault(c.getColor(), 0);
-            colorMap.put(c.getColor(), ++num);
+            addTrainCard(card);
         }
+//        trainCardNum += trainCards.size();
+//
+
+//        this.trainCards.addAll(trainCards);
+//        for(TrainCard c : trainCards)
+//        {
+//            int num = colorMap.getOrDefault(c.getColor(), 0);
+//            colorMap.put(c.getColor(), ++num);
+//        }
     }
 
     public boolean isTurn() {
@@ -281,4 +296,6 @@ public class PlayerModel
         else
             return (colorMap.get(colorNum) + colorMap.get(rainbow) >= length);
     }
+
+
 }
