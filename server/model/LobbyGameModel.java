@@ -279,7 +279,7 @@ public class LobbyGameModel extends GameSetUp
             for(int i = 0; i < rainbow; i++)
             {
                 trainDeck.add(new TrainCard("rainbow"));
-                colors.add(color);
+                colors.add("rainbow");
             }
         }
         else

@@ -308,9 +308,6 @@ export class Game {
     return mrPlayer;
   }
   lastRound() {
-    let condition = false;
-    if(condition)
-    alert("Last Round");
   }
 
   setClaimedPoints(claimed: number[]) {
