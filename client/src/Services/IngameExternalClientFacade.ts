@@ -160,8 +160,8 @@ export class IngameExternalClientFacade {
   updateScores(scores: number[]){
     this.root.updateScores(scores);
   }
-  endGame(username: string){
-    //this.root.endGame(username);
+  endGame(gameID: string, winner: string, claimed: number[], unclaimed: number[], longest: string[]){
+    this.root.endGame(winner, claimed, unclaimed, longest);
   }
   lastRound()
   {

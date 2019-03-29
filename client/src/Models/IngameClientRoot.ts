@@ -315,8 +315,8 @@ export class IngameClientRoot implements ISubject {
     this.notify("myHandUpdated", null);
   }
 
-  endGame(username: string, claimed: number[], unclaimed: number[]){
-    this.game.setWinner(username);
+  endGame(winner: string, claimed: number[], unclaimed: number[], longest: string[]){
+    this.game.setWinner(winner);
     this.game.setClaimedPoints(claimed);
     this.game.setUnclaimedPoints(unclaimed);
     //TODO notify the game over view!

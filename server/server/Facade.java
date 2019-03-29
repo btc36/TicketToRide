@@ -17,6 +17,7 @@ public class Facade
     protected final String _paramTypeCharacter = "java.lang.Character";
     protected final String _paramTypeList = "java.util.List";
     protected final String _paramTypeMap = "java.util.Map";
+    protected final String _paramTypeSet = "java.util.Set";
     protected final String _paramTypeDate = "java.util.Date";
     protected final String _paramTypeGame = "LobbyGameModel";
     protected final String usernameError = "username empty";
