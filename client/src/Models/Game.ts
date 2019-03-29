@@ -258,6 +258,17 @@ export class Game {
   getWinner(): string {
     return this.winner;
   }
+  getWinnerPlayer(): Player {
+    let winnerPlayer = null;
+    this.players.forEach((player) => {
+     // console.log(player.getUsername());
+      if (player.getUsername() == this.winner) {
+        //console.log(player);
+        winnerPlayer = player;
+        }
+    });
+    return winnerPlayer;
+  }
 
   updateScores(scores: number[]): void {
     let index = 0;
@@ -277,5 +288,17 @@ export class Game {
         }
     });
     return localPlayer;
+  }
+  getPlayerWithMostRoutes(): Player {
+    let mrPlayer = null;
+    let mr = 0;
+    this.players.forEach((player) => {
+     let ownedRoutes = player.getOwnedRoutes().length;
+      if (ownedRoutes >= mr) {
+        mrPlayer = player;
+        mr = ownedRoutes
+      }
+    });
+    return mrPlayer;
   }
 }
