@@ -105,8 +105,8 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
       this.props.services.printRoot();
     }
     else if (this.state.toDiscard == "f") {//BC
-      this.props.services.storeDestinationCard([this.state.destinationCards[1], this.state.destinationCards[2]]);
-      this.props.services.DiscardDestinationCard([this.state.destinationCards[0]])
+      this.props.services.storeDestinationCard([this.state.destinationCards[0]]);
+      this.props.services.DiscardDestinationCard([this.state.destinationCards[1], this.state.destinationCards[2]])
       this.props.services.printRoot();
     }
     if (!this.state.firstTime) {

@@ -49,7 +49,6 @@ export class IngameInternalClientFacade {
       let gameID = this.root.getGameID();
       let username = this.root.getUsername();
       let prefColor = this.root.preferredColor;
-      this.SendChatCommand("Claimed the route from " + route.getCities()[0] + " to " + route.getCities()[1]);
       this.proxy.claimRoute(route, username, gameID, prefColor);
     }
   }
@@ -163,6 +162,15 @@ export class IngameInternalClientFacade {
 
   getUsername(): String{
     return this.root.getUsername();
+  }
+
+  getAllServerRoutes(): void {
+    let gameID = this.root.getGameID();
+    this.proxy.getAllServerRoutes(gameID);
+  }
+
+  getAllClaimedRoutes(): Array<Route> {
+    return this.root.game.claimedRoutes;
   }
 
   getAllOwnedRoutes(): Array<Route> {

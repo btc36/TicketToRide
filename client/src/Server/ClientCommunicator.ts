@@ -247,12 +247,14 @@ export class ClientCommunicator {
     }
     else if (cmd._methodName == "potentialDestinationCard") {
       let destinationCards = new Array<DestinationCard>();
+      console.log(cmd._paramValues[4]);
       for (let j = 0; j < cmd._paramValues[4].length; j++) {
-        const city1 = cmd._paramValues[4].city1;
-        const city2 = cmd._paramValues[4].city2;
-        const pointValue = cmd._paramValues[4].pointValue;
+        const city1 = cmd._paramValues[4][j].city1;
+        const city2 = cmd._paramValues[4][j].city2;
+        const pointValue = cmd._paramValues[4][j].pointValue;
         destinationCards.push(new DestinationCard(city1, city2, pointValue));
       }
+      console.log(destinationCards);
       this.inGameClientFacade.presentDestinationCard(cmd._paramValues[0], cmd._paramValues[1], destinationCards);
     }
     else if (cmd._methodName == "discardDestinationCard") {
@@ -264,8 +266,24 @@ export class ClientCommunicator {
     else if (cmd._methodName == "updateNumDestinationCards") {
       this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
     }
+    else if (cmd._methodName == "getRoute") {
+      const claimedRoutes = [];
+      for (let i = 0; i < cmd._paramValues[3].length; i++) {
+        const city1 = cmd._paramValues[3][i].cityOne;
+        const city2 = cmd._paramValues[3][i].cityTwo;
+        const length = cmd._paramValues[3][i].length;
+        const color = cmd._paramValues[3][i].color;
+        const route = new Route(city1, city2, length, color);
+        claimedRoutes.push(route);
+      }
+      
+      this.inGameClientFacade.setClaimedRoutes(claimedRoutes);
+    }
     else if (cmd._methodName == "updateScore") {
-
+      let sizeTrainDeck = cmd._paramValues[6];
+      let sizeDestDeck = cmd._paramValues[7];
+      this.inGameClientFacade.setNumTrainCardsRemaining(sizeTrainDeck);
+      this.inGameClientFacade.setNumDestinationCardsRemaining(sizeDestDeck);
       let players = cmd._paramValues[4];
       for (let i = 0; i < players.length; i++)
       {

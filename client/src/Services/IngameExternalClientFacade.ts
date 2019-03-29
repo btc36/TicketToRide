@@ -24,12 +24,19 @@ export class IngameExternalClientFacade {
     this.root = root;
   }
 
+  setClaimedRoutes(routes: Route[]) {
+    this.root.setClaimedRoutes(routes);
+  }
+
   claimRoute(success: boolean, message: string, gameID?: string, username?: string, route?:Route) {
     if(success == false) {
       alert(message);
     }
     else {
+      this.SendChatCommand("Claimed route from " + route.getCities()[0] + " to " + route.getCities()[1]);
       this.root.claimRoute(username, route);
+      this.root.endTurn();
+      this.proxy.endTurn(this.root.getGameID(), this.root.getLocalPlayer());
     }
   }
 
