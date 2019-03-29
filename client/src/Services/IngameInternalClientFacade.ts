@@ -77,8 +77,9 @@ export class IngameInternalClientFacade {
   }
 
   getMoreDestinationCards() {
-    this.root.drewDestinationCard();
-
+    let username = this.root.getUsername();
+    let gameID = this.root.getGameID();
+    this.proxy.PotentialDestinationCard(gameID, username);
   }
 
   DiscardDestinationCard(destinationCards: Array<DestinationCard>) {

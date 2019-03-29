@@ -10,6 +10,9 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
   noCards = [new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0)];
   firstTime = true;
   isActive = true;
+  isMyTurn = false;
+  canDrawCards = true;
+
 
   componentDidMount() {
     this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none"});
@@ -27,7 +30,12 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
       this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none" });
       this.setState({ isActive: true });
     } else if (updateType == "isMyTurn") {
-      this.setState({isActive: true})
+      this.setState({ isMyTurn: true });
+    } else if (updateType == "endTurn") {
+      this.setState({ isMyTurn: false });
+      this.setState({ canDrawCards: true });
+    } else if (updateType == "drewTrainCard") {
+      this.setState({ canDrawCards: false });
     }
   }
 
@@ -36,7 +44,14 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
   }
 
   getMoreCards = (e: any) => {
+    e.preventDefault();
     console.log("Draw more cards");
+    if (this.canDrawCards) {
+      this.props.services.getMoreDestinationCards();
+      this.setState({ isActive: true })
+    } else {
+      alert("You can't do that right now");
+    }  
   }
 
   onSelectCard = (e: any) => {
@@ -82,6 +97,9 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
       this.props.services.storeDestinationCard([this.state.destinationCards[1], this.state.destinationCards[2]]);
       this.props.services.DiscardDestinationCard([this.state.destinationCards[0]])
       this.props.services.printRoot();
+    }
+    if (!this.firstTime) {
+      this.props.services.endTurn();
     }
   }
 

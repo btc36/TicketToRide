@@ -44,7 +44,7 @@ export class IngameClientRoot implements ISubject {
   }
 
   drewTrainCard() {
-    this.notify("drewCard", null);
+    this.notify("drewTrainCard", null);
   }
 
   endTurn() {
@@ -52,7 +52,7 @@ export class IngameClientRoot implements ISubject {
   }
 
   drewDestinationCard() {
-    this.notify("drewCard", null);
+    this.notify("drewDestinationCard", null);
   }
 
   setLocalPlayer(localPlayer: string) {
@@ -259,7 +259,8 @@ export class IngameClientRoot implements ISubject {
     this.notify("updateMessageList", chats);
   }
   
-  presentDestinationCard(destinationCards: any[]){
+  presentDestinationCard(destinationCards: any[]) {
+    console.log("I AM PRESENTING THIS")
     this.game.presentDestinationCard(destinationCards);
     this.notify("drawDestination", null);
   }
