@@ -59,9 +59,15 @@ export class IngameExternalClientFacade {
     //this.root.nextTurn();
   }
 
-  updateNumTrainCards(player:string,numUsed:number) {
-    this.root.updateNumTrainCars(player,numUsed)
+  //
+  // updateNumTrainCards(player:string,numUsed:number) {
+  //   this.root.updateNumTrainCars(player,numUsed)
+  // }
+
+  updateNumTrainCardsInHand(player:string,numRemaining:number) {
+    this.root.setNumTrainCards(player,numRemaining)
   }
+
 
   updateNumTrainCars(player: string,numCars:number) {
     this.root.updateNumTrainCars(player,numCars)

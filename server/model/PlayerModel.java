@@ -46,7 +46,7 @@ public class PlayerModel
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
         claimedCities = new HashSet<>();
-        trainCardNum = 4;
+        //trainCardNum = 4;
         trainNum = 45;
     }
     public String getUsername() {
@@ -279,6 +279,7 @@ public class PlayerModel
         if(trainNum < r.getLength())
             return false;
 
+        //TODO: trainCardNUm check
 //        String routeColor = r.getColor();
         return checkColor(selectedColor, length);
 //        if(routeColor.equals(grey))
@@ -290,10 +291,10 @@ public class PlayerModel
     private boolean checkColor(String color, int length)
     {
         final String rainbow = "rainbow";
-        int colorNum = colorMap.get(color);
+        int colorNum = colorMap.getOrDefault(color,0);
         if(length <= colorNum)
             return true;
         else
-            return (colorMap.getOrDefault(colorNum, 0) + colorMap.getOrDefault(rainbow, 0) >= length);
+            return ((colorNum + colorMap.getOrDefault(rainbow, 0)) >= length);
     }
 }
