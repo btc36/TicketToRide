@@ -294,8 +294,10 @@ export class IngameClientRoot implements ISubject {
     this.notify("myHandUpdated", null);
   }
 
-  endGame(username: string){
+  endGame(username: string, claimed: number[], unclaimed: number[]){
     this.game.setWinner(username);
+    this.game.setClaimedPoints(claimed);
+    this.game.setUnclaimedPoints(unclaimed);
     //TODO notify the game over view!
     //this.notify("playerInfoChanged", null);
   }
@@ -311,4 +313,7 @@ export class IngameClientRoot implements ISubject {
     return this.game.getPlayerWithMostRoutes();
   }
 
+  lastRound(): void {
+    this.game.lastRound();
+  }
 }

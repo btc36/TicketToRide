@@ -150,7 +150,11 @@ export class IngameExternalClientFacade {
     this.root.updateScores(scores);
   }
   endGame(username: string){
-    this.root.endGame(username);
+    //this.root.endGame(username);
+  }
+  lastRound()
+  {
+    this.root.lastRound();
   }
 
 }

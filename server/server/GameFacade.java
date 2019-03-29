@@ -417,11 +417,13 @@ public class GameFacade extends Facade
                 game.endGame();
 
             message = sMessage + endGame;
+            List<Integer> claimedPoints = game.getClaimedPoints();
+            List<Integer> unclaimedPoints = game.getUnClaimedPoints();
             winner = game.getWinner().getUsername();
             GenericCommand command = new GenericCommand(
                     gameClass, endGame,
-                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
-                    new Object[]{true, message, gameID, winner}
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
+                    new Object[]{true, message, gameID, winner, claimedPoints, unclaimedPoints}
             );
 
             commandCheck(command);

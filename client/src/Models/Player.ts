@@ -165,5 +165,13 @@ export class Player {
     return this.numTrainCards;
   }
 
+  setDestinationCardsLost(earned : number) {
+    this.destinationCardsEarned = earned;
+  }
+
+  setDestinationCardEarned(lost : number){
+    this.destinationCardsLost = lost;
+  }
+
 
 }

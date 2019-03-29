@@ -296,5 +296,8 @@ export class ClientCommunicator {
     else if (cmd._methodName == "endGame") {
       this.inGameClientFacade.endGame(cmd._paramValues[2]);
     }
+    else if (cmd._methodName == "lastRound") {
+      this.inGameClientFacade.lastRound();
+    }
   }
 }
