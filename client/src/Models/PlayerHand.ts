@@ -39,6 +39,9 @@ export class PlayerHand {
       this.destinationCards = this.destinationCards.concat(destinationCard);
     }
 
+    clearTrainCards(): void {
+      this.trainCards = new Array<TrainCard>();
+    }
 
     /**
      * remove it from the end

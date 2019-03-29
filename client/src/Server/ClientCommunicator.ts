@@ -100,6 +100,7 @@ export class ClientCommunicator {
         this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);
       }
       else {
+        this.inGameClientFacade.updateTrainCardsInHand(cmd._paramValues[5]);
         //cmd._paramValues[4]
         const city1 = cmd._paramValues[4].cityOne;
         const city2 = cmd._paramValues[4].cityTwo;
