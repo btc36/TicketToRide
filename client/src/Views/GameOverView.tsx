@@ -14,8 +14,8 @@ export const GameOverView  = (component: I.IGameOverViewModel) => {
   return (
     <div>
       <h2>Game over!</h2>
-      <p>Winner: <b>{component.state.winner}</b></p>
-      <p>Most routes: <b>{component.state.mostRoutes}</b></p>
+      <p>Winner: <b>{component.state.winner.username}</b></p>
+      <p>Most routes: <b>{component.state.mostRoutes.username}</b></p>
       <ul>
         {scores}
       </ul>
