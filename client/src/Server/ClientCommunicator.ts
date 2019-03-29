@@ -8,6 +8,7 @@ import { IngameExternalClientFacade } from "../Services/IngameExternalClientFaca
 import {TrainCard} from "../Models/TrainCard";
 import {FaceUpCards} from "../Models/FaceUpCards";
 import { PlayerHand } from "../Models/PlayerHand";
+import { Route } from "../Models/Route";
 import { DestinationCard } from "../Models/DestinationCard";
 import {Simulate} from "react-dom/test-utils";
 import play = Simulate.play;
@@ -99,8 +100,13 @@ export class ClientCommunicator {
         this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);
       }
       else {
-        //this.inGameClientFacade.claimRoute(true, cmd._paramValues[1]);
-        
+        //cmd._paramValues[4]
+        const city1 = cmd._paramValues[4].cityOne;
+        const city2 = cmd._paramValues[4].cityTwo;
+        const length = cmd._paramValues[4].length;
+        const color = cmd._paramValues[4].color;
+        const route = new Route(city1, city2, length, color);
+        this.inGameClientFacade.claimRoute(true, cmd._paramValues[1], cmd._paramValues[2], cmd._paramValues[3], route);
       }
     }
 
@@ -258,20 +264,22 @@ export class ClientCommunicator {
     else if (cmd._methodName == "updateNumDestinationCards") {
       this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
     }
-    else if (cmd._methodName == "updateScores") {
+    else if (cmd._methodName == "updateScore") {
 
       let players = cmd._paramValues[4];
       for (let i = 0; i < players.length; i++)
       {
-        let player = players[i];
-        this.inGameClientFacade.updateNumDestinationCards(player.username, player.destCardNum);
-        //TRAIN CARDS
-        this.inGameClientFacade.updateNumTrainCars(player.username, player.trainCardNum);
-        //TRAINS NOT CARDS
-        this.inGameClientFacade.updateNumTrainCars(player.username, player.trainNum);
+        this.inGameClientFacade.updateNumDestinationCards(players[i].username, players[i].destCardNum);
+
+        //train carDs NOT TRAIN CARS
+        this.inGameClientFacade.updateNumTrainCardsInHand(players[i].username, players[i].trainCardNum);
+
+        //train cars NOT CARDS
+        this.inGameClientFacade.updateNumTrainCars(players[i].username, players[i].trainNum);
       }
 
-      const faceUps = cmd._paramValues[5].faceUpCards;
+      const faceUps = cmd._paramValues[5];
+
       let faceUpArray = new Array<TrainCard>();
       for (let j = 0; j < faceUps.length; j++) {
         const card = new TrainCard(faceUps[j].color);
@@ -280,7 +288,7 @@ export class ClientCommunicator {
       let faceUp = new FaceUpCards(faceUpArray);
       this.inGameClientFacade.setFaceUpCards(faceUp);
 
-      this.inGameClientFacade.updateScores(cmd._paramValues[2]);
+      this.inGameClientFacade.updateScores(cmd._paramValues[3]);
       //console.log("MY PLAYER INFO TO UPDATE SCORES");
       //console.log(cmd);
 
