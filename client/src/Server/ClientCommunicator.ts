@@ -267,7 +267,10 @@ export class ClientCommunicator {
       this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
     }
     else if (cmd._methodName == "updateScore") {
-
+      let sizeTrainDeck = cmd._paramValues[6];
+      let sizeDestDeck = cmd._paramValues[7];
+      this.inGameClientFacade.setNumTrainCardsRemaining(sizeTrainDeck);
+      this.inGameClientFacade.setNumDestinationCardsRemaining(sizeDestDeck);
       let players = cmd._paramValues[4];
       for (let i = 0; i < players.length; i++)
       {
