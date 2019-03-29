@@ -140,6 +140,8 @@ public class GameFacade extends Facade
                 System.out.println(message);
                 return commandsForClient;
             }
+
+            message += "kept is invalid?\n";
         }
 
         System.out.println(message);
@@ -337,7 +339,6 @@ public class GameFacade extends Facade
         // TESTING CODE//
         getGameByID(gameID).setState(LASTROUND);
         ///////
-
         GenericCommand command = new GenericCommand(
                 gameClass, lastRound,
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString},
