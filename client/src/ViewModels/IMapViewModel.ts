@@ -16,7 +16,7 @@ export const cityToCoordinates = new Map([
   ["Washington DC", {lat: 38.907192, lng: -77.036873}],   
   ["Raleigh", {lat: 35.779591, lng: -78.638176}],   
   ["Nashville", {lat: 36.162663, lng: -86.781601}],   
-  ["Saint Louis", {lat: 38.627003, lng: -90.199402}],   
+  ["St Louis", {lat: 38.627003, lng: -90.199402}],   
   ["Kansas City", {lat: 39.099728, lng: -94.578568}],   
   ["Charleston", {lat: 32.776474, lng: -79.931053}],   
   ["Atlanta", {lat: 33.748997, lng: -84.387985}],  
