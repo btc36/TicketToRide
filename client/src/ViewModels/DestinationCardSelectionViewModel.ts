@@ -31,6 +31,15 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
       this.setState({ isActive: true });
     } else if (updateType == "isMyTurn") {
       this.setState({ isMyTurn: true });
+      console.log("BOOLEAN STATS");
+      console.log("FIRST TIME");
+      console.log(this.firstTime);
+      console.log("IS ACTIVE");
+      console.log(this.isActive);
+      console.log("IS MY TURN");
+      console.log(this.isMyTurn);
+      console.log("CAN DRAW CARDS");
+      console.log(this.canDrawCards);
     } else if (updateType == "endTurn") {
       this.setState({ isMyTurn: false });
       this.setState({ canDrawCards: true });
@@ -101,6 +110,7 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
     if (!this.firstTime) {
       this.props.services.endTurn();
     }
+    this.setState({ firstTime: false });
   }
 
 }
