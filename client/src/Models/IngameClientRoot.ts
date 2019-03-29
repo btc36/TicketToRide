@@ -290,6 +290,7 @@ export class IngameClientRoot implements ISubject {
   updateScores(scores: number[]){
     this.game.updateScores(scores);
     this.notify("playerInfoChanged", null);
+    this.notify("myHandUpdated", null);
   }
 
   endGame(username: string){
@@ -299,6 +300,14 @@ export class IngameClientRoot implements ISubject {
   }
   isMyTurn(): boolean{
     return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
+  }
+
+  getWinner(): Player {
+    return this.game.getWinnerPlayer();
+  }
+
+  getPlayerWithMostRoutes(): Player{
+    return this.game.getPlayerWithMostRoutes();
   }
 
 }

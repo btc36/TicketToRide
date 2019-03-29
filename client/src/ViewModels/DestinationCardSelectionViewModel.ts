@@ -53,7 +53,7 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
   getMoreCards = (e: any) => {
     e.preventDefault();
     if (!this.state.isMyTurn) {
-      alert("It's not your turn!");
+      alert("WAIT YOUR TURN BUDDY");
       return;
     }
     console.log("Draw more cards");

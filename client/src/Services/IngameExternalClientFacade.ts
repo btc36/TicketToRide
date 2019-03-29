@@ -8,26 +8,28 @@ import { IngameServerProxy } from "../Server/IngameServerProxy";
 
 // operations on the model
 export class IngameExternalClientFacade {
-    setPlayerList(gamePlayers: Player[]): any {
-      this.root.setPlayerList(gamePlayers);
-    }
+  root: IngameClientRoot
+  proxy: IngameServerProxy;
+
+  setPlayerList(gamePlayers: Player[]): any {
+    this.root.setPlayerList(gamePlayers);
+  }
+
   setLocalPlayer(player: Player): any {
     console.log(player);
       this.root.setLocalPlayer(player.getUsername());
-    }
-  root: IngameClientRoot;
-  proxy: IngameServerProxy;
+  }
 
   constructor(root:IngameClientRoot) {
     this.root = root;
   }
 
-  claimRoute(success: boolean, message: string, gameID: string, username: string, route:Route) {
-    if(success) {
-      this.root.claimRoute(username, route);
+  claimRoute(success: boolean, message: string, gameID?: string, username?: string, route?:Route) {
+    if(success == false) {
+      alert(message);
     }
     else {
-      alert(message);
+      this.root.claimRoute(username, route);
     }
   }
 

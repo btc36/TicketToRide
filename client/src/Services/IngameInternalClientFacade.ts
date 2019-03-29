@@ -27,11 +27,11 @@ export class IngameInternalClientFacade {
   }
 
   getWinner(): Player {
-    return null;
+    return this.root.getWinner();
   }
 
   getPlayerWithMostRoutes(): Player {
-    return null;
+    return this.root.getPlayerWithMostRoutes();
   }
 
   whoseTurnIsIt(): string {
