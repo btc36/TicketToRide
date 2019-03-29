@@ -1,13 +1,14 @@
 import { FaceUpCards } from "../Models/FaceUpCards";
 import { TrainCard } from "../Models/TrainCard";
 import { DrawTrainCardState } from "./DrawTrainCardState";
+import { DoneDrawingState } from "./DoneDrawingState";
 
 export const initialState = {
   faceUpCards: null,
   numTrainCardsRemaining: 0,
   numDestinationCardsRemaining: 0,
   faceUpIndex: 0,
-  drawState: null
+  drawState: new DoneDrawingState()
 };
 
 export type State = {

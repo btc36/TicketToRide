@@ -133,7 +133,6 @@ export class ClientCommunicator {
          // for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
           //  const card = new TrainCard(commands[i]._paramValues[4][k].color);
            // drawnCards.push(card);
-          //}
           this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], drawnCards, faceUp);
         }
       }
@@ -217,8 +216,7 @@ export class ClientCommunicator {
           // }
         this.clientFacade.startGame(commands[i]._paramValues[2]);
        // this.inGameClientFacade.changeTurn(startingPlayer);
-        }
-      //}
+      }
       else if (commands[i]._methodName == "receiveChatCommand") {
         this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
       }

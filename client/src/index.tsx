@@ -77,7 +77,6 @@ const root = new ClientRoot();
 const externalClientFacade = new ExternalClientFacade(root);
 
 const ingameRoot = new IngameClientRoot();
-
 const ingameExternalClientFacade = new IngameExternalClientFacade(ingameRoot);
 const serializer = new Serializer();
 const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);
@@ -85,6 +84,7 @@ const serverProxy = new ServerProxy(clientCommunicator);
 const internalClientFacade = new InternalClientFacade(serverProxy, root);
 const ingameServerProxy = new IngameServerProxy(clientCommunicator);
 
+ingameExternalClientFacade.proxy = ingameServerProxy;
 const ingameInternalClientFacade = new IngameInternalClientFacade(ingameServerProxy, ingameRoot);
 
 ReactDOM.render(
