@@ -146,7 +146,7 @@ export class Game {
     }
 
   addTrainCard(username: string, trainCard: TrainCard): void {
-      console.log("WHY ARE MY PLAYERS EMPTY");
+    console.log("WHY ARE MY PLAYERS EMPTY");
     console.log(this.players);     
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
@@ -185,10 +185,10 @@ export class Game {
     }
 
 
-  updateNumTrainCars(username: string, numTrains: number): void {
+  updateNumTrainCars(username: string, numUsed: number): void {
         this.players.forEach((player) => {
             if (player.getUsername() == username) {
-                player.setNumTrains(numTrains)
+                player.setNumTrains(numUsed)
                 return;
             }
         });

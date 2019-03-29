@@ -21,11 +21,11 @@ export class IngameServerProxy {
         this.communicator = commIn;
     }
 
-    claimRoute(route: Route, username: String, gameId: String) {
+    claimRoute(route: Route, username: String, gameId: String, preferredColor: String) {
         let cities = route.getCities();
         const command = new ClientCommandObjects(this.gameClass, "claimRoute", 
-          [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger],
-          [gameId, username, cities[0], cities[1], route.getColor(), route.getLength()])
+          [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger, this.paramTypeString],
+          [gameId, username, cities[0], cities[1], route.getColor(), route.getLength(), preferredColor])
         this.communicator.sendCommand(command);
     }
 
