@@ -84,6 +84,10 @@ export class IngameExternalClientFacade {
   //   this.root.updateNumTrainCars(player,numUsed)
   // }
 
+  updateTrainCardsInHand(cards: any) {
+    this.root.updateTrainCardsInHand(cards);
+  }
+
   updateNumTrainCardsInHand(player:string,numRemaining:number) {
     this.root.setNumTrainCards(player,numRemaining)
   }
