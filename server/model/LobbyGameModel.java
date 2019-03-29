@@ -235,21 +235,16 @@ public class LobbyGameModel extends GameSetUp
         PlayerModel luckyGuy = getPlayer(username);
         assert (luckyGuy != null);
 
-        Map<String, Integer> colorMap = luckyGuy.getColorMap();
-        int colorNum = colorMap.get(color);
         int routeLength = route.getLength();
-
+        int colorNum = luckyGuy.getColorNum(color);
         List<String> colors = putBackToDeck(color, colorNum, routeLength);
 
         City city1 = getCityByName(route.getCityOne());
         City city2 = getCityByName(route.getCityTwo());
         luckyGuy.claimRoute(route, city1, city2, colors);
-
         luckyGuy.addScore(scoreMap.get(routeLength));
 
         checkDestinationCard(luckyGuy);
-
-        //trainDeck.shuffle();
     }
 
     private List<String> putBackToDeck(String color, int colorNum, int routeLength)
@@ -302,10 +297,7 @@ public class LobbyGameModel extends GameSetUp
                 indices.add(i);
         }
 
-        int index = 0;
-
         winner = list.get(indices.get(0));
-
         if(indices.size() > 1) // tie breaker
         {
             for(int i : indices)
@@ -356,26 +348,23 @@ public class LobbyGameModel extends GameSetUp
             longestPerson.setLongestRoute(true);
             longestPerson.setScore(longestPerson.getScore() + LONGESTPOINT);
             System.out.println("LONGEST : " + longestUser);
-            System.out.println("팀빨");
-            System.out.println("ㅈ 극혐");
-            System.out.println("ㄱㅅㄲ ㅡㅡ ");
+            System.out.println("ㄸㅣㅏㅃㅏㄹ");
+            System.out.println("ㅈ 머가리부셔부라거");
+            System.out.println("ㄱㅅㄲ --------ㅡㅡㅡㅡㅡㅡㅡ ");
         }
     }
 
     // traversal for longest route
     private void longTraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
     {
-        if(longestPath < length) // we found a better length
+        // we found a better length. add username to a clean slate
+        if(longestPath < length)
         {
-            longestPath = length; // update longest so far
-            // add username to a clean slate
+            longestPath = length; //longest path so far
             longestUsers.clear();
             longestUsers.add(username);
         }
-        else if(longestPath == length)
-        {
-            longestUsers.add(username);
-        }
+        else if(longestPath == length) longestUsers.add(username);
 
         List<Route> dsts = src.getRoutes();
         for (Route route : dsts)
