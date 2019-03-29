@@ -137,7 +137,7 @@ export class IngameInternalClientFacade {
     console.log(this.root);
   }
   getFaceUpCards(): FaceUpCards {
-    console.log(this.root);
+    //console.log(this.root);
     return this.root.getFaceUpCards();
   }
 

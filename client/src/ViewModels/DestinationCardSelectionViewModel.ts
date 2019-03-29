@@ -23,6 +23,7 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
       this.setState({isActive: false });
       this.setState({firstTime: false });
     } else if (updateType == "drawDestination") {
+      console.log("DRAW DESTINATION MAN")
       this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none" });
       this.setState({ isActive: true });
     } else if (updateType == "isMyTurn") {
