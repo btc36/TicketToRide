@@ -106,7 +106,7 @@ export class IngameServerProxy {
      */PotentialDestinationCard(gameId:String, username:String)
     PotentialDestinationCard(gameId:String, username:String)
     {
-        const command = new ClientCommandObjects(this.gameClass, "potentialDestinationCard", [this.paramTypeString], [gameId, username]);
+        const command = new ClientCommandObjects(this.gameClass, "potentialDestinationCard", [this.paramTypeString,this.paramTypeString], [gameId, username]);
         this.communicator.sendCommand(command);
     }
 }

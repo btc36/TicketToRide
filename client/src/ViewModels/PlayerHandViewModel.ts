@@ -12,7 +12,7 @@ export class PlayerHandViewModel extends React.Component<IngameViewModelProps, S
     if (updateType == "transitionPage") {
       this.props.main.setState({ "page": data });
     } else if (updateType == "myHandUpdated") {
-      console.log(this.props.services.getPlayerHand());
+      //console.log(this.props.services.getPlayerHand());
       this.setState({ playerHand: this.props.services.getPlayerHand() });
     }
   }

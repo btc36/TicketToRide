@@ -66,8 +66,8 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
 
   getCards(): any {
     let myCards = this.props.services.getFaceUpCards().faceUpCards;
-    console.log("MY CARDS");
-    console.log(myCards);
+    //console.log("MY CARDS");
+    //console.log(myCards);
     return myCards;
   }
 

@@ -13,7 +13,7 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
 
   const destCards = component.state.playerHand.getDestinationCards();
   const trainCards = component.state.playerHand.getColorMap();
-  console.log(trainCards);
+  //console.log(trainCards);
 
   trainCards.forEach((value: number, key: string) => {
     if(key == component.state.preferredColor) {//Bolds this item in the list
@@ -28,7 +28,7 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
     }
   });
 
-  console.log(destCards);
+  //console.log(destCards);
   for (let i = 0; i < destCards.length; i++) {
     destCardsList.push(<li>Cities: {destCards[i].getCities()} Points: {destCards[i].getPointValue()}</li>);
   }
