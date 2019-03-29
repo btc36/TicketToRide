@@ -21,7 +21,7 @@ export const DestinationCardSelectionView  = (component: I.IDestinationCardSelec
           <input type="submit" defaultValue="Submit" />
         </p></form>
     );
-  } else if (component.state.isActive && !component.state.firstTime) {
+  } else if (component.state.isActive && !component.state.firstTime && component.state.isMyTurn) {
     return (
     <form onSubmit={component.onSubmitButtonPressed}>
       <p>Destination Card A----City1: {component.state.destinationCards[0].city1} , City2: {component.state.destinationCards[0].city2}, Points: {component.state.destinationCards[0].pointValue}</p><p>
