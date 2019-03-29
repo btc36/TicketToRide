@@ -27,6 +27,7 @@ public class GameFacade extends Facade
     private final String whoseTurn = "whoseTurn";
     private final int LASTCARNUM = 2;
 
+
     /**
      * client receives 3 destination cards that user can choose from
      * @param gameID which game is it on
@@ -419,11 +420,12 @@ public class GameFacade extends Facade
             message = sMessage + endGame;
             List<Integer> claimedPoints = game.getClaimedPoints();
             List<Integer> unclaimedPoints = game.getUnClaimedPoints();
+            List<String> longestUsers = new ArrayList<>(game.getLongestUsers());
             winner = game.getWinner().getUsername();
             GenericCommand command = new GenericCommand(
                     gameClass, endGame,
-                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
-                    new Object[]{true, message, gameID, winner, claimedPoints, unclaimedPoints}
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList},
+                    new Object[]{true, message, gameID, winner, claimedPoints, unclaimedPoints, longestUsers}
             );
 
             commandCheck(command);
