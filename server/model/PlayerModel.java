@@ -290,7 +290,7 @@ public class PlayerModel
     private boolean checkColor(String color, int length)
     {
         final String rainbow = "rainbow";
-        int colorNum = colorMap.get(color);
+        int colorNum = colorMap.getOrDefault(color, 0);
         if(length <= colorNum)
             return true;
         else

@@ -7,26 +7,28 @@ import { FaceUpCards } from "../Models/FaceUpCards";
 
 // operations on the model
 export class IngameExternalClientFacade {
-    setPlayerList(gamePlayers: Player[]): any {
-      this.root.setPlayerList(gamePlayers);
-    }
+  root: IngameClientRoot
+
+  setPlayerList(gamePlayers: Player[]): any {
+    this.root.setPlayerList(gamePlayers);
+  }
+
   setLocalPlayer(player: Player): any {
     console.log("SETTING PLAYER");
     console.log(player);
       this.root.setLocalPlayer(player.getUsername());
-    }
-  root: IngameClientRoot
+  }
 
   constructor(root:IngameClientRoot) {
     this.root = root;
   }
 
-  claimRoute(success: boolean, message: string, gameID: string, username: string, route:Route) {
-    if(success) {
-      this.root.claimRoute(username, route);
+  claimRoute(success: boolean, message: string, gameID?: string, username?: string, route?:Route) {
+    if(success == false) {
+      alert(message);
     }
     else {
-      alert(message);
+      this.root.claimRoute(username, route);
     }
   }
 

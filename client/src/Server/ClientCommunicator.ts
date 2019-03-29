@@ -67,203 +67,220 @@ export class ClientCommunicator {
   // Execute the command received from the server
   public executeCommands(commands: ClientCommandObjects[]) {
     for (var i = 0; i < commands.length; i++){
-      /*if (commands[i]._methodName == "drawTrainCard") { // THIS WAS NOT THE FUNCTION, JUST AN IF STATEMENT TO LOG THE COMMAND
-        console.log("YOUR WISH IS MY COMMAND");
-        console.log(commands);
-        let params = commands[i]._paramValues;
-        if(params[0])
-        {
-          let cardList = new Array<TrainCard>();
-          let card = new TrainCard(params[4].color);//params[4]; // or new TrainCard(params[4].color);
-          let faceUpCards = new FaceUpCards(params[5]); // will JSON be parsed correctly?
-          cardList.push(card);
-          let username = params[3];
-          this.inGameClientFacade.storeTrainCards(username, cardList);
-          this.inGameClientFacade.setFaceUpCards(faceUpCards);
+      this.executeCommmandHelper(commands[i])
+    }
+  }
+
+  private executeCommmandHelper(cmd: ClientCommandObjects) {
+      /*if (cmd._methodName == "drawTrainCard") { // THIS WAS NOT THE FUNCTION, JUST AN IF STATEMENT TO LOG THE COMMAND
+    console.log("YOUR WISH IS MY COMMAND");
+    console.log(commands);
+    let params = cmd._paramValues;
+    if(params[0])
+    {
+      let cardList = new Array<TrainCard>();
+      let card = new TrainCard(params[4].color);//params[4]; // or new TrainCard(params[4].color);
+      let faceUpCards = new FaceUpCards(params[5]); // will JSON be parsed correctly?
+      cardList.push(card);
+      let username = params[3];
+      this.inGameClientFacade.storeTrainCards(username, cardList);
+      this.inGameClientFacade.setFaceUpCards(faceUpCards);
+    }
+    }*/
+    if (cmd._methodName == "currentTurn") {
+      //console.log("CURRENT TURN COMMAND EXECUTED");
+      this.inGameClientFacade.currentTurn(cmd._paramValues[3]);
+    }
+
+    else if (cmd._methodName == "claimRoute") {
+      console.log("ClaimRoute command recieved");
+      //{"_className":"IngameExternalClientFacade","_methodName":"claimRoute","_paramTypes":["java.lang.Boolean","java.lang.String"],"_paramValues":[false,"error : m : claimRoute insufficient resource\n"],"typeSize":2,"valueSize":2}
+      if(cmd._paramValues[0] == false) {
+        this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);
+      }
+      else {
+        //this.inGameClientFacade.claimRoute(true, cmd._paramValues[1]);
+        
+      }
+    }
+
+    else if (cmd._methodName == "loginStatus") {
+      this.clientFacade.loginResults(cmd._paramValues[0], cmd._paramValues[1]);
+    }
+    else if (cmd._methodName == "registerStatus") {
+      this.clientFacade.registerResults(cmd._paramValues[0], cmd._paramValues[1]);
+    }
+    else if (cmd._methodName == "updateGameList") {
+      const games = cmd._paramValues[2];
+      const gameList = new GameList();
+      for (let i = 0; i < games.length; i++) {
+        const gameID = games[i].gameID;
+        const name = games[i].gamename;
+        const host = new Player(games[i].host);
+        const maxPlayers = games[i].maxPlayer;
+        const game = new LobbyGame(gameID, host, name, maxPlayers);
+
+        const players = games[i].playerList.playerList;
+        for (let j = 0; j < players.length; j++) {
+          const player = new Player(players[j].username);
+          game.addPlayer(player);
         }
-      }*/
-      if (commands[i]._methodName == "currentTurn") {
-        //console.log("CURRENT TURN COMMAND EXECUTED");
-        this.inGameClientFacade.currentTurn(commands[i]._paramValues[3]);
+        gameList.addGame(game);
       }
-      else if (commands[i]._methodName == "loginStatus") {
-        this.clientFacade.loginResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
-      }
-      else if (commands[i]._methodName == "registerStatus") {
-        this.clientFacade.registerResults(commands[i]._paramValues[0], commands[i]._paramValues[1]);
-      }
-      else if (commands[i]._methodName == "updateGameList") {
-        const games = commands[i]._paramValues[2];
-        const gameList = new GameList();
-        for (let i = 0; i < games.length; i++) {
-          const gameID = games[i].gameID;
-          const name = games[i].gamename;
-          const host = new Player(games[i].host);
-          const maxPlayers = games[i].maxPlayer;
-          const game = new LobbyGame(gameID, host, name, maxPlayers);
+      this.clientFacade.updateGameList(cmd._paramValues[0], gameList, cmd._paramValues[1]);
+    }
+    else if (cmd._methodName == "joinGame") {
+      this.clientFacade.joinGame(cmd._paramValues[2]);
+    }
+    else if (cmd._methodName == "drawTrainCard") {
+      if (cmd._paramValues[0]) { // success
 
-          const players = games[i].playerList.playerList;
-          for (let j = 0; j < players.length; j++) {
-            const player = new Player(players[j].username);
-            game.addPlayer(player);
-          }
-          gameList.addGame(game);
+        console.log("THE SERVER RESPONDED!!!! YAY!");
+        console.log(cmd);
+        let faceUpArray = new Array<TrainCard>();
+        //faceup
+        for (let j = 0; j < cmd._paramValues[5].length; j++) {
+          const card = new TrainCard(cmd._paramValues[5][j].color);
+          faceUpArray.push(card);
         }
-        this.clientFacade.updateGameList(commands[i]._paramValues[0], gameList, commands[i]._paramValues[1]);
-      }
-      else if (commands[i]._methodName == "joinGame") {
-        this.clientFacade.joinGame(commands[i]._paramValues[2]);
-      }
-      else if (commands[i]._methodName == "drawTrainCard") {
-        if (commands[i]._paramValues[0]) { // success
-
-          console.log("THE SERVER RESPONDED!!!! YAY!");
-          console.log(commands[i]);
-          let faceUpArray = new Array<TrainCard>();
-          //faceup
-          for (let j = 0; j < commands[i]._paramValues[5].length; j++) {
-            const card = new TrainCard(commands[i]._paramValues[5][j].color);
-            faceUpArray.push(card);
-          }
-          let faceUp = new FaceUpCards(faceUpArray);
-          let drawnCards = new Array<TrainCard>();
-          //drawncard
-           const card = new TrainCard(commands[i]._paramValues[4].color); // server now returns one card
-          drawnCards.push(card);
-         // for (let k = 0; k < commands[i]._paramValues[4].length; k++) {
-          //  const card = new TrainCard(commands[i]._paramValues[4][k].color);
-           // drawnCards.push(card);
-          //}
-          this.inGameClientFacade.drawTrainCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3], drawnCards, faceUp);
-        }
-      }
-      else if (commands[i]._methodName == "startGame") {
-        console.log("IM HERE IM HERE IM HERE");
-        const game = commands[i]._paramValues[3][0]; // JSON game
-        const players = game.playerList.playerList; // JSON players
-        console.log("MY GAME IS:");
-        console.log(game);
-        console.log("MY PLAYERS ARE");
-        console.log(players);
-        let gamePlayers = new Array<Player>();
-        this.inGameClientFacade.setGame(game);
-        // Players from lobby are in game: 6 percent
-        this.inGameClientFacade.setGameId(game.gameID);
-        let startingPlayer = null;
-        for (let i = 0; i < players.length; i++)
-        {
-          const player = new Player(players[i].username);
-          if (players[i].turn) {
-            startingPlayer = players[i].username;
-          }
-          player.setTurn(players[i].turn);
-          player.color = players[i].color;
-          player.score = 0;
-          const hand = new PlayerHand();
-
-          // let dests = Array<DestinationCard>();
-          // for (let i = 0; i < players.length; i++) {
-          //   const player = new Player(players[i].username);
-          //   player.setTurn(players[i].turn);
-          //   player.color = players[i].color;
-          //   player.score = 0;
-            //const hand = new PlayerHand();
-
-            let dests = Array<DestinationCard>();
-
-            for (let j = 0; j < players[i].destinationCards.length; j++) {
-              const city1 = players[i].destinationCards[j].city1;
-              const city2 = players[i].destinationCards[j].city2;
-              const pointValue = players[i].destinationCards[j].pointValue;
-              dests.push(new DestinationCard(city1, city2, pointValue));
-            }
-            //hand.addDestinationCard(dests);
-            console.log("PASSING STUFF");
-            this.inGameClientFacade.presentDestinationCard(true, "NONE", dests);
-            let trains = Array<TrainCard>();
-            for (let j = 0; j < players[i].trainCards.length; j++) {
-              hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
-            }
-            player.myHand = hand;
-            gamePlayers.push(player);
-            if (players[i].username == this.clientFacade.getCurrentUser()) {
-                this.inGameClientFacade.setLocalPlayer(player);
-              }
-            }
-          this.inGameClientFacade.setPlayerList(gamePlayers);
-          this.inGameClientFacade.setNumDestinationCardsRemaining(30);
-          //this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
-          this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
-          // Face-up Deck is initialized by random cards from the server: 7 percent
-          //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
-
-          const faceUps = game.faceUpCards.faceUpCards;
-          let faceUpArray = new Array<TrainCard>();
-          for (let j = 0; j < faceUps.length; j++) {
-            const card = new TrainCard(faceUps[j].color);
-            faceUpArray.push(card);
-          }
-
         let faceUp = new FaceUpCards(faceUpArray);
-        console.log("FACE UP CARDS OBJECT");
-        console.log(faceUp);
-          this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
-          //this.inGameClientFacade.setDest
-
-          // // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
-          // for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
-          // {
-          //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
-          // }
-        this.clientFacade.startGame(commands[i]._paramValues[2]);
-       // this.inGameClientFacade.changeTurn(startingPlayer);
+        let drawnCards = new Array<TrainCard>();
+        //drawncard
+         const card = new TrainCard(cmd._paramValues[4].color); // server now returns one card
+        drawnCards.push(card);
+       // for (let k = 0; k < cmd._paramValues[4].length; k++) {
+        //  const card = new TrainCard(cmd._paramValues[4][k].color);
+         // drawnCards.push(card);
+        //}
+        this.inGameClientFacade.drawTrainCard(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[2], cmd._paramValues[3], drawnCards, faceUp);
+      }
+    }
+    else if (cmd._methodName == "startGame") {
+      console.log("IM HERE IM HERE IM HERE");
+      const game = cmd._paramValues[3][0]; // JSON game
+      const players = game.playerList.playerList; // JSON players
+      console.log("MY GAME IS:");
+      console.log(game);
+      console.log("MY PLAYERS ARE");
+      console.log(players);
+      let gamePlayers = new Array<Player>();
+      this.inGameClientFacade.setGame(game);
+      // Players from lobby are in game: 6 percent
+      this.inGameClientFacade.setGameId(game.gameID);
+      let startingPlayer = null;
+      for (let i = 0; i < players.length; i++)
+      {
+        const player = new Player(players[i].username);
+        if (players[i].turn) {
+          startingPlayer = players[i].username;
         }
-      //}
-      else if (commands[i]._methodName == "receiveChatCommand") {
-        this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
-      }
-      else if (commands[i]._methodName == "potentialDestinationCard") {
-        this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
-      }
-      else if (commands[i]._methodName == "discardDestinationCard") {
-        this.inGameClientFacade.discardDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
-      }
-      else if (commands[i]._methodName == "drawDestinationCard") {
-        this.inGameClientFacade.addDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[3], commands[i]._paramValues[4]);
-      }
-      else if (commands[i]._methodName == "updateNumDestinationCards") {
-        this.inGameClientFacade.updateNumberOfDestinationCards(commands[i]._paramValues[3], commands[i]._paramValues[5]);
-      }
-      else if (commands[i]._methodName == "updateScores") {
+        player.setTurn(players[i].turn);
+        player.color = players[i].color;
+        player.score = 0;
+        const hand = new PlayerHand();
 
-        let players = commands[i]._paramValues[4];
-        for (let i = 0; i < players.length; i++)
-        {
-          let player = players[i];
-          this.inGameClientFacade.updateNumDestinationCards(player.username, player.destCardNum);
-          //TRAIN CARDS
-          this.inGameClientFacade.updateNumTrainCars(player.username, player.trainCardNum);
-          //TRAINS NOT CARDS
-          this.inGameClientFacade.updateNumTrainCars(player.username, player.trainNum);
-        }
+        // let dests = Array<DestinationCard>();
+        // for (let i = 0; i < players.length; i++) {
+        //   const player = new Player(players[i].username);
+        //   player.setTurn(players[i].turn);
+        //   player.color = players[i].color;
+        //   player.score = 0;
+          //const hand = new PlayerHand();
 
-        const faceUps = commands[i]._paramValues[5].faceUpCards;
+          let dests = Array<DestinationCard>();
+
+          for (let j = 0; j < players[i].destinationCards.length; j++) {
+            const city1 = players[i].destinationCards[j].city1;
+            const city2 = players[i].destinationCards[j].city2;
+            const pointValue = players[i].destinationCards[j].pointValue;
+            dests.push(new DestinationCard(city1, city2, pointValue));
+          }
+          //hand.addDestinationCard(dests);
+          console.log("PASSING STUFF");
+          this.inGameClientFacade.presentDestinationCard(true, "NONE", dests);
+          let trains = Array<TrainCard>();
+          for (let j = 0; j < players[i].trainCards.length; j++) {
+            hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
+          }
+          player.myHand = hand;
+          gamePlayers.push(player);
+          if (players[i].username == this.clientFacade.getCurrentUser()) {
+              this.inGameClientFacade.setLocalPlayer(player);
+            }
+          }
+        this.inGameClientFacade.setPlayerList(gamePlayers);
+        this.inGameClientFacade.setNumDestinationCardsRemaining(30);
+        //this.inGameClientFacade.setNumDestinationCardsRemaining(game.destDeck.size)
+        this.inGameClientFacade.setNumTrainCardsRemaining(game.trainDeck.size)
+        // Face-up Deck is initialized by random cards from the server: 7 percent
+        //first "faceUpCards" is name of the object and the second "faceUpCards" is name of List in that object
+
+        const faceUps = game.faceUpCards.faceUpCards;
         let faceUpArray = new Array<TrainCard>();
         for (let j = 0; j < faceUps.length; j++) {
           const card = new TrainCard(faceUps[j].color);
           faceUpArray.push(card);
         }
-        let faceUp = new FaceUpCards(faceUpArray);
-        this.inGameClientFacade.setFaceUpCards(faceUp);
 
-        this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
-        //console.log("MY PLAYER INFO TO UPDATE SCORES");
-        //console.log(commands[i]);
+      let faceUp = new FaceUpCards(faceUpArray);
+      console.log("FACE UP CARDS OBJECT");
+      console.log(faceUp);
+        this.inGameClientFacade.setFaceUpCards(faceUp); // 5 face up cards  Solution 1
+        //this.inGameClientFacade.setDest
 
+        // // Each player has 4 random (top of a shuffled deck) train cards from server: 7 percent
+        // for (let i = 0; i < players.length; i++) // pass out 4 cards to everyone in the client (already done in the server)
+        // {
+        //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
+        // }
+      this.clientFacade.startGame(cmd._paramValues[2]);
+     // this.inGameClientFacade.changeTurn(startingPlayer);
       }
-      else if (commands[i]._methodName == "endGame") {
-        this.inGameClientFacade.endGame(commands[i]._paramValues[2]);
+    //}
+    else if (cmd._methodName == "receiveChatCommand") {
+      this.inGameClientFacade.receiveChatCommand(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[2], cmd._paramValues[3]);
+    }
+    else if (cmd._methodName == "potentialDestinationCard") {
+      this.inGameClientFacade.presentDestinationCard(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[4]);
+    }
+    else if (cmd._methodName == "discardDestinationCard") {
+      this.inGameClientFacade.discardDestinationCard(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[4]);
+    }
+    else if (cmd._methodName == "drawDestinationCard") {
+      this.inGameClientFacade.addDestinationCard(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[3], cmd._paramValues[4]);
+    }
+    else if (cmd._methodName == "updateNumDestinationCards") {
+      this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
+    }
+    else if (cmd._methodName == "updateScores") {
+
+      let players = cmd._paramValues[4];
+      for (let i = 0; i < players.length; i++)
+      {
+        let player = players[i];
+        this.inGameClientFacade.updateNumDestinationCards(player.username, player.destCardNum);
+        //TRAIN CARDS
+        this.inGameClientFacade.updateNumTrainCars(player.username, player.trainCardNum);
+        //TRAINS NOT CARDS
+        this.inGameClientFacade.updateNumTrainCars(player.username, player.trainNum);
       }
+
+      const faceUps = cmd._paramValues[5].faceUpCards;
+      let faceUpArray = new Array<TrainCard>();
+      for (let j = 0; j < faceUps.length; j++) {
+        const card = new TrainCard(faceUps[j].color);
+        faceUpArray.push(card);
+      }
+      let faceUp = new FaceUpCards(faceUpArray);
+      this.inGameClientFacade.setFaceUpCards(faceUp);
+
+      this.inGameClientFacade.updateScores(cmd._paramValues[2]);
+      //console.log("MY PLAYER INFO TO UPDATE SCORES");
+      //console.log(cmd);
+
+    }
+    else if (cmd._methodName == "endGame") {
+      this.inGameClientFacade.endGame(cmd._paramValues[2]);
     }
   }
 }
