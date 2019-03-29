@@ -84,6 +84,10 @@ export class IngameExternalClientFacade {
   //   this.root.updateNumTrainCars(player,numUsed)
   // }
 
+  updateTrainCardsInHand(cards: any) {
+    this.root.updateTrainCardsInHand(cards);
+  }
+
   updateNumTrainCardsInHand(player:string,numRemaining:number) {
     this.root.setNumTrainCards(player,numRemaining)
   }
@@ -157,7 +161,11 @@ export class IngameExternalClientFacade {
     this.root.updateScores(scores);
   }
   endGame(username: string){
-    this.root.endGame(username);
+    //this.root.endGame(username);
+  }
+  lastRound()
+  {
+    this.root.lastRound();
   }
 
 }

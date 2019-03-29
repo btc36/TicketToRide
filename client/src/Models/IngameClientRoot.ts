@@ -215,6 +215,22 @@ export class IngameClientRoot implements ISubject {
     this.game.removeTrainCard(trainCard);
   }*/
 
+  updateTrainCardsInHand(cards: any) {
+    let players = this.getPlayerList();
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].username == this.localPlayer) {
+        players[i].myHand = new PlayerHand();
+        for (const [color, amount] of Object.entries(cards)) {
+          for (let j = 0; j < amount; j++) {
+            players[i].myHand.addTrainCard(new TrainCard(color));
+          }
+        }
+        break;
+      }
+    }
+    this.notify("myHandUpdated", null);
+  }
+
   updateNumTrainCars(player: string, numUsed: number): void {
     this.game.updateNumTrainCars(player, numUsed);
     this.notify("myHandUpdated", null);
@@ -299,8 +315,10 @@ export class IngameClientRoot implements ISubject {
     this.notify("myHandUpdated", null);
   }
 
-  endGame(username: string){
+  endGame(username: string, claimed: number[], unclaimed: number[]){
     this.game.setWinner(username);
+    this.game.setClaimedPoints(claimed);
+    this.game.setUnclaimedPoints(unclaimed);
     //TODO notify the game over view!
     //this.notify("playerInfoChanged", null);
   }
@@ -316,4 +334,7 @@ export class IngameClientRoot implements ISubject {
     return this.game.getPlayerWithMostRoutes();
   }
 
+  lastRound(): void {
+    this.game.lastRound();
+  }
 }
