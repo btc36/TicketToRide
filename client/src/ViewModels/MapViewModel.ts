@@ -14,7 +14,7 @@ export class MapViewModel extends React.Component<IngameViewModelProps, State> i
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
-    } else if (updateType == "updatedPlayerList") {
+    } else if (updateType == "notifyMapClaimedRoutes") {
       this.setState({ ownedRoutes: this.props.services.getAllOwnedRoutes() });
       this.forceUpdate();
     } else if (updateType == "drewTrainCard") {
