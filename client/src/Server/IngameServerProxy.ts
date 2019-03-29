@@ -21,11 +21,11 @@ export class IngameServerProxy {
         this.communicator = commIn;
     }
 
-    claimRoute(route: Route, username: String, gameId: String) {
+    claimRoute(route: Route, username: String, gameId: String, preferredColor: String) {
         let cities = route.getCities();
         const command = new ClientCommandObjects(this.gameClass, "claimRoute", 
-          [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger],
-          [gameId, username, cities[0], cities[1], route.getColor(), route.getLength()])
+          [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger, this.paramTypeString],
+          [gameId, username, cities[0], cities[1], route.getColor(), route.getLength(), preferredColor])
         this.communicator.sendCommand(command);
     }
 
@@ -78,16 +78,14 @@ export class IngameServerProxy {
         let city2 = "";
         let pointValue = -1;
         // const card = destinationCards[0];
-        if(destinationCards.length > 0)
-        {
-            const card = destinationCards[0];
+          for (var i = 0; i < destinationCards.length; i++) {
+            const card = destinationCards[i];
             city1 = card.city1.valueOf();
             city2 = card.city2.valueOf();
             pointValue = card.getPointValue();
-        }
-
-        const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameId, username, city1, city2, pointValue]);
-        this.communicator.sendCommand(command);
+            const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameId, username, city1, city2, pointValue]);
+            this.communicator.sendCommand(command);
+          }
     }
 
     /**
@@ -95,7 +93,7 @@ export class IngameServerProxy {
      * @param gameId
      * @param username
      * @return retrieves upto three cards from the server
-     */
+     */PotentialDestinationCard(gameId:String, username:String)
     PotentialDestinationCard(gameId:String, username:String)
     {
         const command = new ClientCommandObjects(this.gameClass, "potentialDestinationCard", [this.paramTypeString], [gameId, username]);

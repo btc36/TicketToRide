@@ -83,7 +83,7 @@ export class ClientCommunicator {
         }
       }*/
       if (commands[i]._methodName == "currentTurn") {
-        console.log("CURRENT TURN COMMAND EXECUTED");
+        //console.log("CURRENT TURN COMMAND EXECUTED");
         this.inGameClientFacade.currentTurn(commands[i]._paramValues[3]);
       }
       else if (commands[i]._methodName == "loginStatus") {
@@ -216,7 +216,7 @@ export class ClientCommunicator {
           //   this.inGameClientFacade.storeTrainCards(players[i].username, players[i].trainCards)
           // }
         this.clientFacade.startGame(commands[i]._paramValues[2]);
-        this.inGameClientFacade.changeTurn(startingPlayer);
+       // this.inGameClientFacade.changeTurn(startingPlayer);
         }
       //}
       else if (commands[i]._methodName == "receiveChatCommand") {
@@ -257,8 +257,8 @@ export class ClientCommunicator {
         this.inGameClientFacade.setFaceUpCards(faceUp);
 
         this.inGameClientFacade.updateScores(commands[i]._paramValues[2]);
-        console.log("MY PLAYER INFO TO UPDATE SCORES");
-        console.log(commands[i]);
+        //console.log("MY PLAYER INFO TO UPDATE SCORES");
+        //console.log(commands[i]);
 
       }
       else if (commands[i]._methodName == "endGame") {

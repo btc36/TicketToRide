@@ -9,6 +9,7 @@ import { TrainCard } from "../Models/TrainCard";
 import { DrawTrainCardState } from "./DrawTrainCardState";
 import { NothingSelectedState } from "./NothingSelectedState";
 import { FaceUpCards } from "../Models/FaceUpCards";
+import { PerformingOtherActionState } from "./PerformingOtherActionState";
 
 export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, State> implements IFaceUpCardsViewModel, IObserver, IStateful {
 
@@ -41,6 +42,8 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
       this.changeState(new NothingSelectedState());
     } else if (updateType == "endTurn") {
       this.changeState(new DoneDrawingState());
+    } else if (updateType == "drewDestinationCard") {
+      this.changeState(new PerformingOtherActionState());
     }
   }
 

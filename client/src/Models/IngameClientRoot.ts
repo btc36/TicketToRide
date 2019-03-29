@@ -18,6 +18,7 @@ export class IngameClientRoot implements ISubject {
   game: Game; // a game
   session: Session;
   localPlayer: string;
+  preferredColor: string;
 
   constructor() {
     this.game = new Game();
@@ -25,6 +26,11 @@ export class IngameClientRoot implements ISubject {
     this.localPlayer = "ben";
   }
 
+
+  /**
+   * OBSOLETE
+   */
+  
   randomize() {
     let ben = new Player("ben");
     let lincoln = new Player("lincoln");
@@ -45,6 +51,10 @@ export class IngameClientRoot implements ISubject {
     this.notify("endTurn", null);
   }
 
+  drewDestinationCard() {
+    this.notify("drewDestinationCard", null);
+  }
+
   setLocalPlayer(localPlayer: string) {
     this.localPlayer = localPlayer;
   }
@@ -58,8 +68,8 @@ export class IngameClientRoot implements ISubject {
   }
   getUsername(): string{
     let crazylocalPlayer = this.game.getLocalPlayer(this.localPlayer);
-    console.log("ME MYSELF AND I");
-    console.log(crazylocalPlayer);
+    //console.log("ME MYSELF AND I");
+    //console.log(crazylocalPlayer);
     return crazylocalPlayer.getUsername();
   }
 
@@ -183,8 +193,8 @@ export class IngameClientRoot implements ISubject {
     this.notify('setFaceUpCards', null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
-    console.log(this.game);
-    console.log(this.localPlayer);
+   // console.log(this.game);
+    //console.log(this.localPlayer);
     return drawnCard;
   }
 
@@ -239,7 +249,8 @@ export class IngameClientRoot implements ISubject {
     this.game.changeTurn(player);
     this.notify("playerInfoChanged", null);
     if (player == this.localPlayer) {
-      this.notify("isMyTurn",null);
+      this.notify("isMyTurn", null)
+      console.log("JUST NOTIFIED ABOUT TURN")
     }
   }
 
@@ -248,7 +259,8 @@ export class IngameClientRoot implements ISubject {
     this.notify("updateMessageList", chats);
   }
   
-  presentDestinationCard(destinationCards: any[]){
+  presentDestinationCard(destinationCards: any[]) {
+    console.log("I AM PRESENTING THIS")
     this.game.presentDestinationCard(destinationCards);
     this.notify("drawDestination", null);
   }
@@ -266,7 +278,8 @@ export class IngameClientRoot implements ISubject {
     this.game.changeTurn(username);
     this.notify("playerInfoChanged", null);
     if (username == this.localPlayer) {
-      this.notify("isMyTurn",null);
+      this.notify("isMyTurn", null);
+      console.log("JUST NOTIFIED ABOUT TURN2")
     }
   }
 
