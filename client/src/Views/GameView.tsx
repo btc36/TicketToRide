@@ -9,7 +9,7 @@ export const GameView  = (component: I.IGameViewModel) => {
         <div className="chunk">
           <div className="space-row">
             <h3>Map</h3>
-            <p>You are {component.state.currentPlayer}</p>
+            <p>Logged in as: {component.state.currentPlayer}</p>
           </div>
           <hr/>
           {component.mapViewModel}

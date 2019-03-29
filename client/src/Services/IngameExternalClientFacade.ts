@@ -34,6 +34,8 @@ export class IngameExternalClientFacade {
     }
     else {
       this.root.claimRoute(username, route);
+      this.root.endTurn();
+      this.proxy.endTurn(this.root.getGameID(), this.root.getLocalPlayer());
     }
   }
 

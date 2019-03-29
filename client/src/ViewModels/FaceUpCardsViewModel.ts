@@ -36,6 +36,7 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
     } else if (updateType == "setFaceUpCards") {
       this.setState({ faceUpCards: this.props.services.getFaceUpCards() });
       this.setState({ numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining() });
+      this.setState({ numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining()});
     } else if (updateType == "keptDestination") {
       this.setState({ numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining() });
     } else if (updateType == "isMyTurn" && (this.state.drawState instanceof DoneDrawingState || this.state.drawState == null)) {

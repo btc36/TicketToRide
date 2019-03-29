@@ -279,11 +279,12 @@ public class GameFacade extends Facade
             else
             {
                 game.claimRoute(route, username, selectionColor);
+                Map<String, Integer> colorMap = getPlayer(username).getColorMap();
                 message = sMessage + claim;
                 GenericCommand command = new GenericCommand(
                         _gameClassName, claim,
-                        new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramRoute},
-                        new Object[]{ true, message, gameID, username, route});
+                        new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramRoute, _paramTypeMap},
+                        new Object[]{ true, message, gameID, username, route, colorMap});
 
                 commandsForClient.add(command);
                 commandsForClient.add(updateScoreCommand(gameID));
