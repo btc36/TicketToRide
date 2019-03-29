@@ -16,6 +16,7 @@ public class ServerFacade extends Facade
     private final String loginSatus = "loginStatus";
     private final String registerStatus = "registerStatus";
     private final String joinGame = "joinGame";
+    private boolean verbose = false;
 
     /**
      *
@@ -48,7 +49,7 @@ public class ServerFacade extends Facade
                 else { message = "Failure"; }
             }
         }
-        System.out.println(message);
+        if(verbose){System.out.println(message);}
 
         command = new GenericCommand(
                 _className, "loginStatus",
@@ -89,7 +90,8 @@ public class ServerFacade extends Facade
             }
         }
 
-        System.out.println(message);
+        if(verbose){System.out.println(message);}
+
         command = new GenericCommand(
                 _className, "registerStatus",
                 new String[]{_paramTypeBoolean, _paramTypeString},
@@ -143,7 +145,7 @@ public class ServerFacade extends Facade
         {
             List<GenericCommand> commandsForClient = new ArrayList<>();
             List<LobbyGameModel> games = getGameAsList();
-            System.out.println(message);
+            if(verbose){System.out.println(message);}
             GenericCommand command = new GenericCommand(
                     _className, "updateGameList",
                     new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeList},
@@ -192,7 +194,7 @@ public class ServerFacade extends Facade
             }
         }
 
-        System.out.println(message);
+        if(verbose){System.out.println(message);}
         List<LobbyGameModel> games = getGameAsList();
         GenericCommand command;
         command = new GenericCommand(
@@ -236,7 +238,7 @@ public class ServerFacade extends Facade
             else { message = "game does not exist"; }
         }
 
-        System.out.println(message);
+        if(verbose){System.out.println(message);}
         List<LobbyGameModel> games = getGameAsList(); //fixme why is this here
         GenericCommand command;
         command = new GenericCommand(
@@ -319,7 +321,7 @@ public class ServerFacade extends Facade
             message = "chat : success";
         }
 
-        System.out.println(message);
+        if(verbose){System.out.println(message);}
         GenericCommand command = new GenericCommand(
                 "IngameExternalClientFacade", "receiveChatCommand",
                 new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList},

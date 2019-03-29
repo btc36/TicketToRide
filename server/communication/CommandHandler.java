@@ -14,11 +14,11 @@ import java.util.List;
 
 public class CommandHandler implements HttpHandler {
     Boolean verbose = true;
+    List<String> alreadyPrintedCommands = new ArrayList<>();
 
     public void handle(HttpExchange httpExchange) {
         List<GenericCommand> response = new ArrayList<>();
 
-        if(verbose) {System.out.println("\nCommand handler called.");}
         try {
             List<GenericCommand> myCommands = receiveCommand(httpExchange);
             for(GenericCommand command : myCommands) {
@@ -38,20 +38,30 @@ public class CommandHandler implements HttpHandler {
         }
     }
 
+
     //gets the list of GenericCommands from http exchange object
     protected List<GenericCommand> receiveCommand(HttpExchange httpExchange) throws Exception{
-        if(verbose) {System.out.println("receiveCommand called");}
         String json = receiveJson(httpExchange);
-        if(verbose) {System.out.println("received: " + json);}
+        if(verbose) {
+            if(json.contains("getChatHistory") || json.contains("getGameList") || json.contains("whoseTurn")) {}
+            else {
+                System.out.println("sending: " + json);
+            }
+        }
         List<GenericCommand> myCommands = Serializer.deserializeCommand(json);
         return myCommands;
     }
 
     //sends list of GenericCommands using http exchange object
     protected void sendCommand(HttpExchange httpExchange, List<GenericCommand> commands) {
-        if(verbose) {System.out.println("sendCommand called for list of commands of size: " + commands.size());}
+        //if(verbose) {System.out.println("sendCommand called for list of commands of size: " + commands.size());}
         String json = Serializer.serializeCommand(commands);
-        if(verbose) {System.out.println("sending: " + json);}
+        if(verbose) {
+            if(json.contains("updateGameList") || json.contains("receiveChatCommand") || json.contains("whoseTurn") || json.contains("currentTurn")) {}
+            else {
+                System.out.println("sending: " + json);
+            }
+        }
         sendJson(httpExchange, json);
     }
 

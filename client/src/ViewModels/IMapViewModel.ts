@@ -40,7 +40,9 @@ export const initialState = {
     lng: -95
   },
   zoom: 4,
-  ownedRoutes: null
+  ownedRoutes: null,
+  isMyTurn: false,
+  canClaimRoute: false
 };
 
 export type State = {
@@ -48,6 +50,8 @@ export type State = {
   readonly center: any,
   readonly zoom: number,
   readonly ownedRoutes: Array<Route>
+  readonly isMyTurn: boolean,
+  readonly canClaimRoute: boolean
 }
 
 export type CityToCoordinates = Readonly<typeof Map>
