@@ -77,15 +77,25 @@ export class IngameServerProxy {
         let city1 = "";
         let city2 = "";
         let pointValue = -1;
-        // const card = destinationCards[0];
+        let pointValue2 = -1
+        let city12 = "";
+        let city22 = "";
           for (var i = 0; i < destinationCards.length; i++) {
             const card = destinationCards[i];
-            city1 = card.city1.valueOf();
-            city2 = card.city2.valueOf();
-            pointValue = card.getPointValue();
-            const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameId, username, city1, city2, pointValue]);
-            this.communicator.sendCommand(command);
-          }
+            if (i == 0) {
+              city1 = card.city1.valueOf();
+              city2 = card.city2.valueOf();
+              pointValue = card.getPointValue();
+            } else {
+              city12 = card.city1.valueOf();
+              city22 = card.city2.valueOf();
+              pointValue2 = card.getPointValue();
+            }
+            
+            
+         }
+    const command = new ClientCommandObjects(this.gameClass, "discardDestinationCard", [this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeString, this.paramTypeInteger, this.paramTypeString, this.paramTypeString, this.paramTypeInteger], [gameId, username, city1, city2, pointValue, city12, city22, pointValue2 ]);
+      this.communicator.sendCommand(command);
     }
 
     /**
