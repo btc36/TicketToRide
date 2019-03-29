@@ -302,4 +302,12 @@ export class IngameClientRoot implements ISubject {
     return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
   }
 
+  getWinner(): Player {
+    return this.game.getWinnerPlayer();
+  }
+
+  getPlayerWithMostRoutes(): Player{
+    return this.game.getPlayerWithMostRoutes();
+  }
+
 }
