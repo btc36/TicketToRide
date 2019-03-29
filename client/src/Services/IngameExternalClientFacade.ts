@@ -24,6 +24,10 @@ export class IngameExternalClientFacade {
     this.root = root;
   }
 
+  setClaimedRoutes(routes: Route[]) {
+    this.root.setClaimedRoutes(routes);
+  }
+
   claimRoute(success: boolean, message: string, gameID?: string, username?: string, route?:Route) {
     if(success == false) {
       alert(message);
