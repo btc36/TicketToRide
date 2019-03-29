@@ -269,9 +269,9 @@ export class Game {
   getLocalPlayer(username: string): Player{
     let localPlayer = null;
     this.players.forEach((player) => {
-      console.log(player.getUsername());
+     // console.log(player.getUsername());
       if (player.getUsername() == username) {
-        console.log(player);
+        //console.log(player);
         localPlayer = player;
         }
     });

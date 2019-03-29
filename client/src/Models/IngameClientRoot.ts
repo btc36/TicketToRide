@@ -248,7 +248,8 @@ export class IngameClientRoot implements ISubject {
     this.game.changeTurn(player);
     this.notify("playerInfoChanged", null);
     if (player == this.localPlayer) {
-      this.notify("isMyTurn",null);
+      this.notify("isMyTurn", null)
+      console.log("JUST NOTIFIED ABOUT TURN")
     }
   }
 
@@ -275,7 +276,8 @@ export class IngameClientRoot implements ISubject {
     this.game.changeTurn(username);
     this.notify("playerInfoChanged", null);
     if (username == this.localPlayer) {
-      this.notify("isMyTurn",null);
+      this.notify("isMyTurn", null);
+      console.log("JUST NOTIFIED ABOUT TURN2")
     }
   }
 
