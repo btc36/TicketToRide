@@ -221,6 +221,7 @@ export class ClientCommunicator {
         this.inGameClientFacade.receiveChatCommand(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[2], commands[i]._paramValues[3]);
       }
       else if (commands[i]._methodName == "potentialDestinationCard") {
+        console.log("BOOYAH BABY");
         this.inGameClientFacade.presentDestinationCard(commands[i]._paramValues[0], commands[i]._paramValues[1], commands[i]._paramValues[4]);
       }
       else if (commands[i]._methodName == "discardDestinationCard") {

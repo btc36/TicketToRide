@@ -59,7 +59,6 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
     if (this.state.canDrawCards) {
       this.props.services.clickedDestinationButton();
       this.props.services.getMoreDestinationCards();
-      this.setState({ isActive: true })
     } else {
       alert("You can't do that right now");
     }  

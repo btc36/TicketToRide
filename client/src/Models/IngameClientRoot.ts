@@ -261,6 +261,7 @@ export class IngameClientRoot implements ISubject {
   
   presentDestinationCard(destinationCards: any[]) {
     console.log("I AM PRESENTING THIS")
+    console.log(destinationCards);
     this.game.presentDestinationCard(destinationCards);
     this.notify("drawDestination", null);
   }
