@@ -27,6 +27,7 @@ export class Player {
     this.numTrainCards = 4;
     this.numDestinationCards = 0;
     this.numTrains = 45;
+    this.ownedRoutes = new Array<Route>();
   }
 
   isMyTurn(): boolean {

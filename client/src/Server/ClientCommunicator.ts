@@ -8,6 +8,7 @@ import { IngameExternalClientFacade } from "../Services/IngameExternalClientFaca
 import {TrainCard} from "../Models/TrainCard";
 import {FaceUpCards} from "../Models/FaceUpCards";
 import { PlayerHand } from "../Models/PlayerHand";
+import { Route } from "../Models/Route";
 import { DestinationCard } from "../Models/DestinationCard";
 import {Simulate} from "react-dom/test-utils";
 import play = Simulate.play;
@@ -99,8 +100,13 @@ export class ClientCommunicator {
         this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);
       }
       else {
-        //this.inGameClientFacade.claimRoute(true, cmd._paramValues[1]);
-        
+        //cmd._paramValues[4]
+        const city1 = cmd._paramValues[4].cityOne;
+        const city2 = cmd._paramValues[4].cityTwo;
+        const length = cmd._paramValues[4].length;
+        const color = cmd._paramValues[4].color;
+        const route = new Route(city1, city2, length, color);
+        this.inGameClientFacade.claimRoute(true, cmd._paramValues[1], cmd._paramValues[2], cmd._paramValues[3], route);
       }
     }
 
