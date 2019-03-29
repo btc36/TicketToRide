@@ -26,6 +26,11 @@ export class IngameClientRoot implements ISubject {
     this.localPlayer = "ben";
   }
 
+
+  /**
+   * OBSOLETE
+   */
+  
   randomize() {
     let ben = new Player("ben");
     let lincoln = new Player("lincoln");
@@ -36,6 +41,18 @@ export class IngameClientRoot implements ISubject {
     this.game.setPlayerList([ben, lincoln]);
     this.notify("updatedPlayerList", this.game.getPlayerList());
     this.notify("playerInfoChanged", null);
+  }
+
+  drewTrainCard() {
+    this.notify("drewCard", null);
+  }
+
+  endTurn() {
+    this.notify("endTurn", null);
+  }
+
+  drewDestinationCard() {
+    this.notify("drewCard", null);
   }
 
   setLocalPlayer(localPlayer: string) {
@@ -51,8 +68,8 @@ export class IngameClientRoot implements ISubject {
   }
   getUsername(): string{
     let crazylocalPlayer = this.game.getLocalPlayer(this.localPlayer);
-    console.log("ME MYSELF AND I");
-    console.log(crazylocalPlayer);
+    //console.log("ME MYSELF AND I");
+    //console.log(crazylocalPlayer);
     return crazylocalPlayer.getUsername();
   }
 
@@ -176,8 +193,8 @@ export class IngameClientRoot implements ISubject {
     this.notify('setFaceUpCards', null);
     this.notify("myHandUpdated", null);
     this.notify("playerInfoChanged", null);
-    console.log(this.game);
-    console.log(this.localPlayer);
+   // console.log(this.game);
+    //console.log(this.localPlayer);
     return drawnCard;
   }
 

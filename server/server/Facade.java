@@ -25,6 +25,8 @@ public class Facade
     protected final String _paramRoute = _modelPackage + "Route";
     protected final String _paramDestinationCard = _modelPackage + "DestinatinoCard";
     protected final String _paramTrainCard = _modelPackage + "TrainCard";
+    protected final String error = "error : ";
+    protected final String sMessage = "success : ";
 
 
 

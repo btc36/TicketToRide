@@ -15,6 +15,12 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
   state: State = initialState;
   statePatternState = new DoneDrawingState();
 
+  constructor(props) {
+    super(props);
+    this.drawCard = this.drawCard.bind(this);
+    this.drawFaceUp = this.drawFaceUp.bind(this);
+  }
+
   componentDidMount() {
     this.setState({ 
       faceUpCards: this.props.services.getFaceUpCards(),
@@ -33,6 +39,8 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
       this.setState({ numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining() });
     } else if (updateType == "isMyTurn") {
       this.changeState(new NothingSelectedState());
+    } else if (updateType == "endTurn") {
+      this.changeState(new DoneDrawingState());
     }
   }
 
@@ -41,11 +49,11 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
     return faceUp[index];
   }
 
-  drawCard = (e: any) => {
+  drawCard(e: any) {
     this.statePatternState.drawTrainCard(this,-1);//-1 for mystery card
   }
 
-  drawFaceUp = (e: any,) => {
+  drawFaceUp(e: any) {
     this.statePatternState.drawTrainCard(this,this.state.faceUpIndex);//Index of the card selected
   }
 

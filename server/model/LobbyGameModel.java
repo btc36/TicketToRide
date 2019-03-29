@@ -236,34 +236,50 @@ public class LobbyGameModel extends GameSetUp
         assert (luckyGuy != null);
 
         Map<String, Integer> colorMap = luckyGuy.getColorMap();
-        List<String> colors = new ArrayList<>();
         int colorNum = colorMap.get(color);
         int routeLength = route.getLength();
 
-        int i;
-        for(i = 1; i <= colorNum; i++)
-        {
-            trainDeck.add(new TrainCard(color));
-            colors.add(color);
-        }
-        //rainbow
-        for(int j = 0; i < routeLength - colorNum; i++)
-        {
-            trainDeck.add(new TrainCard("rainbow"));
-            colors.add("rainbow");
-        }
+        List<String> colors = putBackToDeck(color, colorNum, routeLength);
 
         City city1 = getCityByName(route.getCityOne());
         City city2 = getCityByName(route.getCityTwo());
         luckyGuy.claimRoute(route, city1, city2, colors);
 
-        int currentScore = luckyGuy.getScore();
-        luckyGuy.setScore(scoreMap.get(routeLength) + currentScore);
+        luckyGuy.addScore(scoreMap.get(routeLength));
+
         checkDestinationCard(luckyGuy);
 
-        trainDeck.shuffle();
+        //trainDeck.shuffle();
     }
 
+    private List<String> putBackToDeck(String color, int colorNum, int routeLength)
+    {
+        List<String> colors = new ArrayList<>();
+        //  2 blue  <  blue 3
+        if(colorNum < routeLength)
+        {
+            int rainbow = routeLength - colorNum;
+            for(int i = 0; i < colorNum; i++)
+            {
+                trainDeck.add(new TrainCard(color));
+                colors.add(color);
+            }
+            for(int i = 0; i < rainbow; i++)
+            {
+                trainDeck.add(new TrainCard("rainbow"));
+                colors.add(color);
+            }
+        }
+        else
+        {
+            for(int i = 0; i < routeLength; i++)
+            {
+                trainDeck.add(new TrainCard(color));
+                colors.add(color);
+            }
+        }
+        return colors;
+    }
     /*************************************** FINISH BEING MIDDLE OF THE GAME ***************************************/
 
 
