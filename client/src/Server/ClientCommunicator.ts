@@ -251,20 +251,20 @@ export class ClientCommunicator {
     else if (cmd._methodName == "updateNumDestinationCards") {
       this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
     }
-    else if (cmd._methodName == "updateScores") {
+    else if (cmd._methodName == "updateScore") {
 
       let players = cmd._paramValues[4];
       for (let i = 0; i < players.length; i++)
       {
-        let player = players[i];
-        this.inGameClientFacade.updateNumDestinationCards(player.username, player.destCardNum);
+        this.inGameClientFacade.updateNumDestinationCards(players[i].username, players[i].destCardNum);
         //TRAIN CARDS
-        this.inGameClientFacade.updateNumTrainCars(player.username, player.trainCardNum);
+        this.inGameClientFacade.updateNumTrainCars(players[i].username, players[i].trainCardNum);
         //TRAINS NOT CARDS
-        this.inGameClientFacade.updateNumTrainCars(player.username, player.trainNum);
+        this.inGameClientFacade.updateNumTrainCardsInHand(players[i].username, players[i].trainNum);
       }
 
-      const faceUps = cmd._paramValues[5].faceUpCards;
+      const faceUps = cmd._paramValues[5];
+
       let faceUpArray = new Array<TrainCard>();
       for (let j = 0; j < faceUps.length; j++) {
         const card = new TrainCard(faceUps[j].color);
@@ -273,7 +273,7 @@ export class ClientCommunicator {
       let faceUp = new FaceUpCards(faceUpArray);
       this.inGameClientFacade.setFaceUpCards(faceUp);
 
-      this.inGameClientFacade.updateScores(cmd._paramValues[2]);
+      this.inGameClientFacade.updateScores(cmd._paramValues[3]);
       //console.log("MY PLAYER INFO TO UPDATE SCORES");
       //console.log(cmd);
 
