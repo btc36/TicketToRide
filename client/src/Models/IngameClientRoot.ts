@@ -290,6 +290,7 @@ export class IngameClientRoot implements ISubject {
   updateScores(scores: number[]){
     this.game.updateScores(scores);
     this.notify("playerInfoChanged", null);
+    this.notify("myHandUpdated", null);
   }
 
   endGame(username: string){
