@@ -21,9 +21,11 @@ export class Game {
     potentialDestinationCards: Array<DestinationCard>;
     gameID: string;
     winner: string;
+    claimedRoutes: Route[];
 
   constructor() {
-    this.gameID = "EPICGAME";
+      this.claimedRoutes = new Array<Route>();
+      this.gameID = "EPICGAME";
       this.players = new Array<Player>();
       //this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
       //let currCard = new TrainCard("blue");
@@ -126,8 +128,12 @@ export class Game {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  setClaimedRoutes(routes: Route[]): void {
+    this.claimedRoutes = routes;
+  }
 
   claimRoute(username: string, route: Route): void {
+      this.claimedRoutes.push(route);
       this.players.forEach((player) => {
         if (player.getUsername() == username) {
           player.claimRoute(route);

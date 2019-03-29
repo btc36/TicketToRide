@@ -21,6 +21,12 @@ export class IngameServerProxy {
         this.communicator = commIn;
     }
 
+    getAllServerRoutes(gameId: string) {
+        const command = new ClientCommandObjects(this.gameClass, "getRoutes",
+          [this.paramTypeString], [gameId]);
+        this.communicator.sendCommand(command);
+    }
+
     claimRoute(route: Route, username: String, gameId: String, preferredColor: String) {
         let cities = route.getCities();
         const command = new ClientCommandObjects(this.gameClass, "claimRoute", 

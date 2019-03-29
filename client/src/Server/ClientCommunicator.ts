@@ -266,6 +266,19 @@ export class ClientCommunicator {
     else if (cmd._methodName == "updateNumDestinationCards") {
       this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
     }
+    else if (cmd._methodName == "getRoute") {
+      const claimedRoutes = [];
+      for (let i = 0; i < cmd._paramValues[3].length; i++) {
+        const city1 = cmd._paramValues[3][i].cityOne;
+        const city2 = cmd._paramValues[3][i].cityTwo;
+        const length = cmd._paramValues[3][i].length;
+        const color = cmd._paramValues[3][i].color;
+        const route = new Route(city1, city2, length, color);
+        claimedRoutes.push(route);
+      }
+      
+      this.inGameClientFacade.setClaimedRoutes(claimedRoutes);
+    }
     else if (cmd._methodName == "updateScore") {
       let sizeTrainDeck = cmd._paramValues[6];
       let sizeDestDeck = cmd._paramValues[7];

@@ -39,8 +39,13 @@ export class IngameClientRoot implements ISubject {
     rand = Math.floor(Math.random() * AllRoutes.length);
     lincoln.ownedRoutes = [new Route(AllRoutes[rand].cityOne, AllRoutes[rand].cityTwo, AllRoutes[rand].length, "red")];
     this.game.setPlayerList([ben, lincoln]);
-    this.notify("updatedPlayerList", this.game.getPlayerList());
+    this.notify("notifyMapClaimedRoutes", null);
     this.notify("playerInfoChanged", null);
+  }
+
+  setClaimedRoutes(routes: Route[]) {
+    this.notify("notifyMapClaimedRoutes", null);
+    this.game.setClaimedRoutes(routes);
   }
 
   drewTrainCard() {
@@ -103,8 +108,8 @@ export class IngameClientRoot implements ISubject {
   }
 
   claimRoute(player: string, route: Route): void {
-    this.notify("updatedPlayerList", null);
     this.game.claimRoute(player, route);
+    this.notify("notifyMapClaimedRoutes", null);
   }
 
  /* useTrainCard(trainCard: TrainCard): void {

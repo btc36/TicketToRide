@@ -4,18 +4,26 @@ import { Route } from "../Models/Route";
 import { initialState, State, IMapViewModel } from "./IMapViewModel";
 import { IObserver } from "./IObserver";
 import { IngameViewModelProps } from "./ViewModelProps";
+import { MapPoller } from "../Server/MapPoller";
 
 export class MapViewModel extends React.Component<IngameViewModelProps, State> implements IMapViewModel, IObserver {
 
   state: State = initialState;
+  poller: MapPoller;
   mapInstance: any;
   cityToCoordinates: any;
+
+  constructor(props) {
+    super(props);
+    this.poller = new MapPoller(this.props.services);
+    this.poller.start();
+  }
 
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
-    } else if (updateType == "updatedPlayerList") {
-      this.setState({ ownedRoutes: this.props.services.getAllOwnedRoutes() });
+    } else if (updateType == "notifyMapClaimedRoutes") {
+      this.setState({ ownedRoutes: this.props.services.getAllClaimedRoutes() });
       this.forceUpdate();
     } else if (updateType == "drewTrainCard") {
       this.setState({ canClaimRoute: false });
