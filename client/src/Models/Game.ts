@@ -156,7 +156,7 @@ export class Game {
               return;
             }
         });
-      this.nextTurn();
+      //this.nextTurn();
     }
 
   addDestinationCard(username: string, destinationCards: Array<DestinationCard>) {
@@ -168,7 +168,7 @@ export class Game {
           return;
         }
        });
-    this.nextTurn();
+    //this.nextTurn();
     }
 
     setFaceUpCards(faceUpCards: FaceUpCards): void {
@@ -245,13 +245,13 @@ export class Game {
         index++;
     });
   }
-  nextTurn(): void {
+  /*nextTurn(): void {
     this.players[this.whoseTurn].myTurn = false;
     console.log(this.players[this.whoseTurn].username + " false");
     this.whoseTurn = (this.whoseTurn + 1) % this.players.length;
     this.players[this.whoseTurn].myTurn = true;
       console.log(this.players[this.whoseTurn].username + " true");
-  }
+  }*/
   setWinner(username: string): void {
     this.winner = username;
   }
