@@ -42,7 +42,7 @@ export const initialState = {
   zoom: 4,
   ownedRoutes: null,
   isMyTurn: false,
-  canClaimRoute: false
+  canClaimRoute: true
 };
 
 export type State = {

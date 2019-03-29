@@ -103,6 +103,7 @@ export class IngameClientRoot implements ISubject {
   }
 
   claimRoute(player: string, route: Route): void {
+    this.notify("updatedPlayerList", null);
     this.game.claimRoute(player, route);
   }
 
