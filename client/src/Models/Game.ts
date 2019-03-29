@@ -307,4 +307,22 @@ export class Game {
     });
     return mrPlayer;
   }
+  lastRound() {
+    let condition = false;
+    if(condition)
+    alert("Last Round");
+  }
+
+  setClaimedPoints(claimed: number[]) {
+    let i = 0;
+    this.players.forEach((player) => {
+      player.setDestinationCardEarned(claimed[i]);
+    });
+  }
+  setUnclaimedPoints(unclaimed: number[]) {
+    let i = 0;
+    this.players.forEach((player) => {
+      player.setDestinationCardsLost(unclaimed[i]);
+    });
+  }
 }
