@@ -7,7 +7,7 @@ export const GameOverView  = (component: I.IGameOverViewModel) => {
   for (let i = 0; i < people.length; i++) {
     scores.push(
       <li>
-        {people[i].name}: {people[i].score} (Trains: {people[i].numTrains}, DC: {people[i].dcEarned} - {people[i].dcLost})
+        {people[i].username}: {people[i].score} (Trains: {people[i].numTrains}, DC: {people[i].destinationCardsEarned} - {people[i].destinationCardsLost})
       </li>
     );
   }

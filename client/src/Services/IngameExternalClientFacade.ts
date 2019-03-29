@@ -4,6 +4,7 @@ import { DestinationCard } from "../Models/DestinationCard";
 import { Route } from "../Models/Route";
 import { TrainCard } from "../Models/TrainCard";
 import { FaceUpCards } from "../Models/FaceUpCards";
+import { IngameServerProxy } from "../Server/IngameServerProxy";
 
 // operations on the model
 export class IngameExternalClientFacade {
@@ -11,11 +12,11 @@ export class IngameExternalClientFacade {
       this.root.setPlayerList(gamePlayers);
     }
   setLocalPlayer(player: Player): any {
-    console.log("SETTING PLAYER");
     console.log(player);
       this.root.setLocalPlayer(player.getUsername());
     }
-  root: IngameClientRoot
+  root: IngameClientRoot;
+  proxy: IngameServerProxy;
 
   constructor(root:IngameClientRoot) {
     this.root = root;
@@ -42,6 +43,16 @@ export class IngameExternalClientFacade {
       alert(message);
     }
 
+  }
+
+  SendChatCommand(message: String, time?: string) {
+    if (!time) {
+      let today = new Date();
+      time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+    }
+    let username = this.root.getUsername();
+    let gameID = this.root.getGameID();
+    this.proxy.SendChat(message, time, username, gameID);
   }
 
   updatePlayerPoints(player: string, points:number) {

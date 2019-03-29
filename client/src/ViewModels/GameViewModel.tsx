@@ -29,6 +29,11 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
     this.poller.start();
   }
 
+  componentDidMount() {
+    const currentPlayer = this.props.ingameServices.whoAmI();
+    this.setState({ currentPlayer: currentPlayer });
+  }
+
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      

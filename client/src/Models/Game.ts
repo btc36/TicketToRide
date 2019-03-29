@@ -225,6 +225,7 @@ export class Game {
   }
 
   getPresentedDestinationCards(): any[] {
+    console.log("WHOOP WHOOP");
     return this.potentialDestinationCards;
   }
 
