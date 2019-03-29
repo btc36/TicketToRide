@@ -52,11 +52,18 @@ export class PlayerHand {
 
     addTrainCard(trainCard: TrainCard): void {
       this.trainCards.push(trainCard);
-      const color = trainCard.color;
-      let count = 0;
-      if (this.colorCountMap.get(color) != null){
-        count = this.colorCountMap.get(color);
-      }
-      this.colorCountMap.set(color, count + 1);
+      this.refactorColorCountMap();
+    }
+
+    refactorColorCountMap(): void {
+      this.colorCountMap = new Map<string, number>();
+      this.trainCards.forEach((trainCard) => {
+        const color = trainCard.color;
+        let count = 0;
+        if (this.colorCountMap.get(color) != null){
+          count = this.colorCountMap.get(color);
+        }
+        this.colorCountMap.set(color, count + 1);
+      });
     }
 }
