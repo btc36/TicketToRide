@@ -1,5 +1,5 @@
 export const initialState = {
-  
+  currentPlayer: "<not a player>"
 };
 
 export type State = Readonly<typeof initialState>;

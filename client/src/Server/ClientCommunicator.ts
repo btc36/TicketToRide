@@ -134,7 +134,6 @@ export class ClientCommunicator {
     }
     else if (cmd._methodName == "drawTrainCard") {
       if (cmd._paramValues[0]) { // success
-
         console.log("THE SERVER RESPONDED!!!! YAY!");
         console.log(cmd);
         let faceUpArray = new Array<TrainCard>();

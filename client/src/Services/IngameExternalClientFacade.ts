@@ -4,17 +4,18 @@ import { DestinationCard } from "../Models/DestinationCard";
 import { Route } from "../Models/Route";
 import { TrainCard } from "../Models/TrainCard";
 import { FaceUpCards } from "../Models/FaceUpCards";
+import { IngameServerProxy } from "../Server/IngameServerProxy";
 
 // operations on the model
 export class IngameExternalClientFacade {
   root: IngameClientRoot
+  proxy: IngameServerProxy;
 
   setPlayerList(gamePlayers: Player[]): any {
     this.root.setPlayerList(gamePlayers);
   }
 
   setLocalPlayer(player: Player): any {
-    console.log("SETTING PLAYER");
     console.log(player);
       this.root.setLocalPlayer(player.getUsername());
   }
@@ -46,6 +47,16 @@ export class IngameExternalClientFacade {
 
   }
 
+  SendChatCommand(message: String, time?: string) {
+    if (!time) {
+      let today = new Date();
+      time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+    }
+    let username = this.root.getUsername();
+    let gameID = this.root.getGameID();
+    this.proxy.SendChat(message, time, username, gameID);
+  }
+
   updatePlayerPoints(player: string, points:number) {
     this.root.updatePlayerPoints(player, points);
   }
@@ -61,9 +72,15 @@ export class IngameExternalClientFacade {
     //this.root.nextTurn();
   }
 
-  updateNumTrainCards(player:string,numUsed:number) {
-    this.root.updateNumTrainCars(player,numUsed)
+  //
+  // updateNumTrainCards(player:string,numUsed:number) {
+  //   this.root.updateNumTrainCars(player,numUsed)
+  // }
+
+  updateNumTrainCardsInHand(player:string,numRemaining:number) {
+    this.root.setNumTrainCards(player,numRemaining)
   }
+
 
   updateNumTrainCars(player: string,numCars:number) {
     this.root.updateNumTrainCars(player,numCars)

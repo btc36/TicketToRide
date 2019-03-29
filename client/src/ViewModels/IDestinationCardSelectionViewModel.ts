@@ -4,7 +4,9 @@ export const initialState = {
   destinationCards: [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)],
   toDiscard: "none",
   isActive: true,
-  firstTime: true
+  firstTime: true,
+  isMyTurn: false,
+  canDrawCards: true
 };
 
 export type State = Readonly<typeof initialState>;

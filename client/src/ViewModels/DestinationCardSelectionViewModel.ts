@@ -8,8 +8,7 @@ import { DestinationCard } from "../Models/DestinationCard";
 export class DestinationCardSelectionViewModel extends React.Component<IngameViewModelProps, State> implements IDestinationCardSelectionViewModel, IObserver {
   state: State = initialState;
   noCards = [new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0), new DestinationCard("City1", "City2", 0)];
-  firstTime = true;
-  isActive = true;
+
 
   componentDidMount() {
     this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none"});
@@ -21,13 +20,28 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
     }
     else if (updateType == "discardDestination") {
       this.setState({ destinationCards: this.noCards, toDiscard: "none" });
-      this.setState({ isActive: false });
-      this.setState({ firstTime: false });
+      this.setState({isActive: false });
+      this.setState({firstTime: false });
     } else if (updateType == "drawDestination") {
       this.setState({ destinationCards: this.props.services.getDestinationCards(), toDiscard: "none" });
       this.setState({ isActive: true });
     } else if (updateType == "isMyTurn") {
-      this.setState({isActive: true})
+      this.setState({ isMyTurn: true });
+      /*console.log("BOOLEAN STATS");
+      console.log("FIRST TIME");
+      console.log(this.state.firstTime);
+      console.log("IS ACTIVE");
+      console.log(this.state.isActive);
+      console.log("IS MY TURN");
+      console.log(this.state.isMyTurn);
+      console.log("CAN DRAW CARDS");
+      console.log(this.state.canDrawCards);*/
+    } else if (updateType == "endTurn") {
+      this.setState({ isMyTurn: false });
+      this.setState({ canDrawCards: true });
+    } else if (updateType == "drewTrainCard") {
+      console.log("DREW TRAIN CARD");
+      this.setState({ canDrawCards: false });
     }
   }
 
@@ -36,7 +50,18 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
   }
 
   getMoreCards = (e: any) => {
+    e.preventDefault();
+    if (!this.state.isMyTurn) {
+      alert("It's not your turn!");
+      return;
+    }
     console.log("Draw more cards");
+    if (this.state.canDrawCards) {
+      this.props.services.clickedDestinationButton();
+      this.props.services.getMoreDestinationCards();
+    } else {
+      alert("You can't do that right now");
+    }  
   }
 
   onSelectCard = (e: any) => {
@@ -83,6 +108,10 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
       this.props.services.DiscardDestinationCard([this.state.destinationCards[0]])
       this.props.services.printRoot();
     }
+    if (!this.state.firstTime) {
+      this.props.services.endTurn();
+    }
+    this.setState({ firstTime: false });
   }
 
 }

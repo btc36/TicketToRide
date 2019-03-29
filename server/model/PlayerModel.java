@@ -22,7 +22,7 @@ public class PlayerModel
     private int unclaimedDestPoint;
     private boolean longestRoute;
 
-    public PlayerModel() {}
+    public PlayerModel(){}
     public PlayerModel(String username)
     {
         this.username = username;
@@ -46,7 +46,7 @@ public class PlayerModel
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
         claimedCities = new HashSet<>();
-        trainCardNum = 4;
+        //trainCardNum = 4;
         trainNum = 45;
     }
     public String getUsername() {
@@ -59,18 +59,12 @@ public class PlayerModel
     public List<DestinationCard> getDestinationCards() {
         return destinationCards;
     }
-
-    public void setDestinationCards(List<DestinationCard> destinationCards) {
-        this.destinationCards = destinationCards;
-    }
+    public void setDestinationCards(List<DestinationCard> destinationCards) { this.destinationCards = destinationCards; }
 
     public List<TrainCard> getTrainCards() {
         return trainCards;
     }
-
-    public void setTrainCards(List<TrainCard> trainCards) {
-        this.trainCards = trainCards;
-    }
+    public void setTrainCards(List<TrainCard> trainCards) { this.trainCards = trainCards; }
 
     public void addDestinationards(List<DestinationCard> destCards)
     {
@@ -95,19 +89,7 @@ public class PlayerModel
 
     public void addTrainCards(List<TrainCard> trainCards)
     {
-        for(TrainCard card : trainCards)
-        {
-            addTrainCard(card);
-        }
-//        trainCardNum += trainCards.size();
-//
-
-//        this.trainCards.addAll(trainCards);
-//        for(TrainCard c : trainCards)
-//        {
-//            int num = colorMap.getOrDefault(c.getColor(), 0);
-//            colorMap.put(c.getColor(), ++num);
-//        }
+        for(TrainCard card : trainCards) addTrainCard(card);
     }
 
     public boolean isTurn() {
@@ -121,7 +103,6 @@ public class PlayerModel
     public String getColor() {
         return color;
     }
-
     public void setColor(String color) {
         this.color = color;
     }
@@ -130,17 +111,13 @@ public class PlayerModel
      * 1. route 2. add score, 3. decrement train card 4. decrement trains
      * @param route
      */
-
     public void claimRoute(Route route, City city1, City city2, List<String> colors)
     {
         int len = route.getLength();
 
         claimedCities.add(city1);
         claimedCities.add(city2);
-
         claimedRoutes.add(route);
-
-        //int score = scoreMap.get(len);
 
         for(String color : colors)
         {
@@ -152,7 +129,6 @@ public class PlayerModel
         trainCardNum -= len;
         trainNum -= len;
     }
-
 
     public void completeDestinaton(DestinationCard card)
     {
@@ -178,7 +154,6 @@ public class PlayerModel
         }
     }
 
-
     public int getScore() {
         return score;
     }
@@ -194,17 +169,10 @@ public class PlayerModel
         this.claimedRoutes = claimedRoutes;
     }
 
-    //public Map<Integer, Integer> getScoreMap() {
-//        return scoreMap;
-  //  }
-
-    //public void setScoreMap(Map<Integer, Integer> scoreMap) {
-      //  this.scoreMap = scoreMap;
-    //}
-
     public Map<String, Integer> getColorMap() {
         return colorMap;
     }
+    public int getColorNum(String color) { return colorMap.getOrDefault(color, 0); }
 
     public void setColorMap(Map<String, Integer> colorMap) {
         this.colorMap = colorMap;
@@ -276,16 +244,11 @@ public class PlayerModel
         //final String grey = "grey";
         final int length = r.getLength();
         // if total is less than the length. not even worth checking
-        if(trainNum < r.getLength())
+        if(trainNum < length || trainCardNum < length)
             return false;
 
-//        String routeColor = r.getColor();
+        //TODO: trainCardNUm check
         return checkColor(selectedColor, length);
-//        if(routeColor.equals(grey))
-//            for(String userColor : colorMap.keySet())
-//        if(checkColor(userColor, length)) return userColor;
-//        else
-//        if(checkColor(routeColor, length)) return routeColor;
     }
     private boolean checkColor(String color, int length)
     {
@@ -294,6 +257,6 @@ public class PlayerModel
         if(length <= colorNum)
             return true;
         else
-            return (colorMap.getOrDefault(colorNum, 0) + colorMap.getOrDefault(rainbow, 0) >= length);
+            return ((colorNum + colorMap.getOrDefault(rainbow, 0)) >= length);
     }
 }

@@ -17,7 +17,8 @@ export class Player {
   numDestinationCards: number;
   isOtherPlayer: boolean;
   colorCountMap : Map<string, number>;
-
+  destinationCardsEarned: number;
+  destinationCardsLost: number;
 
   constructor(username: string) {
     this.username = username;

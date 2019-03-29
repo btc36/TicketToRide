@@ -16,10 +16,7 @@ export class NothingSelectedState implements DrawTrainCardState {
       }
     }
     viewModel.props.services.drawTrainCard(index);
-    console.log("CHANGING STATE");
     viewModel.changeState(new OneNonWildSelectedState()); 
-    console.log("MY STATE IS");
-    console.log(viewModel.statePatternState);
   }
   enter(viewModel: FaceUpCardsViewModel) {
 

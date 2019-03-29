@@ -44,7 +44,7 @@ export class IngameClientRoot implements ISubject {
   }
 
   drewTrainCard() {
-    this.notify("drewCard", null);
+    this.notify("drewTrainCard", null);
   }
 
   endTurn() {
@@ -52,7 +52,7 @@ export class IngameClientRoot implements ISubject {
   }
 
   drewDestinationCard() {
-    this.notify("drewCard", null);
+    this.notify("drewDestinationCard", null);
   }
 
   setLocalPlayer(localPlayer: string) {
@@ -259,7 +259,9 @@ export class IngameClientRoot implements ISubject {
     this.notify("updateMessageList", chats);
   }
   
-  presentDestinationCard(destinationCards: any[]){
+  presentDestinationCard(destinationCards: any[]) {
+    console.log("I AM PRESENTING THIS")
+    console.log(destinationCards);
     this.game.presentDestinationCard(destinationCards);
     this.notify("drawDestination", null);
   }
@@ -273,18 +275,22 @@ export class IngameClientRoot implements ISubject {
     this.notify("discardDestination", null);
   }
 
+  whoseTurnIsIt(): string {
+    return this.game.players[this.game.getCurrentTurnIndex()].username;
+  }
+
   currentTurn(username: string){
     this.game.changeTurn(username);
     this.notify("playerInfoChanged", null);
     if (username == this.localPlayer) {
       this.notify("isMyTurn", null);
-      console.log("JUST NOTIFIED ABOUT TURN2")
     }
   }
 
   updateScores(scores: number[]){
     this.game.updateScores(scores);
     this.notify("playerInfoChanged", null);
+    this.notify("myHandUpdated", null);
   }
 
   endGame(username: string){
