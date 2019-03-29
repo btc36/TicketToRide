@@ -17,11 +17,26 @@ export class MapViewModel extends React.Component<IngameViewModelProps, State> i
     } else if (updateType == "updatedPlayerList") {
       this.setState({ ownedRoutes: this.props.services.getAllOwnedRoutes() });
       this.forceUpdate();
+    } else if (updateType == "drewTrainCard") {
+      this.setState({ canClaimRoute: false });
+    } else if (updateType == "drewDestinationCard") {
+      this.setState({ canClaimRoute: false });
+    } else if (updateType == "isMyTurn") {
+      this.setState({ isMyTurn: true });
+    } else if (updateType == "endTurn") {
+      this.setState({ isMyTurn: false });
+      this.setState({ canClaimRoute: true });
     }
   }
 
   claimRoute(route: Route) {
-    this.props.services.claimRoute(route);
+    if (!this.state.isMyTurn) {
+      alert("WAIT YOUR TURN BUDDY");
+    } else if (!this.state.canClaimRoute) {
+      alert("You can't do that right now.");
+    } else {
+      this.props.services.claimRoute(route);
+    }
   }
 
   componentDidMount() {
