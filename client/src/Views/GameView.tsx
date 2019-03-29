@@ -7,6 +7,14 @@ export const GameView  = (component: I.IGameViewModel) => {
     <div className="GameView row-view">
       <div className="view">
         <div className="chunk">
+          <div className="space-row">
+            <h3>Map</h3>
+            <p>You are {component.state.currentPlayer}</p>
+          </div>
+          <hr/>
+          {component.mapViewModel}
+        </div>
+        <div className="chunk">
           <h3>Chat</h3><hr/>
           {component.chatViewModel}
         </div>

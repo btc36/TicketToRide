@@ -4,6 +4,7 @@ import * as ReactDOM from "react-dom";
 import { LoginRegisterViewModel } from './ViewModels/LoginRegisterViewModel';
 import { GameListViewModel } from './ViewModels/GameListViewModel';
 import { GameLobbyViewModel } from './ViewModels/GameLobbyViewModel';
+import { GameOverViewModel } from './ViewModels/GameOverViewModel';
 import { MapViewModel } from './ViewModels/MapViewModel';
 import { DestinationCardSelectionViewModel } from './ViewModels/DestinationCardSelectionViewModel';
 import { FaceUpCardsViewModel } from './ViewModels/FaceUpCardsViewModel';
@@ -43,6 +44,7 @@ class MainComponent extends React.Component<any, any> {
   gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameViewModel: JSX.Element = <GameViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} ingameServices={this.props.ingameServices}  ingameRoot={ingameRoot}/>;
+  gameOverViewModel: JSX.Element = <GameOverViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices}/>;
 
   render(): JSX.Element {
     if (this.state.page == "loginRegister") {
@@ -53,6 +55,8 @@ class MainComponent extends React.Component<any, any> {
       return this.gameListViewModel;
     } else if (this.state.page == "lobbyGame") {
       return this.gameLobbyViewModel;
+    } else if (this.state.page == "gameOver") {
+      return this.gameOverViewModel;
     } else {
       return <p>Page {this.state.page} not found.</p>;
     }
