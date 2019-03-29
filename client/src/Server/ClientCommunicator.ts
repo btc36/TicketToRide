@@ -257,10 +257,12 @@ export class ClientCommunicator {
       for (let i = 0; i < players.length; i++)
       {
         this.inGameClientFacade.updateNumDestinationCards(players[i].username, players[i].destCardNum);
-        //TRAIN CARDS
-        this.inGameClientFacade.updateNumTrainCars(players[i].username, players[i].trainCardNum);
-        //TRAINS NOT CARDS
-        this.inGameClientFacade.updateNumTrainCardsInHand(players[i].username, players[i].trainNum);
+
+        //train carDs NOT TRAIN CARS
+        this.inGameClientFacade.updateNumTrainCardsInHand(players[i].username, players[i].trainCardNum);
+
+        //train cars NOT CARDS
+        this.inGameClientFacade.updateNumTrainCars(players[i].username, players[i].trainNum);
       }
 
       const faceUps = cmd._paramValues[5];
