@@ -84,6 +84,10 @@ export class IngameExternalClientFacade {
   //   this.root.updateNumTrainCars(player,numUsed)
   // }
 
+  updateTrainCardsInHand(cards: any) {
+    this.root.updateTrainCardsInHand(cards);
+  }
+
   updateNumTrainCardsInHand(player:string,numRemaining:number) {
     this.root.setNumTrainCards(player,numRemaining)
   }
@@ -156,8 +160,12 @@ export class IngameExternalClientFacade {
   updateScores(scores: number[]){
     this.root.updateScores(scores);
   }
-  endGame(username: string){
-    this.root.endGame(username);
+  endGame(gameID: string, winner: string, claimed: number[], unclaimed: number[], longest: string[]){
+    this.root.endGame(winner, claimed, unclaimed, longest);
+  }
+  lastRound()
+  {
+    this.root.lastRound();
   }
 
 }

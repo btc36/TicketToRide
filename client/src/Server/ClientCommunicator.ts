@@ -100,6 +100,7 @@ export class ClientCommunicator {
         this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);
       }
       else {
+        this.inGameClientFacade.updateTrainCardsInHand(cmd._paramValues[5]);
         //cmd._paramValues[4]
         const city1 = cmd._paramValues[4].cityOne;
         const city2 = cmd._paramValues[4].cityTwo;
@@ -311,7 +312,15 @@ export class ClientCommunicator {
 
     }
     else if (cmd._methodName == "endGame") {
-      this.inGameClientFacade.endGame(cmd._paramValues[2]);
+      let longestPathUsernames = cmd._paramValues[6];
+      let unclaimedPoints = cmd._paramValues[5];
+      let claimedPoints = cmd._paramValues[4];
+      let winner = cmd._paramValues[3]
+      let gameID = cmd._paramValues[2];
+      this.inGameClientFacade.endGame(gameID, winner, claimedPoints, unclaimedPoints, longestPathUsernames);
+    }
+    else if (cmd._methodName == "lastRound") {
+      this.inGameClientFacade.lastRound();
     }
   }
 }
