@@ -22,10 +22,19 @@ export class IngameInternalClientFacade {
   }
 
   claimRoute(route: Route) {
-    let gameID = this.root.getGameID();
-    let username = this.root.getUsername();
-    this.SendChatCommand("Claimed the route from " + route.getCities()[0] + " to " + route.getCities()[1]);
-    this.proxy.claimRoute(route, username, gameID);
+    if(this.root.preferredColor == null && route.color == "grey") {
+      alert("Please select which train cards you would like to spend.");
+    }
+    else {
+      if(route.color != "grey") {
+        this.root.preferredColor = route.color;
+      }
+      let gameID = this.root.getGameID();
+      let username = this.root.getUsername();
+      let prefColor = this.root.preferredColor;
+      this.SendChatCommand("Claimed the route from " + route.getCities()[0] + " to " + route.getCities()[1]);
+      this.proxy.claimRoute(route, username, gameID, prefColor);
+    }
   }
 
   isMyTurn(): boolean {
@@ -38,6 +47,10 @@ export class IngameInternalClientFacade {
 
   NotifyStartGame() {
 
+  }
+
+  setPreferredColor(color: string) {
+    this.root.preferredColor = color;
   }
 
   getChatHistory(){

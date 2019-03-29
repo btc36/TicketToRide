@@ -16,8 +16,7 @@ export const PlayerHandView  = (component: I.IPlayerHandViewModel) => {
   console.log(trainCards);
 
   trainCards.forEach((value: number, key: string) => {
-    let html = ""
-    if(key == component.state.preferredColor) {
+    if(key == component.state.preferredColor) {//Bolds this item in the list
       trainCardsList.push(
         <li id={key} onClick={component.selectPreferredCard}><b> {key} : {value}</b></li>
       )

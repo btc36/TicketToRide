@@ -18,6 +18,7 @@ export class IngameClientRoot implements ISubject {
   game: Game; // a game
   session: Session;
   localPlayer: string;
+  preferredColor: string;
 
   constructor() {
     this.game = new Game();
