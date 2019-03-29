@@ -4,7 +4,7 @@ import { initialState, State, IGameOverViewModel } from "./IGameOverViewModel";
 import { IObserver } from "./IObserver";
 import { IngameViewModelProps } from "./ViewModelProps";
 
-export class GameOverViewModel extends React.Component<any, State> implements IGameOverViewModel, IObserver {
+export class GameOverViewModel extends React.Component<IngameViewModelProps, State> implements IGameOverViewModel, IObserver {
 
   state: State = initialState;
 
@@ -13,16 +13,13 @@ export class GameOverViewModel extends React.Component<any, State> implements IG
   }
 
   componentDidMount() {
+    const people = this.props.services.getPlayers();
+    const winner = this.props.services.getWinner();
+    const mostRoutes = this.props.services.getPlayerWithMostRoutes();
     this.setState({
-      people: [
-        { name: "Lincoln", score: 10, numTrains: 20, dcEarned: 50, dcLost: 10 },
-        { name: "Ben", score: 10, numTrains: 20, dcEarned: 50, dcLost: 10 },
-        { name: "Brennah", score: 10, numTrains: 20, dcEarned: 50, dcLost: 10 },
-        { name: "Jake", score: 10, numTrains: 20, dcEarned: 50, dcLost: 10 },
-        { name: "Jordan", score: 10, numTrains: 20, dcEarned: 50, dcLost: 10 }
-      ],
-      winner: "Lincoln",
-      mostRoutes: "Lincoln"
+      people: people,
+      winner: winner,
+      mostRoutes: mostRoutes
     });
   }
 

@@ -6,6 +6,7 @@ import { Route } from "../Models/Route";
 import { PlayerHand } from "../Models/PlayerHand";
 import {TrainCard} from "../Models/TrainCard";
 import {Game} from "../Models/Game";
+import {Player} from "../Models/Player";
 
 // calls proxy
 export class IngameInternalClientFacade {
@@ -19,6 +20,22 @@ export class IngameInternalClientFacade {
 
   randomize() {
     this.root.randomize();
+  }
+
+  getPlayers(): Array<Player> {
+    return this.root.getPlayerList();
+  }
+
+  getWinner(): Player {
+    return null;
+  }
+
+  getPlayerWithMostRoutes(): Player {
+    return null;
+  }
+
+  whoseTurnIsIt(): string {
+    return this.root.whoseTurnIsIt();
   }
 
   claimRoute(route: Route) {
@@ -58,6 +75,10 @@ export class IngameInternalClientFacade {
   endTurn() {
     this.root.endTurn();
     this.proxy.endTurn(this.root.getGameID(), this.root.getLocalPlayer());
+  }
+
+  whoAmI() {
+    return this.root.getLocalPlayer();
   }
 
   whoseTurn() {
