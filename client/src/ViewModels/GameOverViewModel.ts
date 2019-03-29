@@ -16,10 +16,12 @@ export class GameOverViewModel extends React.Component<IngameViewModelProps, Sta
     const people = this.props.services.getPlayers();
     const winner = this.props.services.getWinner();
     const mostRoutes = this.props.services.getPlayerWithMostRoutes();
+    const longestRoutes = this.props.services.getPlayersWithLongestRoutes();
     this.setState({
       people: people,
       winner: winner,
-      mostRoutes: mostRoutes
+      mostRoutes: mostRoutes,
+      longestPaths : longestRoutes
     });
   }
 

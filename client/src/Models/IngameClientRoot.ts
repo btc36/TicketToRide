@@ -319,6 +319,7 @@ export class IngameClientRoot implements ISubject {
     this.game.setWinner(winner);
     this.game.setClaimedPoints(claimed);
     this.game.setUnclaimedPoints(unclaimed);
+    this.game.setLongestPaths(longest);
     //TODO notify the game over view!
     //this.notify("playerInfoChanged", null);
   }
@@ -332,6 +333,9 @@ export class IngameClientRoot implements ISubject {
 
   getPlayerWithMostRoutes(): Player{
     return this.game.getPlayerWithMostRoutes();
+  }
+  getPlayersWithLongestRoutes(): Array<Player>{
+    return this.game.getPlayersWithLongestRoutes();
   }
 
   lastRound(): void {
