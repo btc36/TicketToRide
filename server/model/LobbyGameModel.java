@@ -5,6 +5,23 @@ import java.util.*;
 public class LobbyGameModel extends GameSetUp
 {
 
+    public List<Integer> getUnClaimedPoints() {
+        List<Integer> list = new ArrayList<>();
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            list.add(p.getUnclaimedDestPoint());
+        }
+        return list;
+    }
+    public List<Integer> getClaimedPoints() {
+        List<Integer> list = new ArrayList<>();
+        for(PlayerModel p : playerList.getPlayerList())
+        {
+            list.add(p.getClaimedDestPoint());
+        }
+        return list;
+    }
+
     public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}
     private State state;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);

@@ -417,11 +417,13 @@ public class GameFacade extends Facade
                 game.endGame();
 
             message = sMessage + endGame;
+            List<Integer> claimedPoints = game.getClaimedPoints();
+            List<Integer> unclaimedPoints = game.getUnClaimedPoints();
             winner = game.getWinner().getUsername();
             GenericCommand command = new GenericCommand(
                     gameClass, endGame,
-                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString},
-                    new Object[]{true, message, gameID, winner}
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList},
+                    new Object[]{true, message, gameID, winner, claimedPoints, unclaimedPoints}
             );
 
             commandCheck(command);
@@ -465,10 +467,12 @@ public class GameFacade extends Facade
         List<Integer> scores = game.getScores();
         List<PlayerModel> players = game.getPlayerList().getPlayerList();
         List<TrainCard> faceupCards = game.getFaceUpCards().getFaceUpCards();
+        int numTrainCards = game.getTrainDeck().getSize();
+        int numDestCards = game.getDestDeck().getSize();
         GenericCommand command = new GenericCommand(
                 gameClass, updateScore,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList},
-                new Object[]{true, sMessage, gameID, scores, players, faceupCards}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList, _paramTypeInteger,_paramTypeInteger},
+                new Object[]{true, sMessage, gameID, scores, players, faceupCards,numTrainCards,numDestCards}
         );
         commandCheck(command);
         System.out.println(sMessage + " updateScore");

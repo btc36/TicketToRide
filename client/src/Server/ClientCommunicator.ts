@@ -281,7 +281,10 @@ export class ClientCommunicator {
       this.inGameClientFacade.setClaimedRoutes(claimedRoutes);
     }
     else if (cmd._methodName == "updateScore") {
-
+      let sizeTrainDeck = cmd._paramValues[6];
+      let sizeDestDeck = cmd._paramValues[7];
+      this.inGameClientFacade.setNumTrainCardsRemaining(sizeTrainDeck);
+      this.inGameClientFacade.setNumDestinationCardsRemaining(sizeDestDeck);
       let players = cmd._paramValues[4];
       for (let i = 0; i < players.length; i++)
       {
@@ -311,6 +314,9 @@ export class ClientCommunicator {
     }
     else if (cmd._methodName == "endGame") {
       this.inGameClientFacade.endGame(cmd._paramValues[2]);
+    }
+    else if (cmd._methodName == "lastRound") {
+      this.inGameClientFacade.lastRound();
     }
   }
 }
