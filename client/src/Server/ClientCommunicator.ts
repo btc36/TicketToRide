@@ -194,16 +194,6 @@ export class ClientCommunicator {
           //const hand = new PlayerHand();
 
           let dests = Array<DestinationCard>();
-
-          for (let j = 0; j < players[i].destinationCards.length; j++) {
-            const city1 = players[i].destinationCards[j].city1;
-            const city2 = players[i].destinationCards[j].city2;
-            const pointValue = players[i].destinationCards[j].pointValue;
-            dests.push(new DestinationCard(city1, city2, pointValue));
-          }
-          //hand.addDestinationCard(dests);
-          console.log("PASSING STUFF");
-          this.inGameClientFacade.presentDestinationCard(true, "NONE", dests);
           let trains = Array<TrainCard>();
           for (let j = 0; j < players[i].trainCards.length; j++) {
             hand.addTrainCard(new TrainCard(players[i].trainCards[j].color));
@@ -211,7 +201,16 @@ export class ClientCommunicator {
           player.myHand = hand;
           gamePlayers.push(player);
           if (players[i].username == this.clientFacade.getCurrentUser()) {
-              this.inGameClientFacade.setLocalPlayer(player);
+            this.inGameClientFacade.setLocalPlayer(player);
+            for (let j = 0; j < players[i].destinationCards.length; j++) {
+              const city1 = players[i].destinationCards[j].city1;
+              const city2 = players[i].destinationCards[j].city2;
+              const pointValue = players[i].destinationCards[j].pointValue;
+              dests.push(new DestinationCard(city1, city2, pointValue));
+            }
+            //hand.addDestinationCard(dests);
+            console.log("PASSING STUFF");
+            this.inGameClientFacade.presentDestinationCard(true, "NONE", dests);
             }
           }
         this.inGameClientFacade.setPlayerList(gamePlayers);
