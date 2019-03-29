@@ -107,7 +107,7 @@ public class GameFacade extends Facade
      * @param username which user is performing the action
      * @return list of command that contains
      */
-    public List<GenericCommand> discardDestinationCard(String gameID, String username, String city1, String city2, Integer pointValue)
+    public List<GenericCommand> discardDestinationCard(String gameID, String username, String city1, String city2, Integer pointValue, String city3, String city4, Integer pointValue2)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message;
@@ -119,26 +119,39 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             if(pointValue != -1)
             {
-                PlayerModel p = getPlayer(username);
                 DestinationCard card = new DestinationCard(city1, city2, pointValue);
-                p.removeDestinationCard(card);
-                game.getDestDeck().add(card);
+                discardDest(card, username, game);
+                kept -= 1;
+            }
+            if(pointValue2 != -1)
+            {
+                DestinationCard card = new DestinationCard(city3, city4, pointValue2);
+                discardDest(card, username, game);
                 kept -= 1;
             }
 
-            message = sMessage + discard;
-            command = commandForDestination(discard, true, message, gameID, username, null, kept);
-            commandsForClient.add(command);
-            commandsForClient.add(updateScoreCommand(gameID));
-        }
-        else
-        {
-            commandsForClient.add(failureCommand(message, discard));
+            //check if kept is 1 or 2??
+            if(kept == 1 || kept == 2)
+            {
+                message = sMessage + discard;
+                command = commandForDestination(discard, true, message, gameID, username, null, kept);
+                commandsForClient.add(command);
+                commandsForClient.add(updateScoreCommand(gameID));
+                System.out.println(message);
+                return commandsForClient;
+            }
         }
 
         System.out.println(message);
-
+        commandsForClient.add(failureCommand(message, discard));
         return commandsForClient;
+    }
+
+    private void discardDest(DestinationCard card, String username, LobbyGameModel game)
+    {
+        PlayerModel p = getPlayer(username);
+        p.removeDestinationCard(card);
+        game.getDestDeck().add(card);
     }
 
     /**

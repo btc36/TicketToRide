@@ -14,12 +14,12 @@ import { PerformingOtherActionState } from "./PerformingOtherActionState";
 export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, State> implements IFaceUpCardsViewModel, IObserver, IStateful {
 
   state: State = initialState;
-  statePatternState = new DoneDrawingState();
 
   constructor(props) {
     super(props);
     this.drawCard = this.drawCard.bind(this);
     this.drawFaceUp = this.drawFaceUp.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
       this.setState({ numTrainCardsRemaining: this.props.services.getNumTrainCardsRemaining() });
     } else if (updateType == "keptDestination") {
       this.setState({ numDestinationCardsRemaining: this.props.services.getNumDestinationCardsRemaining() });
-    } else if (updateType == "isMyTurn") {
+    } else if (updateType == "isMyTurn" && (this.state.drawState instanceof DoneDrawingState || this.state.drawState == null)) {
       this.changeState(new NothingSelectedState());
     } else if (updateType == "endTurn") {
       this.changeState(new DoneDrawingState());
@@ -53,11 +53,11 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
   }
 
   drawCard(e: any) {
-    this.statePatternState.drawTrainCard(this,-1);//-1 for mystery card
+    this.state.drawState.drawTrainCard(this,-1);//-1 for mystery card
   }
 
   drawFaceUp(e: any) {
-    this.statePatternState.drawTrainCard(this,this.state.faceUpIndex);//Index of the card selected
+    this.state.drawState.drawTrainCard(this,this.state.faceUpIndex);//Index of the card selected
   }
 
   onFaceUpIndexChanged = (e: any) => {
@@ -76,7 +76,7 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
   }
 
   changeState(newState:DrawTrainCardState): void {
-    this.statePatternState = newState;
+    this.setState({ "drawState": newState });
   }
 }
 
