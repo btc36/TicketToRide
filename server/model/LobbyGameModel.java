@@ -22,6 +22,12 @@ public class LobbyGameModel extends GameSetUp
         return list;
     }
 
+    public void lastRound(String username)
+    {
+        if(username.equals("")) lastTurn = username;
+        state = State.LASTROUND;
+    }
+
     public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}
     private State state;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
@@ -48,6 +54,7 @@ public class LobbyGameModel extends GameSetUp
      * END
      */
     private final int LONGESTPOINT = 15;
+    private String lastTurn;
     private PlayerModel winner;
     private int longestPath;
     private Set<String> longestUsers;
@@ -70,6 +77,7 @@ public class LobbyGameModel extends GameSetUp
         trainDeck = null;
         faceUpCards = null;
         lastRound = false;
+        lastTurn = "";
         winner = null;
     }
 
@@ -327,7 +335,6 @@ public class LobbyGameModel extends GameSetUp
                 }
             }
         }
-
         System.out.println("WINNER : " + winner.getUsername());
     }
 
@@ -470,6 +477,9 @@ public class LobbyGameModel extends GameSetUp
             scores.add(p.getScore());
         return scores;
     }
+
+    public void setLastTurn(String username) { lastTurn = username; }
+    public String getLastTurn() { return lastTurn; }
 
     /*************************************** END GETTERS AND SETTERS ***************************************/
 

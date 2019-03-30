@@ -354,7 +354,7 @@ public class GameFacade extends Facade
     /**
      * end the turn for a single client
      * @param gameID for which game
-     * @param username for which user
+     * @param username username whose turn just ended
      * @return List that contains currenTurn or currentTurn + lastRound
      *      * or endGame (which means no more turns)
      *      * updateScore for all three
@@ -370,8 +370,8 @@ public class GameFacade extends Facade
             game.endTurn(); // turn change in game and the player
 
             if(p.getTrainNum() <= LASTCARNUM)
-                game.setState(LASTROUND);
-            else if(game.getState() == LASTROUND)
+                game.lastRound(username);
+            else if(game.getState() == LASTROUND && game.getLastTurn().equals(username))
                 game.setState(FINISHED);
 
             commandsForClient.addAll(roundCheck(game));

@@ -109,6 +109,18 @@ public class Facade
         return message;
     }
 
+    protected String isGamEnded(String gameID)
+    {
+        String message = "";
+        if(!isGameEnded(gameID)) { message += "game is over"; }
+        return message;
+    }
+
+    private boolean isGameEnded(String gameID)
+    {
+        return (getGameByID(gameID).getState() == FINISHED);
+    }
+
 
     protected String checkPlayer(String username)
     {
