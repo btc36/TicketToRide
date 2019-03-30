@@ -214,7 +214,7 @@ public class LobbyGameModel extends GameSetUp
 
                 Set<City> visited = new HashSet<>(); // prevents visiting same city
                 if(destinationTraverse(src, dst, visited)) // if found complete the card
-                    player.completeDestinaton(card);
+                    player.completeDestination(card);
             }
         }
     }
@@ -269,7 +269,7 @@ public class LobbyGameModel extends GameSetUp
         luckyGuy.claimRoute(route, city1, city2, colors);
         luckyGuy.addScore(scoreMap.get(routeLength));
 
-        checkDestinationCard(luckyGuy);
+//        checkDestinationCard(luckyGuy);
     }
 
     private List<String> putBackToDeck(String color, int colorNum, int routeLength)
@@ -343,8 +343,12 @@ public class LobbyGameModel extends GameSetUp
     public void endGame()
     {
         //this.state = State.FINISHED;
+
         for(PlayerModel p : playerList.getPlayerList())
+        {
+            checkDestinationCard(p);
             p.calculateDestination();
+        }
         findLongestRoute();
         findWinner();
     }

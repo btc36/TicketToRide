@@ -130,9 +130,9 @@ public class PlayerModel
         trainNum -= len;
     }
 
-    public void completeDestinaton(DestinationCard card)
+    public void completeDestination(DestinationCard card)
     {
-        score += card.getPointValue();
+        //score += card.getPointValue();
         card.complete();
     }
 
