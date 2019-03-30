@@ -22,10 +22,10 @@ export class Game {
     gameID: string;
     winner: string;
     longestPaths: Player[];
-    claimedRoutes: Route[];
+    claimedRoutes: Array<[String, Route]>;
 
   constructor() {
-      this.claimedRoutes = new Array<Route>();
+      this.claimedRoutes = new Array<[String, Route]>();
       this.gameID = "EPICGAME";
       this.players = new Array<Player>();
       this.longestPaths = new Array<Player>();
@@ -82,6 +82,15 @@ export class Game {
       return this.players;
     }
 
+    usernameToColor(usernameIn: string) { //function used by map view to convert usernames into colors for claiming routes
+      for(let playerTmp of this.players) {
+        if(playerTmp.getUsername() == usernameIn) {
+          return playerTmp.color;
+        }
+      }
+      throw new Error("Unable to find color of username: " + usernameIn);
+    }
+
     getCurrentTurnIndex(): number {
       return this.whoseTurn;
     }
@@ -130,12 +139,12 @@ export class Game {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  setClaimedRoutes(routes: Route[]): void {
+  setClaimedRoutes(routes: Array<[String, Route]>): void {
     this.claimedRoutes = routes;
   }
 
   claimRoute(username: string, route: Route): void {
-      this.claimedRoutes.push(route);
+      this.claimedRoutes.push([this.usernameToColor(username), route]);
       this.players.forEach((player) => {
         if (player.getUsername() == username) {
           player.claimRoute(route);
@@ -172,16 +181,16 @@ export class Game {
     console.log("DSFSDOFDIOSFIOSDFOIDSFOISDOIFDS");
     this.players.forEach((thisPlayer) => {
       if (thisPlayer.getUsername() == username) {
-        thisPlayer.drawDestinationCard(destinationCards);
-          return;
-        }
-       });
+      thisPlayer.drawDestinationCard(destinationCards);
+        return;
+      }
+    });
     //this.nextTurn();
-    }
+  }
 
-    setFaceUpCards(faceUpCards: FaceUpCards): void {
-        this.faceUpCards = faceUpCards;
-    }
+  setFaceUpCards(faceUpCards: FaceUpCards): void {
+      this.faceUpCards = faceUpCards;
+  }
 
   updatePlayerPoints(username: string, points: number): void {
         this.players.forEach((player) => {

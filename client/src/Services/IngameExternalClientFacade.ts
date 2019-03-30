@@ -24,7 +24,7 @@ export class IngameExternalClientFacade {
     this.root = root;
   }
 
-  setClaimedRoutes(routes: Route[]) {
+  setClaimedRoutes(routes: Array<[String, Route]>) {
     this.root.setClaimedRoutes(routes);
   }
 

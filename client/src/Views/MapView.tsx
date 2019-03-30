@@ -70,13 +70,13 @@ export const renderMapAddons = (map: any, maps: any, component: I.IMapViewModel)
   renderMarkers(map, maps, component);
 }
 
-const renderRoute = (route: Route, component: I.IMapViewModel, opacity = 1)  => {
+const renderRoute = (route: Route, component: I.IMapViewModel, opacity = 1, color = "red")  => {
   let invisibleClickableLine = new MAPS.Polyline({
     path: [
       I.cityToCoordinates.get(route.getCities()[0]),
       I.cityToCoordinates.get(route.getCities()[1])
     ],
-    strokeColor: route.color,
+    strokeColor: color,
     strokeOpacity: opacity,
     strokeWeight: 6
   });
@@ -90,7 +90,8 @@ const renderRoute = (route: Route, component: I.IMapViewModel, opacity = 1)  => 
 export const MapView  = (component: I.IMapViewModel) => { 
   if (MAP && MAPS && component.state.ownedRoutes) {
     for (let i = 0; i < component.state.ownedRoutes.length; i++) {
-      renderRoute(component.state.ownedRoutes[i], component);
+      let claimerColor = component.state.ownedRoutes[i][0];
+      renderRoute(component.state.ownedRoutes[i][1], component, 1, claimerColor.toString());
     }
   }
   return (

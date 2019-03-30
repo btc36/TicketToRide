@@ -43,9 +43,9 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
   }
 
-  setClaimedRoutes(routes: Route[]) {
-    this.notify("notifyMapClaimedRoutes", null);
+  setClaimedRoutes(routes: Array<[String, Route]>) {
     this.game.setClaimedRoutes(routes);
+    this.notify("notifyMapClaimedRoutes", null);
   }
 
   drewTrainCard() {

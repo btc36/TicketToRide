@@ -41,7 +41,7 @@ public class GameSetUp {
     private final String Slc = "Salt Lake City";
     private final String Denver = "Denver";
     private final String Oklahoma = "Oklahoma";
-    private final String Kansas = "Kansas";
+    private final String Kansas = "Kansas City";
     private final String Louis = "St Louis";
     private final String Rock = "Little Rock";
     private final String Dallas = "Dallas";
