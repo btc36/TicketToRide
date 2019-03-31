@@ -38,6 +38,12 @@ export class GameViewModel extends React.Component<any, State> implements IGameV
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
     }
+    else if (updateType == "lastRound") {
+      alert("LAST ROUND!");
+    }
+    else if (updateType == "gameOver") {
+      this.props.main.setState({"page": "gameOver"});      
+    }
   }
 
   onClickRandomize = (e) => {

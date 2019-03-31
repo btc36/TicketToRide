@@ -338,7 +338,12 @@ export class IngameClientRoot implements ISubject {
     return this.game.getPlayersWithLongestRoutes();
   }
 
-  lastRound(): void {
-    this.game.lastRound();
+  lastRound(): boolean {
+    let returnVal = false;
+    if (this.game.lastRound()){
+      returnVal = true;
+      this.notify("lastRound", null);
+    }
+    return returnVal;
   }
 }

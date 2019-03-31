@@ -165,8 +165,9 @@ export class IngameExternalClientFacade {
   }
   lastRound()
   {
-    this.SendChatCommand("It is the last round.");
-    this.root.lastRound();
+    if (this.root.lastRound()){
+      this.SendChatCommand("It is the last round.");
+    }
   }
 
 }

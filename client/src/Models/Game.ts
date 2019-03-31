@@ -23,6 +23,7 @@ export class Game {
     winner: string;
     longestPaths: Player[];
     claimedRoutes: Array<[String, Route]>;
+    lastRoundOver: boolean;
 
   constructor() {
       this.claimedRoutes = new Array<[String, Route]>();
@@ -42,6 +43,7 @@ export class Game {
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
       this.winner = null;
+      this.lastRoundOver = false;
   }
 
     setGameID(input: string): void{
@@ -322,7 +324,12 @@ export class Game {
     });
     return mrPlayer;
   }
-  lastRound() {
+  lastRound(): boolean {
+    if (!this.lastRoundOver){
+      this.lastRoundOver = true;
+      return true;
+    }
+    return false
   }
 
   getPlayerByUsername(username : string) : Player {
