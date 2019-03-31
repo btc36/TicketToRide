@@ -25,7 +25,7 @@ public class GameFacade extends Facade
     private final String updateScore = "updateScore";
     private final String lastRound = "lastRound";
     private final String whoseTurn = "whoseTurn";
-    private final int LASTCARNUM = 2;
+    private final int LASTCARNUM = 40;
 
 
     /**
@@ -373,6 +373,8 @@ public class GameFacade extends Facade
                 game.lastRound(username);
             else if(game.getState() == LASTROUND && game.getLastTurn().equals(username))
                 game.setState(FINISHED);
+            else if(game.getState() == FINISHED)
+                endGame(gameID);
 
             commandsForClient.addAll(roundCheck(game));
         }
