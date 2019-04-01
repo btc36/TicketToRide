@@ -327,7 +327,7 @@ public class LobbyGameModel extends GameSetUp
     {
         //this.state = State.FINISHED;
 
-        for(PlayerModel p : playerList.getPlayerList())
+        for(PlayerModel p : getPlayers())
         {
             checkDestinationCard(p);
             p.calculateDestination();
@@ -432,7 +432,7 @@ public class LobbyGameModel extends GameSetUp
 
     public int getCurrentPlayerNum()
     {
-        currentPlayerNum = playerList.getPlayerList().size();
+        currentPlayerNum = getPlayers().size();
         return currentPlayerNum;
     }
 
@@ -442,7 +442,7 @@ public class LobbyGameModel extends GameSetUp
     public void setLastRound(boolean b) { lastRound = b; }
     public PlayerModel getPlayer(String username)
     {
-        for(PlayerModel p : playerList.getPlayerList())
+        for(PlayerModel p : getPlayers())
             if(p.getUsername().equals(username))
                 return p;
         return null;
@@ -463,7 +463,7 @@ public class LobbyGameModel extends GameSetUp
     public List<Integer> getScores()
     {
         List<Integer> scores = new ArrayList<>();
-        for(PlayerModel p : playerList.getPlayerList())
+        for(PlayerModel p : getPlayers())
             scores.add(p.getScore());
         return scores;
     }
@@ -473,16 +473,24 @@ public class LobbyGameModel extends GameSetUp
 
     public List<Integer> getUnClaimedPoints()
     {
-        if(unClaimedPoints.isEmpty())
-            for(PlayerModel p : playerList.getPlayerList())
+        if(unClaimedPoints.size() != getPlayers().size())
+        {
+            unClaimedPoints.clear();
+            for(PlayerModel p : getPlayers())
                 unClaimedPoints.add(p.getUnclaimedDestPoint());
+        }
+
         return unClaimedPoints;
     }
     public List<Integer> getClaimedPoints()
     {
-        if(claimedPoints.isEmpty())
-            for(PlayerModel p : playerList.getPlayerList())
+        if(claimedPoints.size() != getPlayers().size())
+        {
+            claimedPoints.clear();
+            for(PlayerModel p : getPlayers())
                 claimedPoints.add(p.getClaimedDestPoint());
+        }
+
 
         return claimedPoints;
     }
@@ -492,6 +500,8 @@ public class LobbyGameModel extends GameSetUp
         if(lastTurn.equals("")) lastTurn = username;
         state = State.LASTROUND;
     }
+
+    private List<PlayerModel> getPlayers() { return playerList.getPlayerList(); }
 
 
     /*************************************** END GETTERS AND SETTERS ***************************************/
