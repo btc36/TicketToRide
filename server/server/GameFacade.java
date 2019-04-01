@@ -373,9 +373,7 @@ public class GameFacade extends Facade
                 game.lastRound(username);
             else if(game.getState() == LASTROUND && game.getLastTurn().equals(username))
                 game.setState(FINISHED);
-            else if(game.getState() == FINISHED)
-                endGame(gameID);
-
+                
             commandsForClient.addAll(roundCheck(game));
         }
         else commandsForClient.add(failureCommand(message, endTurn));
