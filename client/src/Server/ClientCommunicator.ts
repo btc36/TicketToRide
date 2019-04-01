@@ -97,7 +97,7 @@ export class ClientCommunicator {
       console.log("ClaimRoute command recieved");
       //{"_className":"IngameExternalClientFacade","_methodName":"claimRoute","_paramTypes":["java.lang.Boolean","java.lang.String"],"_paramValues":[false,"error : m : claimRoute insufficient resource\n"],"typeSize":2,"valueSize":2}
       if(cmd._paramValues[0] == false) {
-        this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);
+        this.inGameClientFacade.claimRoute(false, cmd._paramValues[1]);//display error message
       }
       else {
         this.inGameClientFacade.updateTrainCardsInHand(cmd._paramValues[5]);
@@ -267,14 +267,16 @@ export class ClientCommunicator {
       this.inGameClientFacade.updateNumberOfDestinationCards(cmd._paramValues[3], cmd._paramValues[5]);
     }
     else if (cmd._methodName == "getRoute") {
-      const claimedRoutes = [];
+      const claimedRoutes = new Array<[String, Route]>();
       for (let i = 0; i < cmd._paramValues[3].length; i++) {
         const city1 = cmd._paramValues[3][i].cityOne;
         const city2 = cmd._paramValues[3][i].cityTwo;
         const length = cmd._paramValues[3][i].length;
         const color = cmd._paramValues[3][i].color;
+        const claimer = cmd._paramValues[3][i].claimedBy;
         const route = new Route(city1, city2, length, color);
-        claimedRoutes.push(route);
+        const claimerColor = this.inGameClientFacade.root.game.usernameToColor(claimer);
+        claimedRoutes.push([claimerColor, route]);      
       }
       
       this.inGameClientFacade.setClaimedRoutes(claimedRoutes);

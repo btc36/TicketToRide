@@ -52,4 +52,12 @@ public class ChatRoom
     public int hashCode() {
         return Objects.hash(gameID);
     }
+
+    public boolean checkChat(String chatMessage)
+    {
+        for(ChatMessage m : messages)
+            if(m.getMessage().equals(chatMessage))
+                return true;
+        return false;
+    }
 }

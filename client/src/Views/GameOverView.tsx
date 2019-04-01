@@ -3,14 +3,23 @@ import * as I from "../ViewModels/IGameOverViewModel";
 
 export const GameOverView  = (component: I.IGameOverViewModel) => {
   let scores = [];
-  const longest = new Array<any>();
+  let longestPeople = [];
+  // const longest = new Array<any>();
   let people = component.state.people;
+  let longest = component.state.longestPaths;
   for (let i = 0; i < people.length; i++) {
     scores.push(
       <li>
         {people[i].username}: {people[i].score} (Trains: {people[i].numTrains}, DC: {people[i].destinationCardsEarned} - {people[i].destinationCardsLost})
       </li>
     );
+  }
+
+  for (let i = 0; i < longest.length; i++) {
+    longestPeople.push(
+      <li>
+        {longest[i].username}
+      </li>);
   }
   return (
     <div>

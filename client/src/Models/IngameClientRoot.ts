@@ -43,9 +43,9 @@ export class IngameClientRoot implements ISubject {
     this.notify("playerInfoChanged", null);
   }
 
-  setClaimedRoutes(routes: Route[]) {
-    this.notify("notifyMapClaimedRoutes", null);
+  setClaimedRoutes(routes: Array<[String, Route]>) {
     this.game.setClaimedRoutes(routes);
+    this.notify("notifyMapClaimedRoutes", null);
   }
 
   drewTrainCard() {
@@ -319,8 +319,9 @@ export class IngameClientRoot implements ISubject {
     this.game.setWinner(winner);
     this.game.setClaimedPoints(claimed);
     this.game.setUnclaimedPoints(unclaimed);
+    this.game.setLongestPaths(longest);
     //TODO notify the game over view!
-    //this.notify("playerInfoChanged", null);
+    this.notify("transitionPage", "gameOver");
   }
   isMyTurn(): boolean{
     return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
@@ -333,8 +334,16 @@ export class IngameClientRoot implements ISubject {
   getPlayerWithMostRoutes(): Player{
     return this.game.getPlayerWithMostRoutes();
   }
+  getPlayersWithLongestRoutes(): Array<Player>{
+    return this.game.getPlayersWithLongestRoutes();
+  }
 
-  lastRound(): void {
-    this.game.lastRound();
+  lastRound(): boolean {
+    let returnVal = false;
+    if (this.game.lastRound()){
+      returnVal = true;
+      this.notify("lastRound", null);
+    }
+    return returnVal;
   }
 }

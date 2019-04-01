@@ -49,7 +49,7 @@ export type State = {
   readonly apiKey: string,
   readonly center: any,
   readonly zoom: number,
-  readonly ownedRoutes: Array<Route>
+  readonly ownedRoutes: Array<[String, Route]>
   readonly isMyTurn: boolean,
   readonly canClaimRoute: boolean
 }

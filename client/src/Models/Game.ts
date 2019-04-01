@@ -21,12 +21,15 @@ export class Game {
     potentialDestinationCards: Array<DestinationCard>;
     gameID: string;
     winner: string;
-    claimedRoutes: Route[];
+    longestPaths: Player[];
+    claimedRoutes: Array<[String, Route]>;
+    lastRoundOver: boolean;
 
   constructor() {
-      this.claimedRoutes = new Array<Route>();
+      this.claimedRoutes = new Array<[String, Route]>();
       this.gameID = "EPICGAME";
       this.players = new Array<Player>();
+      this.longestPaths = new Array<Player>();
       //this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
       //let currCard = new TrainCard("blue");
       //this.players[0].drawTrainCard(currCard);
@@ -40,6 +43,7 @@ export class Game {
       this.chatRoom = new ChatRoom("thisGame", [new ChatMessage("BEN", "Hello, World!", new Date())]);
       this.potentialDestinationCards = [new DestinationCard("Salt Lake", "Miami", 15), new DestinationCard("Boston", "Chicago", 10), new DestinationCard("Sacramento", "Mesa", 5)];
       this.winner = null;
+      this.lastRoundOver = false;
   }
 
     setGameID(input: string): void{
@@ -78,6 +82,15 @@ export class Game {
 
     getPlayerList(): Array<Player> {
       return this.players;
+    }
+
+    usernameToColor(usernameIn: string) { //function used by map view to convert usernames into colors for claiming routes
+      for(let playerTmp of this.players) {
+        if(playerTmp.getUsername() == usernameIn) {
+          return playerTmp.color;
+        }
+      }
+      throw new Error("Unable to find color of username: " + usernameIn);
     }
 
     getCurrentTurnIndex(): number {
@@ -128,12 +141,12 @@ export class Game {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  setClaimedRoutes(routes: Route[]): void {
+  setClaimedRoutes(routes: Array<[String, Route]>): void {
     this.claimedRoutes = routes;
   }
 
   claimRoute(username: string, route: Route): void {
-      this.claimedRoutes.push(route);
+      this.claimedRoutes.push([this.usernameToColor(username), route]);
       this.players.forEach((player) => {
         if (player.getUsername() == username) {
           player.claimRoute(route);
@@ -170,16 +183,16 @@ export class Game {
     console.log("DSFSDOFDIOSFIOSDFOIDSFOISDOIFDS");
     this.players.forEach((thisPlayer) => {
       if (thisPlayer.getUsername() == username) {
-        thisPlayer.drawDestinationCard(destinationCards);
-          return;
-        }
-       });
+      thisPlayer.drawDestinationCard(destinationCards);
+        return;
+      }
+    });
     //this.nextTurn();
-    }
+  }
 
-    setFaceUpCards(faceUpCards: FaceUpCards): void {
-        this.faceUpCards = faceUpCards;
-    }
+  setFaceUpCards(faceUpCards: FaceUpCards): void {
+      this.faceUpCards = faceUpCards;
+  }
 
   updatePlayerPoints(username: string, points: number): void {
         this.players.forEach((player) => {
@@ -295,6 +308,10 @@ export class Game {
     });
     return localPlayer;
   }
+  getPlayersWithLongestRoutes() {
+    return this.longestPaths; // contains players
+  }
+
   getPlayerWithMostRoutes(): Player {
     let mrPlayer = null;
     let mr = 0;
@@ -307,22 +324,44 @@ export class Game {
     });
     return mrPlayer;
   }
-  lastRound() {
-    let condition = false;
-    if(condition)
-    alert("Last Round");
+  lastRound(): boolean {
+    if (!this.lastRoundOver){
+      this.lastRoundOver = true;
+      return true;
+    }
+    return false
+  }
+
+  getPlayerByUsername(username : string) : Player {
+    this.players.forEach((player) => {
+      if(player.username == username) return player;
+    });
+      return null;
   }
 
   setClaimedPoints(claimed: number[]) {
     let i = 0;
     this.players.forEach((player) => {
       player.setDestinationCardEarned(claimed[i]);
+      i++
     });
   }
   setUnclaimedPoints(unclaimed: number[]) {
     let i = 0;
     this.players.forEach((player) => {
       player.setDestinationCardsLost(unclaimed[i]);
+      i++;
     });
   }
+
+  setLongestPaths(longestPaths: string[])
+  {
+    let i;
+    for(i = 0; i < longestPaths.length; i++) {
+      let player = this.getPlayerByUsername(longestPaths[i]);
+      if(player != null)
+          this.longestPaths.push(player);
+    }
+  }
+
 }

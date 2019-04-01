@@ -24,7 +24,7 @@ export class IngameExternalClientFacade {
     this.root = root;
   }
 
-  setClaimedRoutes(routes: Route[]) {
+  setClaimedRoutes(routes: Array<[String, Route]>) {
     this.root.setClaimedRoutes(routes);
   }
 
@@ -165,7 +165,9 @@ export class IngameExternalClientFacade {
   }
   lastRound()
   {
-    this.root.lastRound();
+    if (this.root.lastRound()){
+      this.SendChatCommand("It is the last round.");
+    }
   }
 
 }

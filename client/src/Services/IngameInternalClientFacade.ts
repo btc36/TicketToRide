@@ -33,6 +33,9 @@ export class IngameInternalClientFacade {
   getPlayerWithMostRoutes(): Player {
     return this.root.getPlayerWithMostRoutes();
   }
+  getPlayersWithLongestRoutes(): Array<Player>{
+    return this.root.getPlayersWithLongestRoutes();
+  }
 
   whoseTurnIsIt(): string {
     return this.root.whoseTurnIsIt();
@@ -169,18 +172,19 @@ export class IngameInternalClientFacade {
     this.proxy.getAllServerRoutes(gameID);
   }
 
-  getAllClaimedRoutes(): Array<Route> {
+  getAllClaimedRoutes(): Array<[String, Route]> {
     return this.root.game.claimedRoutes;
   }
 
-  getAllOwnedRoutes(): Array<Route> {
-    let routes = new Array<Route>();
+  getAllOwnedRoutes(): Array<[String, Route]> {
+    let routes = new Array<[String, Route]>();
     let players = this.root.getPlayerList();
     for (let i = 0; i < players.length; i++) {
-      let r = players[i].getOwnedRoutes();
+      let p = players[i];
+      let r = p.getOwnedRoutes();
       if (r) {
         for (let j = 0; j < r.length; j++) {
-          routes.push(r[j]);
+          routes.push([this.root.game.usernameToColor(p.username), r[j]]);
         }
       }
     }
