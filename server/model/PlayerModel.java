@@ -46,10 +46,9 @@ public class PlayerModel
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
         claimedCities = new HashSet<>();
-        //trainCardNum = 4;
         trainNum = 45;
         // FOR TESTING
-        trainNum = 5;
+        //trainNum = 5;
     }
     public String getUsername() {
         return username;
