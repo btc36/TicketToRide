@@ -49,7 +49,7 @@ public class PlayerModel
         //trainCardNum = 4;
         trainNum = 45;
         // FOR TESTING
-        trainNum = 10;
+        trainNum = 5;
     }
     public String getUsername() {
         return username;

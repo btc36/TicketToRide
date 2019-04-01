@@ -5,29 +5,6 @@ import java.util.*;
 public class LobbyGameModel extends GameSetUp
 {
 
-    public List<Integer> getUnClaimedPoints() {
-        List<Integer> list = new ArrayList<>();
-        for(PlayerModel p : playerList.getPlayerList())
-        {
-            list.add(p.getUnclaimedDestPoint());
-        }
-        return list;
-    }
-    public List<Integer> getClaimedPoints() {
-        List<Integer> list = new ArrayList<>();
-        for(PlayerModel p : playerList.getPlayerList())
-        {
-            list.add(p.getClaimedDestPoint());
-        }
-        return list;
-    }
-
-    public void lastRound(String username)
-    {
-        if(username.equals("")) lastTurn = username;
-        state = State.LASTROUND;
-    }
-
     public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}
     private State state;
     private Map<Integer, Integer> scoreMap = Map.of(1, 1, 2, 2, 3, 4, 4,7,5,10,6,15);
@@ -59,6 +36,8 @@ public class LobbyGameModel extends GameSetUp
     private int longestPath;
     private Set<String> longestUsers;
     boolean lastRound;
+    private List<Integer> claimedPoints;
+    private List<Integer> unClaimedPoints;
 
     public LobbyGameModel(PlayerModel host, int maxPlayer, String gamename, String gameID) { }
 
@@ -79,6 +58,8 @@ public class LobbyGameModel extends GameSetUp
         lastRound = false;
         lastTurn = "";
         winner = null;
+        claimedPoints = new ArrayList<>();
+        unClaimedPoints = new ArrayList<>();
     }
 
     /*************************************** BEGIN START GAME ***************************************/
@@ -98,7 +79,6 @@ public class LobbyGameModel extends GameSetUp
         faceUpCards = new FaceUpCards();
         claimedRoutes = new ArrayList<>();
         longestUsers = new HashSet<>();
-
         /*Cities and Routes*/
         setUpCities();
 
@@ -306,6 +286,9 @@ public class LobbyGameModel extends GameSetUp
     /***************************************        BEGING END OF GAME      ***************************************/
     private void findWinner()
     {
+        // avoid duplicate calculation from polling
+        if(winner != null) return;
+
         int max = 0;
         List<Integer> indices = new ArrayList<>();
         List<PlayerModel> list = playerList.getPlayerList();
@@ -357,6 +340,9 @@ public class LobbyGameModel extends GameSetUp
     private void findLongestRoute()
     {
         longestPath = 0;
+
+        // avoid duplicate calculation from polling
+        if(!longestUsers.isEmpty()) return;
 
         for(PlayerModel p : playerList.getPlayerList())
         {
@@ -484,6 +470,29 @@ public class LobbyGameModel extends GameSetUp
 
     public void setLastTurn(String username) { lastTurn = username; }
     public String getLastTurn() { return lastTurn; }
+
+    public List<Integer> getUnClaimedPoints()
+    {
+        if(unClaimedPoints.isEmpty())
+            for(PlayerModel p : playerList.getPlayerList())
+                unClaimedPoints.add(p.getUnclaimedDestPoint());
+        return unClaimedPoints;
+    }
+    public List<Integer> getClaimedPoints()
+    {
+        if(claimedPoints.isEmpty())
+            for(PlayerModel p : playerList.getPlayerList())
+                claimedPoints.add(p.getClaimedDestPoint());
+
+        return claimedPoints;
+    }
+
+    public void lastRound(String username)
+    {
+        if(lastTurn.equals("")) lastTurn = username;
+        state = State.LASTROUND;
+    }
+
 
     /*************************************** END GETTERS AND SETTERS ***************************************/
 

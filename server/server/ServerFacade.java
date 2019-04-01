@@ -273,6 +273,7 @@ public class ServerFacade extends Facade
      */
     public List<GenericCommand> sendChat(String chatMessage, String time, String username, String gameID)
     {
+        String lastRoundMessage = "It is the last round.".toLowerCase();
         String message = "";
         boolean success = false;
         List<GenericCommand> commandsForClient = new ArrayList<>();
@@ -286,6 +287,16 @@ public class ServerFacade extends Facade
         {
             success = true;
             Date date = new Date();
+
+            String lastTurn = getGameByID(gameID).getLastTurn();
+            if(lastTurn != null && !lastTurn.isEmpty())
+            {
+                chatMessage = "IT IS THE LAST ROUND.\n";
+                chatMessage += "The game will end after player \"" + lastTurn.toUpperCase() + "\" plays last turn\n";
+                if(ServerModel.getInstance().getChatRoombyID(gameID).checkChat(chatMessage))
+                    return commandsForClient;
+            }
+
             ChatMessage chat = new ChatMessage(chatMessage, date.toString(), username);
             ServerModel.getInstance().addChat(gameID, chat);
             room = ServerModel.getInstance().getChatRoombyID(gameID);
