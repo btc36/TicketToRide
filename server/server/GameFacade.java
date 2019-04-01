@@ -25,7 +25,7 @@ public class GameFacade extends Facade
     private final String updateScore = "updateScore";
     private final String lastRound = "lastRound";
     private final String whoseTurn = "whoseTurn";
-    private final int LASTCARNUM = 40;
+    private final int LASTCARNUM = 2;
 
 
     /**
@@ -339,7 +339,7 @@ public class GameFacade extends Facade
     public GenericCommand lastRound(String gameID)
     {
         // TESTING CODE//
-        getGameByID(gameID).setState(LASTROUND);
+//        getGameByID(gameID).setState(LASTROUND);
         ///////
         GenericCommand command = new GenericCommand(
                 gameClass, lastRound,
@@ -369,7 +369,7 @@ public class GameFacade extends Facade
             LobbyGameModel game = getGameByID(gameID);
             game.endTurn(); // turn change in game and the player
 
-            if(p.getTrainNum() <= LASTCARNUM)
+            if(p.getTrainNum() <= LASTCARNUM && game.getLastTurn().equals(""))
                 game.lastRound(username);
             else if(game.getState() == LASTROUND && game.getLastTurn().equals(username))
                 game.setState(FINISHED);

@@ -48,6 +48,8 @@ public class PlayerModel
         claimedCities = new HashSet<>();
         //trainCardNum = 4;
         trainNum = 45;
+        // FOR TESTING
+        trainNum = 5;
     }
     public String getUsername() {
         return username;
@@ -130,9 +132,9 @@ public class PlayerModel
         trainNum -= len;
     }
 
-    public void completeDestinaton(DestinationCard card)
+    public void completeDestination(DestinationCard card)
     {
-        score += card.getPointValue();
+        //score += card.getPointValue();
         card.complete();
     }
 

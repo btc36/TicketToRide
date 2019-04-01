@@ -58,6 +58,8 @@ export class Player {
     this.ownedRoutes = new Array<Route>();
     this.ownedRoutes.push(new Route("Seattle", "Portland", 1, "grey"));
     this.myTurn = false;
+    this.destinationCardsEarned = -1;
+    this.destinationCardsLost = -1;
     // if (numDestinationCards == 3){
     //   this.myTurn = true;
     // }
@@ -165,11 +167,11 @@ export class Player {
     return this.numTrainCards;
   }
 
-  setDestinationCardsLost(earned : number) {
+  setDestinationCardEarned(earned : number) {
     this.destinationCardsEarned = earned;
   }
 
-  setDestinationCardEarned(lost : number){
+  setDestinationCardsLost(lost : number){
     this.destinationCardsLost = lost;
   }
 
