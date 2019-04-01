@@ -59,7 +59,8 @@ public class LobbyGameModel extends GameSetUp
     {
         playerList = new PlayerListModel();
         //TODO: UNCOMMENT AFTER DONE WITH TESTING
-        gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
+       // gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
+        gameID = UUID.randomUUID().toString().substring(0,4);
         currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;
         this.host = host;
