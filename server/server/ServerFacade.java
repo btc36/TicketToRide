@@ -224,7 +224,7 @@ public class ServerFacade extends Facade
             LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
             if(game != null)
             {
-                if(game.getCurrentPlayerNum() < 2) { message = "not enough players"; }
+                if(game.getCurrentPlayerNum() != game.getMaxPlayer()) { message = "not enough players"; }
                 else
                     {
                     game.startGame();
