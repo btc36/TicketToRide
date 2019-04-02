@@ -334,7 +334,7 @@ export class IngameClientRoot implements ISubject {
   getPlayerWithMostRoutes(): Player{
     return this.game.getPlayerWithMostRoutes();
   }
-  getPlayersWithLongestRoutes(): Array<Player>{
+  getPlayersWithLongestRoutes(): Array<string>{
     return this.game.getPlayersWithLongestRoutes();
   }
 

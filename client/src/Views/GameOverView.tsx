@@ -4,7 +4,6 @@ import * as I from "../ViewModels/IGameOverViewModel";
 export const GameOverView  = (component: I.IGameOverViewModel) => {
   let scores = [];
   let longestPeople = [];
-  // const longest = new Array<any>();
   let people = component.state.people;
   let longest = component.state.longestPaths;
   for (let i = 0; i < people.length; i++) {
@@ -18,15 +17,16 @@ export const GameOverView  = (component: I.IGameOverViewModel) => {
   for (let i = 0; i < longest.length; i++) {
     longestPeople.push(
       <li>
-        {longest[i].username}
+        {longest[i]}
       </li>);
   }
   return (
     <div>
       <h2>Game over!</h2>
       <p>Winner: <b>{component.state.winner.username}</b></p>
-      <p>Longest Paths: <b>{component.state.mostRoutes.username}</b></p>
+      <p>Longest Paths: <b>{longestPeople}</b></p>
       <ul>
+          Final Scores:
         {scores}
       </ul>
     </div>

@@ -290,7 +290,7 @@ public class LobbyGameModel extends GameSetUp
         // avoid duplicate calculation from polling
         if(winner != null) return;
 
-        int max = 0;
+        int max = Integer.MIN_VALUE;
         List<Integer> indices = new ArrayList<>();
         List<PlayerModel> list = playerList.getPlayerList();
         for(int i = 0; i < list.size(); i++)
@@ -474,7 +474,9 @@ public class LobbyGameModel extends GameSetUp
 
     public List<Integer> getUnClaimedPoints()
     {
-        if(unClaimedPoints.size() != getPlayers().size())
+        if(state == State.ONGOING) return unClaimedPoints;
+
+        if(unClaimedPoints.size() != getPlayers().size() && state == State.FINISHED)
         {
             unClaimedPoints.clear();
             for(PlayerModel p : getPlayers())
@@ -485,7 +487,9 @@ public class LobbyGameModel extends GameSetUp
     }
     public List<Integer> getClaimedPoints()
     {
-        if(claimedPoints.size() != getPlayers().size())
+        if(state == State.ONGOING) return claimedPoints;
+
+        if(claimedPoints.size() != getPlayers().size() && state == State.FINISHED)
         {
             claimedPoints.clear();
             for(PlayerModel p : getPlayers())

@@ -33,7 +33,7 @@ export class IngameInternalClientFacade {
   getPlayerWithMostRoutes(): Player {
     return this.root.getPlayerWithMostRoutes();
   }
-  getPlayersWithLongestRoutes(): Array<Player>{
+  getPlayersWithLongestRoutes(): Array<string>{
     return this.root.getPlayersWithLongestRoutes();
   }
 

@@ -10,7 +10,7 @@ export const initialState = {
 export type State = {
   people: Player[],
   winner: Player,
-  longestPaths: Player[]
+  longestPaths: string[]
   mostRoutes: Player
 };
 

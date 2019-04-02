@@ -21,7 +21,7 @@ export class Game {
     potentialDestinationCards: Array<DestinationCard>;
     gameID: string;
     winner: string;
-    longestPaths: Player[];
+    longestPaths: Array<string>;
     claimedRoutes: Array<[String, Route]>;
     lastRoundOver: boolean;
 
@@ -29,7 +29,7 @@ export class Game {
       this.claimedRoutes = new Array<[String, Route]>();
       this.gameID = "EPICGAME";
       this.players = new Array<Player>();
-      this.longestPaths = new Array<Player>();
+      this.longestPaths = new Array<string>();
       //this.players = [new Player("Ben"),new Player("lincoln")]//.initiateGame(new PlayerHand(),40,"Green",10,39,true)];
       //let currCard = new TrainCard("blue");
       //this.players[0].drawTrainCard(currCard);
@@ -356,12 +356,7 @@ export class Game {
 
   setLongestPaths(longestPaths: string[])
   {
-    let i;
-    for(i = 0; i < longestPaths.length; i++) {
-      let player = this.getPlayerByUsername(longestPaths[i]);
-      if(player != null)
-          this.longestPaths.push(player);
-    }
+    this.longestPaths = longestPaths;
   }
 
 }
