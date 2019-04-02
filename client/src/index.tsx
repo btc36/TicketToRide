@@ -80,7 +80,7 @@ const root = new ClientRoot();
 
 const externalClientFacade = new ExternalClientFacade(root);
 
-const ingameRoot = new IngameClientRoot();
+const ingameRoot = new IngameClientRoot(root.session);
 const ingameExternalClientFacade = new IngameExternalClientFacade(ingameRoot);
 const serializer = new Serializer();
 const clientCommunicator = new ClientCommunicator("localhost", "8080", serializer, externalClientFacade, ingameExternalClientFacade);

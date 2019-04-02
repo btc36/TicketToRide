@@ -20,10 +20,12 @@ export class IngameClientRoot implements ISubject {
   localPlayer: string;
   preferredColor: string;
 
-  constructor() {
+  constructor(session:Session) {
     this.game = new Game();
     this.observers = new Array<IObserver>();
     this.localPlayer = "ben";
+    // or this.session = new Session();
+    this.session = session;
   }
 
 
@@ -321,7 +323,8 @@ export class IngameClientRoot implements ISubject {
     this.game.setUnclaimedPoints(unclaimed);
     this.game.setLongestPaths(longest);
     //TODO notify the game over view!
-    this.notify("transitionPage", "gameOver");
+    this.transitionPage("gameOver");
+//    this.notify("transitionPage", "gameOver");
   }
   isMyTurn(): boolean{
     return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
