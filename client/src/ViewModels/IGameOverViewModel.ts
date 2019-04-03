@@ -1,17 +1,15 @@
 import { Player } from '../Models/Player';
 
 export const initialState = {
-  people: null,
-  winner: null,
-  mostRoutes: null,
-  longestPaths: null
+  people: [],
+  winner: "",
+  longestPaths: []
 };
 
 export type State = {
   people: Player[],
-  winner: Player,
+  winner: string,
   longestPaths: string[]
-  mostRoutes: Player
 };
 
 export interface IGameOverViewModel {

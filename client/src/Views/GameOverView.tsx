@@ -9,7 +9,7 @@ export const GameOverView  = (component: I.IGameOverViewModel) => {
   for (let i = 0; i < people.length; i++) {
     scores.push(
       <li>
-        {people[i].username}: {people[i].score} (Trains: {people[i].numTrains}, DC: {people[i].destinationCardsEarned} - {people[i].destinationCardsLost})
+        {people[i].username}: {people[i].score} (Trains: {people[i].numTrains}, Destination Cards: {people[i].destinationCardsEarned}, {people[i].destinationCardsLost})
       </li>
     );
   }
@@ -23,8 +23,8 @@ export const GameOverView  = (component: I.IGameOverViewModel) => {
   return (
     <div>
       <h2>Game over!</h2>
-      <p>Winner: <b>{component.state.winner.username}</b></p>
-      <p>Longest Paths: <b>{longestPeople}</b></p>
+      <p>Winner: <b>{component.state.winner}</b></p>
+      <ul>Longest Paths: <b>{longestPeople}</b></ul>
       <ul>
           Final Scores:
         {scores}

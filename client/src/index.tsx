@@ -43,7 +43,7 @@ class MainComponent extends React.Component<any, any> {
   loginRegisterViewModel: JSX.Element = <LoginRegisterViewModel ref={(instance) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameListViewModel: JSX.Element = <GameListViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
   gameLobbyViewModel: JSX.Element = <GameLobbyViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.services} />;
-  gameViewModel: JSX.Element = <GameViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} ingameServices={this.props.ingameServices}  ingameRoot={ingameRoot}/>;
+  gameViewModel: JSX.Element = <GameViewModel ref={(instance: any) => { this.props.root.attach(instance); this.props.ingameRoot.attach(instance); }} main={this} ingameServices={this.props.ingameServices}  ingameRoot={ingameRoot}/>;
   gameOverViewModel: JSX.Element = <GameOverViewModel ref={(instance: any) => this.props.root.attach(instance)} main={this} services={this.props.ingameServices}/>;
 
   render(): JSX.Element {
