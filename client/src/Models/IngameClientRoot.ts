@@ -139,7 +139,7 @@ export class IngameClientRoot implements ISubject {
     console.log(destinationCards);
     //this.game.addDestinationCard(username, destinationCards);
     //
-    this.game.numDestinationCardsRemaining -= destinationCards.length;
+    this.game.numDestinationCardsRemaining -= destinationCards.length; // numDestination for the game
     this.game.addDestinationCard(this.localPlayer, destinationCards);
     this.notify("keptDestination", null);
     this.notify("myHandUpdated", null);

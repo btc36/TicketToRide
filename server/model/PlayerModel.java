@@ -219,7 +219,11 @@ public class PlayerModel
 
     public void setLongestRoute(boolean longestRoute) { this.longestRoute = longestRoute; }
 
-    public void removeDestinationCard(DestinationCard card) { destinationCards.remove(card); }
+    public void removeDestinationCard(DestinationCard card)
+    {
+        destinationCards.remove(card);
+        destCardNum--;
+    }
 
     public void removeTrainCard(String color) {
         int index = -1;

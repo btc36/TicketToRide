@@ -284,13 +284,14 @@ export class ClientCommunicator {
     else if (cmd._methodName == "updateScore") {
       let sizeTrainDeck = cmd._paramValues[6];
       let sizeDestDeck = cmd._paramValues[7];
+
       this.inGameClientFacade.setNumTrainCardsRemaining(sizeTrainDeck);
       this.inGameClientFacade.setNumDestinationCardsRemaining(sizeDestDeck);
       let players = cmd._paramValues[4];
       for (let i = 0; i < players.length; i++)
       {
         this.inGameClientFacade.updateNumDestinationCards(players[i].username, players[i].destCardNum);
-
+        console.log(players[i].username + " : " + players[i].destCardNum + "\n");
         //train carDs NOT TRAIN CARS
         this.inGameClientFacade.updateNumTrainCardsInHand(players[i].username, players[i].trainCardNum);
 

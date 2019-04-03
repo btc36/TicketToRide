@@ -132,7 +132,7 @@ public class GameFacade extends Facade
             }
 
             //check if kept is 1 or 2??
-            if(kept == 1 || kept == 2)
+            if(kept >= 1 && kept <= 3)
             {
                 message = sMessage + discard;
                 command = commandForDestination(discard, true, message, gameID, username, null, kept);
@@ -469,12 +469,17 @@ public class GameFacade extends Facade
         List<Integer> scores = game.getScores();
         List<PlayerModel> players = game.getPlayerList().getPlayerList();
         List<TrainCard> faceupCards = game.getFaceUpCards().getFaceUpCards();
+        List<Integer> destNums = new ArrayList<>();
+        for(PlayerModel p : game.getPlayerList().getPlayerList())
+        {
+            destNums.add(p.getDestCardNum());
+        }
         int numTrainCards = game.getTrainDeck().getSize();
         int numDestCards = game.getDestDeck().getSize();
         GenericCommand command = new GenericCommand(
                 gameClass, updateScore,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList, _paramTypeInteger,_paramTypeInteger},
-                new Object[]{true, sMessage, gameID, scores, players, faceupCards,numTrainCards,numDestCards}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList, _paramTypeInteger,_paramTypeInteger, _paramTypeList},
+                new Object[]{true, sMessage, gameID, scores, players, faceupCards,numTrainCards, numDestCards, destNums}
         );
         commandCheck(command);
         System.out.println(sMessage + " updateScore");
