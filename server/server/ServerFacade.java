@@ -289,12 +289,22 @@ public class ServerFacade extends Facade
             Date date = new Date();
 
             String lastTurn = getGameByID(gameID).getLastTurn();
-            if(lastTurn != null && !lastTurn.isEmpty() && chatMessage.contains("last"))
+            if(lastTurn != null && !lastTurn.isEmpty())
             {
-                chatMessage = "IT IS THE LAST ROUND.\n";
-                chatMessage += "The game will end after player \"" + lastTurn.toUpperCase() + "\" plays last turn\n";
-                if(ServerModel.getInstance().getChatRoombyID(gameID).checkChat(chatMessage))
-                    return commandsForClient;
+                if(chatMessage.contains("last"))
+                {
+                    chatMessage = "IT IS THE LAST ROUND.\n";
+                    chatMessage += "The game will end after player \"" + lastTurn.toUpperCase() + "\" plays last turn\n";
+                    if(ServerModel.getInstance().getChatRoombyID(gameID).checkChat(chatMessage))
+                        return commandsForClient;
+                }
+                else if(chatMessage.contains("game_end"))
+                {
+                    chatMessage = "The game is over\n";
+                    chatMessage += "with as \"" + lastTurn.toUpperCase() + "\'s turn";
+                    if(ServerModel.getInstance().getChatRoombyID(gameID).checkChat(chatMessage))
+                        return commandsForClient;
+                }
             }
 
             ChatMessage chat = new ChatMessage(chatMessage, date.toString(), username);

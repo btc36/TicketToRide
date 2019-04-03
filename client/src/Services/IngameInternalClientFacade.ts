@@ -130,7 +130,7 @@ export class IngameInternalClientFacade {
     //let drawnCard = this.root.changeFaceUpCards();
     if(index == -1)
     {
-      this.SendChatCommand("Drew Face Up Card From Face Down Deck");
+      this.SendChatCommand("Drew Train Card From Face Down Deck");
     }
     else
     {
