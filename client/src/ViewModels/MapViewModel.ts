@@ -42,9 +42,24 @@ export class MapViewModel extends React.Component<IngameViewModelProps, State> i
       alert("WAIT YOUR TURN BUDDY");
     } else if (!this.state.canClaimRoute) {
       alert("You can't do that right now.");
-    } else {
+    } else if (!this.hasClaimedDestination()) {
+      alert("Please select destination cards first");
+    }
+    else {
       this.props.services.claimRoute(route);
     }
+  }
+
+  hasClaimedDestination(): boolean {
+    let playerHand = this.props.services.getPlayerHand();
+    let destinationCards = playerHand.getDestinationCards();
+    let numDestinationCards = destinationCards.length;
+    if (numDestinationCards > 0) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   componentDidMount() {
