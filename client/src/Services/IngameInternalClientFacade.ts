@@ -26,8 +26,8 @@ export class IngameInternalClientFacade {
     return this.root.getPlayerList();
   }
 
-  getWinner(): Player {
-    return this.root.getWinner();
+  getWinner(): string {
+    return this.root.getWinner().username;
   }
 
   getPlayerWithMostRoutes(): Player {

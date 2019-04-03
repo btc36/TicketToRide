@@ -48,7 +48,7 @@ public class PlayerModel
         claimedCities = new HashSet<>();
         trainNum = 45;
         // FOR TESTING
-        trainNum = 5;
+//        trainNum = 5;
     }
     public String getUsername() {
         return username;
