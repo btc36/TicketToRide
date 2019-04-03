@@ -471,7 +471,7 @@ public class GameFacade extends Facade
 
         commandsForClient.add(updateScoreCommand(game.getGameID()));
 
-        System.out.println(sMessage + " roundCheck");
+        //System.out.println(sMessage + " roundCheck");
         return commandsForClient;
     }
 
@@ -495,7 +495,7 @@ public class GameFacade extends Facade
                 new Object[]{true, sMessage, gameID, scores, players, faceupCards, numTrainCards, numDestCards, destNums}
         );
         commandCheck(command);
-        System.out.println(sMessage + " updateScore");
+        //System.out.println(sMessage + " updateScore");
         return command;
     }
 
