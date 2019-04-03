@@ -305,6 +305,10 @@ export class ClientCommunicator {
 
         //train cars NOT CARDS
         this.inGameClientFacade.updateNumTrainCars(players[i].username, players[i].trainNum);
+
+        // update destination cards
+        // let destinationCards = new Array<DestinationCard>();
+        // this.inGameClientFacade.updateDestinationCards(players[i].username, destinationCards);
       }
 
       const faceUps = cmd._paramValues[5];

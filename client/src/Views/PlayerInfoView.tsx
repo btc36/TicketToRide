@@ -23,20 +23,20 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
         if(playerList[i].myTurn == true)
         {
           turn.push(
-            <li> Turn: {playerList[i].username} </li>
+            <h1> Turn: {playerList[i].username} </h1>
           );
         }
         players.push(
-            <li> {playerList[i].username} </li>
+            <li><b>Player: {playerList[i].username} </b></li>
             //{playerList[i].numTrainCards} {playerList[i].numDestinationCards}</li>
       );
-        players.push(<li>Color: {playerList[i].color} </li>)
-        players.push(<li> score : {playerList[i].score} </li>);
+        players.push(<li>&nbsp;&nbsp;&nbsp;&nbsp;Color: {playerList[i].color} </li>)
+        players.push(<li>&nbsp;&nbsp;&nbsp;&nbsp;Score : {playerList[i].score} </li>);
         // players.push(<li> TrainCards : {playerList[i].myHand.trainCards.length} </li>);
         // players.push(<li> DestinationCards : {playerList[i].myHand.destinationCards.length} </li>);
-        players.push(<li> TrainCards : {playerList[i].numTrainCards} </li>);
-        players.push(<li> DestinationCards : {playerList[i].numDestinationCards} </li>);
-        players.push(<li> Remaining Train Cars : {playerList[i].numTrains} </li>);
+        players.push(<li>&nbsp;&nbsp;&nbsp;&nbsp;TrainCards : {playerList[i].numTrainCards} </li>);
+        players.push(<li>&nbsp;&nbsp;&nbsp;&nbsp;DestinationCards : {playerList[i].numDestinationCards} </li>);
+        players.push(<li>&nbsp;&nbsp;&nbsp;&nbsp;Remaining Train Cars : {playerList[i].numTrains} </li>);
     }
     if (colorCountMap) {
       colorCountMap.forEach((value: number, key: string) => {
@@ -48,7 +48,6 @@ export const PlayerInfoView  = (component: I.IPlayerInfoViewModel) => {
   return (
       <div>
           <div>
-              <p><b><u>Player Info</u></b></p>
               <p>{turn}</p>
               <ul>
                   {players}
