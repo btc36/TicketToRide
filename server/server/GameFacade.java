@@ -47,7 +47,7 @@ public class GameFacade extends Facade
 
             if (destDeck == null || destDeck.isEmpty())
             {
-                message = "deck empty";
+                message = "Destination Card Deck is Empty!";
             }
             else
             {
@@ -429,6 +429,7 @@ public class GameFacade extends Facade
             if (game.getWinner() == null) // we don't want it to find longest every time
                 game.endGame();
 
+            new ServerFacade().sendChat("game_end", "", game.getLastTurn(), gameID);
             message = sMessage + endGame;
             List<Integer> claimedPoints = game.getClaimedPoints();
             List<Integer> unclaimedPoints = game.getUnClaimedPoints();
