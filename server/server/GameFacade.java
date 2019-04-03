@@ -299,6 +299,15 @@ public class GameFacade extends Facade
                 commandsForClient.add(updateScoreCommand(gameID));
                 System.out.println(message);
 
+//                System.out.println("ROUTES");
+//                for(PlayerModel P : game.getPlayerList().getPlayerList())
+//                {
+//                    for(DestinationCard d : P.getDestinationCards())
+//                        System.out.println(d.getCity1() + " " + d.getCity2() + " " + d.getPointValue());
+//                }
+
+                System.out.println("\n\n");
+
                 return commandsForClient;
             }
         }
