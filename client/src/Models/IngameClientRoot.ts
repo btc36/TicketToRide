@@ -221,7 +221,7 @@ export class IngameClientRoot implements ISubject {
     let players = this.getPlayerList();
     for (let i = 0; i < players.length; i++) {
       if (players[i].username == this.localPlayer) {
-        players[i].myHand = new PlayerHand();
+        players[i].myHand.clearTrainCards();
         for (const [color, amount] of Object.entries(cards)) {
           for (let j = 0; j < amount; j++) {
             players[i].myHand.addTrainCard(new TrainCard(color));
