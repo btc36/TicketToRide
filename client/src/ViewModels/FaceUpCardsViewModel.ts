@@ -54,10 +54,18 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
   }
 
   drawCard(e: any) {
+    if (!this.hasClaimedDestination()){
+      alert("You need to select Destination cards, or wait till there are cards in the deck"));
+      return;
+    }
     this.state.drawState.drawTrainCard(this,-1);//-1 for mystery card
   }
 
   drawFaceUp(e: any) {
+    if (!this.hasClaimedDestination()) {
+      alert("You need to select Destination cards, or wait till there are cards in the deck");
+      return;
+    }
     this.state.drawState.drawTrainCard(this,this.state.faceUpIndex);//Index of the card selected
   }
 
@@ -65,6 +73,18 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
     this.setState({ "faceUpIndex": e.target.value -1 });//Account for 0 based indexing
   }
 
+  hasClaimedDestination(): boolean {
+    let playerHand = this.props.services.getPlayerHand();
+    let destinationCards = playerHand.getDestinationCards();
+    let numDestinationCards = destinationCards.length;
+    let numTrainCardsLeft = this.props.services.getNumTrainCardsRemaining();
+    if (numDestinationCards > 0 && numTrainCardsLeft != 0) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
   getCards(): any {
     let myCards = this.props.services.getFaceUpCards().faceUpCards;
     //console.log("MY CARDS");
