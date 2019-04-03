@@ -8,7 +8,7 @@ export class MapPoller {
   polling: any;
 
   constructor(facadeInIn:IngameInternalClientFacade) {
-    this.frequency = 3000;
+    this.frequency = 1000;
     this.ingameInternalClientFacade = facadeInIn;
     this.polling = null;
   }
