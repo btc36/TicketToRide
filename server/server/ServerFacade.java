@@ -289,7 +289,7 @@ public class ServerFacade extends Facade
             Date date = new Date();
 
             String lastTurn = getGameByID(gameID).getLastTurn();
-            if(lastTurn != null && !lastTurn.isEmpty())
+            if(lastTurn != null && !lastTurn.isEmpty() && chatMessage.contains("last"))
             {
                 chatMessage = "IT IS THE LAST ROUND.\n";
                 chatMessage += "The game will end after player \"" + lastTurn.toUpperCase() + "\" plays last turn\n";
