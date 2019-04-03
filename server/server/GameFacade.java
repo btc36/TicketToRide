@@ -5,6 +5,7 @@ import java.util.*;
 import command.GenericCommand;
 import model.*;
 import model.LobbyGameModel;
+
 import static model.LobbyGameModel.State.*;
 
 
@@ -30,7 +31,8 @@ public class GameFacade extends Facade
 
     /**
      * client receives 3 destination cards that user can choose from
-     * @param gameID which game is it on
+     *
+     * @param gameID   which game is it on
      * @param username which player is performing the action
      * @return List that contains three Destination Card
      */
@@ -39,11 +41,11 @@ public class GameFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         List<DestinationCard> cards = new ArrayList<>();
         String message = checkInput(gameID, username);
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             Deck destDeck = getDestinationDeck(gameID);
 
-            if(destDeck == null || destDeck.isEmpty())
+            if (destDeck == null || destDeck.isEmpty())
             {
                 message = "deck empty";
             }
@@ -67,8 +69,7 @@ public class GameFacade extends Facade
     }
 
     /**
-     *
-     * @param gameID which game is it on
+     * @param gameID   which game is it on
      * @param username which player is performing the action
      * @return List that contains one Destination Card and etc
      */
@@ -79,11 +80,14 @@ public class GameFacade extends Facade
         GenericCommand command;
         List<DestinationCard> cards = new ArrayList<>();
         String message = checkInput(gameID, username);
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             Deck destDeck = getDestinationDeck(gameID);
 
-            if(destDeck == null || destDeck.isEmpty()) { message = "empty deck"; }
+            if (destDeck == null || destDeck.isEmpty())
+            {
+                message = "empty deck";
+            }
             else
             {
                 cards.add((DestinationCard) destDeck.poll());
@@ -103,8 +107,10 @@ public class GameFacade extends Facade
         return commandsForClient;
     }
 
-    /** User relinquishes a card and gets added to the server model
-     * @param gameID which game is it in
+    /**
+     * User relinquishes a card and gets added to the server model
+     *
+     * @param gameID   which game is it in
      * @param username which user is performing the action
      * @return list of command that contains
      */
@@ -115,16 +121,16 @@ public class GameFacade extends Facade
         GenericCommand command;
         int kept = 3;
         message = checkInput(gameID, username);
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
-            if(pointValue != -1)
+            if (pointValue != -1)
             {
                 DestinationCard card = new DestinationCard(city1, city2, pointValue);
                 discardDest(card, username, game);
                 kept -= 1;
             }
-            if(pointValue2 != -1)
+            if (pointValue2 != -1)
             {
                 DestinationCard card = new DestinationCard(city3, city4, pointValue2);
                 discardDest(card, username, game);
@@ -132,7 +138,7 @@ public class GameFacade extends Facade
             }
 
             //check if kept is 1 or 2??
-            if(kept >= 1 && kept <= 3)
+            if (kept >= 1 && kept <= 3)
             {
                 message = sMessage + discard;
                 command = commandForDestination(discard, true, message, gameID, username, null, kept);
@@ -159,9 +165,10 @@ public class GameFacade extends Facade
 
     /**
      * draw TrainCard from the deck or faceup
+     *
      * @param gameID
      * @param username
-     * @param index -1 if from the deck, 0-4 if for faceup
+     * @param index    -1 if from the deck, 0-4 if for faceup
      * @return Command that contains user, traincard, and faceup
      */
     public List<GenericCommand> drawTrainCard(String gameID, String username, Integer index)
@@ -171,15 +178,15 @@ public class GameFacade extends Facade
         List<TrainCard> faceUpCards = new ArrayList<>();
         List<GenericCommand> commandsForClient = new ArrayList<>();
 
-        if(index >= 5 || index < -1)
+        if (index >= 5 || index < -1)
             message += "invalid card index\n";
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             message = sMessage + drawTrain;
             LobbyGameModel game = ServerModel.getInstance().getGameByID(gameID);
 
             TrainCard card;
-            if(index == -1)
+            if (index == -1)
                 card = game.drawTrainCardDeck();
             else
                 card = game.drawTrainCardFace(index);
@@ -209,20 +216,20 @@ public class GameFacade extends Facade
     private GenericCommand commandForDestination(String method, boolean status, String message, String gameID, String username, List<DestinationCard> cards, int kept)
     {
         GenericCommand command;
-        if(kept == -1)
+        if (kept == -1)
         {
-             command = new GenericCommand(
+            command = new GenericCommand(
                     _gameClassName, method,
-                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList},
-                    new Object[]{ status, message, gameID, username, cards }
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList},
+                    new Object[]{status, message, gameID, username, cards}
             );
         }
         else
         {
             command = new GenericCommand(
                     _gameClassName, method,
-                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList, _paramTypeInteger},
-                    new Object[]{ status, message, gameID, username, cards, kept }
+                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeInteger},
+                    new Object[]{status, message, gameID, username, cards, kept}
             );
         }
         commandCheck(command);
@@ -233,11 +240,11 @@ public class GameFacade extends Facade
     {
         GenericCommand command;
 
-            command = new GenericCommand(
-                    _gameClassName, method,
-                    new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramTypeList, _paramTypeInteger},
-                    new Object[]{ status, message, gameID, username, cards, cards.size() }
-            );
+        command = new GenericCommand(
+                _gameClassName, method,
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeInteger},
+                new Object[]{status, message, gameID, username, cards, cards.size()}
+        );
 
         commandCheck(command);
         return command;
@@ -247,6 +254,7 @@ public class GameFacade extends Facade
      * claims routes
      * under the hood, also checks any destination is complete
      * update resources and player info
+     *
      * @param gameID
      * @param username
      * @param cityOne
@@ -262,20 +270,20 @@ public class GameFacade extends Facade
         String message = checkInput(gameID, username);
         message += checkTrainColors(selectionColor);
 
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             Route temp = new Route(cityOne, cityTwo, length, routeColor);
             LobbyGameModel game = getGameByID(gameID);
             Route route = game.getMatchingRoute(temp);
             PlayerModel p = getPlayer(username);
             String eMessage = error + username + " : " + claim + " ";
-            if(route == null)
+            if (route == null)
                 message += eMessage + "invalid route\n";
-            else if(game.isClaimed(route))
+            else if (game.isClaimed(route))
                 message += eMessage + "route is ALREADY claimed\n";
-            else if(p == null)
+            else if (p == null)
                 message += eMessage + "invalid player\n";
-            else if(!p.sufficientResource(route, selectionColor))
+            else if (!p.sufficientResource(route, selectionColor))
                 message += eMessage + "insufficient resource\n";
             else
             {
@@ -284,8 +292,8 @@ public class GameFacade extends Facade
                 message = sMessage + claim;
                 GenericCommand command = new GenericCommand(
                         _gameClassName, claim,
-                        new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString , _paramRoute, _paramTypeMap},
-                        new Object[]{ true, message, gameID, username, route, colorMap});
+                        new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeString, _paramRoute, _paramTypeMap},
+                        new Object[]{true, message, gameID, username, route, colorMap});
 
                 commandsForClient.add(command);
                 commandsForClient.add(updateScoreCommand(gameID));
@@ -302,6 +310,7 @@ public class GameFacade extends Facade
 
     /**
      * WTF?
+     *
      * @param gameID
      * @return list that contains routes?
      */
@@ -310,7 +319,7 @@ public class GameFacade extends Facade
         String username = "WTF DO YOU WANT\n";
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkGame(gameID);
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             message = sMessage + getRoute;
             LobbyGameModel game = getGameByID(gameID);
@@ -333,6 +342,7 @@ public class GameFacade extends Facade
 
     /**
      * announce that it's last round
+     *
      * @param gameID for which game
      * @return command for lastRound
      */
@@ -353,27 +363,28 @@ public class GameFacade extends Facade
 
     /**
      * end the turn for a single client
-     * @param gameID for which game
+     *
+     * @param gameID   for which game
      * @param username username whose turn just ended
      * @return List that contains currenTurn or currentTurn + lastRound
-     *      * or endGame (which means no more turns)
-     *      * updateScore for all three
+     * * or endGame (which means no more turns)
+     * * updateScore for all three
      */
     public List<GenericCommand> endTurn(String gameID, String username)
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkInput(gameID, username);
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             PlayerModel p = getPlayer(username);
             LobbyGameModel game = getGameByID(gameID);
             game.endTurn(); // turn change in game and the player
 
-            if(p.getTrainNum() <= LASTCARNUM && game.getLastTurn().equals(""))
+            if (p.getTrainNum() <= LASTCARNUM && game.getLastTurn().equals(""))
                 game.lastRound(username);
-            else if(game.getState() == LASTROUND && game.getLastTurn().equals(username))
+            else if (game.getState() == LASTROUND && game.getLastTurn().equals(username))
                 game.setState(FINISHED);
-                
+
             commandsForClient.addAll(roundCheck(game));
         }
         else commandsForClient.add(failureCommand(message, endTurn));
@@ -383,6 +394,7 @@ public class GameFacade extends Facade
 
     /**
      * Gets whose turn is and latest info for the clients
+     *
      * @param gameID which game
      * @return List that contains currenTurn or currentTurn + lastRound
      * or endGame (which means no more turns)
@@ -392,7 +404,7 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkGame(gameID);
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
             commandsForClient.addAll(roundCheck(game));
@@ -409,12 +421,12 @@ public class GameFacade extends Facade
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String message = checkGame(gameID);
 
-        if(message.isEmpty())
+        if (message.isEmpty())
         {
             LobbyGameModel game = getGameByID(gameID);
             String winner = "Winner winner chicken dinner\n";
 
-            if(game.getWinner() == null) // we don't want it to find longest every time
+            if (game.getWinner() == null) // we don't want it to find longest every time
                 game.endGame();
 
             message = sMessage + endGame;
@@ -444,7 +456,7 @@ public class GameFacade extends Facade
     {
         List<GenericCommand> commandsForClient = new ArrayList<>();
         String gameID = game.getGameID();
-        if(game.getState() == FINISHED) // Time to announce game is over
+        if (game.getState() == FINISHED) // Time to announce game is over
         {
             commandsForClient.addAll(endGame(gameID));
         }
@@ -452,7 +464,7 @@ public class GameFacade extends Facade
         {
             commandsForClient.add(currentTurn(gameID, game.getTurn()));
 
-            if(game.getState() == LASTROUND) // Time to announce last Round
+            if (game.getState() == LASTROUND) // Time to announce last Round
                 commandsForClient.add(lastRound(gameID));
         }
 
@@ -470,7 +482,7 @@ public class GameFacade extends Facade
         List<PlayerModel> players = game.getPlayerList().getPlayerList();
         List<TrainCard> faceupCards = game.getFaceUpCards().getFaceUpCards();
         List<Integer> destNums = new ArrayList<>();
-        for(PlayerModel p : game.getPlayerList().getPlayerList())
+        for (PlayerModel p : game.getPlayerList().getPlayerList())
         {
             destNums.add(p.getDestCardNum());
         }
@@ -478,8 +490,8 @@ public class GameFacade extends Facade
         int numDestCards = game.getDestDeck().getSize();
         GenericCommand command = new GenericCommand(
                 gameClass, updateScore,
-                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList, _paramTypeInteger,_paramTypeInteger, _paramTypeList},
-                new Object[]{true, sMessage, gameID, scores, players, faceupCards,numTrainCards, numDestCards, destNums}
+                new String[]{_paramTypeBoolean, _paramTypeString, _paramTypeString, _paramTypeList, _paramTypeList, _paramTypeList, _paramTypeInteger, _paramTypeInteger, _paramTypeList},
+                new Object[]{true, sMessage, gameID, scores, players, faceupCards, numTrainCards, numDestCards, destNums}
         );
         commandCheck(command);
         System.out.println(sMessage + " updateScore");
@@ -498,8 +510,8 @@ public class GameFacade extends Facade
 
     private String checkTrainColors(String color)
     {
-        List<String> correctColors = Arrays.asList(new String[]{"pink","white","blue","yellow","orange","black","red","green","rainbow"});
-        if(!correctColors.contains(color))
+        List<String> correctColors = Arrays.asList(new String[]{"pink", "white", "blue", "yellow", "orange", "black", "red", "green", "rainbow"});
+        if (!correctColors.contains(color))
             return "Incorrect Color";
 
         return "";

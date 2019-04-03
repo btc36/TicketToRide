@@ -58,8 +58,16 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
     }
     console.log("Draw more cards");
     if (this.state.canDrawCards) {
-      this.props.services.clickedDestinationButton();
-      this.props.services.getMoreDestinationCards();
+      if(this.state.destinationCards.length < 3)
+      {
+        alert("Sorry, House rule is that you can't draw if there are less than 3");
+      }
+      else
+      {
+        this.props.services.clickedDestinationButton();
+        this.props.services.getMoreDestinationCards();
+      }
+
     } else {
       alert("You can't do that right now");
     }  
@@ -107,6 +115,24 @@ export class DestinationCardSelectionViewModel extends React.Component<IngameVie
     else if (this.state.toDiscard == "f") {//BC
       this.props.services.storeDestinationCard([this.state.destinationCards[0]]);
       this.props.services.DiscardDestinationCard([this.state.destinationCards[1], this.state.destinationCards[2]])
+      this.props.services.printRoot();
+    }
+    else if (this.state.toDiscard == "g") {//A out of A
+      this.props.services.storeDestinationCard([this.state.destinationCards[0]]);
+      this.props.services.printRoot();
+    }
+    else if (this.state.toDiscard == "h") {//A out of A, B
+      this.props.services.storeDestinationCard([this.state.destinationCards[1]]); // keep B
+      this.props.services.DiscardDestinationCard([this.state.destinationCards[0]]) // discard A
+      this.props.services.printRoot();
+    }
+    else if (this.state.toDiscard == "i") {//B out of A,B
+      this.props.services.storeDestinationCard([this.state.destinationCards[0]]); // keep A
+      this.props.services.DiscardDestinationCard([this.state.destinationCards[1]]) // discard B
+      this.props.services.printRoot();
+    }
+    else if (this.state.toDiscard == "j") {//A, B out of A,B
+      this.props.services.storeDestinationCard([this.state.destinationCards[0], this.state.destinationCards[1]]);
       this.props.services.printRoot();
     }
     if (!this.state.firstTime) {
