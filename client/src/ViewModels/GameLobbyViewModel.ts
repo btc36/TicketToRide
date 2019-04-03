@@ -22,6 +22,11 @@ export class GameLobbyViewModel extends React.Component<ViewModelProps, State> i
     this.poller.start();
   }
 
+  componentWillUnmount(){
+    this.poller.stop();
+  }
+
+
   update = (updateType: string, data: any) => {
     if (updateType == "transitionPage") {
       this.props.main.setState({"page": data});      
