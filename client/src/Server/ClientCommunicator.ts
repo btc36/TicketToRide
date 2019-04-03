@@ -246,16 +246,24 @@ export class ClientCommunicator {
       this.inGameClientFacade.receiveChatCommand(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[2], cmd._paramValues[3]);
     }
     else if (cmd._methodName == "potentialDestinationCard") {
-      let destinationCards = new Array<DestinationCard>();
-      console.log(cmd._paramValues[4]);
-      for (let j = 0; j < cmd._paramValues[4].length; j++) {
-        const city1 = cmd._paramValues[4][j].city1;
-        const city2 = cmd._paramValues[4][j].city2;
-        const pointValue = cmd._paramValues[4][j].pointValue;
-        destinationCards.push(new DestinationCard(city1, city2, pointValue));
+      if(cmd._paramValues[0] == false)
+      {
+        alert(cmd._paramValues[1]);
       }
-      console.log(destinationCards);
-      this.inGameClientFacade.presentDestinationCard(cmd._paramValues[0], cmd._paramValues[1], destinationCards);
+      else
+      {
+        let destinationCards = new Array<DestinationCard>();
+        console.log(cmd._paramValues[4]);
+        for (let j = 0; j < cmd._paramValues[4].length; j++) {
+          const city1 = cmd._paramValues[4][j].city1;
+          const city2 = cmd._paramValues[4][j].city2;
+          const pointValue = cmd._paramValues[4][j].pointValue;
+          destinationCards.push(new DestinationCard(city1, city2, pointValue));
+        }
+        console.log(destinationCards);
+        this.inGameClientFacade.presentDestinationCard(cmd._paramValues[0], cmd._paramValues[1], destinationCards);
+      }
+
     }
     else if (cmd._methodName == "discardDestinationCard") {
       this.inGameClientFacade.discardDestinationCard(cmd._paramValues[0], cmd._paramValues[1], cmd._paramValues[4]);
