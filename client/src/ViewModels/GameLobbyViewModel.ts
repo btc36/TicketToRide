@@ -18,7 +18,7 @@ export class GameLobbyViewModel extends React.Component<ViewModelProps, State> i
       playerList: this.props.services.getPlayerList(this.gameId)
     };
     this.props.services.getGameList();
-    this.poller = new Poller("getGameList", [], 2000, this.props.services);
+    this.poller = new Poller("getGameList", [], 1000, this.props.services);
     this.poller.start();
   }
 
