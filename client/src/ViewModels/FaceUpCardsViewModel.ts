@@ -55,7 +55,7 @@ export class FaceUpCardsViewModel extends React.Component<IngameViewModelProps, 
 
   drawCard(e: any) {
     if (!this.hasClaimedDestination()){
-      alert("You need to select Destination cards, or wait till there are cards in the deck"));
+      alert("You need to select Destination cards, or wait till there are cards in the deck");
       return;
     }
     this.state.drawState.drawTrainCard(this,-1);//-1 for mystery card
