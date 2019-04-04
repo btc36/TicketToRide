@@ -30,6 +30,9 @@ export class MapViewModel extends React.Component<IngameViewModelProps, State> i
     } else if (updateType == "drewDestinationCard") {
       this.setState({ canClaimRoute: false });
     } else if (updateType == "isMyTurn") {
+      if (!this.state.isMyTurn) {
+        this.setState({ canClaimRoute: true });
+      }
       this.setState({ isMyTurn: true });
     } else if (updateType == "endTurn") {
       this.setState({ isMyTurn: false });
