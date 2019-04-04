@@ -30,7 +30,7 @@ public class LobbyGameModel extends GameSetUp
     /**
      * END
      */
-    private final int LONGESTPOINT = 15;
+    private final int LONGESTPOINT = 10;
     private String lastTurn;
     private PlayerModel winner;
     private int longestPath;
@@ -45,7 +45,7 @@ public class LobbyGameModel extends GameSetUp
     {
         playerList = new PlayerListModel();
         //TODO: UNCOMMENT AFTER DONE WITH TESTING
-       // gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
+        // gameID = gamename; // UUID.randomUUID().toString().substring(0,4);
         gameID = UUID.randomUUID().toString().substring(0,4);
         currentPlayerNum = 1;
         this.maxPlayer = maxPlayer;
@@ -130,12 +130,12 @@ public class LobbyGameModel extends GameSetUp
     private void giveDestinationCards()
     {
         List<DestinationCard> test = new ArrayList<>();
-       // test.add(new DestinationCard("Miami", "Nashville", 5));
+        // test.add(new DestinationCard("Miami", "Nashville", 5));
         for(PlayerModel p : playerList.getPlayerList())
         {
             assert(destDeck.getSize() >= 3);
             p.addDestinationards(destDeck.pollThisMany(3));
-           // p.addDestinationards(test);
+            // p.addDestinationards(test);
         }
     }
 

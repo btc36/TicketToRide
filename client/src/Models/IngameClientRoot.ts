@@ -324,7 +324,6 @@ export class IngameClientRoot implements ISubject {
     this.game.setLongestPaths(longest);
     //TODO notify the game over view!
     this.transitionPage("gameOver");
-//    this.notify("transitionPage", "gameOver");
   }
   isMyTurn(): boolean{
     return this.game.getLocalPlayer(this.localPlayer).isMyTurn();
