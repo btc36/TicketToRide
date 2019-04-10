@@ -1,6 +1,6 @@
-package daos;
+package plugins;
 
-public class SQLSnapshotDAO
+public class SQLSnapshotDAO implements ISnapshotDAO
 {
     String databaseFilepath = "jdbc:sqlite:ttr.sqlite";
 
@@ -9,18 +9,21 @@ public class SQLSnapshotDAO
 
     }
 
+    @Override
     public void clear()
     {
 
     }
 
+    @Override
     public void updateSnapshot()
     {
 
     }
 
-    public void getLatestSnapshot()
+    @Override
+    public ISnapshotDAO getLatestSnapshot()
     {
-
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package daos;
+package plugins;
 
 public class SQLDeltaDAO
 {
