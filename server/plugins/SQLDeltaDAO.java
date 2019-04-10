@@ -16,7 +16,7 @@ public class SQLDeltaDAO implements IDeltaDAO
     }
 
     @Override
-    public void addDelta()
+    public void addDelta(Object object)
     {
 
     }

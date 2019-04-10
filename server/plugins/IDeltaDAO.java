@@ -5,6 +5,6 @@ public interface IDeltaDAO {
 
     public void init();
     public void clear();
-    public void addDelta();
+    public void addDelta(Object object);
     public IDeltaDAO getDelta();
 }
