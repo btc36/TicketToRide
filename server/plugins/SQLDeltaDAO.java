@@ -10,6 +10,12 @@ public class SQLDeltaDAO implements IDeltaDAO
     }
 
     @Override
+    public void init()
+    {
+
+    }
+
+    @Override
     public void clear()
     {
 
@@ -21,7 +27,7 @@ public class SQLDeltaDAO implements IDeltaDAO
 
     }
     @Override
-    public IDeltaDAO getDelta()
+    public Object getDelta()
     {
 
         return null;
