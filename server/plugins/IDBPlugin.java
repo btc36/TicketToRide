@@ -1,8 +1,8 @@
 package plugins;
 
 public interface IDBPlugin {
-   ISnapshotDAO snapshot;
-   IDeltaDAO delta;
+   ISnapshotDAO snapshot = null;
+   IDeltaDAO delta = null;
 
     public IDeltaDAO getDeltaDAO();
 
