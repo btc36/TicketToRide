@@ -46,7 +46,7 @@ public class PlayerModel
         claimedRoutes = new ArrayList<>();
         colorMap = new HashMap<>();
         claimedCities = new HashSet<>();
-        trainNum = 45;
+        trainNum = 15;
         // FOR TESTING
         //trainNum = 10;
     }
