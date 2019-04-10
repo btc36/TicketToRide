@@ -1,7 +1,7 @@
 package plugins;
 
 public interface ISnapshotDAO {
-    String dbFilePath = "database.db";
+    String dbFilePath = "snapshot.db";
 
     public void clear();
     public void updateSnapshot();
