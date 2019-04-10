@@ -25,7 +25,7 @@ public class GameFacade extends Facade
     private final String gameClass = "IngameExternalClientFacade";
     private final String updateScore = "updateScore";
     private final String lastRound = "lastRound";
-    private final String whoseTurn = "whoseTurn";
+    private final String whoseTurn = "whoseTurn";T
     private final int LASTCARNUM = 2;
 
 

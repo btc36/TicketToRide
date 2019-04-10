@@ -1,6 +1,6 @@
-package daos;
+package plugins;
 
-public class SQLDeltaDAO
+public class SQLDeltaDAO implements IDeltaDAO
 {
     String databaseFilepath = "jdbc:sqlite:ttr.sqlite";
 
@@ -9,17 +9,22 @@ public class SQLDeltaDAO
 
     }
 
+    @Override
     public void clear()
     {
 
     }
-    public void addDelta()
+
+    @Override
+    public void addDelta(Object object)
     {
 
     }
-    public void getDelta()
+    @Override
+    public IDeltaDAO getDelta()
     {
 
+        return null;
     }
 
     private void addDelta(String s)
