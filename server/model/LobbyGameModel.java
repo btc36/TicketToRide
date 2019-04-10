@@ -373,6 +373,8 @@ public class LobbyGameModel extends GameSetUp implements Serializable
     // traversal for longest route
     private void longTraverse(City src, int length, List<Route> claimed, Set<Route> visited, String username)
     {
+        if(!getPlayer(username).claimedCity(src)) return; // used for backtracking
+
         // we found a better length. add username to a clean slate
         if(longestPath < length)
         {
