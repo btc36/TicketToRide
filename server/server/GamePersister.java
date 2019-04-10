@@ -39,25 +39,28 @@ public class GamePersister {
     }
 
     public void SaveCommand(GenericCommand command) {
-        // TODO: Save the command in the database
+        deltaDao.addDelta(command);
         currentDeltas++;
         if (currentDeltas > maxDeltas) {
             currentDeltas = 0;
-            // TODO: Save a new snapshot of ServerModel in the database
+            snapshotDao.updateSnapshot(ServerModel.getInstance());
+            deltaDao.clear();
         }
     }
 
     public void ClearDatabase() {
-        // TODO: Clear the deltas from the database
-        // TODO: Clear the snapshots from the database
+        deltaDao.clear();
+        snapshotDao.clear();
     }
 
     public ServerModel LoadDatabase() {
-        this.deltaDao.init();
-        this.snapshotDao.init();
-        // TODO: Load the most recent snapshot from the database
-        // TODO: Return null if there is no snapshot in the database
-        // TODO: Cast it to ServerModel
+        deltaDao.init();
+        snapshotDao.init();
+        ServerModel loaded = (ServerModel) snapshotDao.getLatestSnapshot();
+        if (loaded == null) {
+            System.out.println("The snapshot loaded from the database could not be cast to a ServerModel object.");
+            return null;
+        }
         // TODO: Load the most recent deltas from the database
         // TODO: Run them on top of the ServerModel
         return null;
