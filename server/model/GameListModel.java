@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class GameListModel
+public class GameListModel implements Serializable
 {
     private List<LobbyGameModel> games;
     private Deck destDeck;
@@ -52,5 +53,13 @@ public class GameListModel
         return games;
     }
 
+    @Override
+    public String toString() {
+        String out = "";
+        for(LobbyGameModel gameTmp : games) {
+            out = out + gameTmp.getGamename() + ", ";
+        }
+        return out;
+    }
 
 }

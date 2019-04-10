@@ -1,5 +1,7 @@
 package model;
 
-abstract public class Card
+import java.io.Serializable;
+
+abstract public class Card implements Serializable
 {
 }

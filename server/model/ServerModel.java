@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ServerModel
+public class ServerModel implements Serializable
 {
     private Map<String, PlayerModel> tokenToPlayerMap;
     private PlayerListModel allPlayers;
@@ -132,4 +133,8 @@ public class ServerModel
         return empty;
     }
 
+    @Override
+    public String toString() {
+        return "Server model contains games: " + allGames.toString();
+    }
 }

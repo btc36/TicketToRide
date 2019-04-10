@@ -1,9 +1,10 @@
 package model;
 
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Route {
+public class Route implements Serializable {
     private String color;
     private int length;
     private String cityOne;

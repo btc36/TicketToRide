@@ -1,6 +1,8 @@
 package model;
 
-public class HistoryEntry {
+import java.io.Serializable;
+
+public class HistoryEntry implements Serializable {
     private String username;
     private String move;
 

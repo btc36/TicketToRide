@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class DestinationCard
+public class DestinationCard implements Serializable
 {
     private String city1;
     private String city2;

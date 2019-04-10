@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class City {
+public class City implements Serializable {
     private String name;
     private List<City> neighbors;
     private List<Route> routes;

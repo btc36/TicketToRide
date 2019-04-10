@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ChatMessage {
+public class ChatMessage implements Serializable {
     String username;
     String message;
     String time;
