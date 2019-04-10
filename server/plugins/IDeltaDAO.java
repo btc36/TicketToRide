@@ -4,6 +4,6 @@ public interface IDeltaDAO {
     String dbFilePath = "delta.db";
 
     public void clear();
-    public void addDelta();
+    public void addDelta(Object object);
     public IDeltaDAO getDelta();
 }

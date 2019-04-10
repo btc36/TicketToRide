@@ -16,7 +16,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
     }
 
     @Override
-    public void updateSnapshot()
+    public void updateSnapshot(Object object)
     {
 
     }
