@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class serializeObjectTest {
+public class serializeObjectExample {
     public static void main(String[] args) {
         tester.Phase3Tester.main(null);
         model.ServerModel servermodel = model.ServerModel.getInstance();
-        System.out.println("before: " + servermodel.toString());
+        System.out.println("ORIGINAL OBJECT: " + servermodel.toString());
 
         try {
             FileOutputStream f = new FileOutputStream(new File("serverModel.db"));
@@ -29,7 +29,7 @@ public class serializeObjectTest {
             // Read objects
             model.ServerModel servermodel1 = (model.ServerModel) oi.readObject();
 
-            System.out.println("after: " + servermodel1.toString());
+            System.out.println("AFTER RESTORE FROM FILE: " + servermodel1.toString());
 
             oi.close();
             fi.close();
