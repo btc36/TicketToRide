@@ -1,5 +1,7 @@
 package model;
 
+import server.GamePersister;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,13 @@ public class ServerModel implements Serializable
         if(_instance == null)
             _instance = new ServerModel();
         return _instance;
+    }
+
+    public static void LoadFromDatabase() {
+        ServerModel loaded = GamePersister.GetInstance().LoadDatabase();
+        if (loaded != null) {
+            _instance = loaded;
+        }
     }
 
     public Map<String, PlayerModel> getTokenToPlayerMap() {
