@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameHistory {
+public class GameHistory implements Serializable {
 
     private List<HistoryEntry> gameHistory;
     private String gameID;

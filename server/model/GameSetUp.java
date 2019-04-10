@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameSetUp {
+public class GameSetUp implements Serializable {
 
     //private static GameSetUp _instance;
 

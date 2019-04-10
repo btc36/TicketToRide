@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FaceUpCards {
+public class FaceUpCards implements Serializable {
     private List<TrainCard> faceUpCards;
     public FaceUpCards()
     {

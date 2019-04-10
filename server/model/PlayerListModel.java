@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class PlayerListModel
+public class PlayerListModel implements Serializable
 {
     private List<PlayerModel> players;
 

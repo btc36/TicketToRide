@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class PlayerModel
+public class PlayerModel implements Serializable
 {
     private String username;
     private String password;

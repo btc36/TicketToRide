@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Deck<T>
+public class Deck<T> implements Serializable
 {
     /**
      * @invariant size() >= 0

@@ -1,6 +1,8 @@
 package model;
 
-public class TrainCard
+import java.io.Serializable;
+
+public class TrainCard implements Serializable
 {
     String color;
     public TrainCard()

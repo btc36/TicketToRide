@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class LobbyGameModel extends GameSetUp
+public class LobbyGameModel extends GameSetUp implements Serializable
 {
 
     public enum State {WAITING, ONGOING, LASTROUND, FINISHED, GAMEOVER;}

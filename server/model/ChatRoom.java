@@ -2,11 +2,12 @@ package model;
 
 import command.GenericCommand;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ChatRoom
+public class ChatRoom implements Serializable
 {
     private List<ChatMessage> messages;
     private String gameID;
