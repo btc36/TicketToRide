@@ -1,6 +1,8 @@
 package communication;
 
 import com.sun.net.httpserver.HttpServer;
+import model.ServerModel;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.logging.ConsoleHandler;
@@ -72,6 +74,8 @@ public class ServerCommunicator {
         System.out.println("Starting server");
         server.start();
         System.out.println("Server started. Listening......");
+
+        ServerModel.getInstance().LoadFromDatabase();
     }
 
 

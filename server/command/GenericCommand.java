@@ -2,6 +2,8 @@ package command;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import server.GamePersister;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +44,16 @@ public class GenericCommand implements CommandInterface,java.io.Serializable  {
         _paramValues = paramValues;
     }
 
-    //@Override
+    @Override
     public List<GenericCommand> execute() {
+        return this.execute(true);
+    }
+
+
+    public List<GenericCommand> execute(boolean persist) {
+        if (persist) {
+            GamePersister.GetInstance().SaveCommand(this);
+        }
         List<GenericCommand> out = new ArrayList<GenericCommand>();
         try {
             Class<?> receiver = Class.forName(_className);
