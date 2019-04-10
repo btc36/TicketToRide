@@ -2,11 +2,16 @@ package server;
 
 import command.GenericCommand;
 import model.ServerModel;
+import plugins.IDeltaDAO;
+import plugins.ISnapshotDAO;
 
 public class GamePersister {
 
     private int maxDeltas;
     private int currentDeltas;
+    private IDeltaDAO deltaDao;
+    private ISnapshotDAO snapshotDao;
+
     private static GamePersister instance;
 
     public static GamePersister GetInstance() {
@@ -25,6 +30,14 @@ public class GamePersister {
         this.maxDeltas = maxDeltas;
     }
 
+    public void SetDeltaDao(IDeltaDAO dao) {
+        this.deltaDao = dao;
+    }
+
+    public void SetSnapshotDao(ISnapshotDAO dao) {
+        this.snapshotDao = dao;
+    }
+
     public void SaveCommand(GenericCommand command) {
         // TODO: Save the command in the database
         currentDeltas++;
@@ -40,6 +53,8 @@ public class GamePersister {
     }
 
     public ServerModel LoadDatabase() {
+        this.deltaDao.init();
+        this.snapshotDao.init();
         // TODO: Load the most recent snapshot from the database
         // TODO: Return null if there is no snapshot in the database
         // TODO: Cast it to ServerModel

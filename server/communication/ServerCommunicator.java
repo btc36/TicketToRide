@@ -75,6 +75,8 @@ public class ServerCommunicator {
         server.start();
         System.out.println("Server started. Listening......");
 
+        // TODO: GamePersistor.GetInstance().SetDeltaDao(...);
+        // TODO: GamePersistor.GetInstance().SetSnapshotDao(...);
         ServerModel.getInstance().LoadFromDatabase();
     }
 
