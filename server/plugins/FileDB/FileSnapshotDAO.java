@@ -6,6 +6,11 @@ import java.io.File;
 public class FileSnapshotDAO implements ISnapshotDAO {
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void clear() {
         File file = new File(dbFilePath);
         if(file.delete())
@@ -19,10 +24,12 @@ public class FileSnapshotDAO implements ISnapshotDAO {
     }
 
     @Override
-    public void updateSnapshot() {
+    public void updateSnapshot(Object object) {
         //File file = new File(dbFilePath);
         //os.writeObject(model.ServerModel.getInstance());
+
     }
+    
 
     @Override
     public ISnapshotDAO getLatestSnapshot() {
