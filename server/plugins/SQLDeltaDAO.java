@@ -44,6 +44,7 @@ public class SQLDeltaDAO implements IDeltaDAO
     public void clear()
     {
         boolean commit = false;
+        openConnection();
         try
         {
             String sql = "DELETE FROM DELTA";
@@ -53,7 +54,7 @@ public class SQLDeltaDAO implements IDeltaDAO
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            printError(e);
         }
         finally
         {
@@ -66,9 +67,12 @@ public class SQLDeltaDAO implements IDeltaDAO
     public void addDelta(Object object)
     {
         boolean commit = false;
-        openConnection();
+
         createTable();
+
+        openConnection();
         String s = "insert into DELTA(delta) values (?) ";
+
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try
@@ -77,7 +81,7 @@ public class SQLDeltaDAO implements IDeltaDAO
             oos.writeObject(object);
         } catch (IOException e)
         {
-            e.printStackTrace();
+            printError(e);
         }
         byte[] Bytes = baos.toByteArray();
         ByteArrayInputStream bais = new ByteArrayInputStream(Bytes);
@@ -89,7 +93,7 @@ public class SQLDeltaDAO implements IDeltaDAO
             commit = true;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            printError(e);
         }
         finally
         {
@@ -102,6 +106,7 @@ public class SQLDeltaDAO implements IDeltaDAO
     {
         List<Object> deltas = new ArrayList<>();
         openConnection();
+        boolean commit = false;
         try
         {
             stmt = conn.createStatement();
@@ -114,9 +119,15 @@ public class SQLDeltaDAO implements IDeltaDAO
                 Object o = ois.readObject();
                 deltas.add(o);
             }
+            commit = true;
         } catch (Exception e)
         {
-            e.printStackTrace();
+            printError(e);
+        }
+        finally
+        {
+            closeStatements();
+            closeConnection(true);
         }
 
         return deltas.toArray(new Object[deltas.size()]);
@@ -124,6 +135,8 @@ public class SQLDeltaDAO implements IDeltaDAO
 
     private void createTable()
     {
+        openConnection();
+        boolean commit = false;
         try
         {
             String sql = "CREATE TABLE IF NOT EXISTS DELTA (\n"
@@ -133,14 +146,16 @@ public class SQLDeltaDAO implements IDeltaDAO
             stmt = conn.createStatement();
             stmt.execute(sql);
             System.out.println("table created\n");
+            commit = true;
         }
         catch(SQLException e)
         {
-            e.printStackTrace();
+            printError(e);
         }
         finally
         {
             closeStatements();
+            closeConnection(commit);
         }
     }
 
@@ -155,14 +170,15 @@ public class SQLDeltaDAO implements IDeltaDAO
         }
         catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
-            exit(0);
+            printError(e);
+
+            //exit(0);
         }
         catch (SQLException e)
         {
             System.out.println("Error occurred while opening connection");
-            e.printStackTrace();
-            exit(0);
+            printError(e);
+            //exit(0);
         }
     }
 
@@ -175,7 +191,8 @@ public class SQLDeltaDAO implements IDeltaDAO
             {
                 if(commit)
                 {
-                    System.out.println("Saving Database");
+                    System.out.println("Saving to DELTA SQL Database");
+                    System.out.println("Thank you for using Delta Airline\n");
                     conn.commit();
                 }
                 else
@@ -187,7 +204,7 @@ public class SQLDeltaDAO implements IDeltaDAO
         catch(Exception e)
         {
             System.out.println("Error occurred while closing connection");
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            printError(e);
         }
         logger.exiting("SQLDeltaDAO", "closeConnection");
     }
@@ -217,6 +234,12 @@ public class SQLDeltaDAO implements IDeltaDAO
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             exit(0);
         }
+    }
+
+    private void printError(Exception e)
+    {
+        System.out.println(e.getStackTrace());
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
     }
 
     public static void main(String args[])
