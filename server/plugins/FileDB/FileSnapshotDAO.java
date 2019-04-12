@@ -7,7 +7,10 @@ public class FileSnapshotDAO implements ISnapshotDAO {
 
     @Override
     public void init() {
-
+        File file = new File(dbFilePath);
+        if(!file.canWrite()) {
+            System.out.println("can not create file.\n");
+        }
     }
 
     @Override
@@ -29,10 +32,10 @@ public class FileSnapshotDAO implements ISnapshotDAO {
         //os.writeObject(model.ServerModel.getInstance());
 
     }
-    
+
 
     @Override
-    public ISnapshotDAO getLatestSnapshot() {
+    public Object getLatestSnapshot() {
         return null;
     }
 }
