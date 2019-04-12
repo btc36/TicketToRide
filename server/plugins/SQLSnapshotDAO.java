@@ -81,7 +81,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
             oos.writeObject(object);
         } catch (IOException e)
         {
-            e.printStackTrace();
+            printError(e);
         }
         byte[] Bytes = baos.toByteArray();
         ByteArrayInputStream bais = new ByteArrayInputStream(Bytes);
@@ -93,7 +93,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
             commit = true;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            printError(e);
         }
         finally
         {
@@ -162,14 +162,12 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         }
         catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
-            exit(0);
+            printError(e);
         }
         catch (SQLException e)
         {
             System.out.println("Error occurred while opening connection");
-            e.printStackTrace();
-            exit(0);
+            printError(e);
         }
     }
 
@@ -182,7 +180,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
             {
                 if(commit)
                 {
-                    System.out.println("Saving Database");
+                    System.out.println("Saving SNAPSHOT SQL Database");
                     conn.commit();
                 }
                 else
@@ -194,7 +192,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         catch(Exception e)
         {
             System.out.println("Error occurred while closing connection");
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            printError(e);
         }
         logger.exiting("SQLSnapshotDAO", "closeConnection");
     }
@@ -222,8 +220,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         catch(Exception e)
         {
             System.out.println("Error occurred while closing connection");
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            exit(0);
+            printError(e);
         }
     }
 
@@ -239,6 +236,12 @@ public class SQLSnapshotDAO implements ISnapshotDAO
 //        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //        return gson.fromJson(json, PlayerModel.class);
 //    }
+
+    private void printError(Exception e)
+    {
+        System.out.println(e.getStackTrace());
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
 
     public static void main(String[] args)
     {

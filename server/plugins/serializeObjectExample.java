@@ -14,7 +14,7 @@ public class serializeObjectExample {
         System.out.println("ORIGINAL OBJECT: " + servermodel.toString());
 
         try {
-            FileOutputStream f = new FileOutputStream(new File("serverModel.db"));
+            FileOutputStream f = new FileOutputStream(new File("serverModelTest.db"));
             ObjectOutputStream o = new ObjectOutputStream(f);
             // Write objects to file
             o.writeObject(servermodel);
@@ -26,7 +26,7 @@ public class serializeObjectExample {
 
 
 
-            FileInputStream fi = new FileInputStream(new File("serverModel.db"));
+            FileInputStream fi = new FileInputStream(new File("serverModelTest.db"));
             ObjectInputStream oi = new ObjectInputStream(fi);
             // Read objects
             model.ServerModel servermodel1 = (model.ServerModel) oi.readObject();
