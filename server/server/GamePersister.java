@@ -2,11 +2,16 @@ package server;
 
 import command.GenericCommand;
 import model.ServerModel;
+import plugins.IDeltaDAO;
+import plugins.ISnapshotDAO;
 
 public class GamePersister {
 
     private int maxDeltas;
     private int currentDeltas;
+    private IDeltaDAO deltaDao;
+    private ISnapshotDAO snapshotDao;
+
     private static GamePersister instance;
 
     public static GamePersister GetInstance() {
@@ -25,26 +30,46 @@ public class GamePersister {
         this.maxDeltas = maxDeltas;
     }
 
+    public void SetDeltaDao(IDeltaDAO dao) {
+        this.deltaDao = dao;
+    }
+
+    public void SetSnapshotDao(ISnapshotDAO dao) {
+        this.snapshotDao = dao;
+    }
+
     public void SaveCommand(GenericCommand command) {
-        // TODO: Save the command in the database
+        deltaDao.addDelta(command);
         currentDeltas++;
         if (currentDeltas > maxDeltas) {
             currentDeltas = 0;
-            // TODO: Save a new snapshot of ServerModel in the database
+            snapshotDao.updateSnapshot(ServerModel.getInstance());
+            deltaDao.clear();
         }
     }
 
     public void ClearDatabase() {
-        // TODO: Clear the deltas from the database
-        // TODO: Clear the snapshots from the database
+        deltaDao.clear();
+        snapshotDao.clear();
     }
 
     public ServerModel LoadDatabase() {
-        // TODO: Load the most recent snapshot from the database
-        // TODO: Return null if there is no snapshot in the database
-        // TODO: Cast it to ServerModel
-        // TODO: Load the most recent deltas from the database
-        // TODO: Run them on top of the ServerModel
-        return null;
+        deltaDao.init();
+        snapshotDao.init();
+        ServerModel loaded = (ServerModel) snapshotDao.getLatestSnapshot();
+        if (loaded == null) {
+            System.out.println("The snapshot loaded from the database could not be cast to a ServerModel object.");
+            return null;
+        }
+        GenericCommand[] commands = (GenericCommand[]) deltaDao.getAllDelta();
+        if (loaded == null) {
+            System.out.println("The deltas loaded from the database could not be cast to a GenericCommand array.");
+            return null;
+        }
+        ServerModel.setInstance(loaded);
+        for (GenericCommand command : commands) {
+            command.execute();
+        }
+        return ServerModel.getInstance();
     }
 }
