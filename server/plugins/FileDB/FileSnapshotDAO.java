@@ -1,7 +1,7 @@
 package plugins.FileDB;
 import plugins.ISnapshotDAO;
 
-import java.io.File;
+import java.io.*;
 
 public class FileSnapshotDAO implements ISnapshotDAO {
 
@@ -28,14 +28,46 @@ public class FileSnapshotDAO implements ISnapshotDAO {
 
     @Override
     public void updateSnapshot(Object object) {
-        //File file = new File(dbFilePath);
-        //os.writeObject(model.ServerModel.getInstance());
-
+        ObjectOutputStream os;
+        FileOutputStream f;
+        try {
+            f = new FileOutputStream(new File(dbFilePath));
+            os = new ObjectOutputStream(f);
+            os.writeObject(object);
+            os.close();
+            f.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (
+        IOException e) {
+            System.out.println("Error initializing stream " + e.toString());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
     @Override
     public Object getLatestSnapshot() {
-        return null;
+        Object o = null;
+        try {
+            FileInputStream fi = new FileInputStream(new File(dbFilePath));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            // Read objects
+            //model.ServerModel servermodel1 = (model.ServerModel) oi.readObject();
+            o = oi.readObject();
+            oi.close();
+            fi.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (
+                IOException e) {
+            System.out.println("Error initializing stream " + e.toString());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return o;
     }
 }

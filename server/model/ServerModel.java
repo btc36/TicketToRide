@@ -32,6 +32,10 @@ public class ServerModel implements Serializable
         return _instance;
     }
 
+    public static void setInstance(ServerModel instance) {
+        _instance = instance;
+    }
+
     public static void LoadFromDatabase() {
         ServerModel loaded = GamePersister.GetInstance().LoadDatabase();
         if (loaded != null) {
