@@ -98,6 +98,8 @@ public class ServerCommunicator {
         String pluginJarName = "";
         String pluginClassName = "";
 
+        
+
         IDBPlugin plugin = new PluginFactory().getDBPluginInstance(pluginDirectory, pluginJarName, pluginClassName);
         GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
         GamePersister.GetInstance().SetDeltaDao(plugin.getDeltaDAO());
