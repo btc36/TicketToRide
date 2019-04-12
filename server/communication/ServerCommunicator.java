@@ -88,21 +88,25 @@ public class ServerCommunicator {
     {
         System.out.print(System.getProperty("user.dir"));
 
-        String portNumber = "8080";
-        if(args.length==1)
-            portNumber = args[0];
+        String portNumber = args[0];
 
-        // TODO: Change these to CLI parameters
-        int maxDeltas = 10;
-        String pluginDirectory = "";
-        String pluginJarName = "";
-        String pluginClassName = "";
+        if (args.length > 1) {
 
-        IDBPlugin plugin = new PluginFactory().getDBPluginInstance(pluginDirectory, pluginJarName, pluginClassName);
-        GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
-        GamePersister.GetInstance().SetDeltaDao(plugin.getDeltaDAO());
-        GamePersister.GetInstance().SetSnapshotDao(plugin.getSnapshotDAO());
-        ServerModel.getInstance().LoadFromDatabase();
+            String pluginType = args[1];
+            int maxDeltas = Integer.parseInt(args[2]);
+
+            // TODO: Load these 3 values from a config based on pluginType
+            String pluginDirectory = "/Users/lincoln/workspace/personal/winter2019/phase2/TicketToRide/plugins";
+            String pluginJarName = "";
+            String pluginClassName = "";
+
+            IDBPlugin plugin = new PluginFactory().getDBPluginInstance(pluginDirectory, pluginJarName, pluginClassName);
+            GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
+            GamePersister.GetInstance().SetDeltaDao(plugin.getDeltaDAO());
+            GamePersister.GetInstance().SetSnapshotDao(plugin.getSnapshotDAO());
+            ServerModel.getInstance().LoadFromDatabase();
+
+        }
 
         new ServerCommunicator().run(portNumber);
     }
