@@ -6,8 +6,15 @@ import plugins.IDBPlugin;
 import plugins.PluginFactory;
 import server.GamePersister;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Properties;
+import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -93,11 +100,39 @@ public class ServerCommunicator {
         int maxDeltas = Integer.parseInt(args[2]);
 
         // TODO: Load these 3 values from a config based on pluginType
-        String pluginDirectory = "/Users/lincoln/workspace/personal/winter2019/phase2/TicketToRide/plugins";
+        String pluginDirectory = "";
         String pluginJarName = "";
         String pluginClassName = "";
+        String propFileName = "";
+        if(pluginType == "sql"){
+            propFileName = "sqlconfig.properties";
 
-        
+        }else if (pluginType == "file"){
+            propFileName = "fileconfig.properties";
+        }
+        if(propFileName != ""){
+            try {
+                Properties prop = new Properties();
+                var inputStream = ServerCommunicator.class.getClassLoader().getResourceAsStream(propFileName);
+
+                if (inputStream != null) {
+                    prop.load(inputStream);
+                } else {
+                    throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+                }
+
+                // get the property value and print it out
+                pluginDirectory = prop.getProperty("pluginDirectory");
+                pluginJarName = prop.getProperty("pluginJarName");
+                pluginClassName = prop.getProperty("pluginClassName");
+
+            } catch (Exception e) {
+                System.out.println("Exception: " + e);
+            } finally {
+                //THIS DOESN'T WORK YET
+                //inputStream.close();
+            }
+        }
 
         IDBPlugin plugin = new PluginFactory().getDBPluginInstance(pluginDirectory, pluginJarName, pluginClassName);
         GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
