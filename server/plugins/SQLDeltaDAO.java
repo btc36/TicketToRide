@@ -28,7 +28,10 @@ public class SQLDeltaDAO implements IDeltaDAO
 
     public SQLDeltaDAO()
     {
-
+        conn = null;
+        rs = null;
+        pstmt = null;
+        stmt = null;
     }
 
     @Override
