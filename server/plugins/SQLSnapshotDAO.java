@@ -1,5 +1,11 @@
 package plugins;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import model.PlayerModel;
+import model.ServerModel;
+
+import java.io.*;
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -7,18 +13,20 @@ import static java.lang.System.exit;
 
 public class SQLSnapshotDAO implements ISnapshotDAO
 {
+    public static int id = 0;
     private static Logger logger;
     static
     {
         logger = Logger.getLogger("SQLSnapLog");
     }
 
-    String databaseFilepath = "jdbc:sqlite:ttr.sqlite";
+    String databaseFilepath = "jdbc:sqlite:snapshot.sqlite";
     private Connection conn;
     private String dbName;
     private ResultSet rs;
     private PreparedStatement pstmt;
     private Statement stmt;
+
 
     public SQLSnapshotDAO()
     {
@@ -38,6 +46,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
     public void clear()
     {
         boolean success = false;
+        openConnection();
         try
         {
             String sql = "DELETE FROM SNAPSHOT";
@@ -52,22 +61,67 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         finally
         {
             closeStatements();
+            closeConnection(success);
         }
     }
 
     @Override
     public void updateSnapshot(Object object)
     {
-        createTable();
+        boolean commit = false;
         openConnection();
-        closeStatements();
-        closeConnection(true);
+        createTable();
+        String s = "insert into SNAPSHOT values (?) ";
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try
+        {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        byte[] Bytes = baos.toByteArray();
+        ByteArrayInputStream bais = new ByteArrayInputStream(Bytes);
+        try
+        {
+            pstmt = conn.prepareStatement(s);
+            pstmt.setBinaryStream(1, bais, Bytes.length);
+            pstmt.executeUpdate();
+            commit = true;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            closeStatements();
+            closeConnection(commit);
+        }
     }
 
     @Override
     public Object getLatestSnapshot()
     {
-        return null;
+        Object o = null;
+        openConnection();
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT snapshot from SNAPSHOT");
+            while(rs.next())
+            {
+                byte[] st = (byte[]) rs.getObject(1);
+                ByteArrayInputStream baip = new ByteArrayInputStream(st);
+                ObjectInputStream ois = new ObjectInputStream(baip);
+                o = ois.readObject();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+       return o;
     }
 
 
@@ -76,9 +130,9 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         try
         {
             String sql = "CREATE TABLE IF NOT EXISTS SNAPSHOT (\n"
-                    + "	id text NOT NULL PRIMARY KEY,\n"
-                    + "	game blob NOT NULL\n"
+                    + "	snapshot BLOB NOT NULL\n"
                     + ");";
+
             stmt = conn.createStatement();
             stmt.execute(sql);
             System.out.println("table created\n");
@@ -117,7 +171,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
 
     private void closeConnection(boolean commit)
     {
-        logger.entering("Database", "closeConnection");
+        logger.entering("SQLSnapshotDAO", "closeConnection");
         try
         {
             if(conn!=null)
@@ -138,9 +192,8 @@ public class SQLSnapshotDAO implements ISnapshotDAO
             System.out.println("Error occurred while closing connection");
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
-        logger.exiting("Database", "closeConnection");
+        logger.exiting("SQLSnapshotDAO", "closeConnection");
     }
-
 
     private void closeStatements()
     {
@@ -170,8 +223,27 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         }
     }
 
+//    private String serialize(Object object)
+//    {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        String json = gson.toJson((PlayerModel)object);
+//        return json;
+//    }
+//
+//    private Object deserialize(String json)
+//    {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        return gson.fromJson(json, PlayerModel.class);
+//    }
+
     public static void main(String[] args)
     {
-        new SQLSnapshotDAO().init();
+        // (model.ServerModel) oi.readObject();
+        SQLSnapshotDAO dao = new SQLSnapshotDAO();
+        PlayerModel d = new PlayerModel("user","pass");
+       // dao.clear();
+        dao.updateSnapshot(d);
+        PlayerModel p = (PlayerModel)dao.getLatestSnapshot();
+        System.out.println(p.getUsername());
     }
 }
