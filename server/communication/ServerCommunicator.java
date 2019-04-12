@@ -92,8 +92,10 @@ public class ServerCommunicator {
         if(args.length==1)
             portNumber = args[0];
 
-        // TODO: Change these to CLI parameters
-        int maxDeltas = 10;
+        String pluginType = args[1];
+        int maxDeltas = Integer.parseInt(args[2]);
+
+        // TODO: Load these 3 values from a config based on pluginType
         String pluginDirectory = "";
         String pluginJarName = "";
         String pluginClassName = "";
