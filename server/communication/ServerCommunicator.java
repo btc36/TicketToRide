@@ -88,13 +88,12 @@ public class ServerCommunicator {
     {
         System.out.print(System.getProperty("user.dir"));
 
-        String portNumber = "8080";
-        if(args.length==1)
-            portNumber = args[0];
+        String portNumber = args[0];
+        String pluginType = args[1];
+        int maxDeltas = Integer.parseInt(args[2]);
 
-        // TODO: Change these to CLI parameters
-        int maxDeltas = 10;
-        String pluginDirectory = "";
+        // TODO: Load these 3 values from a config based on pluginType
+        String pluginDirectory = "/Users/lincoln/workspace/personal/winter2019/phase2/TicketToRide/plugins";
         String pluginJarName = "";
         String pluginClassName = "";
 
