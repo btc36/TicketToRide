@@ -16,16 +16,18 @@ public class serializeObjectExample {
         try {
             FileOutputStream f = new FileOutputStream(new File("serverModel.db"));
             ObjectOutputStream o = new ObjectOutputStream(f);
-
             // Write objects to file
             o.writeObject(servermodel);
-
             o.close();
             f.close();
 
+
+
+
+
+
             FileInputStream fi = new FileInputStream(new File("serverModel.db"));
             ObjectInputStream oi = new ObjectInputStream(fi);
-
             // Read objects
             model.ServerModel servermodel1 = (model.ServerModel) oi.readObject();
 
