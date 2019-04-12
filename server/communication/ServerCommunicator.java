@@ -2,6 +2,9 @@ package communication;
 
 import com.sun.net.httpserver.HttpServer;
 import model.ServerModel;
+import plugins.IDBPlugin;
+import plugins.PluginFactory;
+import server.GamePersister;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -74,11 +77,6 @@ public class ServerCommunicator {
         System.out.println("Starting server");
         server.start();
         System.out.println("Server started. Listening......");
-
-        // TODO: GamePersister.GetInstance().SetDeltaDao(...);
-        // TODO: GamePersister.GetInstance().SetMaxDeltas(...);
-        // TODO: GamePersister.GetInstance().SetSnapshotDao(...);
-        ServerModel.getInstance().LoadFromDatabase();
     }
 
 
@@ -93,6 +91,18 @@ public class ServerCommunicator {
         String portNumber = "8080";
         if(args.length==1)
             portNumber = args[0];
+
+        // TODO: Change these to CLI parameters
+        int maxDeltas = 10;
+        String pluginDirectory = "";
+        String pluginJarName = "";
+        String pluginClassName = "";
+
+        IDBPlugin plugin = new PluginFactory().getDBPluginInstance(pluginDirectory, pluginJarName, pluginClassName);
+        GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
+        GamePersister.GetInstance().SetDeltaDao(plugin.getDeltaDAO());
+        GamePersister.GetInstance().SetSnapshotDao(plugin.getSnapshotDAO());
+        ServerModel.getInstance().LoadFromDatabase();
 
         new ServerCommunicator().run(portNumber);
     }

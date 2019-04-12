@@ -3,8 +3,8 @@ package plugins;
 public interface IDeltaDAO {
     String dbFilePath = "delta.db";
 
-    public void init();
-    public void clear();
-    public void addDelta(Object object);
-    public Object[] getAllDelta();
+    void init();
+    void clear();
+    void addDelta(Object object);
+    Object[] getAllDelta();
 }
