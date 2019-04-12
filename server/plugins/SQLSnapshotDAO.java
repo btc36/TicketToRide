@@ -27,7 +27,6 @@ public class SQLSnapshotDAO implements ISnapshotDAO
     private PreparedStatement pstmt;
     private Statement stmt;
 
-
     public SQLSnapshotDAO()
     {
         this.conn = null;
@@ -39,7 +38,9 @@ public class SQLSnapshotDAO implements ISnapshotDAO
     @Override
     public void init()
     {
-
+        openConnection();
+        createTable();
+        closeConnection(true);
     }
 
     @Override
@@ -69,8 +70,9 @@ public class SQLSnapshotDAO implements ISnapshotDAO
     public void updateSnapshot(Object object)
     {
         boolean commit = false;
-        openConnection();
         createTable();
+        clear();
+        openConnection();
         String s = "insert into SNAPSHOT values (?) ";
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -124,9 +126,10 @@ public class SQLSnapshotDAO implements ISnapshotDAO
        return o;
     }
 
-
     private void createTable()
     {
+        openConnection();
+        boolean commit = false;
         try
         {
             String sql = "CREATE TABLE IF NOT EXISTS SNAPSHOT (\n"
@@ -136,6 +139,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
             stmt = conn.createStatement();
             stmt.execute(sql);
             System.out.println("table created\n");
+            commit = true;
         }
         catch(SQLException e)
         {
@@ -144,6 +148,7 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         finally
         {
             closeStatements();
+            closeConnection(commit);
         }
     }
 

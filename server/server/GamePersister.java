@@ -61,8 +61,15 @@ public class GamePersister {
             System.out.println("The snapshot loaded from the database could not be cast to a ServerModel object.");
             return null;
         }
-        // TODO: Load the most recent deltas from the database
-        // TODO: Run them on top of the ServerModel
-        return null;
+        GenericCommand[] commands = (GenericCommand[]) deltaDao.getAllDelta();
+        if (loaded == null) {
+            System.out.println("The deltas loaded from the database could not be cast to a GenericCommand array.");
+            return null;
+        }
+        ServerModel.setInstance(loaded);
+        for (GenericCommand command : commands) {
+            command.execute();
+        }
+        return ServerModel.getInstance();
     }
 }
