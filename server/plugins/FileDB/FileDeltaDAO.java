@@ -1,9 +1,8 @@
 package plugins.FileDB;
-import plugins.ISnapshotDAO;
 
-import java.io.*;
+import plugins.IDeltaDAO;
 
-public class FileSnapshotDAO implements ISnapshotDAO {
+public class FileDeltaDAO implements IDeltaDAO {
 
     @Override
     public void init() {
@@ -16,13 +15,12 @@ public class FileSnapshotDAO implements ISnapshotDAO {
     }
 
     @Override
-    public void updateSnapshot(Object o) {
+    public void addDelta(Object o) {
         ObjectToFromFile.getInstance().write(dbFilePath, o);
     }
 
-
     @Override
-    public Object getLatestSnapshot() {
-        return ObjectToFromFile.getInstance().read(dbFilePath);
+    public Object[] getAllDelta() {
+        return new Object[0];
     }
 }
