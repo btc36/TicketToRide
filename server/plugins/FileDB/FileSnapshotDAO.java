@@ -4,25 +4,31 @@ import plugins.ISnapshotDAO;
 import java.io.*;
 
 public class FileSnapshotDAO implements ISnapshotDAO {
+    ObjectToFromFile fileHandler;
+
+    public void FileSnapshotDAO() {
+        fileHandler = new ObjectToFromFile(dbFilePath);
+    }
 
     @Override
     public void init() {
-        ObjectToFromFile.getInstance().createFile(dbFilePath);
+        fileHandler.createFile();
     }
 
     @Override
     public void clear() {
-        ObjectToFromFile.getInstance().deleteFile(dbFilePath);
+        fileHandler.deleteFile();
     }
 
     @Override
     public void updateSnapshot(Object o) {
-        ObjectToFromFile.getInstance().write(dbFilePath, o);
+        this.clear();
+        fileHandler.write(o);
     }
 
 
     @Override
     public Object getLatestSnapshot() {
-        return ObjectToFromFile.getInstance().read(dbFilePath);
+        return fileHandler.read().get(0);
     }
 }

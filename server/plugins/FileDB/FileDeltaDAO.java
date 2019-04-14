@@ -3,24 +3,30 @@ package plugins.FileDB;
 import plugins.IDeltaDAO;
 
 public class FileDeltaDAO implements IDeltaDAO {
+    ObjectToFromFile fileHandler;
+
+    public void FileSnapshotDAO() {
+        fileHandler = new ObjectToFromFile(dbFilePath);
+    }
 
     @Override
     public void init() {
-        ObjectToFromFile.getInstance().createFile(dbFilePath);
+        fileHandler.createFile();
     }
 
     @Override
     public void clear() {
-        ObjectToFromFile.getInstance().deleteFile(dbFilePath);
+        fileHandler.deleteFile();
     }
 
     @Override
     public void addDelta(Object o) {
-        ObjectToFromFile.getInstance().write(dbFilePath, o);
+        fileHandler.write(o);
     }
 
     @Override
     public Object[] getAllDelta() {
+
         return new Object[0];
     }
 }
