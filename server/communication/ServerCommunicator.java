@@ -126,11 +126,10 @@ public class ServerCommunicator {
                 pluginJarName = prop.getProperty("pluginJarName");
                 pluginClassName = prop.getProperty("pluginClassName");
 
+                inputStream.close();
+
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
-            } finally {
-                //THIS DOESN'T WORK YET
-                //inputStream.close();
             }
         }
 
