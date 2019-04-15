@@ -16,9 +16,4 @@ public class PluginFactory implements IPluginFactory {
         Class<? extends IDBPlugin> DBPluginClass = (Class<IDBPlugin>) loader.loadClass(pluginClassName);
         return DBPluginClass.getDeclaredConstructor(null).newInstance();
     }
-
-    public static void main(String args[])
-    {
-        System.out.println("plugin");
-    }
 }

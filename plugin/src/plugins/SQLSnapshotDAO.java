@@ -1,6 +1,9 @@
 package plugins;
 
 
+import model.PlayerModel;
+import model.ServerModel;
+
 import java.io.*;
 import java.sql.*;
 import java.util.logging.Logger;
@@ -221,6 +224,18 @@ public class SQLSnapshotDAO implements ISnapshotDAO
         }
     }
 
+//    private String serialize(Object object)
+//    {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        String json = gson.toJson((PlayerModel)object);
+//        return json;
+//    }
+//
+//    private Object deserialize(String json)
+//    {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        return gson.fromJson(json, PlayerModel.class);
+//    }
 
     private void printError(Exception e)
     {
@@ -230,6 +245,12 @@ public class SQLSnapshotDAO implements ISnapshotDAO
 
     public static void main(String[] args)
     {
+        // (model.ServerModel) oi.readObject();
         SQLSnapshotDAO dao = new SQLSnapshotDAO();
+        PlayerModel d = new PlayerModel("user","pass");
+       // dao.clear();
+        dao.updateSnapshot(d);
+        PlayerModel p = (PlayerModel)dao.getLatestSnapshot();
+        System.out.println(p.getUsername());
     }
 }
