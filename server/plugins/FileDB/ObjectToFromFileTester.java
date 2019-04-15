@@ -13,7 +13,7 @@ public class ObjectToFromFileTester {
         fileHandler.deleteFile();
 
         for(int i = 0; i < 3; i++) {
-            fileHandler.write("test string " + i);
+            fileHandler.write("test object " + i);
         }
 
         ArrayList arl = fileHandler.read();
