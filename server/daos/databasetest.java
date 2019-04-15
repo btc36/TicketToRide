@@ -24,55 +24,55 @@ public class databasetest
     {
         openConnection();
         DAO = new daotest(conn);
-        DAO.createTable();
+      //  DAO.createTable();
     }
 
     public void openConnection()
     {
-        conn = null;
-        try
-        {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection(connectionURL);
-            conn.setAutoCommit(false);
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            exit(0);
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Error occurred while opening connection");
-            e.printStackTrace();
-            exit(0);
-        }
+//        conn = null;
+//        try
+//        {
+//            Class.forName("org.sqlite.JDBC");
+//            conn = DriverManager.getConnection(connectionURL);
+//            conn.setAutoCommit(false);
+//        }
+//        catch (ClassNotFoundException e)
+//        {
+//            e.printStackTrace();
+//            exit(0);
+//        }
+//        catch (SQLException e)
+//        {
+//            System.out.println("Error occurred while opening connection");
+//            e.printStackTrace();
+//            exit(0);
+//        }
     }
-    public void closeConnection(boolean commit)
-    {
-        logger.entering("Database", "closeConnection");
-        try
-        {
-            if(conn!=null)
-            {
-                if(commit)
-                {
-                    System.out.println("Saving Database");
-                    conn.commit();
-                }
-                else
-                    conn.rollback();
-                conn.close();
-                conn = null;
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println("Error occurred while closing connection");
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-        }
-        logger.exiting("Database", "closeConnection");
-    }
+//    public void closeConnection(boolean commit)
+//    {
+//        logger.entering("Database", "closeConnection");
+//        try
+//        {
+//            if(conn!=null)
+//            {
+//                if(commit)
+//                {
+//                    System.out.println("Saving Database");
+//                    conn.commit();
+//                }
+//                else
+//                    conn.rollback();
+//                conn.close();
+//                conn = null;
+//            }
+//        }
+//        catch(Exception e)
+//        {
+//            System.out.println("Error occurred while closing connection");
+//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//        }
+//        logger.exiting("Database", "closeConnection");
+//    }
 
     public Connection getConn()
     {
