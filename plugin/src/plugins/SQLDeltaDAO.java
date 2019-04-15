@@ -1,6 +1,6 @@
 package plugins;
 
-import model.PlayerModel;
+//import model.PlayerModel;
 
 import java.io.*;
 import java.sql.*;
@@ -244,9 +244,9 @@ public class SQLDeltaDAO implements IDeltaDAO
 
     public static void main(String args[])
     {
-        SQLDeltaDAO dao = new SQLDeltaDAO();
-        PlayerModel p = new PlayerModel("test", "pss");
-        dao.addDelta(p);
-        Object[] obs = dao.getAllDelta();
+//        SQLDeltaDAO dao = new SQLDeltaDAO();
+//        PlayerModel p = new PlayerModel("test", "pss");
+//        dao.addDelta(p);
+//        Object[] obs = dao.getAllDelta();
     }
 }

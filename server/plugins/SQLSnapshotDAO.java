@@ -1,8 +1,8 @@
 package plugins;
 
 
-import model.PlayerModel;
-import model.ServerModel;
+//import model.PlayerModel;
+//import model.ServerModel;
 
 import java.io.*;
 import java.sql.*;
@@ -245,12 +245,12 @@ public class SQLSnapshotDAO implements ISnapshotDAO
 
     public static void main(String[] args)
     {
-        // (model.ServerModel) oi.readObject();
-        SQLSnapshotDAO dao = new SQLSnapshotDAO();
-        PlayerModel d = new PlayerModel("user","pass");
-       // dao.clear();
-        dao.updateSnapshot(d);
-        PlayerModel p = (PlayerModel)dao.getLatestSnapshot();
-        System.out.println(p.getUsername());
+//        // (model.ServerModel) oi.readObject();
+//        SQLSnapshotDAO dao = new SQLSnapshotDAO();
+//        PlayerModel d = new PlayerModel("user","pass");
+//       // dao.clear();
+//        dao.updateSnapshot(d);
+//        PlayerModel p = (PlayerModel)dao.getLatestSnapshot();
+//        System.out.println(p.getUsername());
     }
 }
