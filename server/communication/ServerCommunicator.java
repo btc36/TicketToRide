@@ -98,6 +98,10 @@ public class ServerCommunicator {
         String portNumber = args[0];
         String pluginType = args[1];
         int maxDeltas = Integer.parseInt(args[2]);
+        Boolean clear = false;
+        if (args.length > 3){
+            clear = true;
+        }
 
         // TODO: Load these 3 values from a config based on pluginType
         String pluginDirectory = "";
@@ -137,6 +141,9 @@ public class ServerCommunicator {
         GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
         GamePersister.GetInstance().SetDeltaDao(plugin.getDeltaDAO());
         GamePersister.GetInstance().SetSnapshotDao(plugin.getSnapshotDAO());
+        if (clear){
+            GamePersister.GetInstance().ClearDatabase();
+        }
         ServerModel.getInstance().LoadFromDatabase();
 
         new ServerCommunicator().run(portNumber);
