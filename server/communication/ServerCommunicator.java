@@ -113,7 +113,7 @@ public class ServerCommunicator {
         if(!propFileName.equals("")){
             try {
                 Properties prop = new Properties();
-                var inputStream = ServerCommunicator.class.getClassLoader().getResourceAsStream(propFileName);
+                InputStream inputStream = ServerCommunicator.class.getClassLoader().getResourceAsStream(propFileName);
 
                 if (inputStream != null) {
                     prop.load(inputStream);
