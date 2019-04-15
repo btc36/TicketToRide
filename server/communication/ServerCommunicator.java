@@ -104,13 +104,13 @@ public class ServerCommunicator {
         String pluginJarName = "";
         String pluginClassName = "";
         String propFileName = "";
-        if(pluginType == "sql"){
+        if(pluginType.equals("sql")){
             propFileName = "sqlconfig.properties";
 
-        }else if (pluginType == "file"){
+        }else if (pluginType.equals("file")){
             propFileName = "fileconfig.properties";
         }
-        if(propFileName != ""){
+        if(!propFileName.equals("")){
             try {
                 Properties prop = new Properties();
                 InputStream inputStream = ServerCommunicator.class.getClassLoader().getResourceAsStream(propFileName);
