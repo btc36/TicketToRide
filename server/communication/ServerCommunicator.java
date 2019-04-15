@@ -6,14 +6,11 @@ import plugins.IDBPlugin;
 import plugins.PluginFactory;
 import server.GamePersister;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.Properties;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -98,6 +95,10 @@ public class ServerCommunicator {
         String portNumber = args[0];
         String pluginType = args[1];
         int maxDeltas = Integer.parseInt(args[2]);
+        Boolean clear = false;
+        if (args.length > 3){
+            clear = true;
+        }
 
         // TODO: Load these 3 values from a config based on pluginType
         String pluginDirectory = "";
@@ -105,15 +106,15 @@ public class ServerCommunicator {
         String pluginClassName = "";
         String propFileName = "";
         if(pluginType.equals("sql")){
-            propFileName = "sqlconfig.properties";
+            propFileName = "Resources/sqlconfig.properties";
 
         }else if (pluginType.equals("file")){
-            propFileName = "fileconfig.properties";
+            propFileName = "Resources/fileconfig.properties";
         }
         if(!propFileName.equals("")){
             try {
                 Properties prop = new Properties();
-                InputStream inputStream = ServerCommunicator.class.getClassLoader().getResourceAsStream(propFileName);
+                FileInputStream inputStream = new FileInputStream(propFileName);
 
                 if (inputStream != null) {
                     prop.load(inputStream);
@@ -126,11 +127,10 @@ public class ServerCommunicator {
                 pluginJarName = prop.getProperty("pluginJarName");
                 pluginClassName = prop.getProperty("pluginClassName");
 
+                inputStream.close();
+
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
-            } finally {
-                //THIS DOESN'T WORK YET
-                //inputStream.close();
             }
         }
 
@@ -138,6 +138,9 @@ public class ServerCommunicator {
         GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
         GamePersister.GetInstance().SetDeltaDao(plugin.getDeltaDAO());
         GamePersister.GetInstance().SetSnapshotDao(plugin.getSnapshotDAO());
+        if (clear){
+            GamePersister.GetInstance().ClearDatabase();
+        }
         ServerModel.getInstance().LoadFromDatabase();
 
         new ServerCommunicator().run(portNumber);
