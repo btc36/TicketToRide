@@ -6,6 +6,7 @@ import plugins.IDBPlugin;
 import plugins.PluginFactory;
 import server.GamePersister;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -105,15 +106,15 @@ public class ServerCommunicator {
         String pluginClassName = "";
         String propFileName = "";
         if(pluginType.equals("sql")){
-            propFileName = "sqlconfig.properties";
+            propFileName = "Resources/sqlconfig.properties";
 
         }else if (pluginType.equals("file")){
-            propFileName = "fileconfig.properties";
+            propFileName = "Resources/fileconfig.properties";
         }
         if(!propFileName.equals("")){
             try {
                 Properties prop = new Properties();
-                InputStream inputStream = ServerCommunicator.class.getClassLoader().getResourceAsStream(propFileName);
+                FileInputStream inputStream = new FileInputStream(propFileName);
 
                 if (inputStream != null) {
                     prop.load(inputStream);
