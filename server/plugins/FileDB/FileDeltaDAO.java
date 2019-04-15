@@ -5,13 +5,9 @@ import plugins.IDeltaDAO;
 public class FileDeltaDAO implements IDeltaDAO {
     ObjectToFromFile fileHandler;
 
-    public void FileSnapshotDAO() {
-        fileHandler = new ObjectToFromFile(dbFilePath);
-    }
-
     @Override
     public void init() {
-        fileHandler.createFile();
+        fileHandler = new ObjectToFromFile(dbFilePath);
     }
 
     @Override
@@ -26,7 +22,6 @@ public class FileDeltaDAO implements IDeltaDAO {
 
     @Override
     public Object[] getAllDelta() {
-
-        return new Object[0];
+        return fileHandler.read().toArray();
     }
 }

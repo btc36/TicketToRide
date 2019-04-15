@@ -6,13 +6,9 @@ import java.io.*;
 public class FileSnapshotDAO implements ISnapshotDAO {
     ObjectToFromFile fileHandler;
 
-    public void FileSnapshotDAO() {
-        fileHandler = new ObjectToFromFile(dbFilePath);
-    }
-
     @Override
     public void init() {
-        fileHandler.createFile();
+        fileHandler = new ObjectToFromFile(dbFilePath);
     }
 
     @Override
@@ -25,7 +21,6 @@ public class FileSnapshotDAO implements ISnapshotDAO {
         this.clear();
         fileHandler.write(o);
     }
-
 
     @Override
     public Object getLatestSnapshot() {

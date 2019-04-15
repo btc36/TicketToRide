@@ -1,47 +1,33 @@
 package plugins.FileDB;
 
-
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-//singleton
+
 public class ObjectToFromFile {
     private String filepath;
-    private String seperator = "\n\r\n\r\n\r";
+    BufferedOutputStream outputBuffer = null;
 
-    // private constructor restricted to this class itself
     public ObjectToFromFile(String filepath) {
         this.filepath = filepath;
     }
 
-
     public Boolean write(Object obj) {
-        ObjectOutputStream os;
-        FileOutputStream f;
-        boolean append = true;
         try {
-//            File file = new File("append.txt");
-//            FileWriter fr = new FileWriter(file, true);
-//            fr.write("data");
-//            fr.close();
-
-            f = new FileOutputStream(new File(filepath), append);
-            os = new ObjectOutputStream(f);
-            os.writeObject(obj);
-            f.write(seperator.getBytes());
-            os.close();
-            f.close();
+            Boolean fileAlreadyExists =  new File(filepath).exists();
+            FileOutputStream fileOutputStream = new FileOutputStream(filepath, true);
+            outputBuffer = new BufferedOutputStream(fileOutputStream);
+            if(fileAlreadyExists) {
+                AppendableObjectOutputStream appendableOutStream = new AppendableObjectOutputStream(outputBuffer);
+                appendableOutStream.writeObject(obj);
+                appendableOutStream.close();
+            }
+            else {//if file does not exist, we must first use ObjectOutputStream to make the headers work. Thereafter, use AppendableObjectOutputStream.
+                ObjectOutputStream os = new ObjectOutputStream(outputBuffer);
+                os.writeObject(obj);
+                os.close();
+            }
             return true;
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            return false;
         } catch (IOException e) {
             System.out.println("Error initializing stream " + e.toString());
             return false;
@@ -54,38 +40,14 @@ public class ObjectToFromFile {
     public ArrayList<Object> read() {
         ArrayList<Object> objects = new ArrayList<>();
         try {
-            File f = new File(filepath);
-            byte[] bytes = Files.readAllBytes(f.toPath());
-            String s = new String(bytes);
-            Scanner scan = new Scanner(s);
-            scan.useDelimiter(Pattern.compile(seperator));
-
-            while (scan.hasNextLine()) {
-                String line = scan.next();
-                ByteArrayInputStream in = new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8));
-                ObjectInputStream is = new ObjectInputStream(in);
-                Object oo = is.readObject();
-                String ss = (String)oo;
-                objects.add(oo);
-                in.close();
-                is.close();
+            FileInputStream fis = new FileInputStream(filepath);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            try{
+                while(true)
+                    objects.add(in.readObject());
+            }catch( Exception e ) {
+                //when readObject is done reading, it throws an EOF exception to end the while loop.
             }
-            scan.close();
-
-//            BufferedReader br = new BufferedReader(new FileReader(filepath));
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                System.out.println(line);
-//                ByteArrayInputStream in = new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8));
-//                ObjectInputStream is = new ObjectInputStream(in);
-//                Object oo = is.readObject();
-//                objects.add(oo);
-//                in.close();
-//                is.close();
-//            }
-//            br.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
         } catch (IOException e) {
             System.out.println("Error initializing stream " + e.toString());
         } catch (Exception e) {
@@ -102,17 +64,6 @@ public class ObjectToFromFile {
         }
         else
         {
-            return false;
-        }
-    }
-
-    public boolean createFile() {
-        File file = new File(filepath);
-        if(file.canWrite()) {
-            return true;
-        }
-        else {
-            System.out.println("can not create file.\n");
             return false;
         }
     }
