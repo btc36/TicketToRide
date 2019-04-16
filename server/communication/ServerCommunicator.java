@@ -134,7 +134,7 @@ public class ServerCommunicator {
             }
         }
 
-        new ServerCommunicator().run(portNumber);
+
 
         IDBPlugin plugin = new PluginFactory().getDBPluginInstance(pluginDirectory, pluginJarName, pluginClassName);
         GamePersister.GetInstance().SetMaxDeltas(maxDeltas);
@@ -146,7 +146,7 @@ public class ServerCommunicator {
         ServerModel.getInstance().LoadFromDatabase();
 
 
-
+        new ServerCommunicator().run(portNumber);
 
     }
 }

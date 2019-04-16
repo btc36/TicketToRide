@@ -184,8 +184,8 @@ public class ServerFacade extends Facade
         {
             game = ServerModel.getInstance().getGameByID(gameID);
             if(game == null) { message = "invalid gameID"; }
-            else if(game.getCurrentPlayerNum() + 1 > game.getMaxPlayer()) { message = "game is full"; }
-            else if(game.getPlayerList().findPlayer(username)) { message = "you already joined this game";}
+            else if((game.getCurrentPlayerNum() + 1 > game.getMaxPlayer()) && !game.getPlayerList().findPlayer(username)) { message = "game is full"; }
+          //  else if(game.getPlayerList().findPlayer(username)) { message = "you already joined this game";}
             else
             {
                 game.addPlayer(player);

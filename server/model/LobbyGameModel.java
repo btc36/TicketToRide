@@ -413,7 +413,11 @@ public class LobbyGameModel extends GameSetUp implements Serializable
 
     /*************************************** BEGIN GETTERS AND SETTERS ***************************************/
     public FaceUpCards getFaceUpCards() { return faceUpCards; }
-    public void addPlayer(PlayerModel player) { playerList.addPlayer(player); }
+    public void addPlayer(PlayerModel player)
+    {
+        if(!playerList.findPlayer(player))
+            playerList.addPlayer(player);
+    }
     public void removePlayer(PlayerModel player) { playerList.removePlayer(player); }
 
     public String getGameID() { return gameID; }
